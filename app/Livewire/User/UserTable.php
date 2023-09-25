@@ -22,6 +22,11 @@ class UserTable extends BaseTable
                 "query" => "name",
                 "sort" => true,
             ],
+            [
+                "label" => "Email",
+                "query" => "email",
+                "sort" => true,
+            ],
         ];
     }
 

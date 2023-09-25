@@ -14,12 +14,19 @@ class RegisterForm extends Form
     #[Rule(['required', 'string', 'email'])]
     public $email;
 
-    #[Rule(['required', 'string', 'max:255', 'unique:' . User::class])]
+    #[Rule(['required', 'string', 'max:255', 'unique:' . User::class . ',name'])]
     public $name;
 
     #[Rule(['required', 'confirmed'])]
     public $password;
-    public $confirm_password;
+    public $password_confirmation;
+
+    protected function rules()
+    {
+        return [
+            'password' => [Rules\Password::default()]
+        ];
+    }
 
     public function post()
     {
