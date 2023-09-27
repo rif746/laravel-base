@@ -8,20 +8,13 @@
 
         <!-- Password -->
         <div>
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <x-group.form.line-input label="Password" type="password" name="password" />
         </div>
 
         <div class="flex justify-end mt-4">
-            <x-primary-button>
+            <x-element.button.primary>
                 {{ __('Confirm') }}
-            </x-primary-button>
+            </x-element.button.primary>
         </div>
     </form>
 </x-guest-layout>

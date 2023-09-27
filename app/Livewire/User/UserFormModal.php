@@ -3,35 +3,33 @@
 namespace App\Livewire\User;
 
 use App\Livewire\Module\BaseModal;
+use App\Livewire\Forms\UserForm;
 
 class UserFormModal extends BaseModal
 {
+    public UserForm $form;
+
     /*
      * normal modal title
      * @var string
      */
-    protected static $title;
+    protected static $title = "Add New User";
 
     /*
      * load modal title
      * @var string
      */
-    protected static $load_title;
-
-    /*
-     * @var string
-     */
-    protected static $modal_name;
+    protected static $load_title = "Update User";
 
     /*
      * save or load permission
      * @var string|bool
      */
-    protected static $permission;
+    protected $permission = true;
 
     public function mount()
     {
-        $this->resetModal();
+        $this->clear();
     }
 
     public function render()
@@ -39,18 +37,23 @@ class UserFormModal extends BaseModal
         return view("livewire.user.user-form-modal");
     }
 
+    public function load($id)
+    {
+        parent::load($id);
+        $this->form->load($id);
+    }
+
+    public function save()
+    {
+        if (!is_null($this->form->post())) {
+            $this->dispatch('close-modal', name: $this->modal_name);
+            $this->dispatch('user-table:reload');
+        }
+    }
+
     public function clear()
     {
-        $this->resetModal();
-    }
-
-    protected function onLoad($id)
-    {
-        // code here
-    }
-
-    protected function onSave()
-    {
-        // code here
+        parent::clear();
+        $this->form->clear();
     }
 }

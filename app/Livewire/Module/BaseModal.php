@@ -6,8 +6,13 @@ use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
-class BaseModal extends Component
+abstract class BaseModal extends Component
 {
+    /*
+     * @var string
+     */
+    public $load_state = false;
+
     /*
      * normal modal title
      * @var string
@@ -21,31 +26,53 @@ class BaseModal extends Component
     protected static $load_title;
 
     /*
-     * @var string
-     */
-    protected static $modal_name;
-
-    /*
-     * @var string
-     */
-    protected static $load_state;
-
-    /*
      * save or load permission
      * @var string|bool
      */
-    protected static $permission;
+    protected $permission = false;
 
-    #[Computed(true)]
+    protected function getListeners()
+    {
+        $listeners = [
+            "modal:{$this->modal_name}:load" => "load",
+            "modal:{$this->modal_name}:close" => "clear"
+        ];
+        return array_merge($this->listeners, $listeners);
+    }
+
+    public function updated()
+    {
+        $this->validate();
+    }
+
+    #[Computed]
     public function title()
     {
-        return static::$load_state ? static::$load_title : static::$title;
+        return $this->load_state ? static::$load_title : static::$title;
+    }
+
+    #[Computed(true)]
+    public function modal_name()
+    {
+        $exploded_name = explode(".", $this->getName());
+        return $exploded_name[count($exploded_name) - 1];
+    }
+
+    public function load($id)
+    {
+        $this->guard($this->permission);
+        $this->load_state = true;
     }
 
     public function save()
     {
-        $this->guard(self::$permission);
-        $this->onSave();
+        $this->guard($this->permission);
+    }
+
+    public function clear()
+    {
+        $this->load_state = false;
+        $this->resetValidation();
     }
 
     protected function guard($guard)
@@ -54,21 +81,5 @@ class BaseModal extends Component
             return Gate::allowIf($guard);
         }
         return Gate::allows($guard);
-    }
-
-    protected function resetModal()
-    {
-        self::$load_state = false;
-        $this->resetErrorBag();
-    }
-
-    protected function onLoad(...$param)
-    {
-        // code here
-    }
-
-    protected function onSave()
-    {
-        // code here
     }
 }

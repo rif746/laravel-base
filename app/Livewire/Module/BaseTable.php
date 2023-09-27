@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Module;
 
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -21,6 +22,15 @@ class BaseTable extends Component
 
     #[Url("per")]
     public $perPage = 5;
+
+    protected function getListeners()
+    {
+        $exploded_name = explode(".", $this->getName());
+        $exploded_name = $exploded_name[count($exploded_name) - 1];
+        $listen["{$exploded_name}:reload"] = '$refresh';
+
+        return array_merge($this->listeners, $listen);
+    }
 
     public function updatedSearch()
     {
