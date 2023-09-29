@@ -1,0 +1,52 @@
+<?php
+
+namespace [namespace];
+
+use App\Livewire\Module\BaseModal;
+
+class [class] extends BaseModal
+{
+    /*
+     * normal modal title
+     * @var string
+     */
+    protected static $title = "Normal Title";
+
+    /*
+     * load modal title
+     * @var string
+     */
+    protected static $load_title = "Load Title";
+
+    /*
+     * save or load permission
+     * @var string|bool
+     */
+    protected $permission = true;
+
+    public function render()
+    {
+        return view("[view]");
+    }
+
+    public function load($id)
+    {
+        parent::load($id);
+        $this->form->load($id);
+    }
+
+    public function save()
+    {
+        parent::save()
+        if (!is_null($this->form->post())) {
+            $this->dispatch('close-modal', name: $this->modal_name);
+            $this->dispatch('target-table:reload');
+        }
+    }
+
+    public function clear()
+    {
+        parent::clear();
+        $this->form->clear();
+    }
+}

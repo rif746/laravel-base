@@ -1,0 +1,31 @@
+<?php
+
+namespace [namespace];
+
+use App\Livewire\Module\BaseTable;
+use Livewire\Attributes\Computed;
+
+class [class] extends BaseTable
+{
+    public function render()
+    {
+        return view("[view]");
+    }
+
+    #[Computed]
+    public function cols()
+    {
+        return [];
+    }
+
+    #[Computed]
+    public function users()
+    {
+        return [];
+    }
+
+    public function delete($id)
+    {
+        //
+    }
+}

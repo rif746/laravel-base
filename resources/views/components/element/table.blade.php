@@ -75,7 +75,7 @@
                                             wire:click="$dispatch('open-modal', {name: 'user-form-modal', id: {{ $row['id'] }}})">
                                             <x-heroicon-s-pencil width="16" class="pointer-events-none" />
                                         </x-element.button.flat>
-                                        <x-element.button.flat
+                                        <x-element.button.flat wire:click="delete({{ $row['id'] }})"
                                             class="bg-red-700 p-1 rounded-e rounded-ss-none rounded-es-none">
                                             <x-heroicon-s-trash width="16" class="pointer-events-none" />
                                         </x-element.button.flat>
