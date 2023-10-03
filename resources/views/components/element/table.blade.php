@@ -7,7 +7,12 @@
     'permission' => [],
 ])
 
-<div class="flex flex-col">
+<div class="flex flex-col"
+    x-on:ask.window="Swal.fire({
+            title: 'Are You Sure?',
+            text: $event.detail.message,
+            showCancelButton: true
+        }).then((e) => {e.isConfirmed && $wire[$event.detail.dispatch]($event.detail.id)})">
     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
             <div class="overflow-hidden">
@@ -75,7 +80,8 @@
                                             wire:click="$dispatch('open-modal', {name: 'user-form-modal', id: {{ $row['id'] }}})">
                                             <x-heroicon-s-pencil width="16" class="pointer-events-none" />
                                         </x-element.button.flat>
-                                        <x-element.button.flat wire:click="delete({{ $row['id'] }})"
+                                        <x-element.button.flat
+                                            x-on:click="$dispatch('ask', {message: 'Are You Sure want to delete {{ $row['name'] }}?', dispatch: 'delete', id: {{ $row['id'] }} })"
                                             class="bg-red-700 p-1 rounded-e rounded-ss-none rounded-es-none">
                                             <x-heroicon-s-trash width="16" class="pointer-events-none" />
                                         </x-element.button.flat>

@@ -47,5 +47,6 @@ class UserTable extends BaseTable
 
     public function delete($id)
     {
+        User::destroy($id);
     }
 }

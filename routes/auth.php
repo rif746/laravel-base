@@ -38,8 +38,6 @@ Route::middleware("auth")->group(function () {
         ->middleware(["signed", "throttle:6,1"])
         ->name("verification.verify");
 
-    Route::get('/users', \App\Livewire\User\UserTable::class)->can('user index')->name('user.index');
-
     Route::post("email/verification-notification", [
         EmailVerificationNotificationController::class,
         "store",

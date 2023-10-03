@@ -19,7 +19,7 @@
 <div class="z-20 fixed inset-0" x-data="{ visible: false, name: '{{ $name }}' }"
     x-on:open-modal.window="visible = true; if($event.detail.id !== undefined){$dispatch('modal:{{ $name }}:load', {id: $event.detail.id})}"
     x-on:close-modal.window="visible = !(name === $event.detail.name); $dispatch('modal:{{ $name }}:close')"
-    x-show="visible" x-cloak>
+    x-transition x-show="visible" x-cloak>
     <div class="bg-gray-100 dark:bg-gray-800 opacity-80 inset-0 absolute"
         x-on:click="$dispatch('close-modal', {name: name})"></div>
     <div
@@ -47,6 +47,3 @@
         @endif
     </div>
 </div>
-
-@push('scripts')
-@endpush

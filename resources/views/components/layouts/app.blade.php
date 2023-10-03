@@ -15,6 +15,7 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <livewire:styles />
+    @stack('styles')
 </head>
 
 <body class="font-sans antialiased">
@@ -36,8 +37,10 @@
         </main>
     </div>
 
-    @push('scripts')
-        <livewire:scripts />
-    </body>
+    <x-placeholder.offline />
+    @stack('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <livewire:scripts />
+</body>
 
-    </html>
+</html>
