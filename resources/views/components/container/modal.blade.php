@@ -16,11 +16,11 @@
         ][$maxWidth] ?? 'sm:max-w-2xl';
 @endphp
 
-<div class="z-20 fixed inset-0" x-data="{ visible: false, name: '{{ $name }}' }"
-    x-on:open-modal.window="visible = true; if($event.detail.id !== undefined){$dispatch('modal:{{ $name }}:load', {id: $event.detail.id})}"
-    x-on:close-modal.window="visible = !(name === $event.detail.name); $dispatch('modal:{{ $name }}:close')"
-    x-transition x-show="visible" x-cloak>
-    <div class="bg-gray-100 dark:bg-gray-800 opacity-80 inset-0 absolute"
+<div class="z-20 fixed inset-0" x-data="{ visible: $wire.visible, name: '{{ $name }}' }"
+    x-on:open-modal.window="$event.detail.id ? $wire.load($event.detail.id) : visible = (name === $event.detail.name)"
+    x-on:close-modal.window="visible = !(name === $event.detail.name); $wire.clear()" x-transition x-show="visible"
+    x-cloak>
+    <div wire:loading.class="pointer-events-none" class="bg-gray-100 dark:bg-gray-800 opacity-80 inset-0 absolute"
         x-on:click="$dispatch('close-modal', {name: name})"></div>
     <div
         class="{{ $maxWidth }} bg-white dark:bg-gray-700 mx-auto mt-4 z-30 dark:text-white p-4 rounded text-black relative">
@@ -34,10 +34,13 @@
             </button>
         </div>
         <div class="p-4">
-            {{ $slot }}
+            <div>
+                {{ $slot }}
+            </div>
         </div>
         <div class="p-4 flex justify-end gap-1">
-            <x-element.button.secondary type="button" x-on:click="$dispatch('close-modal', {name: name})">
+            <x-element.button.secondary wire:loading.attr="disabled" type="button"
+                x-on:click="$dispatch('close-modal', {name: name})">
                 {{ __('Close') }}
             </x-element.button.secondary>
             {{ $button ?? '' }}

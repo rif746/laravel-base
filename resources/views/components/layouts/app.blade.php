@@ -36,8 +36,6 @@
             {{ $slot }}
         </main>
     </div>
-
-    <x-placeholder.offline />
     @stack('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <livewire:scripts />

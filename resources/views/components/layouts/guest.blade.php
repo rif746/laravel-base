@@ -30,6 +30,7 @@
             {{ $slot }}
         </div>
     </div>
+
     <livewire:scripts />
 </body>
 

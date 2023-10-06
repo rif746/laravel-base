@@ -25,7 +25,10 @@ class UserFormModal extends BaseModal
      * save or load permission
      * @var string|bool
      */
-    protected $permission = true;
+    protected $permission = [
+        'load' => false,
+        'save' => true
+    ];
 
     public function mount()
     {
@@ -45,6 +48,7 @@ class UserFormModal extends BaseModal
 
     public function save()
     {
+        parent::save();
         if (!is_null($this->form->post())) {
             $this->dispatch('close-modal', name: $this->modal_name);
             $this->dispatch('user-table:reload');

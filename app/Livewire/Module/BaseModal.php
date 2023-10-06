@@ -4,14 +4,16 @@ namespace App\Livewire\Module;
 
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 abstract class BaseModal extends Component
 {
-    /*
-     * @var string
-     */
+    #[Locked]
     public $load_state = false;
+
+    #[Locked]
+    public $visible = false;
 
     /*
      * normal modal title
@@ -27,9 +29,12 @@ abstract class BaseModal extends Component
 
     /*
      * save or load permission
-     * @var string|bool
+     * @var array
      */
-    protected $permission = false;
+    protected $permission = [
+        'load' => false,
+        'save' => false
+    ];
 
     protected function getListeners()
     {
@@ -60,13 +65,13 @@ abstract class BaseModal extends Component
 
     public function load($id)
     {
-        $this->guard($this->permission);
+        $this->guard($this->permission['load'] ?? false);
         $this->load_state = true;
     }
 
     public function save()
     {
-        $this->guard($this->permission);
+        $this->guard($this->permission['save'] ?? false);
     }
 
     public function clear()
