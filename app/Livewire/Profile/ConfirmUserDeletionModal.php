@@ -1,36 +1,28 @@
 <?php
 
-namespace [namespace];
+namespace App\Livewire\Profile;
 
 use App\Livewire\Module\BaseModal;
+use Livewire\Attributes\Rule;
 
-class [class] extends BaseModal
+class ConfirmUserDeletionModal extends BaseModal
 {
+    #[Rule(['required', 'current_password'], as: 'Current Password')]
+    public $current_password;
 
-    /*
-     * normal modal title
-     * @var string
-     */
-    protected static $title = "Add New User";
-
-    /*
-     * load modal title
-     * @var string
-     */
-    protected static $load_title = "Update User";
+    protected static $title = "Confirm Account Deletion";
 
     /*
      * save or load permission
      * @var string|bool
      */
     protected $permission = [
-        'load' => false,
         'save' => true
     ];
 
     public function render()
     {
-        return view("[view]");
+        return view("livewire.profile.confirm-user-deletion-modal");
     }
 
     public function load($id)
@@ -42,15 +34,16 @@ class [class] extends BaseModal
     public function save()
     {
         parent::save();
-        if (!is_null($this->form->post())) {
+        $this->validate();
+        if (auth()->user()->delete()) {
             $this->dispatch('close-modal', name: $this->modal_name);
-            $this->dispatch('target-table:reload');
+            auth()->logout();
         }
     }
 
     public function clear()
     {
         parent::clear();
-        $this->form->clear();
+        $this->current_password = "";
     }
 }

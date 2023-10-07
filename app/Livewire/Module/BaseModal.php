@@ -12,9 +12,6 @@ abstract class BaseModal extends Component
     #[Locked]
     public $load_state = false;
 
-    #[Locked]
-    public $visible = false;
-
     /*
      * normal modal title
      * @var string
@@ -67,6 +64,7 @@ abstract class BaseModal extends Component
     {
         $this->guard($this->permission['load'] ?? false);
         $this->load_state = true;
+        $this->js("visible = true");
     }
 
     public function save()
@@ -77,6 +75,7 @@ abstract class BaseModal extends Component
     public function clear()
     {
         $this->load_state = false;
+        $this->js("visible = false");
         $this->resetValidation();
     }
 

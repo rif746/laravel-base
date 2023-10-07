@@ -48,8 +48,15 @@ class UserForm extends Form
     public function post()
     {
         $this->validate();
+        $user = User::find($this->id);
         $update['name'] = $this->name;
         $update['email'] = $this->email;
-        return User::updateOrCreate(['id' => $this->id], $update);
+        $user->fill($update);
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        return $user->update();
     }
 }
