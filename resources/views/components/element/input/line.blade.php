@@ -1,4 +1,4 @@
-@props(['disabled' => false])
+@props(['disabled' => false, 'required' => false])
 
 @php($name = $attributes->wire('model')->value ?? $attributes->get('name'))
 @php($id = $attributes->wire('model')->value ?? $attributes->get('id'))
@@ -6,6 +6,7 @@
 <input
     {{ $attributes->merge([
         'disabled' => $disabled,
+        'required' => $required,
         'name' => $name,
         'id' => $id,
         'class' =>

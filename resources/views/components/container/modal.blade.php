@@ -16,10 +16,10 @@
         ][$maxWidth] ?? 'sm:max-w-2xl';
 @endphp
 
-<div class="z-20 fixed inset-0" x-data="{ visible: false, name: '{{ $name }}' }" x-init="console.log($wire)"
+<div class="z-20 fixed inset-0" x-data="{ visible: false, name: '{{ $name }}' }"
     x-on:open-modal.window="($event.detail.id && name === $event.detail.name) ? $wire.load($event.detail.id) : visible = (name === $event.detail.name)"
-    x-on:close-modal.window="(name === $event.detail.name) ? $wire.clear() : null" x-transition x-show="visible" x-cloak
-    wire:key="{{ $name }}">
+    x-on:close-modal.window="(name === $event.detail.name) && (visible = false && $wire.clear())" x-transition
+    x-show="visible" x-cloak>
     <div wire:loading.class="pointer-events-none" class="bg-gray-100 dark:bg-gray-800 opacity-80 inset-0 absolute"
         x-on:click="$dispatch('close-modal', {name: name})"></div>
     <div

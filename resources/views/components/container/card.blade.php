@@ -2,6 +2,7 @@
     'title' => '',
     'permission' => false,
     'search' => null,
+    'modal' => null,
 ])
 
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -14,9 +15,9 @@
                         <x-element.input.line wire:model.live="search" placeholder="Search..." />
                     @endif
 
-                    @if ($permission)
+                    @if ($permission && isset($modal))
                         <x-element.button.primary class="py-2 px-1"
-                            x-on:click="$dispatch('open-modal', {name: 'user-form-modal'})">
+                            x-on:click="$dispatch('open-modal', {name: '{{ $modal }}'})">
                             <x-heroicon-s-plus width="16" />
                         </x-element.button.primary>
                     @endif

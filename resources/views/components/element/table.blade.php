@@ -53,7 +53,7 @@
                     </thead>
                     <tbody>
                         @foreach ($rows as $key => $row)
-                            <tr class="border-b dark:border-neutral-500">
+                            <tr class="border-b dark:border-neutral-500" wire:key="{{ $key }}">
                                 <td class="whitespace-nowrap px-6 py-4 font-medium">
                                     @if ($rows instanceof \Illuminate\Pagination\LengthAwarePaginator)
                                         {{ ($rows->currentPage() - 1) * $rows->perpage() + $loop->iteration }}
