@@ -9,11 +9,14 @@
 ])
 
 <div class="flex flex-col"
-    @if (isset($permissions['delete']) && $permissions['delete']) x-on:ask.window="Swal.fire({
+    @if (isset($permissions['delete']) && $permissions['delete']) x-on:ask.window="window.Swal.fire({
             title: 'Are You Sure?',
             text: $event.detail.message,
-            showCancelButton: true
-            }).then((e) => {e.isConfirmed && $wire[$event.detail.dispatch]($event.detail.id)})" @endif>
+            showCancelButton: true,
+            customClass: {
+                popup: 'dark:bg-gray-800 bg-gray-300 text-gray-800 dark:text-gray-300'
+            }
+        }).then((e) => {e.isConfirmed && $wire[$event.detail.dispatch]($event.detail.id)})" @endif>
     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
             <div class="overflow-hidden">

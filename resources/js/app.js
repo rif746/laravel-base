@@ -3,7 +3,9 @@
 import "./bootstrap"
 import Swal from "sweetalert2"
 
-function notify ({ icon, title, message }) {
+window.Swal = Swal
+
+window.notify = function({ icon, title, message }) {
 	Swal.fire({
 		icon,
 		title,
@@ -15,13 +17,13 @@ function notify ({ icon, title, message }) {
 	})
 }
 
-if(import.meta.env.APP_ENV == "production") {
+if(import.meta.env.VITE_DEBUG) {
 	document.addEventListener("livewire:init", () => {
 		Livewire.hook("request", ({ fail }) => {
 			fail(({ status, preventDefault }) => {
 				switch (status) {
 				case 419:
-					notify({
+					window.notify({
 						icon: "warning",
 						title: "419 Expired",
 						message: "Invalid or Expired Token"
@@ -29,7 +31,7 @@ if(import.meta.env.APP_ENV == "production") {
 					break
 
 				case 403:
-					notify({
+					window.notify({
 						icon: "warning",
 						title: "403 Unauthorized",
 						message: "You are not authorized to do this action"
@@ -37,7 +39,7 @@ if(import.meta.env.APP_ENV == "production") {
 					break
 
 				case 500:
-					notify({
+					window.notify({
 						icon: "error",
 						title: "500 System Error",
 						message: "Your action causing error, please contact developer."
@@ -45,7 +47,7 @@ if(import.meta.env.APP_ENV == "production") {
 					break
 
 				case 404:
-					notify({
+					window.notify({
 						icon: "warning",
 						title: "404 Not Found",
 						message: "Action not found"
