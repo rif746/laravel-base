@@ -1,7 +1,0 @@
-<x-container.modal maxWidth="sm" :name="$this->modal_name" :title="$this->title" method="save">
-    [quote]
-
-    <x-slot:button>
-        <x-element.button.primary type=" submit">Save</x-element.button.primary>
-    </x-slot:button>
-</x-container.modal>

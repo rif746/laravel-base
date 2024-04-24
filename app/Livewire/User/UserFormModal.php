@@ -26,7 +26,7 @@ class UserFormModal extends BaseModal
      * @var string|bool
      */
     protected $permission = [
-        'load' => false,
+        'load' => true,
         'save' => true
     ];
 

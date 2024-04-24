@@ -1,32 +1,44 @@
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
+import axios from "axios";
+import Swal from "sweetalert2";
 
-import axios from "axios"
-window.axios = axios
+window.axios = axios;
+window.Swal = Swal;
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
-window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest"
+window.toast = ({message, icon, position = "top-end"}) => {
+    Swal.mixin({
+        toast: true,
+        position: position,
+        showConfirmButton: false,
+        timer: 2000,
+        didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+		customClass: {
+			popup: "bg-gray-300 text-gray-800 dark:text-gray-300 dark:!bg-gray-800"
+		}
+    }).fire({
+        title: message,
+        icon: icon,
+    });
+};
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
-
-// import Echo from 'laravel-echo';
-
-// import Pusher from 'pusher-js';
-// window.Pusher = Pusher;
-
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: import.meta.env.VITE_PUSHER_APP_KEY,
-//     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
-//     wsHost: import.meta.env.VITE_PUSHER_HOST ? import.meta.env.VITE_PUSHER_HOST : `ws-${import.meta.env.VITE_PUSHER_APP_CLUSTER}.pusher.com`,
-//     wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
-//     wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
-//     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
-//     enabledTransports: ['ws', 'wss'],
-// });
+window.notify = ({title, message, icon, position = "center"}) => {
+    Swal.mixin({
+        position: position,
+        showConfirmButton: false,
+        timer: 2000,
+        didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+		customClass: {
+			popup: "bg-gray-300 text-gray-800 dark:text-gray-300 dark:!bg-gray-800"
+		}
+    }).fire({
+        title: title,
+        text: message,
+        icon: icon,
+    });
+};
