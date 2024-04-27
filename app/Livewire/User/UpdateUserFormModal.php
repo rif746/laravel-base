@@ -2,18 +2,18 @@
 
 namespace App\Livewire\User;
 
+use App\Livewire\Forms\UpdateUserForm;
 use App\Livewire\Module\BaseModal;
-use App\Livewire\Forms\UserForm;
 
-class UserFormModal extends BaseModal
+class UpdateUserFormModal extends BaseModal
 {
-    public UserForm $form;
+    public UpdateUserForm $form;
 
     /*
      * normal modal title
      * @var string
      */
-    protected static $title = "Add New User";
+    protected static $title = "Update User";
 
     /*
      * load modal title
@@ -37,21 +37,22 @@ class UserFormModal extends BaseModal
 
     public function render()
     {
-        return view("livewire.user.user-form-modal");
+        return view("livewire.user.update-user-form-modal");
     }
 
     public function load($id)
     {
         parent::load($id);
         $this->form->load($id);
+
     }
 
     public function save()
     {
         parent::save();
-        if (!is_null($this->form->post())) {
+        if($this->form->post()) {
             $this->dispatch('close-modal', name: $this->modal_name);
-            $this->dispatch('user-table:reload');
+            $this->dispatch("user-table:reload");
         }
     }
 

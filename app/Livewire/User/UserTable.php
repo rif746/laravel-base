@@ -2,12 +2,15 @@
 
 namespace App\Livewire\User;
 
+use App\Exports\UserExport;
 use App\Livewire\Module\BaseTable;
 use App\Livewire\Module\Trait\Notification;
 use App\Models\User;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
+use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Facades\Excel as FacadesExcel;
 
 class UserTable extends BaseTable
 {
@@ -20,25 +23,19 @@ class UserTable extends BaseTable
     public $search = "";
 
     protected array $modals = [
-        'edit' => 'user-form-modal',
-        'view' => '',
-    ];
-
-    protected array $urls = [
-        'edit' => [
-            'route' => '',
-            'params' => ''
-        ],
-        'views' => [
-            'route' => '',
-            'params' => ''
-        ],
+        'create' => 'create-user-form-modal',
+        'edit' => 'update-user-form-modal',
     ];
 
     protected array $permissions = [
-        'create' => true,
-        'edit' => true,
-        'delete' => true,
+        'create' => 'user create',
+        'edit' => 'user edit',
+        'delete' => 'user delete',
+    ];
+
+    protected array $export = [
+        'pdf' => 'exportPDF',
+        'xlsx' => 'exportXLSX',
     ];
 
     public function render()
@@ -65,7 +62,7 @@ class UserTable extends BaseTable
             [
                 "label" => "Email",
                 "query" => "email",
-                "sort" => true,
+                "sort" => false,
             ],
         ];
     }
@@ -74,5 +71,23 @@ class UserTable extends BaseTable
     {
         parent::delete($id);
         User::destroy($id);
+    }
+
+    public function exportXLSX()
+    {
+        return FacadesExcel::download(
+            new UserExport(),
+            "download.xlsx",
+            Excel::XLSX
+        );
+    }
+
+    public function exportPDF()
+    {
+        return FacadesExcel::download(
+            new UserExport(),
+            "download.pdf",
+            Excel::DOMPDF
+        );
     }
 }

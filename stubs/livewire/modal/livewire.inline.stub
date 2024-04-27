@@ -1,0 +1,61 @@
+<?php
+
+namespace [namespace];
+
+use App\Livewire\Module\BaseModal;
+
+class [class] extends BaseModal
+{
+    /*
+     * normal modal title
+     * @var string
+     */
+    protected static $title = "";
+
+    /*
+     * load modal title
+     * @var string
+     */
+    protected static $load_title = "";
+
+    /*
+     * save or load permission
+     * @var string|bool
+     */
+    protected $permission = [
+        'load' => false,
+        'save' => false
+    ];
+
+    public function mount()
+    {
+        $this->clear();
+    }
+
+    public function render()
+    {
+        return <<<'BLADE'
+            <x-container.modal maxWidth="sm" :name="$this->modal_name" :title="$this->title" method="save">
+                [quote]
+                <x-slot:button>
+                    <x-element.button.primary wire:loading.attr="disabled" type="submit">Save</x-element.button.primary>
+                </x-slot:button>
+            </x-container.modal>
+        BLADE;;
+    }
+
+    public function load($id)
+    {
+        parent::load($id);
+    }
+
+    public function save()
+    {
+        parent::save();
+    }
+
+    public function clear()
+    {
+        parent::clear();
+    }
+}

@@ -9,12 +9,19 @@ class Role extends \Spatie\Permission\Models\Role
 {
     use HasFactory;
 
-    const ADMIN = "administrator";
-    const GUEST = "guest";
+    const ADMIN = "Administrator";
+    const GUEST = "Guest";
 
-    public static function getRoles()
+    public static function getDefaultRoles()
     {
-        $constant = new ReflectionClass(__CLASS__);
-        return $constant->getConstants();
+        return [
+            self::ADMIN,
+            self::GUEST,
+        ];
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->orWhere("name", "like", "%{$search}%");
     }
 }

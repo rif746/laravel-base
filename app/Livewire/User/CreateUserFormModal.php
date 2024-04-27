@@ -1,52 +1,51 @@
 <?php
 
-namespace App\Livewire\Profile;
+namespace App\Livewire\User;
 
-use App\Livewire\Forms\UpdateUserForm;
+use App\Livewire\Forms\CreateUserForm;
 use App\Livewire\Module\BaseModal;
 
-class UpdateProfileFormModal extends BaseModal
+class CreateUserFormModal extends BaseModal
 {
-    public UpdateUserForm $form;
+    public CreateUserForm $form;
 
     /*
      * normal modal title
      * @var string
      */
-    protected static $title = "Update Profile";
+    protected static $title = "Create User";
 
     /*
      * load modal title
      * @var string
      */
-    protected static $load_title = "Update Profile";
+    protected static $load_title = "Create User";
 
     /*
      * save or load permission
      * @var string|bool
      */
     protected $permission = [
-        'load' => true,
+        'load' => false,
         'save' => true
     ];
 
-    public function render()
+    public function mount()
     {
-        return view("livewire.profile.update-profile-form-modal");
+        $this->clear();
     }
 
-    public function load($id)
+    public function render()
     {
-        parent::load($id);
-        $this->form->load($id);
+        return view("livewire.user.create-user-form-modal");
     }
 
     public function save()
     {
         parent::save();
-        if (!is_null($this->form->post())) {
+        if($this->form->post()) {
             $this->dispatch('close-modal', name: $this->modal_name);
-            $this->dispatch('profile:update');
+            $this->dispatch("user-table:reload");
         }
     }
 

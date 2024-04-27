@@ -12,19 +12,19 @@ abstract class BaseModal extends Component
     #[Locked]
     public $load_state = false;
 
-    /*
+    /**
      * normal modal title
      * @var string
      */
     protected static $title;
 
-    /*
+    /**
      * load modal title
      * @var string
      */
     protected static $load_title;
 
-    /*
+    /**
      * save or load permission
      * @var array
      */

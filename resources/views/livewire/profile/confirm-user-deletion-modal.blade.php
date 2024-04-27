@@ -8,8 +8,11 @@
     </p>
 
     <div class="mt-6">
-        <x-group.form.line-input type="password" wire:model="current_password" label="Current Password" />
+        <x-element.layout.vertical name="current_password" label="Current Password">
+            <x-element.input.line wire:model="current_password" />
+        </x-element.layout.vertical>
     </div>
+    
     <x-slot:button>
         <x-element.button.danger type="submit">Delete</x-element.button.danger>
     </x-slot:button>

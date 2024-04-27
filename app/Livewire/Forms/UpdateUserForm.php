@@ -3,30 +3,29 @@
 namespace App\Livewire\Forms;
 
 use App\Models\User;
-use Illuminate\Validation\Rules;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\Rule;
+use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class UserForm extends Form
+class UpdateUserForm extends Form
 {
     #[Locked]
     public $id;
 
-    #[Rule('required', as: 'Email')]
-    #[Rule('email', as: 'Email')]
-    #[Rule('string', as: 'Email')]
+    #[Validate('required', as: 'Email')]
+    #[Validate('email', as: 'Email')]
+    #[Validate('string', as: 'Email')]
     public $email;
 
-    #[Rule('required', as: 'Name')]
-    #[Rule('min:5', as: 'Name')]
+    #[Validate('required', as: 'Name')]
+    #[Validate('min:5', as: 'Name')]
     public $name;
 
     protected function rules()
     {
         return [
-            'name' => [(new Rules\Unique(User::class, 'name'))->ignore($this->id, 'id')],
-            'email' => [(new Rules\Unique(User::class, 'email'))->ignore($this->id, 'id')],
+            'email' => ['required', 'email', 'unique:users,email,id,' . $this->id],
+            'name' => ['required', 'min:5', 'unique:users,name,id,' . $this->id],
         ];
     }
 
@@ -52,11 +51,7 @@ class UserForm extends Form
         $update['name'] = $this->name;
         $update['email'] = $this->email;
         $user->fill($update);
-
-        if (!isset($user->id)) {
-            return $user->save();
-        }
-
+        
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }

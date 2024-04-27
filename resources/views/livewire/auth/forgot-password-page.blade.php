@@ -9,7 +9,9 @@
     <form wire:submit="send_reset">
         @csrf
         <!-- Email Address -->
-        <x-group.form.line-input type="email" wire:model="email" label="Email" />
+        <x-element.layout.vertical name="form.email" label="Email">
+            <x-element.input.line wire:model="form.email" />
+        </x-element.layout.vertical>
 
         <div class="flex items-center justify-end mt-4">
             <x-element.button.primary>

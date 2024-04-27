@@ -23,31 +23,50 @@ class BaseTable extends Component
     #[Url("per")]
     public $perPage = 5;
 
-    /*
+    /**
+     * 
      * insert modal name to use in view here
      *
-     * @var array
+     * @var array('action' => 'modal-component')
      */
     protected array $modals = [
+        'create' => '',
         'edit' => '',
         'view' => '',
     ];
 
-    /*
-     * @var array
+    /**
+     * 
+     * @var array('action' => 'permission')
      */
     protected array $permissions = [
+        'create' => false,
         'view' => false,
         'edit' => false,
         'delete' => false,
     ];
 
-    /*
-     * insert route name and parameter to use in view here
-     *
+    /**
      * @var array
      */
+    protected array $export = [];
+
+    /**
+     * @var array
+     */
+    protected array $import = [];
+
+    /**
+     * 
+     * insert route name and parameter to use in view here
+     *
+     * @var array('action' => array('route' => 'route-name', 'params' => 'parameter'))
+     */
     protected array $urls = [
+        'create' => [
+            'route' => '',
+            'params' => ''
+        ],
         'edit' => [
             'route' => '',
             'params' => ''
@@ -116,6 +135,8 @@ class BaseTable extends Component
         return [
             'cols' => $this->cols(),
             'permissions' => $permissions,
+            'import' => $this->import,
+            'export' => $this->export,
             'modals' => $this->modals,
             'urls' => $this->urls,
         ];

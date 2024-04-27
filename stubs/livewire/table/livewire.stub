@@ -1,0 +1,54 @@
+<?php
+
+namespace [namespace];
+
+use App\Livewire\Module\BaseTable;
+use App\Livewire\Module\Trait\Notification;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+
+class [class] extends BaseTable
+{
+    use Notification;
+
+    #[Locked]
+    public $title = "";
+
+    protected array $permissions = [
+        'create' => true,
+        'edit' => true,
+        'delete' => true,
+    ];
+
+    public function render()
+    {
+        return view("[view]", $this->getData());
+    }
+
+    #[Computed]
+    public function rows()
+    {
+        return []; 
+    }
+
+    public function cols()
+    {
+        return [
+            [
+                "label" => "Name",
+                "query" => "name",
+                "sort" => true,
+            ],
+            [
+                "label" => "Email",
+                "query" => "email",
+                "sort" => true,
+            ],
+        ];
+    }
+
+    public function delete($id)
+    {
+        parent::delete($id);
+    }
+}

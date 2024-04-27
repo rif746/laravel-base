@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/users', \App\Livewire\User\UserTable::class)->can('user index')->name('user.index');
+    Route::get('/roles', \App\Livewire\Role\RoleTable::class)->can('role index')->name('role.index');
 });
 
 require __DIR__ . '/auth.php';
