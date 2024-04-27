@@ -30,8 +30,8 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
-                <x-layouts.partials.dropdown align="right" width="48">
-                    <x-slot name="trigger">
+                <x-element.dropdown.container align="right" width="48">
+                    <x-slot:trigger>
                         <button
                             class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none">
                             <div>{{ Auth::user()->name }}</div>
@@ -45,25 +45,25 @@
                                 </svg>
                             </div>
                         </button>
-                    </x-slot>
+                    </x-slot:trigger>
 
-                    <x-slot name="content">
-                        <x-layouts.partials.dropdown-link :href="route('profile.edit')">
+                    <x-slot:content>
+                        <x-element.dropdown.link :href="route('profile.edit')">
                             {{ __('Profile') }}
-                        </x-layouts.partials.dropdown-link>
+                        </x-element.dropdown.link>
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
-                            <x-layouts.partials.dropdown-link :href="route('logout')"
+                            <x-element.dropdown.link :href="route('logout')"
                                 onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 {{ __('Log Out') }}
-                            </x-layouts.partials.dropdown-link>
+                            </x-element.dropdown.link>
                         </form>
-                    </x-slot>
-                </x-layouts.partials.dropdown>
+                    </x-slot:content>
+                </x-element.dropdown.container>
             </div>
 
             <!-- Hamburger -->

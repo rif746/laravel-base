@@ -26,36 +26,40 @@
         </div>
         <div class="flex flex-row gap-1">
             @if (!empty($export))
-                <div class="relative" x-data="{ open: false }" x-on:click.outside="open = false">
-                    <x-element.button.primary x-on:click="open = !open">
-                        <x-heroicon-o-cloud-arrow-down width="16" height="16" />
-                        &nbsp;Export
-                    </x-element.button.primary>
-                    <div x-show="open" class="absolute w-full p-2 bg-gray-300 rounded shadow-sm dark:bg-gray-800">
+                <x-element.dropdown.container>
+                    <x-slot:trigger>
+                        <x-element.button.primary>
+                            <x-heroicon-o-cloud-arrow-down width="16" height="16" />
+                            &nbsp;Export
+                        </x-element.button.primary>
+                    </x-slot:trigger>
+                    <x-slot:content>
                         @foreach ($export as $label => $method)
                             <x-element.button.flat class="w-full p-2" wire:click='{{ $method }}'
                                 x-on:click="open = false;">
                                 {{ strtoupper($label) }}
                             </x-element.button.flat>
                         @endforeach
-                    </div>
-                </div>
+                    </x-slot:content>
+                </x-element.dropdown.container>
             @endif
             @if (!empty($import))
-                <div class="relative" x-data="{ open: false }" x-on:click.outside="open = false">
-                    <x-element.button.primary x-on:click="open = !open">
-                        <x-heroicon-o-cloud-arrow-up width="16" height="16" />
-                        &nbsp;Import
-                    </x-element.button.primary>
-                    <div x-show="open" class="absolute w-full p-2 bg-gray-300 rounded shadow-sm dark:bg-gray-800">
+                <x-element.dropdown.container>
+                    <x-slot:trigger>
+                        <x-element.button.primary>
+                            <x-heroicon-o-cloud-arrow-down width="16" height="16" />
+                            &nbsp;Import
+                        </x-element.button.primary>
+                    </x-slot:trigger>
+                    <x-slot:content>
                         @foreach ($import as $label => $method)
                             <x-element.button.flat class="w-full p-2" wire:click='{{ $method }}'
                                 x-on:click="open = false;">
                                 {{ strtoupper($label) }}
                             </x-element.button.flat>
                         @endforeach
-                    </div>
-                </div>
+                    </x-slot:content>
+                </x-element.dropdown.container>
             @endif
         </div>
     </div>
@@ -145,10 +149,10 @@
                                                     @foreach ($route['view']['params'] as $key => $value)
                                                         @php($view_params[$key] = $row[$value])
                                                     @endforeach
-                                                    <x-element.link.anchor
+                                                    <x-element.anchor
                                                         href="{{ route($view_route, $view_params) }}">
                                                         <x-heroicon-s-eye width="16" class="pointer-events-none" />
-                                                    </x-element.link.anchor>
+                                                    </x-element.anchor>
                                                 @endif
                                             @endif
 
@@ -168,11 +172,11 @@
                                                     @foreach ($route['edit']['params'] as $key => $value)
                                                         @php($edit_params[$key] = $row[$value])
                                                     @endforeach
-                                                    <x-element.link.anchor
+                                                    <x-element.anchor
                                                         href="{{ route($edit_route, $edit_params) }}">
                                                         <x-heroicon-s-pencil width="16"
                                                             class="pointer-events-none" />
-                                                    </x-element.link.anchor>
+                                                    </x-element.anchor>
                                                 @endif
                                             @endif
                                             @if (isset($permissions['delete']) && $permissions['delete'])
