@@ -6,6 +6,7 @@ use App\Livewire\Module\BaseTable;
 use App\Livewire\Module\Trait\Notification;
 use App\Models\Role;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
 
 class RoleTable extends BaseTable
@@ -13,7 +14,7 @@ class RoleTable extends BaseTable
     use Notification;
 
     #[Locked]
-    public $title = "";
+    public $title = "Role Data";
 
     protected array $permissions = [
         'create' => 'role create',

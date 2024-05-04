@@ -17,7 +17,7 @@ class UserTable extends BaseTable
     use Notification;
 
     #[Locked]
-    public $title = "User Table";
+    public $title = "User Data";
 
     #[Url('q', history: true)]
     public $search = "";

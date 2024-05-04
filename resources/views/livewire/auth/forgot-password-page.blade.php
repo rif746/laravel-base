@@ -4,7 +4,7 @@
     </div>
 
     <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="$status" />
+    <x-layouts.partials.auth-session-status class="mb-4" :status="$status" />
 
     <form wire:submit="send_reset">
         @csrf

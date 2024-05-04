@@ -1,5 +1,6 @@
 <?php
 
+use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -32,7 +33,7 @@ function uploadFile(TemporaryUploadedFile|UploadedFile $file, $collection = ""):
         $path = "documents/";
         $gfile = $file->get();
     }
-    
+
     $path = $path . $collection;
     ensureDirExists($path);
     $path = $path . sha1(Str::uuid()) . $extension;
@@ -96,4 +97,24 @@ function isFileType(string $path, string $type): bool
         return Str::contains($mime, $type);
     }
     return false;
+}
+
+/**
+ * seotools
+ * 
+ * @param string $title
+ * @param string $description
+ * @param array $images
+ * @param array $property
+ * 
+ * @return void
+ */
+function seo(string $title, string $description = null, array $property = [], array $images = [])
+{
+    SEOTools::setTitle($title);
+    SEOTools::setDescription($description);
+    SEOTools::addImages($images);
+    foreach ($property as $key => $value) {
+        SEOTools::opengraph()->addProperty($key, $value);
+    }
 }

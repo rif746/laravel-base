@@ -1,13 +1,7 @@
 <div x-data="{ emailNotif: false }">
-    <x-slot:header>
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot:header>
-
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+        <div class="mx-auto space-y-6 max-w-7xl sm:px-6 lg:px-8">
+            <div class="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
                 <section>
                     <header class="flex justify-between">
                         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
@@ -51,7 +45,7 @@
                                 @else
                                     <span wire:click="verifyEmail" class="cursor-pointer">👎 Unverified</span>
                                     <span x-show="emailNotif" x-cloak x-transition
-                                        class="mx-6 bg-green-400 rounded text-gray-800 px-4 py-2">
+                                        class="px-4 py-2 mx-6 text-gray-800 bg-green-400 rounded">
                                         Email Sent
                                     </span>
                                 @endif
@@ -69,7 +63,7 @@
                 </section>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+            <div class="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
                 <div class="max-w-xl">
                     <section class="space-y-6">
                         <header>

@@ -11,6 +11,8 @@ class BaseTable extends Component
 {
     use WithPagination;
 
+    public $title = "Role Data";
+
     #[Url("so")]
     public $sort_by = "created_at";
 
@@ -76,6 +78,13 @@ class BaseTable extends Component
             'params' => ''
         ],
     ];
+
+    public function mount()
+    {
+        seo(
+            title: $this->title
+        );
+    }
 
     public function updatedSearch()
     {

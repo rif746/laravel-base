@@ -15,10 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    seo('Welcome', 'Welcome page');
     return view('welcome');
 });
 
 Route::get('/dashboard', function () {
+    seo('Dashboard', 'Dashboard page');
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
