@@ -4,9 +4,12 @@ namespace App\Livewire\User;
 
 use App\Livewire\Forms\CreateUserForm;
 use App\Livewire\Module\BaseModal;
+use App\Livewire\Module\Trait\Notification;
 
 class CreateUserFormModal extends BaseModal
 {
+    use Notification;
+    
     public CreateUserForm $form;
 
     /*
@@ -46,6 +49,7 @@ class CreateUserFormModal extends BaseModal
         if($this->form->post()) {
             $this->dispatch('close-modal', name: $this->modal_name);
             $this->dispatch("user-table:reload");
+            $this->toast('User created!');
         }
     }
 

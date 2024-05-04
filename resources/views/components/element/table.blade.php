@@ -65,14 +65,12 @@
     </div>
 
     <div class="flex flex-col"
-        @if (isset($permissions['delete']) && $permissions['delete']) x-on:ask.window="window.Swal.fire({
-            title: 'Are You Sure?',
-            text: $event.detail.message,
-            showCancelButton: true,
-            customClass: {
-                popup: 'dark:bg-gray-800 bg-gray-300 text-gray-800 dark:text-gray-300'
-            }
-        }).then((e) => {e.isConfirmed && $wire[$event.detail.dispatch]($event.detail.id)})" @endif>
+        @if (isset($permissions['delete']) && $permissions['delete']) x-on:ask.window="window.confirm({
+            title: `Are you sure?`,
+            message: `{{ __('Are you sure want to delete') }} ${event.detail.item}?`
+        }).then((e) => {
+            e.isConfirmed && $wire[$event.detail.dispatch]($event.detail.id)
+        })" @endif>
         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                 <div class="overflow-hidden">
@@ -149,8 +147,7 @@
                                                     @foreach ($route['view']['params'] as $key => $value)
                                                         @php($view_params[$key] = $row[$value])
                                                     @endforeach
-                                                    <x-element.anchor
-                                                        href="{{ route($view_route, $view_params) }}">
+                                                    <x-element.anchor href="{{ route($view_route, $view_params) }}">
                                                         <x-heroicon-s-eye width="16" class="pointer-events-none" />
                                                     </x-element.anchor>
                                                 @endif
@@ -172,8 +169,7 @@
                                                     @foreach ($route['edit']['params'] as $key => $value)
                                                         @php($edit_params[$key] = $row[$value])
                                                     @endforeach
-                                                    <x-element.anchor
-                                                        href="{{ route($edit_route, $edit_params) }}">
+                                                    <x-element.anchor href="{{ route($edit_route, $edit_params) }}">
                                                         <x-heroicon-s-pencil width="16"
                                                             class="pointer-events-none" />
                                                     </x-element.anchor>
@@ -181,7 +177,7 @@
                                             @endif
                                             @if (isset($permissions['delete']) && $permissions['delete'])
                                                 <x-element.button.flat wire:offline.attr="disabled"
-                                                    x-on:click="$dispatch('ask', {message: 'Are You Sure want to delete {{ $row['name'] }}?', dispatch: 'delete', id: {{ $row['id'] }} })"
+                                                    x-on:click="$dispatch('ask', {item: '{{ $row['name'] }}', dispatch: 'delete', id: {{ $row['id'] }} })"
                                                     class="p-1 bg-red-700 rounded-none disabled:bg-red-500">
                                                     <x-heroicon-s-trash width="16" class="pointer-events-none" />
                                                 </x-element.button.flat>

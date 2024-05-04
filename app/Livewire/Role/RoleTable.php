@@ -53,5 +53,7 @@ class RoleTable extends BaseTable
     public function delete($id)
     {
         parent::delete($id);
+        Role::destroy($id);
+        $this->toast('User deleted!');
     }
 }

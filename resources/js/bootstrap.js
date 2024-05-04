@@ -42,3 +42,14 @@ window.notify = ({title, message, icon, position = "center"}) => {
         icon: icon,
     });
 };
+
+window.confirm = ({title, message}) => {
+    return window.Swal.fire({
+        title: title,
+        text: message,
+        showCancelButton: true,
+        customClass: {
+            popup: 'dark:bg-gray-800 bg-gray-300 text-gray-800 dark:text-gray-300'
+        }
+    })
+}
