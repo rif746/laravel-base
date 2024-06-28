@@ -5,6 +5,8 @@ namespace App\Livewire\User;
 use App\Livewire\Forms\UpdateUserForm;
 use App\Livewire\Module\BaseModal;
 use App\Livewire\Module\Trait\Notification;
+use App\Models\Role;
+use Livewire\Attributes\Computed;
 
 class UpdateUserFormModal extends BaseModal
 {
@@ -41,6 +43,12 @@ class UpdateUserFormModal extends BaseModal
     public function render()
     {
         return view("livewire.user.update-user-form-modal");
+    }
+
+    #[Computed(persist: true)]
+    public function roles()
+    {
+        return Role::all(['name'])->pluck('name');
     }
 
     public function load($id)

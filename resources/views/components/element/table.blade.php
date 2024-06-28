@@ -133,7 +133,7 @@
                                     <td class="flex items-center justify-center px-6 py-4 whitespace-nowrap">
                                         <div
                                             class="inline-flex items-center justify-center overflow-hidden text-white rounded-md">
-                                            @if (isset($permissions['view']) && $permissions['view'])
+                                            @if (isset($permissions['view']) && $permissions['view'] && !$row['no_view'])
                                                 @if (isset($modals['view']))
                                                     <x-element.button.flat wire:offline.attr="disabled"
                                                         wire:loading.attr="disabled"
@@ -153,7 +153,7 @@
                                                 @endif
                                             @endif
 
-                                            @if (isset($permissions['edit']) && $permissions['edit'])
+                                            @if (isset($permissions['edit']) && $permissions['edit'] && !$row['no_edit'])
                                                 @if (isset($modals['edit']))
                                                     <x-element.button.flat wire:offline.attr="disabled"
                                                         wire:loading.attr="disabled"
@@ -175,7 +175,7 @@
                                                     </x-element.anchor>
                                                 @endif
                                             @endif
-                                            @if (isset($permissions['delete']) && $permissions['delete'])
+                                            @if (isset($permissions['delete']) && $permissions['delete'] && !$row['no_delete'])
                                                 <x-element.button.flat wire:offline.attr="disabled"
                                                     x-on:click="$dispatch('ask', {item: '{{ $row['name'] }}', dispatch: 'delete', id: {{ $row['id'] }} })"
                                                     class="p-1 bg-red-700 rounded-none disabled:bg-red-500">

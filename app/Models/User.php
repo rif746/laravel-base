@@ -45,6 +45,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
+    protected $appends = ['role_name'];
+
+    public function getRoleNameAttribute()
+    {
+        return $this->roles()->first()->name;
+    }
+
     public function scopeSearch($query, $search)
     {
         return $query->orWhere("name", "like", "%{$search}%")->orWhere("email", "like", "%{$search}%");

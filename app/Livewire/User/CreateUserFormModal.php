@@ -5,6 +5,8 @@ namespace App\Livewire\User;
 use App\Livewire\Forms\CreateUserForm;
 use App\Livewire\Module\BaseModal;
 use App\Livewire\Module\Trait\Notification;
+use App\Models\Role;
+use Livewire\Attributes\Computed;
 
 class CreateUserFormModal extends BaseModal
 {
@@ -41,6 +43,12 @@ class CreateUserFormModal extends BaseModal
     public function render()
     {
         return view("livewire.user.create-user-form-modal");
+    }
+
+    #[Computed(persist: true)]
+    public function roles()
+    {
+        return Role::all(['name'])->pluck('name');
     }
 
     public function save()

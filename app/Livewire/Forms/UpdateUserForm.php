@@ -21,6 +21,9 @@ class UpdateUserForm extends Form
     #[Validate('min:5', as: 'Name')]
     public $name;
 
+    #[Validate('required', as: 'Role')]
+    public $role;
+
     protected function rules()
     {
         return [
@@ -32,9 +35,11 @@ class UpdateUserForm extends Form
     public function load($id)
     {
         $user = User::find($id);
+        abort_if($user->name == auth()->user()->name, 403);
         $this->id = $user->id;
         $this->email = $user->email;
         $this->name = $user->name;
+        $this->role = $user->role_name;
     }
 
     public function clear()

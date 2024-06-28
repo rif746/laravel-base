@@ -9,6 +9,14 @@
     <x-element.layout.vertical name="form.password" label="Password">
         <x-element.input.line type="password" wire:model="form.password" />
     </x-element.layout.vertical>
+    <x-element.layout.vertical name="form.role" label="Role">
+        <x-element.select.dropdown wire:model="form.role">
+            <option></option>
+            @foreach($this->roles as $role)
+                <option value="{{ $role }}">{{ $role }}</option>
+            @endforeach
+        </x-element.select.dropdown>
+    </x-element.layout.vertical>
     
     <x-slot:button>
         <x-element.button.primary wire:loading.attr="disabled" type="submit">Save</x-element.button.primary>

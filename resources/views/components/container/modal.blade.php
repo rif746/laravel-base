@@ -29,7 +29,7 @@
         @endif
         <div class="flex justify-between p-3 border-b">
             {{ __($title) }}
-            <button x-on:click="visible = false">
+            <button x-on:click="$dispatch('close-modal', {name: name})" type="button">
                 &cross;
             </button>
         </div>

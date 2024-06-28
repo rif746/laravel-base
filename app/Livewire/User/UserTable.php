@@ -48,7 +48,14 @@ class UserTable extends BaseTable
     {
         return User::search($this->search)
             ->orderBy($this->sort_by, $this->sort_direction)
-            ->paginate($this->perPage)->onEachSide(4);
+            ->paginate($this->perPage)
+            ->map(function($user) {
+                if ($user->name == auth()->user()->name) {
+                    $user->no_delete = true;
+                    $user->no_edit = true;
+                }
+                return $user;
+            });
     }
 
     public function cols()
