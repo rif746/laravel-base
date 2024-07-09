@@ -56,11 +56,55 @@
                                 Role
                             </div>
                             <div class="w-2/3 p-4 border-b border-b-gray-700 dark:boder-b-gray-200">
-                                {{ auth()->user()->roles->first()->name }}
+                                {{ auth()->user()->role_name }}
                             </div>
                         </div>
                     </div>
                 </section>
+            </div>
+
+            <div class="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
+                <div>
+                    <section>
+                        <header>
+                            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                {{ __('Preferences') }}
+                            </h2>
+                        </header>
+
+                        <div class="flex flex-col text-gray-900 dark:text-gray-100">
+                            <div class="flex flex-row">
+                                <div class="w-1/3 p-4">
+                                    Theme
+                                </div>
+                                <div class="w-2/3 p-4">
+                                    @if (preferenceIs('theme', 'light'))
+                                        <x-element.button.primary x-on:click="$wire.updatePreference('theme', 'light')"
+                                            type="button">
+                                            Light
+                                        </x-element.button.primary>
+                                    @else
+                                        <x-element.button.secondary
+                                            x-on:click="$wire.updatePreference('theme', 'light')" type="button">
+                                            Light
+                                        </x-element.button.secondary>
+                                    @endif
+                                    @if (preferenceIs('theme', 'dark'))
+                                        <x-element.button.primary x-on:click="$wire.updatePreference('theme', 'dark')"
+                                            type="button">
+                                            Dark
+                                        </x-element.button.primary>
+                                    @else
+                                        <x-element.button.secondary x-on:click="$wire.updatePreference('theme', 'dark')"
+                                            type="button">
+                                            Dark
+                                        </x-element.button.secondary>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
             </div>
 
             <div class="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">

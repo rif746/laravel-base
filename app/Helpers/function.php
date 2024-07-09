@@ -81,13 +81,13 @@ function roleCheck($user, $role)
 
 /**
  * Check file type
- * example: 
+ * example:
  * isFileType(public_path('/images/logo.png'), 'image') -> true
  * isFileType(public_path('/images/logo.png'), 'video') -> false
- * 
+ *
  * @param string $path
  * @param string $type
- * 
+ *
  * @return bool
  */
 function isFileType(string $path, string $type): bool
@@ -101,12 +101,12 @@ function isFileType(string $path, string $type): bool
 
 /**
  * seotools
- * 
+ *
  * @param string $title
  * @param string $description
  * @param array $images
  * @param array $property
- * 
+ *
  * @return void
  */
 function seo(string $title, string $description = null, array $property = [], array $images = [])
@@ -117,4 +117,33 @@ function seo(string $title, string $description = null, array $property = [], ar
     foreach ($property as $key => $value) {
         SEOTools::opengraph()->addProperty($key, $value);
     }
+}
+
+/**
+ * Get User Preference
+ */
+function getPreference($key)
+{
+    $user = auth()->user();
+    return isset($user->settings[$key]) ? $user->settings[$key] : null;
+}
+
+/**
+ * User Preference Is ...
+ */
+function preferenceIs($key, $value)
+{
+    return getPreference($key) == $value;
+}
+
+/**
+ * Set User Preferences
+ */
+function setPreference($key, $value)
+{
+    $user = auth()->user();
+    $settings = $user->settings;
+    $settings[$key] = $value;
+    $user->settings = $settings;
+    $user->save();
 }

@@ -10,6 +10,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Styles -->
     <style>
@@ -830,7 +831,7 @@
     </style>
 </head>
 
-<body class="antialiased">
+<body x-cloak x-data="theme({{ preferenceIs('theme', 'dark') ? 'true' : 'false' }})" :class="{'dark': darkMode == true}" class="antialiased">
     <div
         class="relative min-h-screen bg-gray-100 bg-center sm:flex sm:justify-center sm:items-center bg-dots-darker dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
         @if (Route::has('login'))

@@ -2,5 +2,7 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class
+    App\Providers\AuthServiceProvider::class,
+    Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
+
 ];

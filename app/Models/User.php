@@ -23,6 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'settings',
     ];
 
     /**
@@ -43,14 +44,23 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'settings' => 'array',
     ];
 
     protected $appends = ['role_name'];
+
+    #
+    # Attribute
+    #
 
     public function getRoleNameAttribute()
     {
         return $this->roles()->first()->name;
     }
+
+    #
+    # Scope
+    #
 
     public function scopeSearch($query, $search)
     {

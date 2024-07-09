@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     {!! Artesaos\SEOTools\Facades\SEOTools::generate() !!}
 
     <!-- Fonts -->
@@ -18,7 +18,8 @@
     @stack('styles')
 </head>
 
-<body class="font-sans antialiased">
+<body x-cloak x-data="theme({{ preferenceIs('theme', 'dark') ? 'true' : 'false' }})" :class="{ 'dark': darkMode == true }" class="font-sans antialiased"
+    x-on:change-theme.window="darkMode = $event.detail.dark">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
         <x-layouts.navigation />
 

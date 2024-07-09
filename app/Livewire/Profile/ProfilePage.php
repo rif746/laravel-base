@@ -19,4 +19,17 @@ class ProfilePage extends Component
         $this->js("emailNotif = true");
         $this->js("setTimeout(() => {emailNotif = false}, 3500)");
     }
+
+    public function updatePreference($key, $value)
+    {
+        setPreference($key, $value);
+        if ($key == 'theme') {
+            $this->dispatch('change-theme', dark: $value == 'dark');
+        }
+    }
+
+    public function isPreference($key, $value)
+    {
+        return preferenceIs($key, $value) ? 'true' : 'false';
+    }
 }

@@ -17,7 +17,7 @@
     <livewire:styles />
 </head>
 
-<body class="font-sans antialiased text-gray-900">
+<body x-cloak x-data="theme({{ preferenceIs('theme', 'dark') ? 'true' : 'false' }})" :class="{ 'dark': darkMode == true }" class="font-sans antialiased text-gray-900">
     <div class="flex flex-col items-center min-h-screen pt-6 bg-gray-100 sm:justify-center sm:pt-0 dark:bg-gray-900">
         <div>
             <a href="/">
