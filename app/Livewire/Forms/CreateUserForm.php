@@ -37,6 +37,11 @@ class CreateUserForm extends Form
     public function post()
     {
         $this->validate();
-        return User::create($this->all());
+        return User::create([
+            'email' => $this->email,
+            'password' => bcrypt($this->password)
+        ])->profile()->create([
+            'full_name' => $this->name
+        ]);
     }
 }

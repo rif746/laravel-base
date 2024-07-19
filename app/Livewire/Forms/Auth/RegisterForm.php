@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms\Auth;
 
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Livewire\Attributes\Rule;
 use Livewire\Form;
@@ -16,6 +15,12 @@ class RegisterForm extends Form
 
     #[Rule(['required', 'string', 'max:255', 'unique:' . User::class . ',name'])]
     public $name;
+
+    #[Rule(['required', 'string'])]
+    public $gender;
+
+    #[Rule(['required', 'string'])]
+    public $address;
 
     #[Rule(['required', 'confirmed'])]
     public $password;
@@ -32,15 +37,18 @@ class RegisterForm extends Form
     {
         $this->validate();
         $user = User::create([
-            'name' => $this->name,
             'email' => $this->email,
             'password' => bcrypt($this->password),
+        ])->profile()->create([
+            'name' => $this->name,
+            'gender' => $this->gender,
+            'address' => $this->address,
         ]);
 
         event(new Registered($user));
 
         auth()->login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect('/landing');
     }
 }

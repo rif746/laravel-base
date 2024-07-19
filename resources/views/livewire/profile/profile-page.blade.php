@@ -5,12 +5,12 @@
                 <section>
                     <header class="flex justify-between">
                         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                            {{ __('Profile Information') }}
+                            {{ __('User Information') }}
                         </h2>
                         <div>
                             <x-element.button.primary
                                 x-on:click="$dispatch('open-modal', {name: 'change-password-form-modal'})">
-                                <x-heroicon-s-key width="16" /> Reset Password
+                                <x-heroicon-s-key width="16" /> {{ __('Reset Password') }}
                             </x-element.button.primary>
                             <x-element.button.primary
                                 x-on:click="$dispatch('open-modal', {name: 'update-profile-form-modal', id: {{ auth()->id() }}})">
@@ -21,7 +21,7 @@
                     <div class="flex flex-col text-gray-900 dark:text-gray-100">
                         <div class="flex flex-row">
                             <div class="w-1/3 p-4 border-b border-b-gray-700 dark:boder-b-gray-200">
-                                Name
+                                {{ __('locale/user.field.name') }}
                             </div>
                             <div class="w-2/3 p-4 border-b border-b-gray-700 dark:boder-b-gray-200">
                                 {{ auth()->user()->name }}
@@ -29,7 +29,7 @@
                         </div>
                         <div class="flex flex-row">
                             <div class="w-1/3 p-4 border-b border-b-gray-700 dark:boder-b-gray-200">
-                                Email
+                                {{ __('locale/user.field.email') }}
                             </div>
                             <div class="w-2/3 p-4 border-b border-b-gray-700 dark:boder-b-gray-200">
                                 {{ auth()->user()->email }}
@@ -37,23 +37,25 @@
                         </div>
                         <div class="flex flex-row">
                             <div class="w-1/3 p-4 border-b border-b-gray-700 dark:boder-b-gray-200">
-                                Email Status
+                                {{ __('locale/user.field.email_status') }}
                             </div>
                             <div class="w-2/3 p-4 border-b border-b-gray-700 dark:boder-b-gray-200">
                                 @if (auth()->user()->hasVerifiedEmail())
-                                    <span>👍 Verified</span>
+                                    <span>👍 {{ __('locale/user.email.verified') }}</span>
                                 @else
-                                    <span wire:click="verifyEmail" class="cursor-pointer">👎 Unverified</span>
+                                    <span wire:click="verifyEmail" class="cursor-pointer">
+                                        👎 {{ __('locale/user.email.unverified') }}
+                                    </span>
                                     <span x-show="emailNotif" x-cloak x-transition
                                         class="px-4 py-2 mx-6 text-gray-800 bg-green-400 rounded">
-                                        Email Sent
+                                        {{ __('locale/user.email.sent') }}
                                     </span>
                                 @endif
                             </div>
                         </div>
                         <div class="flex flex-row">
                             <div class="w-1/3 p-4 border-b border-b-gray-700 dark:boder-b-gray-200">
-                                Role
+                                {{ __('locale/user.field.role') }}
                             </div>
                             <div class="w-2/3 p-4 border-b border-b-gray-700 dark:boder-b-gray-200">
                                 {{ auth()->user()->role_name }}

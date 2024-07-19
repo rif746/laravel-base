@@ -20,9 +20,9 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'temporary_password',
         'settings',
     ];
 
@@ -44,18 +44,33 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'temporary_password' => 'hashed',
         'settings' => 'array',
     ];
 
-    protected $appends = ['role_name'];
+    protected $appends = ['role_name', 'name'];
 
     #
     # Attribute
     #
 
+    public function getNameAttribute()
+    {
+        return $this->profile->full_name;
+    }
+
     public function getRoleNameAttribute()
     {
-        return $this->roles()->first()->name;
+        return $this->roles->first()->name;
+    }
+
+    #
+    # Relation
+    #
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
     }
 
     #
