@@ -46,16 +46,16 @@ class UserTable extends BaseTable
     #[Computed]
     public function users()
     {
-        return User::search($this->search)
+        return tap(User::search($this->search)
             ->orderBy($this->sort_by, $this->sort_direction)
-            ->paginate($this->perPage)
-            ->map(function($user) {
+            ->paginate($this->perPage), fn($query) => $query
+            ->map(function ($user) {
                 if ($user->name == auth()->user()->name) {
                     $user->no_delete = true;
                     $user->no_edit = true;
                 }
                 return $user;
-            });
+            }));
     }
 
     public function cols()

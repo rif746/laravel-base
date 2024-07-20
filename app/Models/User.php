@@ -20,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
+        'name',
         'email',
         'password',
         'temporary_password',
@@ -48,16 +49,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'settings' => 'array',
     ];
 
-    protected $appends = ['role_name', 'name'];
+    protected $appends = ['role_name'];
 
     #
     # Attribute
     #
-
-    public function getNameAttribute()
-    {
-        return $this->profile->full_name;
-    }
 
     public function getRoleNameAttribute()
     {

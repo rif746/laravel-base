@@ -39,6 +39,7 @@ class UpdateProfileFormModal extends BaseModal
     {
         parent::load($id);
         $this->form->load($id);
+        abort_if($this->form->email != auth()->user()->email, 404);
     }
 
     public function save()

@@ -18,9 +18,7 @@ class ProfileFactory extends Factory
     public function definition(): array
     {
         return [
-            'full_name' => fake()->name(),
             'gender' => GenderType::values()[rand(0, 1)],
-            'address' => fake()->address()
         ];
     }
 }

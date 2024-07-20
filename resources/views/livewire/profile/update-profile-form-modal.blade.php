@@ -7,7 +7,7 @@
         <x-element.input.line wire:model="form.email" />
     </x-element.layout.vertical>
     <x-element.layout.vertical name="form.gender" :label="__('locale/user.field.gender')">
-        <x-element.select.dropdown wire:model="form.role">
+        <x-element.select.dropdown wire:model="form.gender">
             <option></option>
             <option value="{{ \App\Enum\GenderType::MALE }}">{{ \App\Enum\GenderType::MALE->label() }}</option>
             <option value="{{ \App\Enum\GenderType::FEMALE }}">{{ \App\Enum\GenderType::FEMALE->label() }}</option>

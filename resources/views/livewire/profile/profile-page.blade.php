@@ -55,6 +55,14 @@
                         </div>
                         <div class="flex flex-row">
                             <div class="w-1/3 p-4 border-b border-b-gray-700 dark:boder-b-gray-200">
+                                {{ __('locale/user.field.gender') }}
+                            </div>
+                            <div class="w-2/3 p-4 border-b border-b-gray-700 dark:boder-b-gray-200">
+                                {{ \App\Enum\GenderType::tryFrom(auth()->user()->profile->gender)?->label() }}
+                            </div>
+                        </div>
+                        <div class="flex flex-row">
+                            <div class="w-1/3 p-4 border-b border-b-gray-700 dark:boder-b-gray-200">
                                 {{ __('locale/user.field.role') }}
                             </div>
                             <div class="w-2/3 p-4 border-b border-b-gray-700 dark:boder-b-gray-200">

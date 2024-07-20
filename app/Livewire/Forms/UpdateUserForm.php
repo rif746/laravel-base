@@ -21,8 +21,7 @@ class UpdateUserForm extends Form
     #[Validate('min:5', as: 'Name')]
     public $name;
 
-    #[Validate('required', as: 'Name')]
-    #[Validate('min:5', as: 'Name')]
+    #[Validate('required', as: 'Gender')]
     public $gender;
 
     #[Validate('required', as: 'Role')]
@@ -39,10 +38,9 @@ class UpdateUserForm extends Form
     public function load($id)
     {
         $user = User::with('profile')->find($id);
-        abort_if($user->email != auth()->user()->email, 403);
         $this->id = $user->id;
         $this->email = $user->email;
-        $this->name = $user->profile->full_name;
+        $this->name = $user->name;
         $this->gender = $user->profile->gender;
         $this->role = $user->role_name;
     }
@@ -59,6 +57,7 @@ class UpdateUserForm extends Form
         $this->validate();
         $user = User::findOrNew($this->id);
         $update['email'] = $this->email;
+        $update['name'] = $this->name;
         $user->fill($update);
 
         if ($user->isDirty('email')) {
@@ -66,7 +65,6 @@ class UpdateUserForm extends Form
         }
 
         $user->profile()->updateOrCreate([], [
-            'full_name' => $this->name,
             'gender' => $this->gender,
         ]);
 

@@ -13,8 +13,13 @@ return [
         'email' => 'E-mail',
         'role' => 'Peran',
         'gender' => 'Jenis Kelamin',
+        'email_status' => 'Status E-mail',
         'password' => 'Password',
         'password_confirmation' => 'Konfirmasi Password',
+    ],
+    'email' => [
+        'verified' => 'Terverifikasi',
+        'unverified' => 'Belum Diverifikasi',
     ],
     'gender' => [
         'm' => 'Laki - Laki',
