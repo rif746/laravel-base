@@ -4,13 +4,13 @@ namespace App\Livewire\Role;
 
 use App\Livewire\Forms\RoleForm;
 use App\Livewire\Module\BaseModal;
-use App\Livewire\Module\Trait\Notification;
 use App\Models\Permission;
 use Livewire\Attributes\Computed;
+use Mary\Traits\Toast;
 
 class RoleFormModal extends BaseModal
 {
-    use Notification;
+    use Toast;
 
     public RoleForm $form;
 
@@ -18,13 +18,13 @@ class RoleFormModal extends BaseModal
      * normal modal title
      * @var string
      */
-    protected static $title = "Add New Role";
+    protected static $title = 'locale/role.title.modal.create';
 
     /*
      * load modal title
      * @var string
      */
-    protected static $load_title = "Update Role";
+    protected static $load_title = 'locale/role.title.modal.edit';
 
     /*
      * save or load permission
@@ -32,7 +32,7 @@ class RoleFormModal extends BaseModal
      */
     protected $permission = [
         'load' => 'role edit',
-        'save' => 'role create'
+        'save' => 'role create',
     ];
 
     public function mount()
@@ -42,7 +42,7 @@ class RoleFormModal extends BaseModal
 
     public function render()
     {
-        return view("livewire.role.role-form-modal");
+        return view('livewire.role.role-form-modal');
     }
 
     #[Computed(persist: true)]
@@ -54,16 +54,17 @@ class RoleFormModal extends BaseModal
     public function load($id)
     {
         parent::load($id);
+        sleep(3);
         $this->form->load($id);
     }
 
     public function save()
     {
         parent::save();
-        if($this->form->post()) {
-            $this->dispatch('close-modal', name: $this->modal_name);
+        if ($this->form->post()) {
+            $this->modal = false;
             $this->dispatch('role-table:reload');
-            $this->toast('Role ' . ($this->form->id == 0 ? 'created!' : 'updated!'));
+            $this->success('Role '.($this->form->id == 0 ? 'created!' : 'updated!'));
         }
     }
 

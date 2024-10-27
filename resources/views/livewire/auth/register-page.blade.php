@@ -1,26 +1,15 @@
-<form wire:submit="register">
+<div class="flex justify-center items-center">
+    <x-card shadow separator progress-indicator="send" title="Register" subtitle="Create new account to access this app.">
+        <x-form wire:submit="register">
+            <x-input label="Name" wire:model="form.name" icon="o-user" inline />
+            <x-input label="Email" wire:model="form.email" icon="o-envelope" inline />
+            <x-input label="Password" wire:model="form.password" icon="o-lock-closed" type="password" inline />
+            <x-input label="Password" wire:model="form.password_confirmation" icon="o-lock-closed" type="password" inline />
 
-
-    <x-element.layout.vertical name="form.name" label="Name">
-        <x-element.input.line wire:model="form.name" />
-    </x-element.layout.vertical>
-    <x-element.layout.vertical name="form.email" label="Email">
-        <x-element.input.line type="email" wire:model="form.email" />
-    </x-element.layout.vertical>
-    <x-element.layout.vertical name="form.password" label="Email">
-        <x-element.input.line type="password" wire:model="form.password" />
-    </x-element.layout.vertical>
-    <x-element.layout.vertical name="form.password_confirmation" label="Email">
-        <x-element.input.line type="password" wire:model="form.password_confirmation" />
-    </x-element.layout.vertical>
-
-    <div class="flex items-center justify-end mt-4">
-        <x-element.anchor :href="route('login')" class="underline">
-            {{ __('Already have an account?') }}
-        </x-element.anchor>
-
-        <x-element.button.primary class="ml-4">
-            {{ __('Register') }}
-        </x-element.button.primary>
-    </div>
-</form>
+            <x-slot:actions>
+                <x-button :label="__('Already have an account?')" class="btn-ghost" :link="route('login')" />
+                <x-button :label="__('Register')" type="submit" spinner="send" />
+            </x-slot:actions>
+        </x-form>
+    </x-card>
+</div>

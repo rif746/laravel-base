@@ -1,5 +1,5 @@
 <x-layouts.app>
-    <x-container.card title="Dashboard">
+    <x-card title="Dashboard">
         {{ __("You're logged in!") }}
-    </x-container.card>
+    </x-card>
 </x-layouts.app>

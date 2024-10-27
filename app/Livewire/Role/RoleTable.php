@@ -3,15 +3,16 @@
 namespace App\Livewire\Role;
 
 use App\Livewire\Module\BaseTable;
-use App\Livewire\Module\Trait\Notification;
 use App\Models\Role;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
+use Livewire\WithPagination;
+use Mary\Traits\Toast;
 
 class RoleTable extends BaseTable
 {
-    use Notification;
+    use Toast;
+    use WithPagination;
 
     #[Locked]
     public $title = "Role Data";
@@ -33,19 +34,20 @@ class RoleTable extends BaseTable
     }
 
     #[Computed]
-    public function rows()
+    public function roles()
     {
         return Role::search($this->search)
-            ->orderBy($this->sort_by, $this->sort_direction)
-            ->paginate($this->perPage); 
+            ->orderBy($this->sortBy['column'], $this->sortBy['direction'])
+            ->paginate($this->perPage)
+            ->onEachSide(2);
     }
 
-    public function cols()
+    public function headers()
     {
         return [
             [
-                "label" => "Name",
-                "query" => "name",
+                "key" => "name",
+                "label" => __('locale/role.field.name'),
                 "sort" => true,
             ],
         ];
@@ -55,6 +57,6 @@ class RoleTable extends BaseTable
     {
         parent::delete($id);
         Role::destroy($id);
-        $this->toast('User deleted!');
+        $this->success('Role deleted!');
     }
 }

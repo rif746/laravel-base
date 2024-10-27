@@ -3,13 +3,13 @@
 namespace [namespace];
 
 use App\Livewire\Module\BaseTable;
-use App\Livewire\Module\Trait\Notification;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
+use Mary\Traits\Toast;
 
 class [class] extends BaseTable
 {
-    use Notification;
+    use Toast;
 
     #[Locked]
     public $title = "";
@@ -22,26 +22,15 @@ class [class] extends BaseTable
 
     public function render()
     {
-        return view("[view]", $this->getData());
+        return view("livewire.role.role-table", $this->getData());
     }
 
-    #[Computed]
-    public function rows()
-    {
-        return []; 
-    }
-
-    public function cols()
+    public function headers()
     {
         return [
             [
+                "key" => "name",
                 "label" => "Name",
-                "query" => "name",
-                "sort" => true,
-            ],
-            [
-                "label" => "Email",
-                "query" => "email",
                 "sort" => true,
             ],
         ];

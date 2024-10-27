@@ -4,9 +4,12 @@ namespace App\Livewire\Profile;
 
 use App\Livewire\Module\BaseModal;
 use Livewire\Attributes\Rule;
+use Mary\Traits\Toast;
 
 class ConfirmUserDeletionModal extends BaseModal
 {
+    use Toast;
+
     #[Rule(['required', 'current_password'], as: 'Current Password')]
     public $current_password;
 
@@ -36,7 +39,8 @@ class ConfirmUserDeletionModal extends BaseModal
         parent::save();
         $this->validate();
         if (auth()->user()->delete()) {
-            $this->dispatch('close-modal', name: $this->modal_name);
+            $this->modal = false;
+            $this->success('Your user deleted successfully');
             auth()->logout();
         }
     }

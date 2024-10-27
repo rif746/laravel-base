@@ -38,10 +38,9 @@ class CreateUserForm extends Form
     {
         $this->validate();
         return User::create([
+            'name' => $this->name,
             'email' => $this->email,
             'password' => bcrypt($this->password)
-        ])->profile()->create([
-            'full_name' => $this->name
         ]);
     }
 }

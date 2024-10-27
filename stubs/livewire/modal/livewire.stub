@@ -3,28 +3,32 @@
 namespace [namespace];
 
 use App\Livewire\Module\BaseModal;
+use Livewire\Attributes\Computed;
+use Mary\Traits\Toast;
 
 class [class] extends BaseModal
 {
+    use Toast;
+
     /*
      * normal modal title
      * @var string
      */
-    protected static $title = "";
+    protected static $title = '';
 
     /*
      * load modal title
      * @var string
      */
-    protected static $load_title = "";
+    protected static $load_title = '';
 
     /*
      * save or load permission
      * @var string|bool
      */
     protected $permission = [
-        'load' => false,
-        'save' => false
+        'load' => true,
+        'save' => true,
     ];
 
     public function mount()
@@ -34,7 +38,7 @@ class [class] extends BaseModal
 
     public function render()
     {
-        return view("[view]");
+        return view('[view]');
     }
 
     public function load($id)
@@ -45,6 +49,11 @@ class [class] extends BaseModal
     public function save()
     {
         parent::save();
+        if (true) {
+            $this->modal = false;
+            $this->dispatch('');
+            $this->success(''));
+        }
     }
 
     public function clear()

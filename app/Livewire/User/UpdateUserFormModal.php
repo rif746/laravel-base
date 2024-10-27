@@ -4,13 +4,13 @@ namespace App\Livewire\User;
 
 use App\Livewire\Forms\UpdateUserForm;
 use App\Livewire\Module\BaseModal;
-use App\Livewire\Module\Trait\Notification;
 use App\Models\Role;
 use Livewire\Attributes\Computed;
+use Mary\Traits\Toast;
 
 class UpdateUserFormModal extends BaseModal
 {
-    use Notification;
+    use Toast;
 
     public UpdateUserForm $form;
 
@@ -18,13 +18,13 @@ class UpdateUserFormModal extends BaseModal
      * normal modal title
      * @var string
      */
-    protected static $title = "Update User";
+    protected static $title = 'Update User';
 
     /*
      * load modal title
      * @var string
      */
-    protected static $load_title = "Update User";
+    protected static $load_title = 'Update User';
 
     /*
      * save or load permission
@@ -32,7 +32,7 @@ class UpdateUserFormModal extends BaseModal
      */
     protected $permission = [
         'load' => true,
-        'save' => true
+        'save' => true,
     ];
 
     public function mount()
@@ -42,7 +42,7 @@ class UpdateUserFormModal extends BaseModal
 
     public function render()
     {
-        return view("livewire.user.update-user-form-modal");
+        return view('livewire.user.update-user-form-modal');
     }
 
     #[Computed(persist: true)]
@@ -55,16 +55,15 @@ class UpdateUserFormModal extends BaseModal
     {
         parent::load($id);
         $this->form->load($id);
-
     }
 
     public function save()
     {
         parent::save();
-        if($this->form->post()) {
-            $this->dispatch('close-modal', name: $this->modal_name);
-            $this->dispatch("user-table:reload");
-            $this->toast('User updated!');
+        if ($this->form->post()) {
+            $this->modal = false;
+            $this->dispatch('user-table:reload');
+            $this->success('User updated!');
         }
     }
 

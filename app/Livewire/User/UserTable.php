@@ -2,30 +2,24 @@
 
 namespace App\Livewire\User;
 
-use App\Exports\UserExport;
 use App\Livewire\Module\BaseTable;
-use App\Livewire\Module\Trait\Notification;
 use App\Models\User;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
-use Maatwebsite\Excel\Excel;
-use Maatwebsite\Excel\Facades\Excel as FacadesExcel;
+use Livewire\WithPagination;
+use Mary\Traits\Toast;
 
 class UserTable extends BaseTable
 {
-    use Notification;
+    use Toast;
+    use WithPagination;
 
     #[Locked]
-    public $title = "User Data";
+    public $title = 'User Data';
 
     #[Url('q', history: true)]
-    public $search = "";
-
-    protected array $modals = [
-        'create' => 'create-user-form-modal',
-        'edit' => 'update-user-form-modal',
-    ];
+    public $search = '';
 
     protected array $permissions = [
         'create' => 'user create',
@@ -33,43 +27,40 @@ class UserTable extends BaseTable
         'delete' => 'user delete',
     ];
 
-    protected array $export = [
-        'pdf' => 'exportPDF',
-        'xlsx' => 'exportXLSX',
-    ];
-
     public function render()
     {
-        return view("livewire.user.user-table", $this->getData());
+        return view('livewire.user.user-table', $this->getData());
     }
 
     #[Computed]
     public function users()
     {
         return tap(User::search($this->search)
-            ->orderBy($this->sort_by, $this->sort_direction)
-            ->paginate($this->perPage), fn($query) => $query
+            ->orderBy(...$this->sortBy)
+            ->paginate($this->perPage)
+            ->onEachSide(0), fn ($query) => $query
             ->map(function ($user) {
                 if ($user->name == auth()->user()->name) {
                     $user->no_delete = true;
                     $user->no_edit = true;
                 }
+
                 return $user;
             }));
     }
 
-    public function cols()
+    public function headers()
     {
         return [
             [
-                "label" => "Name",
-                "query" => "name",
-                "sort" => true,
+                'key' => 'name',
+                'label' => 'Name',
+                'sort' => true,
             ],
             [
-                "label" => "Email",
-                "query" => "email",
-                "sort" => false,
+                'key' => 'email',
+                'label' => 'Email',
+                'sort' => false,
             ],
         ];
     }
@@ -78,24 +69,6 @@ class UserTable extends BaseTable
     {
         parent::delete($id);
         User::destroy($id);
-        $this->toast('User deleted!');
-    }
-
-    public function exportXLSX()
-    {
-        return FacadesExcel::download(
-            new UserExport(),
-            "download.xlsx",
-            Excel::XLSX
-        );
-    }
-
-    public function exportPDF()
-    {
-        return FacadesExcel::download(
-            new UserExport(),
-            "download.pdf",
-            Excel::DOMPDF
-        );
+        $this->success('Role deleted!');
     }
 }

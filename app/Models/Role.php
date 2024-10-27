@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use ReflectionClass;
 
 class Role extends \Spatie\Permission\Models\Role
 {
     use HasFactory;
 
-    const ADMIN = "Administrator";
-    const GUEST = "Guest";
+    const ADMIN = 'Administrator';
+
+    const GUEST = 'Guest';
 
     public static function getDefaultRoles()
     {
@@ -22,6 +22,6 @@ class Role extends \Spatie\Permission\Models\Role
 
     public function scopeSearch($query, $search)
     {
-        return $query->orWhere("name", "like", "%{$search}%");
+        return $query->orWhere('name', 'like', "%{$search}%");
     }
 }

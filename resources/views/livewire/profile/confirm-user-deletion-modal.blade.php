@@ -1,19 +1,21 @@
-<x-container.modal :name="$this->modal_name" :title="$this->title" method="save">
-    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-        {{ __('Are you sure you want to delete your account?') }}
-    </h2>
+<div wire:modal>
+    <x-modal wire:model="modal" :title="__('locale/profile.text.user_deletion_ask')" class="backdrop-blur" persistent>
+        <x-hr target="save,load" />
 
-    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
-    </p>
+        <x-form wire:submit.prevent="save">
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                {{ __('locale/profile.text.user_deletion_alert') }}
+            </p>
 
-    <div class="mt-6">
-        <x-element.layout.vertical name="current_password" label="Current Password">
-            <x-element.input.line wire:model="current_password" />
-        </x-element.layout.vertical>
-    </div>
-    
-    <x-slot:button>
-        <x-element.button.danger type="submit">Delete</x-element.button.danger>
-    </x-slot:button>
-</x-container.modal>
+            <div class="mt-6">
+                <x-password :label="__('Current Password')" wire:model="current_password" />
+            </div>
+
+            <x-slot:actions>
+                <x-button label="Cancel" wire:click="$toggle('modal')" />
+                <x-button class="bg-red-600 hover:bg-red-500 text-white" type="submit" icon="o-trash"
+                    :label="__('locale/profile.button.delete_account')" />
+            </x-slot:actions>
+        </x-form>
+    </x-modal>
+</div>

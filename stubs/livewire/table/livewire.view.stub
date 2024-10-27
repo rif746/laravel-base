@@ -1,6 +1,17 @@
-<x-container.card :$title :permission="$permissions['create']" :modal="$modals['create']" :$search>
-    <x-element.table :$cols :rows="$this->rows" :$sort_direction :$sort_by :$permissions :$modals :$import :$export />
+<x-card :title="$this->title" shadow separator>
+    <x-slot:menu>
+        <x-input placeholder="Search..." wire:model.live.debounce="search" />
+        <x-button icon="o-plus" class="btn-outline" wire:modal.show="[modal_name]" />
+    </x-slot:menu>
 
-    <x-placeholder.offline-states />
-    <x-placeholder.loading-states />
-</x-container.card>
+    <x-table :headers="$headers" rows="" :sort-by="$this->sortBy" with-pagination>
+        @scope('actions', $role)
+            <div class="join">
+                <x-button icon="o-pencil" class="btn-xs join-item btn-accent"
+                    wire:modal.show="[modal_name], [id]" />
+                <x-button icon="o-trash" class="btn-xs join-item btn-error"
+                    wire:delete="[ask], [id]" />
+            </div>
+        @endscope
+    </x-table>
+</x-card>

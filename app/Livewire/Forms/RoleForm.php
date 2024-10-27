@@ -35,6 +35,7 @@ class RoleForm extends Form
     public function post()
     {
         $this->validate();
+
         return Role::updateOrCreate(['id' => $this->id], $this->all())
             ->permissions()
             ->sync($this->permissions);

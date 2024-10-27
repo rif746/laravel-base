@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\VerifyEmailController;
@@ -20,7 +19,6 @@ Route::middleware("guest")->group(function () {
     )->name("password.request");
 
     Route::get("reset-password/{token}", \App\Livewire\Auth\ResetPasswordPage::class)->name("password.reset");
-
 });
 
 Route::middleware("auth")->group(function () {
@@ -38,16 +36,6 @@ Route::middleware("auth")->group(function () {
     ])
         ->middleware("throttle:6,1")
         ->name("verification.send");
-
-    Route::get("confirm-password", [
-        ConfirmablePasswordController::class,
-        "show",
-    ])->name("password.confirm");
-
-    Route::post("confirm-password", [
-        ConfirmablePasswordController::class,
-        "store",
-    ]);
 
     Route::post("logout", [
         AuthenticatedSessionController::class,

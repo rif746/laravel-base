@@ -2,24 +2,27 @@
 
 namespace App\Livewire\Profile;
 
+use App\Enum\GenderType;
 use App\Livewire\Forms\UpdateUserForm;
 use App\Livewire\Module\BaseModal;
+use Mary\Traits\Toast;
 
 class UpdateProfileFormModal extends BaseModal
 {
+    use Toast;
     public UpdateUserForm $form;
 
     /*
      * normal modal title
      * @var string
      */
-    protected static $title = "Update Profile";
+    protected static $title = 'Update Profile';
 
     /*
      * load modal title
      * @var string
      */
-    protected static $load_title = "Update Profile";
+    protected static $load_title = 'Update Profile';
 
     /*
      * save or load permission
@@ -27,12 +30,24 @@ class UpdateProfileFormModal extends BaseModal
      */
     protected $permission = [
         'load' => true,
-        'save' => true
+        'save' => true,
     ];
 
     public function render()
     {
-        return view("livewire.profile.update-profile-form-modal");
+        $gender = [
+            [
+                'id' => GenderType::MALE->value,
+                'name' => GenderType::MALE->label(),
+            ],
+            [
+                'id' => GenderType::FEMALE->value,
+                'name' => GenderType::FEMALE->label(),
+            ],
+        ];
+
+        return view('livewire.profile.update-profile-form-modal')
+            ->with('gender', $gender);
     }
 
     public function load($id)
@@ -45,9 +60,10 @@ class UpdateProfileFormModal extends BaseModal
     public function save()
     {
         parent::save();
-        if (!is_null($this->form->post())) {
-            $this->dispatch('close-modal', name: $this->modal_name);
+        if (! is_null($this->form->post())) {
+            $this->modal = false;
             $this->dispatch('profile:update');
+            $this->success('Profile updated successfully');
         }
     }
 

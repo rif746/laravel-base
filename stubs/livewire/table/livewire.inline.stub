@@ -3,13 +3,13 @@
 namespace [namespace];
 
 use App\Livewire\Module\BaseTable;
-use App\Livewire\Module\Trait\Notification;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
+use Mary\Traits\Toast;
 
 class [class] extends BaseTable
 {
-    use Notification;
+    use Toast;
 
     #[Locked]
     public $title = "";
@@ -22,26 +22,15 @@ class [class] extends BaseTable
 
     public function render()
     {
-        return view("[view]", $this->getData());
+        return view("livewire.role.role-table", $this->getData());
     }
 
-    #[Computed]
-    public function rows()
-    {
-        return []; 
-    }
-
-    public function cols()
+    public function headers()
     {
         return [
             [
+                "key" => "name",
                 "label" => "Name",
-                "query" => "name",
-                "sort" => true,
-            ],
-            [
-                "label" => "Email",
-                "query" => "email",
                 "sort" => true,
             ],
         ];
@@ -77,19 +66,30 @@ class [class] extends BaseTable
     public function render()
     {
         return <<<'BLADE'
-            <x-container.card :$title :permission="$permissions['create']" :modal="$modals['create']" :$search>
-                <x-element.table :$cols :rows="$this->rows" :$sort_direction :$sort_by :$permissions :$modals :$import :$export />
+            <x-card :title="$this->title" shadow separator>
+                <x-slot:menu>
+                    <x-input placeholder="Search..." wire:model.live.debounce="search" />
+                    <x-button icon="o-plus" class="btn-outline" wire:modal.show="[modal_name]" />
+                </x-slot:menu>
 
-                <x-placeholder.offline-states />
-                <x-placeholder.loading-states />
-            </x-container.card>
+                <x-table :headers="$headers" rows="" :sort-by="$this->sortBy" with-pagination>
+                    @scope('actions', [var])
+                        <div class="join">
+                            <x-button icon="o-pencil" class="btn-xs join-item btn-accent"
+                                wire:modal.show="[modal_name], [id]" />
+                            <x-button icon="o-trash" class="btn-xs join-item btn-error"
+                                wire:delete="[ask], [id]" />
+                        </div>
+                    @endscope
+                </x-table>
+            </x-card>
         BLADE;;
     }
 
     #[Computed]
     public function rows()
     {
-        return []; 
+        return [];
     }
 
     public function cols()

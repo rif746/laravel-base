@@ -1,37 +1,59 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    <!-- Scripts -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ env('APP_NAME') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <livewire:styles />
 </head>
 
-<body x-cloak x-data="theme({{ preferenceIs('theme', 'dark') ? 'true' : 'false' }})" :class="{ 'dark': darkMode == true }" class="font-sans antialiased text-gray-900">
-    <div class="flex flex-col items-center min-h-screen pt-6 bg-gray-100 sm:justify-center sm:pt-0 dark:bg-gray-900">
-        <div>
-            <a href="/">
-                <x-layouts.partials.application-logo class="w-20 h-20 text-gray-500 fill-current" />
-            </a>
-        </div>
+<body class="min-h-screen font-sans antialiased bg-base-200/50 dark:bg-base-200">
+    {{-- The navbar with `sticky` and `full-width` --}}
+    <x-nav class="bg-base-200" sticky full-width>
 
-        <div
-            class="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-md dark:bg-gray-800 sm:rounded-lg">
+        <x-slot:brand>
+            {{-- Brand --}}
+            <x-app-brand />
+        </x-slot:brand>
+
+        {{-- Right side actions --}}
+        <x-slot:actions>
+            <x-theme-toggle class="btn-ghost btn-sm rounded-md" />
+            @guest
+                <x-dropdown class="block md:hidden" no-x-anchor right>
+                    <x-slot:trigger>
+                        <x-button icon="o-rectangle-group" class="btn-sm btn-ghost block md:hidden" />
+                    </x-slot:trigger>
+
+                    <x-menu-item :label="__('Login')" icon="o-arrow-right-end-on-rectangle" :link="route('login')" />
+                    <x-menu-item :label="__('Register')" icon="o-user-plus" :link="route('register')" />
+                </x-dropdown>
+                <div class="hidden md:block">
+                    <x-button :label="__('Login')" icon="o-arrow-right-end-on-rectangle" :link="route('login')" class="btn-ghost btn-sm" responsive />
+                    <x-button :label="__('Register')" icon="o-user-plus" :link="route('register')" class="btn-ghost btn-sm" responsive />
+                </div>
+            @else
+                <x-dropdown class="block md:hidden" no-x-anchor right>
+                    <x-slot:trigger>
+                        <x-button icon="o-rectangle-group" class="btn-sm btn-ghost block md:hidden" />
+                    </x-slot:trigger>
+
+                    <x-menu-item :label="__('Dashboard')" icon="o-home" :link="route('login')" />
+                </x-dropdown>
+                <div class="hidden md:block">
+                    <x-button :label="__('Dashboard')" icon="o-home" :link="route('dashboard')" class="btn-ghost btn-sm" responsive />
+                </div>
+            @endguest
+        </x-slot:actions>
+    </x-nav>
+
+    {{-- The main content with `full-width` --}}
+    <x-main full-width>
+        {{-- The `$slot` goes here --}}
+        <x-slot:content>
             {{ $slot }}
-        </div>
-    </div>
+        </x-slot:content>
+    </x-main>
 
-    <livewire:scripts />
 </body>
-
 </html>

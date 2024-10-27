@@ -1,23 +1,30 @@
-<x-container.modal maxWidth="sm" :name="$this->modal_name" :title="$this->title" method="save">
+<div wire:modal>
+    <x-modal wire:model="modal" :title="__($this->title)" class="backdrop-blur" persistent>
+        <x-hr target="save,load" />
 
-    <x-element.layout.vertical name="form.name" label="Name">
-        <x-element.input.line wire:model="form.name" />
-    </x-element.layout.vertical>
-    <x-element.layout.vertical name="form.permission" label="Permission">
-        <ul class="flex flex-col gap-1">
-            @foreach ($this->permissions as $permission)
-                <li class="flex flex-row gap-2 px-2 border rounded">
-                    <x-element.select.checkbox wire:model='form.permissions' value="{{ $permission->id }}" />
-                    <div class="flex flex-col">
-                        <span>{{ $permission->name }}</span>
-                        <span>{{ $permission->description }}</span>
-                    </div>
-                </li>
-            @endforeach
-        </ul>
-    </x-element.layout.vertical>
-
-    <x-slot:button>
-        <x-element.button.primary wire:loading.attr="disabled" type="submit">Save</x-element.button.primary>
-    </x-slot:button>
-</x-container.modal>
+        <x-form wire:submit.prevent="save">
+            <x-input :label="__('locale/role.field.name')" wire:model="form.name" />
+            <div class="py-2">
+                <label for="permission" class="pt-0 label label-text font-semibold">
+                    {{ __('locale/role.field.permission') }}
+                </label>
+                <div name="permission" class=" border rounded-md m-1 border-primary">
+                    @foreach ($this->permissions as $permission)
+                        <x-list-item :item="$permission">
+                            <x-slot:avatar>
+                                <x-checkbox wire:model="form.permissions" :value="$permission->id" />
+                            </x-slot:avatar>
+                            <x-slot:sub-value>
+                                {{ $permission->description }}
+                            </x-slot:sub-value>
+                        </x-list-item>
+                    @endforeach
+                </div>
+            </div>
+            <x-slot:actions>
+                <x-button label="Cancel" wire:click="$toggle('modal')" />
+                <x-button label="Save" type="submit" spinner />
+            </x-slot:actions>
+        </x-form>
+    </x-modal>
+</div>

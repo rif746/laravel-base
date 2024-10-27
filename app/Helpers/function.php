@@ -118,32 +118,3 @@ function seo(string $title, string $description = null, array $property = [], ar
         SEOTools::opengraph()->addProperty($key, $value);
     }
 }
-
-/**
- * Get User Preference
- */
-function getPreference($key)
-{
-    $user = auth()->user();
-    return isset($user->settings[$key]) ? $user->settings[$key] : null;
-}
-
-/**
- * User Preference Is ...
- */
-function preferenceIs($key, $value)
-{
-    return getPreference($key) == $value;
-}
-
-/**
- * Set User Preferences
- */
-function setPreference($key, $value)
-{
-    $user = auth()->user();
-    $settings = $user->settings;
-    $settings[$key] = $value;
-    $user->settings = $settings;
-    $user->save();
-}

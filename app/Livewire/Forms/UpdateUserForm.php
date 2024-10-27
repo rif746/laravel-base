@@ -38,6 +38,7 @@ class UpdateUserForm extends Form
     public function load($id)
     {
         $user = User::with('profile')->find($id);
+        info($user);
         $this->id = $user->id;
         $this->email = $user->email;
         $this->name = $user->name;

@@ -2,15 +2,15 @@
 
 namespace App\Livewire\Forms\Auth;
 
-use Livewire\Attributes\Rule;
+use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class LoginForm extends Form
 {
-    #[Rule(['required', 'email'], as: "email")]
+    #[Validate(['required', 'email'], as: "email")]
     public $email;
 
-    #[Rule(['required'], as: "password")]
+    #[Validate(['required'], as: "password")]
     public $password;
 
     public $remember;

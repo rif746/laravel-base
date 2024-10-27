@@ -6,7 +6,8 @@
                 <!-- Logo -->
                 <div class="flex items-center shrink-0">
                     <a href="{{ route('dashboard') }}">
-                        <x-layouts.partials.application-logo class="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200" />
+                        <x-layouts.partials.application-logo
+                            class="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200" />
                     </a>
                 </div>
 
@@ -15,14 +16,34 @@
                     <x-layouts.partials.nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-layouts.partials.nav-link>
-                    @can('user index')
-                        <x-layouts.partials.nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
-                            {{ __('Users') }}
+                    @can('project index')
+                        <x-layouts.partials.nav-link :href="route('project.index')" :active="request()->routeIs('project.index')">
+                            {{ __('Projects') }}
+                        </x-layouts.partials.nav-link>
+                    @endcan
+                    @can('task index')
+                        <x-layouts.partials.nav-link :href="route('task.index')" :active="request()->routeIs('task.index')">
+                            {{ __('Tasks') }}
+                        </x-layouts.partials.nav-link>
+                    @endcan
+                    @can('service index')
+                        <x-layouts.partials.nav-link :href="route('service.index')" :active="request()->routeIs('service.index')">
+                            {{ __('Services') }}
+                        </x-layouts.partials.nav-link>
+                    @endcan
+                    @can('report index')
+                        <x-layouts.partials.nav-link :href="route('report.index')" :active="request()->routeIs('report.index')">
+                            {{ __('Reports') }}
                         </x-layouts.partials.nav-link>
                     @endcan
                     @can('role index')
                         <x-layouts.partials.nav-link :href="route('role.index')" :active="request()->routeIs('role.index')">
                             {{ __('Roles') }}
+                        </x-layouts.partials.nav-link>
+                    @endcan
+                    @can('user index')
+                        <x-layouts.partials.nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
+                            {{ __('Users') }}
                         </x-layouts.partials.nav-link>
                     @endcan
                 </div>
@@ -88,12 +109,31 @@
             <x-layouts.partials.responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-layouts.partials.responsive-nav-link>
-            <x-layouts.partials.responsive-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
-                {{ __('Users') }}
-            </x-layouts.partials.responsive-nav-link>
-            <x-layouts.partials.responsive-nav-link :href="route('role.index')" :active="request()->routeIs('role.index')">
-                {{ __('Roles') }}
-            </x-layouts.partials.responsive-nav-link>
+            @can('task index')
+                <x-layouts.partials.responsive-nav-link :href="route('task.index')" :active="request()->routeIs('task.index')">
+                    {{ __('Tasks') }}
+                </x-layouts.partials.responsive-nav-link>
+            @endcan
+            @can('project index')
+                <x-layouts.partials.responsive-nav-link :href="route('project.index')" :active="request()->routeIs('project.index')">
+                    {{ __('Projects') }}
+                </x-layouts.partials.responsive-nav-link>
+            @endcan
+            @can('service index')
+                <x-layouts.partials.responsive-nav-link :href="route('service.index')" :active="request()->routeIs('service.index')">
+                    {{ __('Services') }}
+                </x-layouts.partials.responsive-nav-link>
+            @endcan
+            @can('user index')
+                <x-layouts.partials.responsive-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
+                    {{ __('Users') }}
+                </x-layouts.partials.responsive-nav-link>
+            @endcan
+            @can('role index')
+                <x-layouts.partials.responsive-nav-link :href="route('role.index')" :active="request()->routeIs('role.index')">
+                    {{ __('Roles') }}
+                </x-layouts.partials.responsive-nav-link>
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->

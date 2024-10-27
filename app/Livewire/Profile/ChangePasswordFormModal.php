@@ -4,9 +4,12 @@ namespace App\Livewire\Profile;
 
 use App\Livewire\Module\BaseModal;
 use Livewire\Attributes\Rule;
+use Mary\Traits\Toast;
 
 class ChangePasswordFormModal extends BaseModal
 {
+    use Toast;
+
     #[Rule(['required', 'current_password'], as: 'Current Password')]
     public $current_password;
 
@@ -43,7 +46,8 @@ class ChangePasswordFormModal extends BaseModal
         ]);
 
         if (!is_null($update)) {
-            $this->dispatch('close-modal', name: $this->modal_name);
+            $this->modal = false;
+            $this->success('Password changed successfully');
         }
     }
 

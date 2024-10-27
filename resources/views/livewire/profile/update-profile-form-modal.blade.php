@@ -1,20 +1,16 @@
-<x-container.modal maxWidth="sm" :name="$this->modal_name" :title="$this->title" method="save">
+<div wire:modal>
+    <x-modal wire:model="modal" :title="__($this->title)" class="backdrop-blur" persistent>
+        <x-hr target="save,load" />
 
-    <x-element.layout.vertical name="form.name" label="Name">
-        <x-element.input.line wire:model="form.name" />
-    </x-element.layout.vertical>
-    <x-element.layout.vertical name="form.email" label="Email">
-        <x-element.input.line wire:model="form.email" />
-    </x-element.layout.vertical>
-    <x-element.layout.vertical name="form.gender" :label="__('locale/user.field.gender')">
-        <x-element.select.dropdown wire:model="form.gender">
-            <option></option>
-            <option value="{{ \App\Enum\GenderType::MALE }}">{{ \App\Enum\GenderType::MALE->label() }}</option>
-            <option value="{{ \App\Enum\GenderType::FEMALE }}">{{ \App\Enum\GenderType::FEMALE->label() }}</option>
-        </x-element.select.dropdown>
-    </x-element.layout.vertical>
+        <x-form wire:submit.prevent="save">
+            <x-input :label="__('locale/user.field.name')" wire:model="form.name" />
+            <x-input :label="__('locale/user.field.email')" wire:model="form.email" />
+            <x-radio :label="__('locale/user.field.gender')" wire:model="form.gender" :options="$gender" />
 
-    <x-slot:button>
-        <x-element.button.primary type="submit">Save</x-element.button.primary>
-    </x-slot:button>
-</x-container.modal>
+            <x-slot:actions>
+                <x-button label="Cancel" wire:click="$toggle('modal')" />
+                <x-button label="Save" type="submit" spinner />
+            </x-slot:actions>
+        </x-form>
+    </x-modal>
+</div>

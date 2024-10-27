@@ -12,6 +12,8 @@ abstract class BaseModal extends Component
     #[Locked]
     public $load_state = false;
 
+    public $modal = false;
+
     /**
      * normal modal title
      * @var string
@@ -42,9 +44,11 @@ abstract class BaseModal extends Component
         return array_merge($this->listeners, $listeners);
     }
 
-    public function updated()
+    public function updated($property)
     {
-        $this->validate();
+        if ($property != 'modal') {
+            $this->validate();
+        }
     }
 
     #[Computed]
@@ -53,8 +57,8 @@ abstract class BaseModal extends Component
         return $this->load_state ? static::$load_title : static::$title;
     }
 
-    #[Computed(true)]
-    public function modal_name()
+    #[Computed]
+    public function modalName()
     {
         $exploded_name = explode(".", $this->getName());
         return $exploded_name[count($exploded_name) - 1];
@@ -64,7 +68,6 @@ abstract class BaseModal extends Component
     {
         $this->guard($this->permission['load'] ?? false);
         $this->load_state = true;
-        $this->js("visible = true");
     }
 
     public function save()
@@ -75,7 +78,6 @@ abstract class BaseModal extends Component
     public function clear()
     {
         $this->load_state = false;
-        $this->js("visible = false");
         $this->resetValidation();
     }
 

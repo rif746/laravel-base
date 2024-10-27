@@ -3,6 +3,7 @@
 namespace App\Livewire\Module;
 
 use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -14,10 +15,7 @@ class BaseTable extends Component
     public $title = "Role Data";
 
     #[Url("so")]
-    public $sort_by = "created_at";
-
-    #[Url("sd")]
-    public $sort_direction = "desc";
+    public $sortBy = ['column' => 'created_at', 'direction' => 'asc'];
 
     #[Url("q")]
     public $search = "";
@@ -26,7 +24,7 @@ class BaseTable extends Component
     public $perPage = 5;
 
     /**
-     * 
+     *
      * insert modal name to use in view here
      *
      * @var array('action' => 'modal-component')
@@ -38,7 +36,7 @@ class BaseTable extends Component
     ];
 
     /**
-     * 
+     *
      * @var array('action' => 'permission')
      */
     protected array $permissions = [
@@ -59,7 +57,7 @@ class BaseTable extends Component
     protected array $import = [];
 
     /**
-     * 
+     *
      * insert route name and parameter to use in view here
      *
      * @var array('action' => array('route' => 'route-name', 'params' => 'parameter'))
@@ -96,15 +94,11 @@ class BaseTable extends Component
         $this->resetPage();
     }
 
-    public function sort($field)
+    #[Computed]
+    public function tableName()
     {
-        if ($this->sort_by == $field) {
-            $this->sort_direction =
-                $this->sort_direction == "desc" ? "asc" : "desc";
-            return;
-        }
-        $this->sort_by = $field;
-        $this->sort_direction = "desc";
+        $exploded_name = explode(".", $this->getName());
+        return $exploded_name[count($exploded_name) - 1];
     }
 
     public function delete($id)
@@ -122,9 +116,7 @@ class BaseTable extends Component
 
     protected function getListeners()
     {
-        $exploded_name = explode(".", $this->getName());
-        $exploded_name = $exploded_name[count($exploded_name) - 1];
-        $listen["{$exploded_name}:reload"] = '$refresh';
+        $listen["{$this->tableName()}:reload"] = '$refresh';
 
         return array_merge($this->listeners, $listen);
     }
@@ -142,7 +134,7 @@ class BaseTable extends Component
         }
 
         return [
-            'cols' => $this->cols(),
+            'headers' => $this->headers(),
             'permissions' => $permissions,
             'import' => $this->import,
             'export' => $this->export,

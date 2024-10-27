@@ -1,14 +1,16 @@
 import defaultTheme from "tailwindcss/defaultTheme";
-import forms from "@tailwindcss/forms";
 
 /** @type {import('tailwindcss').Config} */
 export default {
     darkMode: "class",
     content: [
+        "./app/Livewire/**/*.php",
+        "./app/View/**/*.php",
         "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
         "./storage/framework/views/*.php",
         "./resources/views/**/*.blade.php",
         "./resources/js/**/*.js",
+        "./vendor/robsontenorio/mary/src/View/Components/**/*.php",
     ],
 
     theme: {
@@ -19,5 +21,13 @@ export default {
         },
     },
 
-    plugins: [forms, require("@tailwindcss/typography")],
+    plugins: [
+        require("@tailwindcss/typography"),
+        require("daisyui"),
+        require("tailwind-bootstrap-grid")()
+    ],
+    daisyui: {
+        themes: ["light", "dark"],
+        darkMode: "class",
+    },
 };

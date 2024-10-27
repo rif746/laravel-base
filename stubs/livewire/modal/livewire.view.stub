@@ -1,6 +1,13 @@
-<x-container.modal maxWidth="sm" :name="$this->modal_name" :title="$this->title" method="save">
-    [quote]
-    <x-slot:button>
-        <x-element.button.primary wire:loading.attr="disabled" type="submit">Save</x-element.button.primary>
-    </x-slot:button>
-</x-container.modal>
+<div wire:modal>
+    <x-modal wire:model="modal" :title="__($this->title)" class="backdrop-blur" persistent>
+        <x-hr target="save,load" />
+
+        <x-form wire:submit.prevent="save">
+            [quote]
+            <x-slot:actions>
+                <x-button label="Cancel" wire:click="$toggle('modal')" />
+                <x-button label="Save" type="submit" spinner />
+            </x-slot:actions>
+        </x-form>
+    </x-modal>
+</div>

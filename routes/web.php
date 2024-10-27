@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,23 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    seo('Welcome', 'Welcome page');
-    return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    seo('Dashboard', 'Dashboard page');
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::view('/', 'welcome');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', \App\Livewire\Profile\ProfilePage::class)->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
 
-    Route::get('/users', \App\Livewire\User\UserTable::class)->can('user index')->name('user.index');
-    Route::get('/roles', \App\Livewire\Role\RoleTable::class)->can('role index')->name('role.index');
+    Route::get('/roles', \App\Livewire\Role\RoleTable::class)->name('role.index');
+    Route::get('/users', \App\Livewire\User\UserTable::class)->name('user.index');
+    Route::get('/profile', \App\Livewire\Profile\ProfilePage::class)->name('profile.index');
 });
 
 require __DIR__ . '/auth.php';

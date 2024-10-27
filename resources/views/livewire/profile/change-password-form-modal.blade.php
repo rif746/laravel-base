@@ -1,16 +1,16 @@
-<x-container.modal maxWidth="sm" :name="$this->modal_name" :title="$this->title" method="save">
+<div wire:modal>
+    <x-modal wire:model="modal" :title="__($this->title)" class="backdrop-blur" persistent>
+        <x-hr target="save,load" />
 
-    <x-element.layout.vertical name="current_password" label="Password">
-        <x-element.input.line type="password" wire:model="current_password" />
-    </x-element.layout.vertical>
-    <x-element.layout.vertical name="new_password" label="New Password">
-        <x-element.input.line type="password" wire:model="new_password" />
-    </x-element.layout.vertical>
-    <x-element.layout.vertical name="new_password_confirmation" label="New Password Confirmation">
-        <x-element.input.line type="password" wire:model="new_password_confirmation" />
-    </x-element.layout.vertical>
+        <x-form wire:submit.prevent="save">
+            <x-password :label="__('Password')" wire:model="current_password" />
+            <x-password :label="__('New Password')" wire:model="new_password" />
+            <x-password :label="__('New Password Confirmation')" wire:model="new_password_confirmation" />
 
-    <x-slot:button>
-        <x-element.button.primary type="submit">Save</x-element.button.primary>
-    </x-slot:button>
-</x-container.modal>
+            <x-slot:actions>
+                <x-button label="Cancel" wire:click="$toggle('modal')" />
+                <x-button label="Save" type="submit" spinner />
+            </x-slot:actions>
+        </x-form>
+    </x-modal>
+</div>
