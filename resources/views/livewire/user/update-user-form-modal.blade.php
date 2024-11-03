@@ -5,6 +5,8 @@
         <x-form wire:submit.prevent="save">
             <x-input :label="__('locale/user.field.name')" wire:model="form.name" />
             <x-input :label="__('locale/user.field.email')" wire:model="form.email" type="email" />
+            <x-radio :label="__('locale/user.field.role')" wire:model="form.role_name"
+                :options="$this->roles" option-value="name" option-label="name" />
             <x-slot:actions>
                 <x-button label="Cancel" @click="$wire.modal = false" />
                 <x-button label="Save" type="submit" spinner />

@@ -7,7 +7,7 @@ use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class UpdateUserForm extends Form
+class UpdateProfileForm extends Form
 {
     #[Locked]
     public $id = null;
@@ -21,8 +21,8 @@ class UpdateUserForm extends Form
     #[Validate('min:5', as: 'Name')]
     public $name = null;
 
-    #[Validate('required', as: 'Role')]
-    public $role_name = null;
+    #[Validate('required', as: 'Gender')]
+    public $gender = null;
 
     protected function rules()
     {
@@ -34,8 +34,9 @@ class UpdateUserForm extends Form
 
     public function load($id)
     {
-        $user = User::find($id);
+        $user = User::with('profile')->find($id);
         $this->fill($user);
+        $this->fill($user->profile);
     }
 
     public function post()
@@ -50,7 +51,9 @@ class UpdateUserForm extends Form
             $user->email_verified_at = null;
         }
 
-        $user->syncRoles($this->role_name);
+        $user->profile()->updateOrCreate([], [
+            'gender' => $this->gender,
+        ]);
 
         return $user->update();
     }

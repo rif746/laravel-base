@@ -6,9 +6,6 @@ return [
         'modal' => [
             'create' => 'Tambah Pengguna Baru',
             'update' => 'Sunting Pengguna',
-            'update_profile' => 'Ubah Profil',
-            'change_password' => 'Ubah Password',
-            'user_deletion' => 'Konfirmasi Penghapusan Akun',
         ],
     ],
     'field' => [
@@ -27,4 +24,10 @@ return [
         'verified' => 'Terverifikasi',
         'unverified' => 'Belum Diverifikasi',
     ],
+    'alert' => [
+        'deletion' => 'Anda yakin ingin menghapus pengguna :name?',
+        'created' => 'Pengguna berhasil dibuat!',
+        'updated' => 'Pengguna berhasil diubah!',
+        'deleted' => 'Pengguna berhasil dihapus!',
+    ]
 ];

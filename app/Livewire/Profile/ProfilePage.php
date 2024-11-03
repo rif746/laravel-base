@@ -17,7 +17,7 @@ class ProfilePage extends Component
 
     public function mount()
     {
-        $preference = auth()->user()->settings;
+        $preference = auth('web')->user()->settings;
         $this->theme = $preference['theme'] ?? null;
         $this->lang = $preference['lang'] ?? null;
     }
@@ -28,10 +28,10 @@ class ProfilePage extends Component
             'theme' => $this->theme,
             'lang' => $this->lang
         ];
-        auth()->user()->update(['settings' => $settings]);
+        auth('web')->user()->update(['settings' => $settings]);
 
         if($props == 'theme') {
-            $this->dispatch('mary-toggle-theme', theme: $val);
+            $this->dispatch('theme-changed', theme: $val);
         }
     }
 
@@ -42,12 +42,7 @@ class ProfilePage extends Component
 
     public function verifyEmail()
     {
-        auth()->user()->sendEmailVerificationNotification();
+        auth('web')->user()->sendEmailVerificationNotification();
         $this->success("Email verification has sent.");
-    }
-
-    public function isPreference($key, $value)
-    {
-        return preferenceIs($key, $value) ? 'true' : 'false';
     }
 }

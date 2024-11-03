@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'title' => [
+        'modal' => [
+            'update_profile' => 'Ubah Profil',
+            'change_password' => 'Ubah Password',
+            'user_deletion' => 'Konfirmasi Penghapusan Akun',
+        ]
+    ],
     'section' => [
         'user_info' => 'Informasi Pengguna',
         'preference' => 'Preferensi',

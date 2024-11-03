@@ -18,13 +18,13 @@ class CreateUserFormModal extends BaseModal
      * normal modal title
      * @var string
      */
-    protected static $title = 'Create User';
+    protected static $title = 'locale/user.title.modal.create';
 
     /*
      * load modal title
      * @var string
      */
-    protected static $load_title = 'Create User';
+    protected static $load_title = 'locale/user.title.modal.create';
 
     /*
      * save or load permission
@@ -32,12 +32,11 @@ class CreateUserFormModal extends BaseModal
      */
     protected $permission = [
         'load' => false,
-        'save' => true,
+        'save' => 'user create',
     ];
 
     public function mount()
     {
-        $this->setId($this->modalName());
         $this->clear();
     }
 
@@ -49,7 +48,7 @@ class CreateUserFormModal extends BaseModal
     #[Computed(persist: true)]
     public function roles()
     {
-        return Role::all(['name'])->pluck('name');
+        return Role::all(['name'])->toArray();
     }
 
     public function save()
@@ -58,13 +57,13 @@ class CreateUserFormModal extends BaseModal
         if ($this->form->post()) {
             $this->modal = false;
             $this->dispatch('user-table:reload');
-            $this->success('User created!');
+            $this->success(__('locale/user.alert.created'));
         }
     }
 
     public function clear()
     {
         parent::clear();
-        $this->form->clear();
+        $this->form->reset();
     }
 }

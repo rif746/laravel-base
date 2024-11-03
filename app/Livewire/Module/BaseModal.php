@@ -84,8 +84,8 @@ abstract class BaseModal extends Component
     protected function guard($guard)
     {
         if (is_bool($guard)) {
-            return Gate::allowIf($guard);
+            return abort_if(!$guard, 403, 'This Action is Unauthorized');
         }
-        return Gate::allows($guard);
+        return $this->authorize($guard);
     }
 }

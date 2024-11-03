@@ -10,13 +10,16 @@ use Livewire\Form;
 class CreateUserForm extends Form
 {
     #[Validate]
-    public $email;
+    public $email = null;
 
     #[Validate]
-    public $name;
+    public $name = null;
 
     #[Validate]
-    public $password;
+    public $password = null;
+
+    #[Validate('required', as: 'Role')]
+    public $role_name = null;
 
     public function rules()
     {
@@ -27,13 +30,6 @@ class CreateUserForm extends Form
         ];
     }
 
-    public function clear()
-    {
-        $this->email = "";
-        $this->name = "";
-        $this->password = "";
-    }
-
     public function post()
     {
         $this->validate();
@@ -41,6 +37,6 @@ class CreateUserForm extends Form
             'name' => $this->name,
             'email' => $this->email,
             'password' => bcrypt($this->password)
-        ]);
+        ])->syncRoles($this->role_name);
     }
 }

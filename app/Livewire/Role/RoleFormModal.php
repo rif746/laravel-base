@@ -54,7 +54,6 @@ class RoleFormModal extends BaseModal
     public function load($id)
     {
         parent::load($id);
-        sleep(3);
         $this->form->load($id);
     }
 
@@ -71,6 +70,6 @@ class RoleFormModal extends BaseModal
     public function clear()
     {
         parent::clear();
-        $this->form->clear();
+        $this->form->reset();
     }
 }

@@ -10,9 +10,12 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Mary\Traits\Toast;
 
 class ResetPasswordPage extends Component
 {
+    use Toast;
+
     #[Url('email')]
     #[Rule(['required', 'string', 'email'])]
     public $email;
@@ -35,7 +38,7 @@ class ResetPasswordPage extends Component
         ];
     }
 
-    #[Layout("components.layouts.guest")]
+    #[Layout("components.layouts.auth")]
     public function render()
     {
         return view('livewire.auth.reset-password-page');
@@ -64,7 +67,7 @@ class ResetPasswordPage extends Component
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         if ($status == Password::PASSWORD_RESET) {
-            return redirect()->route('dashboard');
+            return $this->success('Password changed!', 'You can login with new password now', redirectTo: '/login');
         } else {
             $this->addError('email', __($status));
         }

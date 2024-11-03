@@ -52,7 +52,7 @@ class [class] extends BaseModal
         if (true) {
             $this->modal = false;
             $this->dispatch('');
-            $this->success(''));
+            $this->success(__(''));
         }
     }
 

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enum\RoleType;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
@@ -16,12 +17,12 @@ class RoleSeeder extends Seeder
     public function run()
     {
         $role = new Role();
-        foreach ($role->getDefaultRoles() as $key => $value) {
+        foreach (RoleType::values() as $value) {
             $role->create(['name' => $value, 'guard_name' => 'web']);
         }
 
         $permission = new Permission();
-        foreach ($permission->getDefaultPermissions() as $key => $value) {
+        foreach (RoleType::getDefaultPermissions() as $key => $value) {
             foreach ($value as $k => $v) {
                 $perm = $key . ' ' . $k;
                 $permission->create([

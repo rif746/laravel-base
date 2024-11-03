@@ -13,7 +13,7 @@ class ConfirmUserDeletionModal extends BaseModal
     #[Rule(['required', 'current_password'], as: 'Current Password')]
     public $current_password;
 
-    protected static $title = "Confirm Account Deletion";
+    protected static $title = 'locale/profile.title.modal.user_deletion';
 
     /*
      * save or load permission

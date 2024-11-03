@@ -1,19 +1,11 @@
-<form wire:submit="store">
-    @csrf
+<x-card shadow separator progress-indicator="send" title="Reset Password" subtitle="Reset your password here">
+    <x-form method="POST" wire:submit="store">
+        <x-input label="Email" readonly wire:model="email" icon="o-envelope" inline />
+        <x-input label="Password" wire:model="password" icon="o-lock-closed" type="password" inline />
+        <x-input label="Password Confirmation" wire:model="password_confirmation" icon="o-lock-closed" type="password" inline />
 
-    <x-element.layout.vertical name="email" label="Email">
-        <x-element.input.line wire:model="email" />
-    </x-element.layout.vertical>
-    <x-element.layout.vertical name="password" label="Email">
-        <x-element.input.line type="password" wire:model="Password" />
-    </x-element.layout.vertical>
-    <x-element.layout.vertical name="password_confirmation" label="Email">
-        <x-element.input.line type="password" wire:model="password_confirmation" />
-    </x-element.layout.vertical>
-    
-    <div class="flex items-center justify-end mt-4">
-        <x-element.button.primary>
-            {{ __('Reset Password') }}
-        </x-element.button.primary>
-    </div>
-</form>
+        <x-slot:actions>
+            <x-button :label="__('Reset Password')" type="submit" spinner="send" />
+        </x-slot:actions>
+    </x-form>
+</x-card>

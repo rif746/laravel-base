@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enum\GenderType;
+use App\Enum\RoleType;
 use App\Models\Profile;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,9 +19,9 @@ class UserSeeder extends Seeder
             'name' => 'Administrator',
             'email' => 'admin@web.io',
             'password' => bcrypt('password'),
-            'email_verified_at' => now()
+            // 'email_verified_at' => now()
         ]);
-        $user->syncRoles(\App\Models\Role::ADMIN);
+        $user->syncRoles(RoleType::ADMINISTRATOR);
         $user->profile()->create([
             'gender' => GenderType::MALE
         ]);
@@ -30,7 +31,7 @@ class UserSeeder extends Seeder
             ->count(100)
             ->create();
         foreach ($users as $user) {
-            $user->syncRoles(\App\Models\Role::GUEST);
+            $user->syncRoles(RoleType::GUEST);
         }
     }
 }

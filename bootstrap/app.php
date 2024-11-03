@@ -12,9 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->web([
-            SettingsMiddleware::class
-        ]);
+        $middleware->web(SettingsMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

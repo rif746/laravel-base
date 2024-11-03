@@ -3,26 +3,27 @@
 namespace App\Livewire\Profile;
 
 use App\Enum\GenderType;
-use App\Livewire\Forms\UpdateUserForm;
+use App\Livewire\Forms\UpdateProfileForm;
 use App\Livewire\Module\BaseModal;
 use Mary\Traits\Toast;
 
 class UpdateProfileFormModal extends BaseModal
 {
     use Toast;
-    public UpdateUserForm $form;
+
+    public UpdateProfileForm $form;
 
     /*
      * normal modal title
      * @var string
      */
-    protected static $title = 'Update Profile';
+    protected static $title = 'locale/profile.title.modal.update_profile';
 
     /*
      * load modal title
      * @var string
      */
-    protected static $load_title = 'Update Profile';
+    protected static $load_title = 'locale/profile.title.modal.update_profile';
 
     /*
      * save or load permission
@@ -54,7 +55,7 @@ class UpdateProfileFormModal extends BaseModal
     {
         parent::load($id);
         $this->form->load($id);
-        abort_if($this->form->email != auth()->user()->email, 404);
+        abort_if($this->form->email != auth('web')->user()->email, 404);
     }
 
     public function save()
@@ -70,6 +71,6 @@ class UpdateProfileFormModal extends BaseModal
     public function clear()
     {
         parent::clear();
-        $this->form->clear();
+        $this->form->reset();
     }
 }

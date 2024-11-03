@@ -1,8 +1,9 @@
 <div wire:modal>
-    <x-modal wire:model="modal" :title="__('locale/profile.text.user_deletion_ask')" class="backdrop-blur" persistent>
+    <x-modal wire:model="modal" :title="__($this->title)" class="backdrop-blur" persistent>
         <x-hr target="save,load" />
 
         <x-form wire:submit.prevent="save">
+            <h3>{{ __('locale/profile.text.user_deletion_ask') }}</h3>
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                 {{ __('locale/profile.text.user_deletion_alert') }}
             </p>

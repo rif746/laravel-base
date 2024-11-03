@@ -6,15 +6,16 @@ use Illuminate\Support\Facades\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Mary\Traits\Toast;
 
 class ForgotPasswordPage extends Component
 {
+    use Toast;
+
     #[Rule(['required', 'email'])]
     public $email;
 
-    public $status = null;
-
-    #[Layout("components.layouts.guest")]
+    #[Layout('components.layouts.auth')]
     public function render()
     {
         return view('livewire.auth.forgot-password-page');
@@ -32,9 +33,8 @@ class ForgotPasswordPage extends Component
         );
 
         if ($status == Password::RESET_LINK_SENT) {
-            $this->status = __($status);
+            $this->success(__($status));
         } else {
-            $this->status = null;
             $this->addError('email', __($status));
         }
     }

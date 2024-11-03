@@ -16,50 +16,40 @@ class UserTable extends BaseTable
     use WithPagination;
 
     #[Locked]
-    public $title = 'User Data';
+    public $title = 'locale/user.title.table';
 
     #[Url('q', history: true)]
     public $search = '';
 
-    protected array $permissions = [
-        'create' => 'user create',
-        'edit' => 'user edit',
-        'delete' => 'user delete',
-    ];
+    protected null|string $deletePermissionModel = User::class;
+    protected bool|string $deletePermission = 'delete';
 
     public function render()
     {
-        return view('livewire.user.user-table', $this->getData());
+        return view('livewire.user.user-table');
     }
 
     #[Computed]
     public function users()
     {
-        return tap(User::search($this->search)
+        return User::search($this->search)
             ->orderBy(...$this->sortBy)
             ->paginate($this->perPage)
-            ->onEachSide(0), fn ($query) => $query
-            ->map(function ($user) {
-                if ($user->name == auth()->user()->name) {
-                    $user->no_delete = true;
-                    $user->no_edit = true;
-                }
-
-                return $user;
-            }));
+            ->onEachSide(0);
     }
 
+    #[Computed]
     public function headers()
     {
         return [
             [
                 'key' => 'name',
-                'label' => 'Name',
+                'label' => __('locale/user.field.name'),
                 'sort' => true,
             ],
             [
                 'key' => 'email',
-                'label' => 'Email',
+                'label' => __('locale/user.field.email'),
                 'sort' => false,
             ],
         ];
@@ -69,6 +59,6 @@ class UserTable extends BaseTable
     {
         parent::delete($id);
         User::destroy($id);
-        $this->success('Role deleted!');
+        $this->success(__('locale/user.alert.deleted'));
     }
 }

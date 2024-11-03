@@ -36,7 +36,7 @@
                 {{ __('locale/user.field.gender') }}
             </div>
             <div class="sm:col-12 md:col-8 px-2 py-1">
-                {{ \App\Enum\GenderType::tryFrom(auth()->user()->profile->gender)->label() }}
+                {{ \App\Enum\GenderType::tryFrom(auth()->user()?->profile?->gender)?->label() ?? '-' }}
             </div>
         </div>
     </x-card>

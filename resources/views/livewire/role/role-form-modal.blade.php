@@ -1,5 +1,5 @@
 <div wire:modal>
-    <x-modal wire:model="modal" :title="__($this->title)" class="backdrop-blur" persistent>
+    <x-modal wire:model="modal" :title="__($this->title)" class="backdrop-blur">
         <x-hr target="save,load" />
 
         <x-form wire:submit.prevent="save">

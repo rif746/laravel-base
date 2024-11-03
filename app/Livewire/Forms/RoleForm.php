@@ -10,10 +10,10 @@ use Livewire\Form;
 class RoleForm extends Form
 {
     #[Locked]
-    public $id;
+    public $id = null;
 
     #[Validate('required', as: 'Name')]
-    public $name;
+    public $name = null;
 
     public $permissions = [];
 
@@ -23,13 +23,6 @@ class RoleForm extends Form
         $this->id = $role->id;
         $this->name = $role->name;
         $this->permissions = $role->permissions->pluck('id')->toArray();
-    }
-
-    public function clear()
-    {
-        $this->id = 0;
-        $this->name = '';
-        $this->permissions = [];
     }
 
     public function post()

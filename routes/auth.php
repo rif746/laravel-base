@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Livewire\Actions\Logout;
+use App\Livewire\Auth\ConfirmPasswordPage;
+use App\Livewire\Auth\VerifyEmailPage;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware("guest")->group(function () {
@@ -22,23 +22,17 @@ Route::middleware("guest")->group(function () {
 });
 
 Route::middleware("auth")->group(function () {
-    Route::get("verify-email", EmailVerificationPromptController::class)->name(
+    Route::get("verify-email", VerifyEmailPage::class)->name(
         "verification.notice"
     );
+
+    Route::get('password/confirm', ConfirmPasswordPage::class)->name('password.confirm');
 
     Route::get("verify-email/{id}/{hash}", VerifyEmailController::class)
         ->middleware(["signed", "throttle:6,1"])
         ->name("verification.verify");
 
-    Route::post("email/verification-notification", [
-        EmailVerificationNotificationController::class,
-        "store",
-    ])
-        ->middleware("throttle:6,1")
-        ->name("verification.send");
-
-    Route::post("logout", [
-        AuthenticatedSessionController::class,
-        "destroy",
-    ])->name("logout");
+    Route::post("logout",
+        Logout::class,
+    )->name("logout");
 });

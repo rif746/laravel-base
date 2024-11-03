@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ $lang }}" data-theme="{{ $theme }}">
+<html lang="{{ $lang }}" data-theme="{{ $theme }}" class="{{ $theme }}">
 
 <head>
     <meta charset="UTF-8">
@@ -22,11 +22,6 @@
             {{-- Brand --}}
             <x-app-brand />
         </x-slot:brand>
-
-        {{-- Right side actions --}}
-        <x-slot:actions>
-            <x-theme-toggle class="hidden" />
-        </x-slot:actions>
     </x-nav>
 
     {{-- The main content with `full-width` --}}
@@ -53,9 +48,9 @@
 
             {{-- Activates the menu item when a route matches the `link` property --}}
             <x-menu activate-by-route>
-                <x-menu-item :title="__('Home')" icon="o-home" link="{{ route('dashboard') }}" />
-                <x-menu-item :title="__('Roles')" icon="o-shield-check" link="{{ route('role.index') }}" />
-                <x-menu-item :title="__('Users')" icon="o-user-group" link="{{ route('user.index') }}" />
+                <x-menu-item :title="__('locale/nav.dashboard')" icon="o-home" link="{{ route('dashboard') }}" />
+                <x-menu-item :title="__('locale/nav.roles')" icon="o-shield-check" link="{{ route('role.index') }}" />
+                <x-menu-item :title="__('locale/nav.users')" icon="o-user-group" link="{{ route('user.index') }}" />
             </x-menu>
         </x-slot:sidebar>
 

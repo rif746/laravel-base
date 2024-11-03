@@ -1,22 +1,13 @@
-<div>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+<x-card shadow separator progress-indicator="send_reset">
+    <span>
         {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
+    </span>
 
-    <!-- Session Status -->
-    <x-layouts.partials.auth-session-status class="mb-4" :status="$status" />
+    <x-form class="mt-2" method="POST" wire:submit="send_reset">
+        <x-input label="Email" wire:model="email" icon="o-envelope" inline />
 
-    <form wire:submit="send_reset">
-        @csrf
-        <!-- Email Address -->
-        <x-element.layout.vertical name="form.email" label="Email">
-            <x-element.input.line wire:model="form.email" />
-        </x-element.layout.vertical>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-element.button.primary>
-                {{ __('Email Password Reset Link') }}
-            </x-element.button.primary>
-        </div>
-    </form>
-</div>
+        <x-slot:actions>
+            <x-button :label="__('Submit')" type="submit" spinner="send" />
+        </x-slot:actions>
+    </x-form>
+</x-card>

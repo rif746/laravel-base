@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ $lang }}" data-theme="{{ $theme }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,6 @@
 
         {{-- Right side actions --}}
         <x-slot:actions>
-            <x-theme-toggle class="btn-ghost btn-sm rounded-md" />
             @guest
                 <x-dropdown class="block md:hidden" no-x-anchor right>
                     <x-slot:trigger>
@@ -55,5 +54,8 @@
         </x-slot:content>
     </x-main>
 
+
+    {{--  TOAST area --}}
+    <x-toast position="toast-top toast-right" />
 </body>
 </html>

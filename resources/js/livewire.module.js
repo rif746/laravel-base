@@ -1,26 +1,35 @@
 document.addEventListener("livewire:init", () => {
+    Livewire.on("theme-changed", ({ theme }) => {
+        document.documentElement.setAttribute("data-theme", theme);
+        document.documentElement.setAttribute("class", theme);
+    });
+
     Livewire.directive("modal", ({ el, directive, component, cleanup }) => {
         let [modal_name, id] = directive.expression.split(",");
 
-        let isShow = directive.modifiers.includes('show')
+        let isShow = directive.modifiers.includes("show");
         let listeners = [];
 
         if (!isShow) {
             modal_name = component.name;
-            modal_name = modal_name.split('.')
-            modal_name = modal_name[modal_name.length - 1]
-            let $wire = Livewire.find(component.id)
-            $wire.watch('modal', (value) => !value && $wire.clear())
+            modal_name = modal_name.split(".");
+            modal_name = modal_name[modal_name.length - 1];
+            let $wire = Livewire.find(component.id);
+            $wire.watch("modal", (value) => !value && $wire.clear());
             listeners.push(
-                Livewire.on('open-modal', ({name, id = null}) => {
-                    if(name == modal_name) {
+                Livewire.on("open-modal", ({ name, id = null }) => {
+                    if (name == modal_name) {
                         $wire.modal = true;
-                        if (id !== null) $wire.load(id)
+                        if (id !== null) $wire.load(id);
                     }
-                })
-            )
+                }),
+
+                Livewire.on("close-modal", () => {
+                    $wire.modal = false;
+                }),
+            );
             cleanup(() => {
-                listeners.forEach(listen => listen());
+                listeners.forEach((listen) => listen());
             });
         } else {
             let event = {};
@@ -38,7 +47,6 @@ document.addEventListener("livewire:init", () => {
                 el.removeEventListener(event.name, event.on);
             });
         }
-
     });
     Livewire.directive("delete", ({ el, directive, component, cleanup }) => {
         let content = directive.expression;
@@ -53,8 +61,9 @@ document.addEventListener("livewire:init", () => {
                 })
                 .then((e) => {
                     if (e.isConfirmed) {
-                        Livewire.find(component.id)
-                            .delete(id.replace("/ /g", ""));
+                        Livewire.find(component.id).delete(
+                            id.replace("/ /g", ""),
+                        );
                     }
                 });
         };

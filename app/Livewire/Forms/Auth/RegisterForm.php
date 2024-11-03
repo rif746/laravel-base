@@ -2,34 +2,30 @@
 
 namespace App\Livewire\Forms\Auth;
 
+use App\Enum\RoleType;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Validation\Rules;
 use Livewire\Attributes\Rule;
 use Livewire\Form;
-use Illuminate\Validation\Rules;
 
 class RegisterForm extends Form
 {
     #[Rule(['required', 'string', 'email'])]
     public $email;
 
-    #[Rule(['required', 'string', 'max:255', 'unique:' . User::class . ',name'])]
+    #[Rule(['required', 'string', 'max:255', 'unique:'.User::class.',name'])]
     public $name;
-
-    #[Rule(['required', 'string'])]
-    public $gender;
-
-    #[Rule(['required', 'string'])]
-    public $address;
 
     #[Rule(['required', 'confirmed'])]
     public $password;
+
     public $password_confirmation;
 
     protected function rules()
     {
         return [
-            'password' => [Rules\Password::default()]
+            'password' => [Rules\Password::default()],
         ];
     }
 
@@ -37,17 +33,15 @@ class RegisterForm extends Form
     {
         $this->validate();
         $user = User::create([
+            'name' => $this->name,
             'email' => $this->email,
             'password' => bcrypt($this->password),
-        ])->profile()->create([
-            'name' => $this->name,
-            'gender' => $this->gender,
-            'address' => $this->address,
         ]);
+        $user->assignRole(RoleType::GUEST);
 
         event(new Registered($user));
 
-        auth()->login($user);
+        auth('web')->login($user);
 
         return redirect('/landing');
     }

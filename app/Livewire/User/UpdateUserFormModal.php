@@ -18,21 +18,21 @@ class UpdateUserFormModal extends BaseModal
      * normal modal title
      * @var string
      */
-    protected static $title = 'Update User';
+    protected static $title = 'locale/user.title.modal.update';
 
     /*
      * load modal title
      * @var string
      */
-    protected static $load_title = 'Update User';
+    protected static $load_title = 'locale/user.title.modal.update';
 
     /*
      * save or load permission
      * @var string|bool
      */
     protected $permission = [
-        'load' => true,
-        'save' => true,
+        'load' => 'user edit',
+        'save' => 'user edit',
     ];
 
     public function mount()
@@ -48,7 +48,7 @@ class UpdateUserFormModal extends BaseModal
     #[Computed(persist: true)]
     public function roles()
     {
-        return Role::all(['name'])->pluck('name');
+        return Role::all(['name'])->toArray();
     }
 
     public function load($id)
@@ -63,13 +63,13 @@ class UpdateUserFormModal extends BaseModal
         if ($this->form->post()) {
             $this->modal = false;
             $this->dispatch('user-table:reload');
-            $this->success('User updated!');
+            $this->success(__('locale/user.alert.updated'));
         }
     }
 
     public function clear()
     {
         parent::clear();
-        $this->form->clear();
+        $this->form->reset();
     }
 }

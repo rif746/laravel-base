@@ -21,7 +21,7 @@ class ChangePasswordFormModal extends BaseModal
      * modal title
      * @var string
      */
-    protected static $title = "Change Password";
+    protected static $title = 'locale/profile.title.modal.change_password';
 
     /*
      * save or load permission

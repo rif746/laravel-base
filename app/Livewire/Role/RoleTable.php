@@ -15,22 +15,14 @@ class RoleTable extends BaseTable
     use WithPagination;
 
     #[Locked]
-    public $title = "Role Data";
+    public $title = "locale/role.title.table";
 
-    protected array $permissions = [
-        'create' => 'role create',
-        'edit' => 'role edit',
-        'delete' => 'role delete',
-    ];
-
-    protected array $modals = [
-        'create' => 'role-form-modal',
-        'edit' => 'role-form-modal',
-    ];
+    protected null|string $deletePermissionModel = Role::class;
+    protected bool|string $deletePermission = false;
 
     public function render()
     {
-        return view("livewire.role.role-table", $this->getData());
+        return view("livewire.role.role-table");
     }
 
     #[Computed]
@@ -42,6 +34,7 @@ class RoleTable extends BaseTable
             ->onEachSide(2);
     }
 
+    #[Computed]
     public function headers()
     {
         return [

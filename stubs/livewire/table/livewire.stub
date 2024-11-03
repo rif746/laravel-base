@@ -14,15 +14,12 @@ class [class] extends BaseTable
     #[Locked]
     public $title = "";
 
-    protected array $permissions = [
-        'create' => true,
-        'edit' => true,
-        'delete' => true,
-    ];
+    protected null|string $deletePermissionModel = "[modal_class]";
+    protected bool|string $deletePermission = false;
 
     public function render()
     {
-        return view("livewire.role.role-table", $this->getData());
+        return view("[view]", $this->getData());
     }
 
     public function headers()
