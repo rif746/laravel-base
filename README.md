@@ -12,9 +12,9 @@ Projek ini merupakan dasar dari penggunaan laravel dan livewire. terdapat bebera
 # Instalasi Projek
 - Clone repository projek ini.
 ```sh
-$ git clone https://github.com/rif746/laravel-livewire-base.git
+$ git clone https://github.com/rif746/laravel-base.git
 # atau
-$ git clone https://gitlab.com/rif746/livewire-base.git
+$ git clone https://gitlab.com/rif746/laravel-base.git
 ```
 - Masuk ke dalam direktori, dan pasang dependensi menggunakan `composer` dan `npm`.
 ```sh
