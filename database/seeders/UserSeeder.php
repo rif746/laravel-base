@@ -19,7 +19,8 @@ class UserSeeder extends Seeder
             'name' => 'Administrator',
             'email' => 'admin@web.io',
             'password' => bcrypt('password'),
-            // 'email_verified_at' => now()
+            'email_verified_at' => now(),
+            'status' => true
         ]);
         $user->syncRoles(RoleType::ADMINISTRATOR);
         $user->profile()->create([

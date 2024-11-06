@@ -12,6 +12,7 @@
         "intervention/image-laravel": "^1.2",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
+        "laravolt/indonesia": "^0.35.0",
         "livewire/livewire": "^3.5",
         "maatwebsite/excel": "^3.1",
         "robsontenorio/mary": "^1.40",

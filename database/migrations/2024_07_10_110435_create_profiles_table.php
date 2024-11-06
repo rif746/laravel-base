@@ -15,7 +15,12 @@ return new class extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->enum('gender', GenderType::values())->nullable();
+            $table->string('bio')->nullable();
             $table->string('address')->nullable();
+            $table->string('village')->nullable();
+            $table->string('district')->nullable();
+            $table->string('city')->nullable();
+            $table->string('province')->nullable();
 
             $table->foreignId('user_id');
             $table->timestamps();

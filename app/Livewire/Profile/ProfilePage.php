@@ -3,15 +3,19 @@
 namespace App\Livewire\Profile;
 
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Mary\Traits\Toast;
 
 class ProfilePage extends Component
 {
     use Toast;
+    use WithFileUploads;
 
     public $theme;
 
     public $lang;
+
+    public $avatar;
 
     protected $listeners = ['profile:update' => '$refresh'];
 
@@ -22,19 +26,6 @@ class ProfilePage extends Component
         $this->lang = $preference['lang'] ?? null;
     }
 
-    public function updated($props, $val)
-    {
-        $settings = [
-            'theme' => $this->theme,
-            'lang' => $this->lang
-        ];
-        auth('web')->user()->update(['settings' => $settings]);
-
-        if($props == 'theme') {
-            $this->dispatch('theme-changed', theme: $val);
-        }
-    }
-
     public function render()
     {
         return view('livewire.profile.profile-page');
@@ -43,6 +34,32 @@ class ProfilePage extends Component
     public function verifyEmail()
     {
         auth('web')->user()->sendEmailVerificationNotification();
-        $this->success("Email verification has sent.");
+        $this->success('Email verification has sent.');
+    }
+
+    public function saveSettings()
+    {
+
+        $settings = [
+            'theme' => $this->theme,
+            'lang' => $this->lang,
+        ];
+        auth('web')->user()->update(['settings' => $settings]);
+        $this->dispatch('theme-changed', theme: $this->theme);
+    }
+
+    public function saveAvatar()
+    {
+        $this->validate([
+            'avatar' => 'dimensions:ratio=1/1',
+        ]);
+        $user = auth('web')->user();
+        if ($user->photo_profile) {
+            deleteFile($user->photo_profile);
+        }
+        $avatar = $this->avatar?->store('avatar');
+        auth('web')->user()->update(['photo_profile' => $avatar]);
+        $this->avatar = null;
+        $this->resetValidation();
     }
 }

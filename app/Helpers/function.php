@@ -58,8 +58,8 @@ function ensureDirExists($dir)
  */
 function deleteFile($file)
 {
-    if (Storage::fileExists(public_path('/storage/' . $file))) {
-        unlink(public_path("/storage/" . $file));
+    if (Storage::disk('private')->exists($file)) {
+        Storage::disk('private')->delete($file);
     }
 }
 
@@ -117,4 +117,8 @@ function seo(string $title, string $description = null, array $property = [], ar
     foreach ($property as $key => $value) {
         SEOTools::opengraph()->addProperty($key, $value);
     }
+}
+
+function tempFiles($path) {
+    return Storage::disk('private')->temporaryUrl($path, now()->addMinutes(5));
 }

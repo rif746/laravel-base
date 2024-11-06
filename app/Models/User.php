@@ -23,8 +23,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'temporary_password',
         'settings',
+        'photo_profile',
+        'status',
     ];
 
     /**
@@ -45,8 +46,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'temporary_password' => 'hashed',
         'settings' => 'array',
+        'status' => 'boolean',
     ];
 
     protected $appends = ['role_name'];

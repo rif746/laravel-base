@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ env('APP_NAME') }}</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css'])
+    @stack('styles')
 </head>
 
 <body class="min-h-screen font-sans antialiased bg-base-200/50 dark:bg-base-200">
@@ -33,7 +34,17 @@
 
             {{-- User --}}
             @if ($user = auth()->user())
-                <x-list-item :link="route('profile.index')" :item="$user" value="name" sub-value="email" no-separator class="pt-2">
+                <x-list-item :link="route('profile.index')" :item="$user" value="name" sub-value="email"
+                    no-separator class="pt-2">
+                    <x-slot:avatar>
+                        <div class="py-3">
+                            <div class="avatar">
+                                <div class="w-11 rounded-full">
+                                    <img src="{{ tempFiles(auth()->user()->photo_profile) }}" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </x-slot:avatar>
                     <x-slot:actions>
                         <form id="logout" method="POST" action="{{ url('/logout') }}">
                             @csrf
@@ -62,6 +73,8 @@
 
     {{--  TOAST area --}}
     <x-toast position="toast-top toast-right" />
-</body>
+    @vite(['resources/js/app.js'])
+    @stack('scripts')
+    </body>
 
-</html>
+    </html>

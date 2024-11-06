@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +23,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/users', \App\Livewire\User\UserTable::class)->name('user.index');
     Route::get('/profile', \App\Livewire\Profile\ProfilePage::class)->name('profile.index')->middleware('password.confirm');
 });
+
+Route::get('/files', fn() => response()->file(Storage::disk('private')->path(request()->query('path'))))->middleware('signed')->name('temp.files');
 
 require __DIR__ . '/auth.php';

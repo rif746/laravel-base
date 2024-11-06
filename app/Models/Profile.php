@@ -10,8 +10,13 @@ class Profile extends Model
     use HasFactory;
 
     protected $fillable = [
+        'bio',
         'gender',
         'address',
+        'village',
+        'district',
+        'city',
+        'province',
         'user_id'
     ];
 

@@ -20,3 +20,8 @@
 .mary-table-pagination button {
     @apply bg-base-100
 }
+
+.cropper-point {
+    width: 10px !important;
+    height: 10px !important;
+}
