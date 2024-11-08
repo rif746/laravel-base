@@ -5,6 +5,11 @@ namespace App\Livewire\Profile;
 use App\Enum\GenderType;
 use App\Livewire\Forms\UpdateProfileForm;
 use App\Livewire\Module\BaseModal;
+use Laravolt\Indonesia\Models\District;
+use Laravolt\Indonesia\Models\Kabupaten;
+use Laravolt\Indonesia\Models\Provinsi;
+use Laravolt\Indonesia\Models\Village;
+use Livewire\Attributes\Computed;
 use Mary\Traits\Toast;
 
 class UpdateProfileFormModal extends BaseModal
@@ -48,6 +53,7 @@ class UpdateProfileFormModal extends BaseModal
         ];
 
         return view('livewire.profile.update-profile-form-modal')
+            ->with('provinces', $this->provinces)
             ->with('gender', $gender);
     }
 
@@ -72,5 +78,38 @@ class UpdateProfileFormModal extends BaseModal
     {
         parent::clear();
         $this->form->reset();
+    }
+
+    #[Computed()]
+    public function provinces()
+    {
+        return Provinsi::all();
+    }
+
+    #[Computed()]
+    public function cities()
+    {
+        $code = $this->provinces->where('name', $this->form->province)
+            ->first()
+            ?->code;
+        return Kabupaten::where('province_code', $code)->get();
+    }
+
+    #[Computed()]
+    public function districts()
+    {
+        $code = $this->cities->where('name', $this->form->city)
+            ->first()
+            ?->code;
+        return District::where('city_code', $code)->get();
+    }
+
+    #[Computed()]
+    public function villages()
+    {
+        $code = $this->districts->where('name', $this->form->district)
+            ->first()
+            ?->code;
+        return Village::where('district_code', $code)->get();
     }
 }

@@ -6,6 +6,7 @@ return [
         'modal' => [
             'create' => 'Create User',
             'update' => 'Update User',
+            'detail' => 'Detail User',
         ],
     ],
     'field' => [
@@ -14,6 +15,11 @@ return [
         'role' => 'Role',
         'gender' => 'Gender',
         'email_status' => 'Email Status',
+        'bio' => 'Bio',
+        'village' => 'Village',
+        'district' => 'District',
+        'city' => 'City',
+        'province' => 'Province',
         'password' => 'Password',
         'current_password' => 'Current Password',
         'new_password' => 'New Password',
@@ -24,9 +30,14 @@ return [
         'verified' => 'Verified',
         'unverified' => 'Unverified',
     ],
-    'section' => [
-        'info' => 'User Information',
-        'preference' => 'Preference',
-        'user_deletion' => 'Delete Account',
+    'alert' => [
+        'deletion' => 'Are you sure want to remove user :name?',
+        'created' => 'User created successfully!',
+        'updated' => 'User updated successfully!',
+        'deleted' => 'User removed successfully!',
+        'toggle_status' => '{0} User is deactivated!|{1} User is activated!'
     ],
+    'button' => [
+        'toggle_status' => '{0} Activate|{1} Deactivate'
+    ]
 ];

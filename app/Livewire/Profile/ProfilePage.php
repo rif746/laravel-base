@@ -46,6 +46,8 @@ class ProfilePage extends Component
         ];
         auth('web')->user()->update(['settings' => $settings]);
         $this->dispatch('theme-changed', theme: $this->theme);
+        $this->success('Setting Updated!', 'Refreshing this page to take effect.');
+        $this->redirect(request()->header('Referer'), navigate: true);
     }
 
     public function saveAvatar()

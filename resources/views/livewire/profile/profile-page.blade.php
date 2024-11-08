@@ -8,7 +8,7 @@
         </x-slot:menu>
 
         <div class="row">
-            <div class="sm:col-12 md:col-12 font-bold px-2 py-1">
+            <div class="sm:col-12 md:col-4 px-2 py-1">
                 <div class="flex flex-col gap-1 items-start">
                     <x-file wire:model="avatar" accept="image/png" crop-after-change :crop-config="['aspectRatio' => 1 / 1, 'initialAspectRatio' => 1 / 1]">
                         <img src="{{ tempFiles(auth()->user()->photo_profile ?? 'profile.png') }}"
@@ -19,36 +19,21 @@
                     @endif
                 </div>
             </div>
-            <div class="sm:col-12 md:col-4 font-bold px-2 py-1">
-                {{ __('locale/user.field.name') }}
-            </div>
-            <div class="sm:col-12 md:col-8 px-2 py-1">
-                {{ auth()->user()->name }}
-            </div>
-            <div class="sm:col-12 md:col-4 font-bold px-2 py-1">
-                {{ __('locale/user.field.email') }}
-            </div>
-            <div class="sm:col-12 md:col-8 px-2 py-1">
-                {{ auth()->user()->email }}
-            </div>
-            <div class="sm:col-12 md:col-4 font-bold px-2 py-1">
-                {{ __('locale/user.field.email_status') }}
-            </div>
-            <div class="sm:col-12 md:col-8 px-2 py-1">
-                {{ __('locale/profile.status.email.' . (auth()->user()->email_verified_at ? 'verified' : 'unverified')) }}
-            </div>
-            <div class="sm:col-12 md:col-4 font-bold px-2 py-1">
-                {{ __('locale/user.field.role') }}
-            </div>
-            <div class="sm:col-12 md:col-8 px-2 py-1">
-                {{ auth()->user()->role_name }}
-            </div>
-            <div class="sm:col-12 md:col-4 font-bold px-2 py-1">
-                {{ __('locale/user.field.gender') }}
-            </div>
-            <div class="sm:col-12 md:col-8 px-2 py-1">
-                {{ \App\Enum\GenderType::tryFrom(auth()->user()?->profile?->gender)?->label() ?? '-' }}
-            </div>
+            <div class="sm:col-12 md:col-8 px-2 py-1 pb-3 markdown">@markdown(auth()->user()?->profile?->bio ?? '-')</div>
+            <div class="sm:col-12 md:col-4 px-2 py-1 font-bold">{{ __('locale/user.field.name') }}</div>
+            <div class="sm:col-12 md:col-8 px-2 py-1">{{ auth()->user()->name ?? '-' }}</div>
+            <div class="sm:col-12 md:col-4 px-2 py-1 font-bold">{{ __('locale/user.field.email') }}</div>
+            <div class="sm:col-12 md:col-8 px-2 py-1">{{ auth()->user()->email ?? '-' }}</div>
+            <div class="sm:col-12 md:col-4 px-2 py-1 font-bold">{{ __('locale/user.field.gender') }}</div>
+            <div class="sm:col-12 md:col-8 px-2 py-1">{{ \App\Enum\GenderType::tryFrom(auth()->user()?->profile?->gender)?->label() ?? '-' }}</div>
+            <div class="sm:col-12 md:col-4 px-2 py-1 font-bold">{{ __('locale/user.field.village') }}</div>
+            <div class="sm:col-12 md:col-8 px-2 py-1">{{ auth()->user()?->profile?->village ?? '-' }}</div>
+            <div class="sm:col-12 md:col-4 px-2 py-1 font-bold">{{ __('locale/user.field.district') }}</div>
+            <div class="sm:col-12 md:col-8 px-2 py-1">{{ auth()->user()?->profile?->district ?? '-' }}</div>
+            <div class="sm:col-12 md:col-4 px-2 py-1 font-bold">{{ __('locale/user.field.city') }}</div>
+            <div class="sm:col-12 md:col-8 px-2 py-1">{{ auth()->user()?->profile?->city ?? '-' }}</div>
+            <div class="sm:col-12 md:col-4 px-2 py-1 font-bold">{{ __('locale/user.field.province') }}</div>
+            <div class="sm:col-12 md:col-8 px-2 py-1">{{ auth()->user()?->profile?->province ?? '-' }}</div>
         </div>
     </x-card>
     <x-card :title="__('locale/profile.section.preference')" sseparator shadow>

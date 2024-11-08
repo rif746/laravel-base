@@ -24,6 +24,21 @@ class UpdateProfileForm extends Form
     #[Validate('required', as: 'Gender')]
     public $gender = null;
 
+    #[Validate('required', as: 'Bio')]
+    public $bio = '';
+
+    #[Validate('required', as: 'Provinsi')]
+    public $province = null;
+
+    #[Validate('required', as: 'Kota')]
+    public $city = null;
+
+    #[Validate('required', as: 'Distrik')]
+    public $district = null;
+
+    #[Validate('required', as: 'Desa')]
+    public $village = null;
+
     protected function rules()
     {
         return [
@@ -53,6 +68,11 @@ class UpdateProfileForm extends Form
 
         $user->profile()->updateOrCreate([], [
             'gender' => $this->gender,
+            'bio' => $this->bio,
+            'province' => $this->province,
+            'city' => $this->city,
+            'district' => $this->district,
+            'village' => $this->village,
         ]);
 
         return $user->update();

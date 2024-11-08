@@ -3,9 +3,9 @@
         <x-hr target="save,load" />
 
         <x-form wire:submit.prevent="save">
-            <x-password :label="__('Password')" wire:model="current_password" />
-            <x-password :label="__('New Password')" wire:model="new_password" />
-            <x-password :label="__('New Password Confirmation')" wire:model="new_password_confirmation" />
+            <x-password :label="__('locale/user.field.current_password')" wire:model="current_password" />
+            <x-password :label="__('locale/user.field.new_password')" wire:model="new_password" />
+            <x-password :label="__('locale/user.field.new_password_confirmation')" wire:model="new_password_confirmation" />
 
             <x-slot:actions>
                 <x-button label="Cancel" wire:click="$toggle('modal')" />

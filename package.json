@@ -18,7 +18,9 @@
         "@tailwindcss/typography": "^0.5.13",
         "cropperjs": "^1.6.2",
         "daisyui": "^4.12.13",
+        "shiki": "^1.22.2",
         "sweetalert2": "^11.10.8",
-        "tailwind-bootstrap-grid": "^5.1.0"
+        "tailwind-bootstrap-grid": "^5.1.0",
+        "tinymce": "^6.8.5"
     }
 }

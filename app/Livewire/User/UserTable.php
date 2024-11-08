@@ -52,6 +52,11 @@ class UserTable extends BaseTable
                 'label' => __('locale/user.field.email'),
                 'sort' => false,
             ],
+            [
+                'key' => 'status',
+                'label' => 'Status',
+                'sort' => false,
+            ],
         ];
     }
 

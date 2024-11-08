@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ env('APP_NAME') }}</title>
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
+    @stack('scripts')
 </head>
 
 <body class="min-h-screen font-sans antialiased bg-base-200/50 dark:bg-base-200">
@@ -73,8 +75,6 @@
 
     {{--  TOAST area --}}
     <x-toast position="toast-top toast-right" />
-    @vite(['resources/js/app.js'])
-    @stack('scripts')
     </body>
 
     </html>
