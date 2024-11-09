@@ -6,14 +6,15 @@
         @endcan
     </x-slot:menu>
 
-    <x-table :headers="$headers" rows="" :sort-by="$this->sortBy" with-pagination>
+    <x-table :headers="$this->headers" :rows="[]" :sort-by="$this->sortBy" with-pagination>
         @scope('actions', $role)
             <div class="join">
                 @can('[edit_permission]')
                     <x-button icon="o-pencil" class="btn-xs join-item btn-accent" wire:modal.show="[modal_name], [id]" />
                 @endcan
                 @can('[delete_permission]')
-                    <x-button icon="o-trash" class="btn-xs join-item btn-error" wire:delete="[ask], [id]" />
+                    <x-button icon="o-trash" class="btn-xs join-item btn-error"
+                        wire:delete="{{ __('[ask]', []) }}, [id]" />
                 @endcan
             </div>
         @endscope

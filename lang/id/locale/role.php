@@ -8,6 +8,7 @@ return [
             'edit' => 'Sunting Peran',
         ]
     ],
+    'detail' => 'Lihat semua peran yang tersedia pada sistem.',
     'field' => [
         'name' => 'Nama',
         'permission' => 'Perizinan'

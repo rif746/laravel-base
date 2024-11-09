@@ -109,13 +109,13 @@ function isFileType(string $path, string $type): bool
  *
  * @return void
  */
-function seo(string $title, string $description = null, array $property = [], array $images = [])
+function seo(string $title = null, string $description = null, array $property = [], array $images = [])
 {
-    SEOTools::setTitle($title);
-    SEOTools::setDescription($description);
+    SEOTools::setTitle(__($title));
+    SEOTools::setDescription(__($description));
     SEOTools::addImages($images);
     foreach ($property as $key => $value) {
-        SEOTools::opengraph()->addProperty($key, $value);
+        SEOTools::opengraph()->addProperty($key, __($value));
     }
 }
 

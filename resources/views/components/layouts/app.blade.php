@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ env('APP_NAME') }}</title>
+    {!! SEO::generate() !!}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
     @stack('scripts')
@@ -42,7 +42,7 @@
                         <div class="py-3">
                             <div class="avatar">
                                 <div class="w-11 rounded-full">
-                                    <img src="{{ tempFiles(auth()->user()->photo_profile) }}" alt="">
+                                    <img src="{{ tempFiles(auth()->user()->photo_profile ?? '/profile.png') }}" alt="">
                                 </div>
                             </div>
                         </div>

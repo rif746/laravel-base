@@ -9,6 +9,7 @@ return [
             'detail' => 'Detail User',
         ],
     ],
+    'detail' => 'List user registered in system.',
     'field' => [
         'name' => 'Name',
         'email' => 'Email',

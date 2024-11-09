@@ -8,6 +8,7 @@ return [
             'edit' => 'Update Role',
         ]
     ],
+    'detail' => 'List role available in system.',
     'field' => [
         'name' => 'Name',
         'permission' => 'Permission'

@@ -9,6 +9,7 @@ return [
             'detail' => 'Detail Pengguna',
         ],
     ],
+    'detail' => 'Lihat semua pengguna yang terdaftar pada sistem.',
     'field' => [
         'name' => 'Nama',
         'email' => 'E-mail',

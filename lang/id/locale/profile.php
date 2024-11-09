@@ -2,12 +2,14 @@
 
 return [
     'title' => [
+        'page' => 'Profil',
         'modal' => [
             'update_profile' => 'Ubah Profil',
             'change_password' => 'Ubah Password',
             'user_deletion' => 'Konfirmasi Penghapusan Akun',
         ]
     ],
+    'detail' => 'Detail profil pengguna yang masuk',
     'section' => [
         'user_info' => 'Informasi Pengguna',
         'preference' => 'Preferensi',

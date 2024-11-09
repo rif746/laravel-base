@@ -2,12 +2,14 @@
 
 return [
     'title' => [
+        'page' => 'Profile',
         'modal' => [
             'update_profile' => 'Update Profile',
             'user_deletion' => 'Confirm Account Deletion',
             'change_password' => 'Change Password',
         ]
     ],
+    'detail' => 'Detail logged in user',
     'section' => [
         'user_info' => 'User Information',
         'preference' => 'Preferences',

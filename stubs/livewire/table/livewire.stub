@@ -2,26 +2,32 @@
 
 namespace [namespace];
 
+use App\Livewire\Attributes\Metadata;
 use App\Livewire\Module\BaseTable;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Mary\Traits\Toast;
 
+#[Metadata(
+    title: '[class]',
+    description: ''
+)]
 class [class] extends BaseTable
 {
     use Toast;
 
     #[Locked]
-    public $title = "";
+    public $title = "[class]";
 
     protected null|string $deletePermissionModel = "[modal_class]";
     protected bool|string $deletePermission = false;
 
     public function render()
     {
-        return view("[view]", $this->getData());
+        return view("[view]");
     }
 
+    #[Computed]
     public function headers()
     {
         return [

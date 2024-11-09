@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Auth;
 
+use App\Livewire\Attributes\Metadata;
 use App\Livewire\Forms\Auth\LoginForm;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Metadata('Login')]
 class LoginPage extends Component
 {
     public LoginForm $form;

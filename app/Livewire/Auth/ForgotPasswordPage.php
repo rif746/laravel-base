@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Auth;
 
+use App\Livewire\Attributes\Metadata;
 use Illuminate\Support\Facades\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Mary\Traits\Toast;
 
+#[Metadata('Forgot Password')]
 class ForgotPasswordPage extends Component
 {
     use Toast;

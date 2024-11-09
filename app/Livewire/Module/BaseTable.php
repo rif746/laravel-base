@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Module;
 
-use Illuminate\Database\Eloquent\Model;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -25,13 +24,6 @@ class BaseTable extends Component
 
     protected null|string $deletePermissionModel = null;
     protected bool|string $deletePermission = false;
-
-    public function mount()
-    {
-        seo(
-            title: $this->title
-        );
-    }
 
     public function updatedSearch()
     {

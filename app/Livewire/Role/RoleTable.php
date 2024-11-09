@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Role;
 
+use App\Livewire\Attributes\Metadata;
 use App\Livewire\Module\BaseTable;
 use App\Models\Role;
 use Livewire\Attributes\Computed;
@@ -9,6 +10,10 @@ use Livewire\Attributes\Locked;
 use Livewire\WithPagination;
 use Mary\Traits\Toast;
 
+#[Metadata(
+    title: 'locale/role.title.table',
+    description: 'locale/role.detail'
+)]
 class RoleTable extends BaseTable
 {
     use Toast;

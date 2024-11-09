@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Livewire\Attributes\Metadata;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rules;
@@ -12,6 +13,7 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Mary\Traits\Toast;
 
+#[Metadata('Reset Password')]
 class ResetPasswordPage extends Component
 {
     use Toast;

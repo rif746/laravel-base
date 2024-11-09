@@ -2,6 +2,7 @@
 
 namespace App\Livewire\User;
 
+use App\Livewire\Attributes\Metadata;
 use App\Livewire\Module\BaseTable;
 use App\Models\User;
 use Livewire\Attributes\Computed;
@@ -10,6 +11,10 @@ use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Mary\Traits\Toast;
 
+#[Metadata(
+    title: 'locale/user.title.table',
+    description: 'locale/user.detail'
+)]
 class UserTable extends BaseTable
 {
     use Toast;

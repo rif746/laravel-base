@@ -3,10 +3,12 @@
 namespace App\Livewire\Auth;
 
 use App\Livewire\Actions\Logout;
+use App\Livewire\Attributes\Metadata;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Mary\Traits\Toast;
 
+#[Metadata('Verify Email')]
 class VerifyEmailPage extends Component
 {
     use Toast;

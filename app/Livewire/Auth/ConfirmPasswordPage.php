@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Auth;
 
+use App\Livewire\Attributes\Metadata;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Metadata('Confirm Password')]
 class ConfirmPasswordPage extends Component
 {
     public $password;

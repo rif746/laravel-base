@@ -1,4 +1,4 @@
-<x-card shadow separator progress-indicator="send" title="Reset Password" subtitle="Reset your password here">
+<x-card shadow separator progress-indicator="send" title="Confirm Password" subtitle="Confirm your password here">
     <span>
         {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
     </span>

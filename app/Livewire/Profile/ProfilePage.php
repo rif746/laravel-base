@@ -2,10 +2,15 @@
 
 namespace App\Livewire\Profile;
 
+use App\Livewire\Attributes\Metadata;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Mary\Traits\Toast;
 
+#[Metadata(
+    title: 'locale/profile.title.page',
+    description: 'locale/profile.detail'
+)]
 class ProfilePage extends Component
 {
     use Toast;

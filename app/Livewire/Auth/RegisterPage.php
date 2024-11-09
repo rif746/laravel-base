@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Auth;
 
+use App\Livewire\Attributes\Metadata;
 use App\Livewire\Forms\Auth\RegisterForm;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Metadata('Register')]
 class RegisterPage extends Component
 {
     public RegisterForm $form;
