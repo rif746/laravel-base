@@ -21,7 +21,7 @@ window.notify = ({
             toast.addEventListener("mouseleave", Swal.resumeTimer);
         },
         customClass: {
-            popup: "bg-gray-300 text-gray-800 dark:text-gray-300 dark:!bg-gray-800",
+            popup: "dark:bg-gray-800 bg-base-200 text-gray-800 dark:text-gray-200",
         },
     }).fire({
         title: title,
@@ -36,7 +36,7 @@ window.confirm = ({ title, message }) => {
         text: message,
         showCancelButton: true,
         customClass: {
-            popup: "dark:bg-gray-800 bg-gray-300 text-gray-800 dark:text-gray-300",
+            popup: "dark:bg-gray-800 bg-base-200 text-gray-800 dark:text-gray-200",
         },
     });
 };

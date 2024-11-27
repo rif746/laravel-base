@@ -16,6 +16,10 @@
     @apply bg-inherit
 }
 
+.btn > * {
+    @apply pointer-events-none;
+}
+
 /* For dark mode*/
 .mary-table-pagination button {
     @apply bg-base-100

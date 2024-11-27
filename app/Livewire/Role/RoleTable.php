@@ -23,7 +23,7 @@ class RoleTable extends BaseTable
     public $title = "locale/role.title.table";
 
     protected null|string $deletePermissionModel = Role::class;
-    protected bool|string $deletePermission = false;
+    protected bool|string $deletePermission = 'role delete';
 
     public function render()
     {

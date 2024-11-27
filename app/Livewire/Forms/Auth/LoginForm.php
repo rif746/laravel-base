@@ -18,8 +18,10 @@ class LoginForm extends Form
     public function post()
     {
         $this->validate();
-        if (!auth()->attempt($this->only(['email', 'password']), $this->remember)) {
+        if (!auth('web')->attempt($this->only(['email', 'password']), $this->remember)) {
             $this->addError('password', 'incorrect email or password');
+        } elseif(!auth('web')->user()->status) {
+            $this->addError('password', 'your account is inactive, please contact administrator for further information.');
         } else {
             return redirect()->route('dashboard');
         }

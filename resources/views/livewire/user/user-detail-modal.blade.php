@@ -28,10 +28,6 @@
 
         <x-slot:actions>
             <x-button label="Cancel" wire:click="$toggle('modal')" />
-            @can('update', $this->users)
-                <x-button class="{{ $this->users?->status ? 'btn-error' : 'btn-accent' }}" :label="trans_choice('locale/user.button.toggle_status', $this->users?->status)"
-                    wire:click="toggleStatus" wire:target="toggleStatus" spinner />
-            @endcan
         </x-slot:actions>
     </x-modal>
 </div>

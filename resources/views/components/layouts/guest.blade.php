@@ -24,7 +24,7 @@
             @guest
                 <x-dropdown class="block md:hidden" no-x-anchor right>
                     <x-slot:trigger>
-                        <x-button icon="o-rectangle-group" class="btn-sm btn-ghost block md:hidden" />
+                        <x-button icon="o-bars-3" class="btn-sm btn-ghost block md:hidden" />
                     </x-slot:trigger>
 
                     <x-menu-item :label="__('Login')" icon="o-arrow-right-end-on-rectangle" :link="route('login')" />
@@ -37,7 +37,7 @@
             @else
                 <x-dropdown class="block md:hidden" no-x-anchor right>
                     <x-slot:trigger>
-                        <x-button icon="o-rectangle-group" class="btn-sm btn-ghost block md:hidden" />
+                        <x-button icon="o-bars-3" class="btn-sm btn-ghost block md:hidden" />
                     </x-slot:trigger>
 
                     <x-menu-item :label="__('Dashboard')" icon="o-home" :link="route('login')" />

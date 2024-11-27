@@ -3,8 +3,8 @@ Projek ini merupakan dasar dari penggunaan laravel dan livewire. terdapat bebera
 
 # Kebutuhan Projek
 - [Git](https://git-scm.com)
-- [PHP 8.3](https://php.net)
-- [MariaDB](https://mariadb.org)
+- [PHP 8.3](https://php.net/download)
+- [MariaDB](https://mariadb.org/download/?t=mariadb&p=mariadb&r=11.5.2)
 - [Composer](https://getcomposer.org)
 - [NodeJS](https://nodejs.org)
 > Jika menggunakan Windows, sangat disarankan menggunakan [Laragon](https://laragon.net).
@@ -29,3 +29,9 @@ $ php artisan serve
 ```sh
 $ npm run dev
 ```
+
+# Autentikasi Sistem
+Pada sistem ini memiliki autentikasi dan perizinan untuk akses menu setiap pengguna. Saat ini hanay ada pengguna dengan peran `Administrator` dan `Guest` saja. Berikut adalah kombinasi default untuk memasuki sistem.
+|email|password|
+|-|-|
+|`admin@web.io`|`password`|

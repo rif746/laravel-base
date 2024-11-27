@@ -51,15 +51,6 @@ class UserDetailModal extends BaseModal
         return User::with('profile')->find($this->id);
     }
 
-    public function toggleStatus()
-    {
-        $this->users->update(['status' => !$this->users->status]);
-        $this->success(
-            title: trans_choice('locale/user.alert.toggle_status', $this->users->status),
-        );
-        $this->dispatch('user-table:reload');
-    }
-
     public function load($id)
     {
         parent::load($id);

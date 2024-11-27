@@ -65,6 +65,19 @@ class UserTable extends BaseTable
         ];
     }
 
+    public function toggleStatus($id)
+    {
+        info($id);
+        $user = User::find($id);
+        $user->status = !$user->status;
+        $user->save();
+
+        $this->success(
+            title: trans_choice('locale/user.alert.status_toggled', $user->status),
+        );
+        $this->dispatch('user-table:reload');
+    }
+
     public function delete($id)
     {
         parent::delete($id);

@@ -36,9 +36,7 @@ return [
         'created' => 'User created successfully!',
         'updated' => 'User updated successfully!',
         'deleted' => 'User removed successfully!',
-        'toggle_status' => '{0} User is deactivated!|{1} User is activated!'
+        'toggle_status' => '{0} Activate user :name?|{1} Deactivate user :name?',
+        'status_toggled' => '{0} User deactivated!|{1} User activated!',
     ],
-    'button' => [
-        'toggle_status' => '{0} Activate|{1} Deactivate'
-    ]
 ];

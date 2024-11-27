@@ -36,9 +36,7 @@ return [
         'created' => 'Pengguna berhasil dibuat!',
         'updated' => 'Pengguna berhasil diubah!',
         'deleted' => 'Pengguna berhasil dihapus!',
-        'toggle_status' => '{0} Pengguna di nonaktifkan!|{1} Akun di aktifkan!'
+        'toggle_status' => '{0} Aktifkan pengguna :name?|{1} Nonaktifkan pengguna :name?',
+        'status_toggled' => '{0} Pengguna di nonaktifkan!|{1} Pengguna di aktifkan!',
     ],
-    'button' => [
-        'toggle_status' => '{0} Aktifkan|{1} Nonaktifkan'
-    ]
 ];

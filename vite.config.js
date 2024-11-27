@@ -9,6 +9,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/cropper.js',
                 'resources/js/tinymce.js',
+                'resources/js/easymde.js',
             ],
             refresh: true,
         }),
