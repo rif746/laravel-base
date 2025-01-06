@@ -1,7 +1,7 @@
 <div>
     <x-header :title="__($this->title)" separator progress-indicator>
-        <x-slot:middle>
-            <x-input icon="o-bolt" placeholder="Search..." class="!justify-end" wire:model.live.debounce.500ms="search" />
+        <x-slot:middle class="!justify-end">
+            <x-input icon="o-bolt" placeholder="Search..." wire:model.live.debounce.500ms="search" />
         </x-slot:middle>
         <x-slot:actions>
             @can('role create')
