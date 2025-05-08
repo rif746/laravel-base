@@ -5,7 +5,7 @@
         <div class="flex items-center gap-2">
             <x-icon name="o-square-3-stack-3d" class="{{ $iconWidth }} -mb-1 text-purple-500" />
             <span
-                class="font-bold {{ $textSize }} me-3 bg-gradient-to-r from-purple-500 to-pink-300 bg-clip-text text-transparent ">
+                class="font-bold {{ $textSize }} me-3 bg-linear-to-r from-purple-500 to-pink-300 bg-clip-text text-transparent ">
                 {{ env('APP_NAME') }}
             </span>
         </div>

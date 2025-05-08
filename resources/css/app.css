@@ -1,6 +1,16 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin "daisyui";
+
+/* Mary UI */
+@source "../../vendor/robsontenorio/mary/src/View/Components/**/*.php";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Laravel */
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+@source "../**/*.blade.php";
+@source "../**/*.js";
 
 [x-cloak] {
     display: none !important;
@@ -13,7 +23,7 @@
 
 /* For dark mode*/
 .mary-table-pagination span[aria-disabled="true"] span {
-    @apply bg-inherit
+    @apply bg-inherit;
 }
 
 .btn > * {
@@ -22,9 +32,8 @@
 
 /* For dark mode*/
 .mary-table-pagination button {
-    @apply bg-base-100
+    @apply bg-base-100 cursor-pointer;
 }
-
 .cropper-point {
     width: 10px !important;
     height: 10px !important;

@@ -5,11 +5,11 @@
         <x-form wire:submit.prevent="save">
             <x-input :label="__('locale/user.field.name')" wire:model="form.name" />
             <x-input :label="__('locale/user.field.email')" wire:model="form.email" type="email" />
-            <x-password :label="__('locale/user.field.password')" wire:model="form.password" />
-            <x-radio :label="__('locale/user.field.role')" wire:model="form.role_name"
+            <x-password :label="__('locale/user.field.password')" wire:model="form.password" right />
+            <x-group :label="__('locale/user.field.role')" wire:model="form.role_name"
                 :options="$this->roles" option-value="name" option-label="name" />
             <x-slot:actions>
-                <x-button label="Cancel" @click="$wire.modal = false" />
+                <x-button label="Cancel" wire:click="$toggle('modal')" />
                 <x-button label="Save" type="submit" spinner />
             </x-slot:actions>
         </x-form>
