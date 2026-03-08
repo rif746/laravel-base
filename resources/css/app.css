@@ -17,7 +17,7 @@
 }
 
 /* Active page highlight */
-.mary-table-pagination span[aria-current="page"] > span {
+.mary-table-pagination span[aria-current="page"]>span {
     @apply bg-primary text-base-100
 }
 
@@ -26,7 +26,7 @@
     @apply bg-inherit;
 }
 
-.btn > * {
+.btn>* {
     @apply pointer-events-none;
 }
 
@@ -34,6 +34,7 @@
 .mary-table-pagination button {
     @apply bg-base-100 cursor-pointer;
 }
+
 .cropper-point {
     width: 10px !important;
     height: 10px !important;
@@ -51,6 +52,8 @@
     @apply text-lg;
 }
 
-.markdown h4, .markdown h5, .markdown h6 {
+.markdown h4,
+.markdown h5,
+.markdown h6 {
     @apply text-base;
 }
