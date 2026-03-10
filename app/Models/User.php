@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enum\GenderType;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +23,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
+        'bio',
+        'gender',
         'password',
         'settings',
         'photo_profile',
@@ -48,34 +51,30 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
         'settings' => 'array',
         'status' => 'boolean',
+        'gender' => GenderType::class,
     ];
 
     protected $appends = ['role_name'];
 
-    #
-    # Attribute
-    #
+    //
+    // Attribute
+    //
 
     public function getRoleNameAttribute()
     {
         return $this->roles->first()->name;
     }
 
-    #
-    # Relation
-    #
+    //
+    // Relation
+    //
 
-    public function profile()
-    {
-        return $this->hasOne(Profile::class);
-    }
-
-    #
-    # Scope
-    #
+    //
+    // Scope
+    //
 
     public function scopeSearch($query, $search)
     {
-        return $query->orWhere("name", "like", "%{$search}%")->orWhere("email", "like", "%{$search}%");
+        return $query->orWhere('name', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%");
     }
 }

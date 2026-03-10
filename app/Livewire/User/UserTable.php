@@ -5,6 +5,7 @@ namespace App\Livewire\User;
 use App\Livewire\Attributes\Metadata;
 use App\Livewire\Module\BaseTable;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
@@ -26,7 +27,8 @@ class UserTable extends BaseTable
     #[Url('q', history: true)]
     public $search = '';
 
-    protected null|string $deletePermissionModel = User::class;
+    protected ?string $deletePermissionModel = User::class;
+
     protected bool|string $deletePermission = 'delete';
 
     public function render()
@@ -50,27 +52,32 @@ class UserTable extends BaseTable
             [
                 'key' => 'name',
                 'label' => __('locale/user.field.name'),
-                'sort' => true,
+                'sortable' => true,
             ],
             [
                 'key' => 'email',
                 'label' => __('locale/user.field.email'),
-                'sort' => false,
+                'sortable' => false,
+            ],
+            [
+                'key' => 'role_name',
+                'label' => __('locale/user.field.role'),
+                'sortable' => false,
             ],
             [
                 'key' => 'status',
                 'label' => 'Status',
-                'sort' => false,
+                'sortable' => false,
             ],
         ];
     }
 
     public function toggleStatus($id)
     {
-        info($id);
-        $user = User::find($id);
-        $user->status = !$user->status;
-        $user->save();
+        $user = User::where('id', $id)->update([
+            'status' => DB::raw('NOT status'),
+        ]);
+        $user = User::where('id', $id)->get('status')->first();
 
         $this->success(
             title: trans_choice('locale/user.alert.status_toggled', $user->status),

@@ -20,7 +20,7 @@ class BladeServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Blade::directive('markdown', function($expr) {
+        Blade::directive('markdown', function ($expr) {
             return "<?php echo str($expr)->markdown(['html_input' => 'strip', 'allow_unsafe_links' => false]) ?>";
         });
     }

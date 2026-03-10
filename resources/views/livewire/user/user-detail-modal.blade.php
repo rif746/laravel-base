@@ -11,17 +11,6 @@
             <div class="sm:col-12 md:col-8 px-2 py-1">{{ $this->users->name ?? '-' }}</div>
             <div class="sm:col-12 md:col-4 px-2 py-1 font-bold">{{ __('locale/user.field.email') }}</div>
             <div class="sm:col-12 md:col-8 px-2 py-1">{{ $this->users->email ?? '-' }}</div>
-            <div class="sm:col-12 md:col-4 px-2 py-1 font-bold">{{ __('locale/user.field.gender') }}</div>
-            <div class="sm:col-12 md:col-8 px-2 py-1">
-                {{ \App\Enum\GenderType::tryFrom($this->users?->profile?->gender)?->label() ?? '-' }}</div>
-            <div class="sm:col-12 md:col-4 px-2 py-1 font-bold">{{ __('locale/user.field.village') }}</div>
-            <div class="sm:col-12 md:col-8 px-2 py-1">{{ $this->users?->profile?->village ?? '-' }}</div>
-            <div class="sm:col-12 md:col-4 px-2 py-1 font-bold">{{ __('locale/user.field.district') }}</div>
-            <div class="sm:col-12 md:col-8 px-2 py-1">{{ $this->users?->profile?->district ?? '-' }}</div>
-            <div class="sm:col-12 md:col-4 px-2 py-1 font-bold">{{ __('locale/user.field.city') }}</div>
-            <div class="sm:col-12 md:col-8 px-2 py-1">{{ $this->users?->profile?->city ?? '-' }}</div>
-            <div class="sm:col-12 md:col-4 px-2 py-1 font-bold">{{ __('locale/user.field.province') }}</div>
-            <div class="sm:col-12 md:col-8 px-2 py-1">{{ $this->users?->profile?->province ?? '-' }}</div>
             <div class="sm:col-12 md:col-4 px-2 py-1 font-bold">Status</div>
             <div class="sm:col-12 md:col-8 px-2 py-1">{{ $this->users?->status ? 'Aktif' : 'Nonaktif' }}</div>
         </div>

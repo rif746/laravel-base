@@ -27,7 +27,7 @@
                     @can('update', $user)
                         <x-button icon="o-pencil" class="btn-xs join-item btn-accent"
                             wire:modal.show="update-user-form-modal,{{ $user->id }}" />
-                        <x-button :icon="$user->status ? 'o-shield-check' : 'o-shield-exclamation'" x-on:click="toggleStatus" id="{{ $user->id }}"
+                        <x-button :icon="$user->status ? 'o-shield-check' : 'o-shield-exclamation'" x-on:click="toggleStatus" data-id="{{ $user->id }}"
                             message="{{ trans_choice('locale/user.alert.toggle_status', $user->status, ['name' => $user->name]) }}"
                             class="btn-xs join-item {{ $user->status ? 'btn-primary' : 'btn-warning' }}" />
                     @endcan
@@ -47,7 +47,8 @@
     <script>
         Alpine.data('users', () => ({
             toggleStatus(e) {
-                id = e.target.getAttribute('id')
+                id = e.target.getAttribute('data-id')
+                console.log(id)
                 message = e.target.getAttribute('message')
                 window.confirm({
                     title: 'Status Toggle',

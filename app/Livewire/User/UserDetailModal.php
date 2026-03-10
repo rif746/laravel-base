@@ -47,8 +47,11 @@ class UserDetailModal extends BaseModal
     #[Computed]
     public function users()
     {
-        if (is_null($this->id)) return null;
-        return User::with('profile')->find($this->id);
+        if (is_null($this->id)) {
+            return null;
+        }
+
+        return User::find($this->id);
     }
 
     public function load($id)

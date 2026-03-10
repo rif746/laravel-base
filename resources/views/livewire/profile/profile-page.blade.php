@@ -13,16 +13,9 @@
             <div class="font-bold">{{ __('locale/user.field.email') }}</div>
             <div class="col-span-4">{{ auth()->user()->email ?? '-' }}</div>
             <div class="font-bold">{{ __('locale/user.field.gender') }}</div>
-            <div class="col-span-4">
-                {{ \App\Enum\GenderType::tryFrom(auth()->user()?->profile?->gender)?->label() ?? '-' }}</div>
-            <div class="font-bold">{{ __('locale/user.field.village') }}</div>
-            <div class="col-span-4">{{ auth()->user()?->profile?->village ?? '-' }}</div>
-            <div class="font-bold">{{ __('locale/user.field.district') }}</div>
-            <div class="col-span-4">{{ auth()->user()?->profile?->district ?? '-' }}</div>
-            <div class="font-bold">{{ __('locale/user.field.city') }}</div>
-            <div class="col-span-4">{{ auth()->user()?->profile?->city ?? '-' }}</div>
-            <div class="font-bold">{{ __('locale/user.field.province') }}</div>
-            <div class="col-span-4">{{ auth()->user()?->profile?->province ?? '-' }}</div>
+            <div class="col-span-4">{{ auth()->user()->gender->label() }}</div>
+            <div class="font-bold">{{ __('locale/user.field.bio') }}</div>
+            <div class="col-span-4">{!! auth()->user()->bio !!}</div>
         </div>
     </x-card>
     <x-card :title="__('locale/profile.section.preference')" separator shadow>
