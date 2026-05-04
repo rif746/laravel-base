@@ -1,0 +1,35 @@
+{
+    "$schema": "https://www.schemastore.org/package.json",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite"
+    },
+    "devDependencies": {
+        "@popperjs/core": "^2.11.8",
+        "alpinejs": "^3.4.2",
+        "alpinejs-axios": "^1.0.12",
+        "apexcharts": "^5.10.5",
+        "autoprefixer": "^10.4.27",
+        "axios": ">=1.11.0 <=1.14.0",
+        "concurrently": "^9.0.1",
+        "laravel-vite-plugin": "^3.0.0",
+        "postcss": "^8.5.9",
+        "sass": "^1.99.0",
+        "sweetalert2": "^11.26.24",
+        "vite": "^8.0.7"
+    },
+    "dependencies": {
+        "datatables.net-bs5": "^2.3.7",
+        "datatables.net-dt": "^2.3.7",
+        "datatables.net-fixedcolumns": "^5.0.5",
+        "filepond": "^4.32.12",
+        "jquery": "^4.0.0",
+        "laravel-datatables-vite": "^0.6.2",
+        "select2": "^4.1.0-rc.0",
+        "select2-bootstrap-5-theme": "^1.3.0",
+        "vite-plugin-node-polyfills": "^0.26.0",
+        "ziggy-js": "^2.6.2"
+    }
+}

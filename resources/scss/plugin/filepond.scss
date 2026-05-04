@@ -1,0 +1,133 @@
+@import "../variables";
+@import "filepond/dist/filepond.min.css";
+
+// FilePond Theme Overrides
+.filepond--root {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+
+  // Drop panel
+  .filepond--panel-root {
+    background-color: $gray-50;
+    border: 2px dashed $gray-300;
+    border-radius: 0.75rem;
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+
+  // Drop label
+  .filepond--drop-label {
+    color: $gray-500;
+    font-size: $font-size-sm;
+
+    label {
+      cursor: pointer;
+      color: $gray-500;
+
+      strong {
+        color: $primary;
+        font-weight: 500;
+      }
+    }
+  }
+
+  // Hover / drag-over state
+  &[data-hopper-state='drag-over'] {
+    .filepond--panel-root {
+      border-color: $primary;
+      background-color: rgba($primary, 0.04);
+    }
+
+    .filepond--drop-label {
+      color: $primary;
+    }
+  }
+
+  // File item panel & info
+  .filepond--item-panel {
+    background-color: $gray-100;
+    border-radius: 0.5rem;
+  }
+
+  .filepond--file-info {
+    .filepond--file-info-main {
+      font-size: $font-size-sm;
+      font-weight: 500;
+      color: $gray-800;
+    }
+
+    .filepond--file-info-sub {
+      font-size: $font-xs;
+      color: $gray-500;
+    }
+  }
+
+  // File action buttons
+  .filepond--file-action-button {
+    background: rgba($gray-800, 0.08);
+    color: $gray-700;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba($primary, 0.12);
+      color: $primary;
+    }
+  }
+
+  // Progress ring / bar
+  .filepond--progress-indicator {
+    color: $primary;
+  }
+
+  .filepond--load-indicator {
+    color: $primary;
+  }
+
+  // Status bar success
+  .filepond--file-status {
+    .filepond--file-status-main {
+      font-size: $font-size-sm;
+      color: $gray-700;
+    }
+
+    .filepond--file-status-sub {
+      font-size: $font-xs;
+      color: $gray-400;
+    }
+  }
+
+  // Error state
+  .filepond--item[data-filepond-item-state*='error'] {
+    .filepond--item-panel {
+      background-color: rgba($danger, 0.08);
+    }
+
+    .filepond--file-info-main {
+      color: $danger;
+    }
+  }
+
+  // Upload success state
+  .filepond--item[data-filepond-item-state='processing-complete'] {
+    .filepond--item-panel {
+      background-color: rgba($success, 0.08);
+    }
+
+    .filepond--file-info-main {
+      color: $success;
+    }
+  }
+}
+
+// Image preview plugin
+.filepond--image-preview-overlay-idle {
+  color: rgba($gray-900, 0.5);
+}
+
+.filepond--image-preview-overlay-success {
+  color: rgba($success, 0.85);
+}
+
+.filepond--image-preview-overlay-failure {
+  color: rgba($danger, 0.85);
+}

@@ -1,0 +1,107 @@
+@import "../variables";
+@import "apexcharts/dist/apexcharts.css";
+
+// ApexCharts Theme Overrides
+.apexcharts-canvas {
+  font-family: $font-family-base !important;
+
+  // Tooltip
+  .apexcharts-tooltip {
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    border: 1px solid $border-color;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 16px rgba($gray-900, 0.08);
+    background: #fff;
+    color: $gray-800;
+
+    &.apexcharts-theme-light {
+      border: 1px solid $border-color;
+      background: #fff;
+    }
+
+    .apexcharts-tooltip-title {
+      font-family: $font-family-base;
+      font-size: $font-size-sm;
+      font-weight: 600;
+      background: $gray-50;
+      border-bottom: 1px solid $border-color;
+      color: $gray-700;
+      padding: 0.375rem 0.75rem;
+    }
+
+    .apexcharts-tooltip-series-group {
+      padding: 0.375rem 0.75rem;
+    }
+
+    .apexcharts-tooltip-text {
+      font-family: $font-family-base;
+      font-size: $font-size-sm;
+    }
+
+    .apexcharts-tooltip-marker {
+      border-radius: 50%;
+    }
+  }
+
+  // Legend
+  .apexcharts-legend {
+    font-family: $font-family-base;
+  }
+
+  .apexcharts-legend-text {
+    font-family: $font-family-base !important;
+    font-size: $font-size-sm !important;
+    color: $gray-600 !important;
+  }
+
+  // X & Y axis labels
+  .apexcharts-xaxis-label,
+  .apexcharts-yaxis-label {
+    font-family: $font-family-base;
+    fill: $gray-500;
+    font-size: $font-size-sm;
+  }
+
+  // Grid lines
+  .apexcharts-gridline {
+    stroke: $gray-200;
+  }
+
+  // Y-axis line
+  .apexcharts-yaxis-border,
+  .apexcharts-xaxis-border {
+    stroke: $gray-200;
+  }
+
+  // Toolbar icons
+  .apexcharts-toolbar {
+    .apexcharts-menu {
+      font-family: $font-family-base;
+      font-size: $font-size-sm;
+      border: 1px solid $border-color;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 12px rgba($gray-900, 0.08);
+    }
+
+    .apexcharts-menu-item:hover {
+      background: rgba($primary, 0.08);
+      color: $primary;
+    }
+  }
+
+  // Data labels
+  .apexcharts-data-labels text {
+    font-family: $font-family-base !important;
+    fill: $gray-700;
+  }
+}
+
+// Chart color palette aligned with brand colors
+.apexcharts-series {
+  &:nth-child(1) { --chart-color: #{$primary}; }
+  &:nth-child(2) { --chart-color: #{$info}; }
+  &:nth-child(3) { --chart-color: #{$success}; }
+  &:nth-child(4) { --chart-color: #{$warning}; }
+  &:nth-child(5) { --chart-color: #{$danger}; }
+}

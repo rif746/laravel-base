@@ -1,0 +1,210 @@
+@import "../variables";
+@import "select2/dist/css/select2.min.css";
+@import "select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.min.css";
+
+// Select2 Theme Overrides
+.select2-container {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  width: 100% !important;
+
+  // Main selection box
+  .select2-selection--single,
+  .select2-selection--multiple {
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    border: 1px solid $border-color;
+    border-radius: 0.5rem !important;
+    min-height: calc(#{$input-btn-padding-y} * 2 + #{$font-size-base} * 1.5 + 2px);
+    background-color: #fff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+
+    &:hover {
+      border-color: $gray-400;
+    }
+  }
+
+  // Single select rendered value
+  .select2-selection--single {
+    .select2-selection__rendered {
+      color: $gray-800;
+      line-height: calc(#{$input-btn-padding-y} * 2 + #{$font-size-base} * 1.5);
+      padding-left: 0.75rem;
+      padding-right: 2rem;
+    }
+
+    .select2-selection__placeholder {
+      color: $gray-400;
+    }
+
+    .select2-selection__arrow {
+      height: 100%;
+      right: 0.5rem;
+
+      b {
+        border-color: $gray-400 transparent transparent;
+        border-width: 5px 4px 0;
+      }
+    }
+  }
+
+  // Multiple select tags
+  .select2-selection--multiple {
+    padding: 0.25rem 0.5rem;
+
+    .select2-selection__choice {
+      background-color: rgba($primary, 0.1);
+      border: 1px solid rgba($primary, 0.2);
+      border-radius: 0.375rem;
+      color: $primary;
+      font-size: $font-size-sm;
+      font-weight: 500;
+      padding: 0.1rem 0.5rem;
+
+      .select2-selection__choice__remove {
+        color: $primary;
+        font-weight: 700;
+        margin-right: 4px;
+
+        &:hover {
+          color: $danger;
+          background: transparent;
+        }
+      }
+    }
+
+    .select2-search__field {
+      font-family: $font-family-base;
+      font-size: $font-size-sm;
+      color: $gray-800;
+
+      &::placeholder {
+        color: $gray-400;
+      }
+    }
+  }
+
+  // Focused state
+  &--open,
+  &--focus {
+
+    .select2-selection--single,
+    .select2-selection--multiple {
+      border-color: $primary !important;
+      box-shadow: 0 0 0 3px rgba($primary, 0.12) !important;
+      outline: 0;
+    }
+
+    .select2-selection--single .select2-selection__arrow b {
+      border-color: transparent transparent $primary;
+      border-width: 0 4px 5px;
+    }
+  }
+}
+
+// Dropdown panel
+.select2-dropdown {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  border: 1px solid $border-color;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 8px 24px rgba($gray-900, 0.08);
+  overflow: hidden;
+
+  // Search field inside dropdown
+  .select2-search--dropdown {
+    padding: 0.5rem;
+    background: $gray-50;
+    border-bottom: 1px solid $gray-200;
+
+    .select2-search__field {
+      font-family: $font-family-base;
+      font-size: $font-size-sm;
+      border: 1px solid $border-color;
+      border-radius: 0.375rem;
+      padding: 0.375rem 0.75rem;
+      color: $gray-800;
+      width: 100%;
+      background-color: #fff;
+
+      &:focus {
+        border-color: $primary;
+        outline: 0;
+        box-shadow: 0 0 0 3px rgba($primary, 0.12);
+      }
+    }
+  }
+
+  // Option list
+  .select2-results__options {
+    padding: 0.25rem 0;
+    max-height: 220px;
+    overflow-y: auto;
+
+    // Scrollbar
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: $gray-50;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $gray-300;
+      border-radius: 4px;
+    }
+  }
+
+  .select2-results__option {
+    font-size: $font-size-sm;
+    color: $gray-700;
+    padding: 0.45rem 0.85rem;
+    transition: background 0.12s;
+
+    // Highlighted (hover or keyboard)
+    &--highlighted {
+      background-color: rgba($primary, 0.08) !important;
+      color: $primary !important;
+    }
+
+    // Selected
+    &[aria-selected='true'] {
+      background-color: rgba($primary, 0.12);
+      color: $primary;
+      font-weight: 500;
+    }
+
+    // Disabled
+    &[aria-disabled='true'] {
+      color: $gray-400;
+      cursor: not-allowed;
+    }
+
+    // Option group label
+    &--group {
+      color: $gray-500;
+      font-size: $font-xs;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.5rem 0.85rem 0.25rem;
+      cursor: default;
+    }
+  }
+}
+
+// Disabled state
+.select2-container--disabled {
+
+  .select2-selection--single,
+  .select2-selection--multiple {
+    background-color: $gray-50 !important;
+    border-color: $gray-200 !important;
+    cursor: not-allowed;
+
+    .select2-selection__rendered {
+      color: $gray-400;
+    }
+  }
+}
