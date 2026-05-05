@@ -16,9 +16,16 @@ class HandleUserSettingEffect
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $settings = $request->user()->settings;
-        foreach ($settings as $key => $value) {
-            UserSettingKey::effect($key, $value);
+        if ($request->user()?->settings) {
+            $settings = $request->user()->settings;
+            foreach ($settings as $key => $value) {
+                UserSettingKey::effect($key, $value);
+            }
+        } else {
+            $settings = UserSettingKey::cases();
+            foreach ($settings as $case) {
+                UserSettingKey::effect($case->value, $case->default());
+            }
         }
 
         return $next($request);

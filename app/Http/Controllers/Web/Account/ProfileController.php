@@ -20,9 +20,9 @@ class ProfileController extends Controller
      * Display the user's profile form.
      */
     #[Seo(
-        title: 'domains/account.profile.title',
-        description: 'domains/account.profile.description',
-        keywords: 'domains/account.profile.keywords'
+        title: 'domains/account.seo.profile.title',
+        description: 'domains/account.seo.profile.description',
+        keywords: 'domains/account.seo.profile.keywords'
     )]
     public function index(): View|JsonResource
     {
