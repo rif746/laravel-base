@@ -34,17 +34,6 @@ return [
             'password' => 'Password',
             'submit' => 'Confirm',
         ],
-        'oauth' => [
-            'authorize' => [
-                'submit' => 'Authorize',
-                'cancel' => 'Deny',
-            ],
-            'device' => [
-                'submit' => 'Authorize Device',
-                'user_code' => 'Device Code',
-                'continue' => 'Continue',
-            ],
-        ],
     ],
 
     'pages' => [
@@ -74,23 +63,6 @@ return [
         'confirm_password' => [
             'header' => 'Confirm Password',
             'subheader' => 'This is a secure area of the application. Please confirm your password before continuing.',
-        ],
-        'oauth' => [
-            'authorize' => [
-                'header' => 'Authorization Request',
-                'subheader' => 'Review the permissions before continuing',
-                'is_requesting' => 'is requesting access to your account',
-                'requested_permissions' => 'Requested Permissions',
-            ],
-            'device' => [
-                'header' => 'Device Authorization',
-                'subheader' => 'Review the permissions before connecting your device',
-                'connect_header' => 'Connect Your Device',
-                'connect_subheader' => 'Enter the code displayed on your device',
-                'user_code_hint' => 'The code is shown on your device\'s screen',
-                'success_header' => 'Success!',
-                'success_subheader' => 'The device has been successfully authorized.',
-            ],
         ],
     ],
 

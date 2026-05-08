@@ -34,17 +34,6 @@ return [
             'password' => 'Kata Sandi',
             'submit' => 'Konfirmasi',
         ],
-        'oauth' => [
-            'authorize' => [
-                'submit' => 'Izinkan',
-                'cancel' => 'Tolak',
-            ],
-            'device' => [
-                'submit' => 'Izinkan Perangkat',
-                'user_code' => 'Kode Perangkat',
-                'continue' => 'Lanjutkan',
-            ],
-        ],
     ],
 
     'pages' => [
@@ -74,23 +63,6 @@ return [
         'confirm_password' => [
             'header' => 'Konfirmasi Kata Sandi',
             'subheader' => 'Ini adalah area aman aplikasi. Silakan konfirmasi kata sandi Anda sebelum melanjutkan.',
-        ],
-        'oauth' => [
-            'authorize' => [
-                'header' => 'Permintaan Otorisasi',
-                'subheader' => 'Tinjau izin sebelum melanjutkan',
-                'is_requesting' => 'meminta akses ke akun Anda',
-                'requested_permissions' => 'Izin yang Diminta',
-            ],
-            'device' => [
-                'header' => 'Otorisasi Perangkat',
-                'subheader' => 'Tinjau izin sebelum menghubungkan perangkat Anda',
-                'connect_header' => 'Hubungkan Perangkat Anda',
-                'connect_subheader' => 'Masukkan kode yang ditampilkan di perangkat Anda',
-                'user_code_hint' => 'Kode ditampilkan di layar perangkat Anda',
-                'success_header' => 'Berhasil!',
-                'success_subheader' => 'Perangkat telah berhasil diotorisasi.',
-            ],
         ],
     ],
 
