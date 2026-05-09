@@ -4,6 +4,7 @@ use App\Http\Controllers\Web\Account\AccountSettingController;
 use App\Http\Controllers\Web\Account\ProfileController;
 use App\Http\Controllers\Web\Identity\RoleController;
 use App\Http\Controllers\Web\Identity\UserController;
+use App\Http\Controllers\Web\System\SettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('dashboard'));
@@ -15,6 +16,9 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::resource('/users', UserController::class)->except(['create', 'edit']);
     Route::resource('/roles', RoleController::class)->except(['create', 'edit']);
+
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

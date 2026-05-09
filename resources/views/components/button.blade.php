@@ -4,6 +4,8 @@
     'rounded' => false,
     'size' => '',
     'icon' => '',
+    'iconProperty' => [],
+    'iconOnly' => false,
     'loading' => null,
     'type' => 'button',
 ])
@@ -16,6 +18,7 @@
             $theme .
             ($rounded ? ' btn-rounded' : '') .
             ($size ? ' btn-' . $size : '') .
+            ($iconOnly ? ' btn-icon' : '') .
             ($loading ? ' d-flex align-items-center justify-content-center' : ''),
     ]) }}
     @if ($loading) x-bind:disabled="{{ $loading }}" @endif>
@@ -23,7 +26,7 @@
         <template x-if="!{{ $loading }}">
             <span>
                 @if ($icon)
-                    <i class="{{ $icon }} me-1"></i>
+                    @svg($icon, $iconProperty)
                 @endif
                 {{ $label ?: $slot }}
             </span>
@@ -36,7 +39,7 @@
         </template>
     @else
         @if ($icon)
-            @svg($icon)
+            @svg($icon, $iconProperty)
         @endif
         {{ $label ?: $slot }}
     @endif

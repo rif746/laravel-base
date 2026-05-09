@@ -7,6 +7,7 @@ use Artesaos\SEOTools\Facades\SEOTools;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 use Symfony\Component\HttpFoundation\Response;
 
 class HandleSeoAttribute
@@ -19,6 +20,7 @@ class HandleSeoAttribute
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
+
 
         // Get the view data (variables passed to the view)
         if ($response instanceof \Illuminate\Http\Response && method_exists($response, 'getOriginalContent')) {
@@ -65,14 +67,14 @@ class HandleSeoAttribute
 
         // Check if the string looks like a translation key (contains a dot)
         // and if that key actually exists in our lang files.
-        if (is_string($key) && str_contains($key, '.') && \Lang::has($key)) {
+        if (is_string($key) && str_contains($key, '.') && Lang::has($key)) {
             return __($key, $replace);
         }
 
         return $key; // Return as plain text if not a translation key
     }
 
-    private function resolveDynamicValue($value, $data)
+    private function resolveDynamicValue(string $value, array $data)
     {
         // If the value contains a dot (e.g., 'post.title')
         if (str_contains($value, '.')) {

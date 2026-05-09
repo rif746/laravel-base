@@ -4,4 +4,5 @@ return [
     'user' => 'Pengguna',
     'role' => 'Peran',
     'profile' => 'Profil',
+    'settings' => 'Pengaturan',
 ];

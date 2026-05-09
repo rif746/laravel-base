@@ -11,6 +11,7 @@
             'class' => 'form-control',
             'name' => $name,
             'id' => $attributes->has('id') ? $attributes->get('id') : $name,
+            'placeholder' => $attributes->has('placeholder') ? $attributes->get('placeholder') : $label,
             'x-bind:class' => $feedback ? "{'is-invalid': feedback?.$name}" : false,
         ]) }} />
     @if ($feedback)
