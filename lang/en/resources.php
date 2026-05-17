@@ -5,4 +5,5 @@ return [
     'role' => 'Role',
     'profile' => 'Profile',
     'settings' => 'Settings',
+    'password' => 'Password',
 ];

@@ -1,14 +1,14 @@
-<x-layout.app>
+<x-layouts.app>
     <div class="row gap-2">
         <div class="col-sm-8 mx-auto">
-            @include('pages.account.profile._partials.user-info')
+            <livewire:pages::account.profile.user-info />
         </div>
         <div class="col-sm-8 mx-auto">
-            @include('pages.account.profile._partials.account-setting')
+            <livewire:pages::account.profile.user-settings />
         </div>
     </div>
 
-    @include('pages.account.profile._modal-form')
-    @include('pages.account.profile._modal-reset-password')
+    <livewire:pages::account.profile.update-profile-modal />
+    <livewire:pages::account.profile.update-password-modal />
 
-</x-layout.app>
+</x-layouts.app>

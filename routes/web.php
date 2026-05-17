@@ -1,31 +1,27 @@
 <?php
 
-use App\Http\Controllers\Web\Account\AccountSettingController;
-use App\Http\Controllers\Web\Account\ProfileController;
+use App\Attributes\Seo;
 use App\Http\Controllers\Web\Identity\RoleController;
 use App\Http\Controllers\Web\Identity\UserController;
-use App\Http\Controllers\Web\System\SettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('dashboard'));
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['web', 'auth', 'verified', 'seo'])->group(function () {
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::get('/users', UserController::class)->name('users.index');
+    Route::get('/roles', RoleController::class)->name('roles.index');
 
-Route::middleware('auth')->group(function () {
-    Route::resource('/users', UserController::class)->except(['create', 'edit']);
-    Route::resource('/roles', RoleController::class)->except(['create', 'edit']);
+    Route::middleware('password.confirm')->group(function () {
+        Route::livewire('/system/settings', 'pages::system.settings')->name('system-setting.index');
 
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
-
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/profile/settings', [AccountSettingController::class, 'index'])->name('profile.settings.index');
-    Route::patch('/profile/settings', [AccountSettingController::class, 'update'])->name('profile.settings.update');
+        Route::view('/profile', 'pages.account.profile.index')
+            ->defaults('seo', new Seo(
+                title: 'domains/account.seo.profile.title',
+                description: 'domains/account.seo.profile.description',
+                keywords: 'domains/account.seo.profile.keywords'
+            ))->name('profile.index');
+    });
 });
 
 require __DIR__.'/auth.php';

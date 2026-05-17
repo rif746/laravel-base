@@ -28,23 +28,31 @@ window.ask = function (title, text, type = 'success') {
     })
 }
 
-window.logout = function () {
+window.logout = function ({
+    text = 'Are you sure to logout?',
+    width = '400px',
+    type = 'warning',
+    confirmButtonText = 'Yes',
+    cancelButtonText = 'No',
+    onSuccess = () => { }
+}) {
     Swal.fire({
-        icon: 'warning',
-        text: 'Apakah anda yakin ingin keluar?',
-        width: '400px',
+        icon: type,
+        text: text,
+        width: width,
         showCancelButton: true,
-        confirmButtonText: 'Ya',
-        cancelButtonText: 'Tidak',
-    }).then(async (result) => {
-        if (result.isConfirmed) {
-            try {
-                await axios.post(route('logout'));
-                window.location.reload();
-            } catch (error) {
-                console.log(error)
-                toast('Terjadi kesalahan saat logout.', 'error')
-            }
+        confirmButtonText: confirmButtonText,
+        cancelButtonText: cancelButtonText,
+        preConfirm: () => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    await onSuccess();
+                    resolve();
+                } catch (error) {
+                    console.error(error)
+                    reject('Error occured when trying to logout.')
+                }
+            });
         }
     })
 }

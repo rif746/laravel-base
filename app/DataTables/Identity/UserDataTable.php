@@ -32,8 +32,9 @@ class UserDataTable extends DataTable
                         'permission' => 'user edit',
                     ],
                     'delete' => [
-                        'url' => route('users.destroy', $user->id),
+                        'url' => null,
                         'message' => __('ui.crud.confirmation.delete', ['resource' => __('resources.user')]),
+                        'success_message' => __('ui.crud.success.deleted', ['resource' => __('resources.user')]),
                     ],
                     'table_name' => 'user-table',
                     'id' => $user->id,

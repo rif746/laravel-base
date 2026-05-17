@@ -11,7 +11,7 @@
 ])
 
 <button
-    {{ $attributes->merge([
+    {{ $attributes->except('wire:loading')->merge([
         'type' => $type,
         'class' =>
             'btn btn-' .
@@ -20,6 +20,7 @@
             ($size ? ' btn-' . $size : '') .
             ($iconOnly ? ' btn-icon' : '') .
             ($loading ? ' d-flex align-items-center justify-content-center' : ''),
+        'wire:loading.attr' => $attributes->has('wire:loading') ? 'disabled' : false,
     ]) }}
     @if ($loading) x-bind:disabled="{{ $loading }}" @endif>
     @if ($loading)
@@ -32,11 +33,25 @@
             </span>
         </template>
         <template x-if="{{ $loading }}">
-            <span>
-                <i class="bx bx-loader bx-spin me-1"></i>
-                {{ trans('ui.loading') }}...
-            </span>
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">{{ trans('ui.loading') }}...</span>
+            </div>
         </template>
+    @elseif ($attributes->has('wire:loading'))
+        <div wire:loading.remove
+            @if ($attributes->has('wire:target')) wire:target="{{ $attributes->get('wire:target') }}" @endif>
+            <span>
+                @if ($icon)
+                    @svg($icon, $iconProperty)
+                @endif
+                {{ $label ?: $slot }}
+            </span>
+        </div>
+        <div wire:loading @if ($attributes->has('wire:target')) wire:target="{{ $attributes->get('wire:target') }}" @endif>
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">{{ trans('ui.loading') }}...</span>
+            </div>
+        </div>
     @else
         @if ($icon)
             @svg($icon, $iconProperty)

@@ -2,37 +2,46 @@
 
 namespace App\Enums\System;
 
+use Artesaos\SEOTools\Facades\SEOMeta;
+
 enum SystemSettingKey: string
 {
-    case COMPANY_NAME = 'company.name';
-    case COMPANY_ADDRESS = 'company.address';
-    case COMPANY_PHONE = 'company.phone';
-    case COMPANY_EMAIL = 'company.email';
-    case COMPANY_LOGO = 'company.logo';
-    case COMPANY_FAVICON = 'company.favicon';
+    case WEB_NAME = 'web-name';
+    case WEB_LOGO = 'web-logo';
+    case WEB_FAVICON = 'web-favicon';
+    case WEB_PHONE = 'web-phone';
+    case WEB_EMAIL = 'web-email';
+    case WEB_ADDRESS = 'web-address';
 
     case DEFAULT_LANGUAGE = 'default_language';
     case TIMEZONE = 'timezone';
 
+    case GOOGLE_TAG_MANAGER_ID = 'google-tag_manager_id';
+    case GOOGLE_WEBMASTER_ID = 'google-webmaster_id';
+
     public function label(): string
     {
-        return __('domains/system.settings.'.$this->value);
+        return __('domains/system.settings.' . str_replace('-', '.', $this->value));
     }
 
     public static function section(): array
     {
         return [
-            __('domains/system.settings.sections.company') => [
-                self::COMPANY_NAME,
-                self::COMPANY_ADDRESS,
-                self::COMPANY_PHONE,
-                self::COMPANY_EMAIL,
-                self::COMPANY_LOGO,
-                self::COMPANY_FAVICON,
+            __('domains/system.settings.sections.web') => [
+                self::WEB_NAME,
+                self::WEB_ADDRESS,
+                self::WEB_PHONE,
+                self::WEB_EMAIL,
+                self::WEB_LOGO,
+                self::WEB_FAVICON,
             ],
             __('domains/system.settings.sections.general') => [
                 self::DEFAULT_LANGUAGE,
                 self::TIMEZONE,
+            ],
+            __('domains/system.settings.sections.webmaster') => [
+                self::GOOGLE_TAG_MANAGER_ID,
+                self::GOOGLE_WEBMASTER_ID,
             ],
         ];
     }
@@ -40,7 +49,7 @@ enum SystemSettingKey: string
     public function inputType(): string
     {
         return match ($this) {
-            self::COMPANY_LOGO, self::COMPANY_FAVICON => 'file',
+            self::WEB_LOGO, self::WEB_FAVICON => 'file',
             self::DEFAULT_LANGUAGE, self::TIMEZONE => 'options',
             default => 'text',
         };
@@ -49,6 +58,12 @@ enum SystemSettingKey: string
     public function default(): string
     {
         return match ($this) {
+            self::DEFAULT_LANGUAGE => 'en',
+            self::TIMEZONE => 'UTC',
+            self::WEB_NAME => 'Acme Inc',
+            self::WEB_ADDRESS => '123 Main St, Anytown, USA',
+            self::WEB_PHONE => '+1234567890',
+            self::WEB_EMAIL => 'acme@web.io',
             default => '-'
         };
     }
@@ -61,9 +76,10 @@ enum SystemSettingKey: string
                 'id' => 'Indonesian',
             ],
             self::TIMEZONE => [
-                'Asia/Jakarta' => 'Indonesia (Western Time)',
-                'Asia/Makassar' => 'Indonesia (Central Time)',
-                'Asia/Jayapura' => 'Indonesia (Eastern Time)',
+                'UTC' => 'UTC',
+                'Asia/Jakarta' => 'Asia/Jakarta',
+                'Asia/Makassar' => 'Asia/Makassar',
+                'Asia/Jayapura' => 'Asia/Jayapura',
             ],
             default => [],
         };
@@ -72,8 +88,35 @@ enum SystemSettingKey: string
     public function isImage(): bool
     {
         return match ($this) {
-            self::COMPANY_LOGO, self::COMPANY_FAVICON => true,
+            self::WEB_LOGO, self::WEB_FAVICON => true,
             default => false,
+        };
+    }
+
+    public static function effect(string $key, mixed $value): void
+    {
+        $enumKey = self::tryFrom($key);
+
+        if ($enumKey === self::WEB_NAME) {
+            config(['seotools.meta.defaults.title' => $value]);
+            config(['seotools.opengraph.defaults.title' => $value]);
+            config(['seotools.json-ld.defaults.title' => $value]);
+
+            return;
+        }
+
+        match ($enumKey) {
+            self::DEFAULT_LANGUAGE => app()->setLocale($value),
+            self::TIMEZONE => config(['app.timezone' => $value]),
+            self::GOOGLE_TAG_MANAGER_ID => SEOMeta::addMeta('gtm', "
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','{$value}');
+            "),
+            self::GOOGLE_WEBMASTER_ID => SEOMeta::addMeta('google-site-verification', $value),
+            default => null,
         };
     }
 }

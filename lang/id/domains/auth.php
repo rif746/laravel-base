@@ -28,7 +28,6 @@ return [
         ],
         'verify_email' => [
             'submit' => 'Kirim Ulang Email Verifikasi',
-            'logout' => 'Keluar',
         ],
         'confirm_password' => [
             'password' => 'Kata Sandi',
@@ -39,7 +38,7 @@ return [
     'pages' => [
         'login' => [
             'header' => 'Masuk ke akun Anda',
-            'no_account' => "Belum punya akun?",
+            'no_account' => 'Belum punya akun?',
             'register_link' => 'Daftar',
         ],
         'register' => [
@@ -57,13 +56,18 @@ return [
         ],
         'verify_email' => [
             'header' => 'Verifikasi Email',
-            'subheader' => "Terima kasih telah mendaftar! Sebelum memulai, bisakah Anda memverifikasi alamat email Anda dengan mengklik tautan yang baru saja kami kirimkan melalui email? Jika Anda tidak menerima email tersebut, kami dengan senang hati akan mengirimkan yang baru.",
+            'subheader' => 'Terima kasih telah mendaftar! Sebelum memulai, bisakah Anda memverifikasi alamat email Anda dengan mengklik tautan yang baru saja kami kirimkan melalui email? Jika Anda tidak menerima email tersebut, kami dengan senang hati akan mengirimkan yang baru.',
             'resend_link' => 'Tautan verifikasi baru telah dikirim ke alamat email yang Anda berikan saat pendaftaran.',
         ],
         'confirm_password' => [
             'header' => 'Konfirmasi Kata Sandi',
             'subheader' => 'Ini adalah area aman aplikasi. Silakan konfirmasi kata sandi Anda sebelum melanjutkan.',
         ],
+    ],
+
+    'messages' => [
+        'password_reset' => 'Kata sandi Anda telah berhasil diatur ulang.',
+        'invalid_token' => 'Token atur ulang kata sandi ini tidak valid.',
     ],
 
     'seo' => [

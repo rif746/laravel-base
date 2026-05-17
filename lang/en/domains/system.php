@@ -2,23 +2,33 @@
 
 return [
     'seo' => [
-        'default_title' => 'Ttest',
-        'default_description' => 'Laravel Base using bootstrap and datatables by Syarif Ubaidillah.',
+        'default_title' => 'Laravel Base',
+        'default_description' => 'Laravel Base using Livewire v4, Bootstrap, and DataTables.net by Syarif Ubaidillah.',
+        'settings' => [
+            'title' => 'System Settings',
+            'description' => 'System settings and configurations.',
+            'keywords' => 'system, settings, configurations',
+        ],
     ],
     'settings' => [
         'sections' => [
-            'company' => 'Company',
+            'web' => 'Web',
             'general' => 'General',
+            'webmaster' => 'Webmaster',
         ],
-        'company' => [
-            'name' => 'Company Name',
-            'address' => 'Company Address',
-            'phone' => 'Company Phone',
-            'email' => 'Company Email',
-            'logo' => 'Company Logo',
-            'favicon' => 'Company Favicon',
+        'web' => [
+            'name' => 'Web Name',
+            'address' => 'Web Address',
+            'phone' => 'Web Phone',
+            'email' => 'Web Email',
+            'logo' => 'Web Logo',
+            'favicon' => 'Web Favicon',
         ],
         'default_language' => 'Default Language',
         'timezone' => 'Timezone',
+        'google' => [
+            'tag_manager_id' => 'Google Tag Manager ID',
+            'webmaster_id' => 'Google Webmaster ID',
+        ],
     ],
 ];

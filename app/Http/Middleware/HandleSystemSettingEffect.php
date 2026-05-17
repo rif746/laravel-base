@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\System\SystemSettingKey;
 use App\Models\System\SystemSettings;
 use Closure;
 use Illuminate\Http\Request;
@@ -21,6 +22,10 @@ class HandleSystemSettingEffect
         $systemSettings = Cache::rememberForever('system-settings', function () {
             return SystemSettings::all()->pluck('value', 'key')->toArray();
         });
+
+        foreach ($systemSettings as $key => $value) {
+            SystemSettingKey::effect($key, $value);
+        }
 
         View::share('settings', $systemSettings);
 

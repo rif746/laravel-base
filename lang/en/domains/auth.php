@@ -28,7 +28,6 @@ return [
         ],
         'verify_email' => [
             'submit' => 'Resend Verification Email',
-            'logout' => 'Log Out',
         ],
         'confirm_password' => [
             'password' => 'Password',
@@ -64,6 +63,11 @@ return [
             'header' => 'Confirm Password',
             'subheader' => 'This is a secure area of the application. Please confirm your password before continuing.',
         ],
+    ],
+
+    'messages' => [
+        'password_reset' => 'Your password has been successfully reset.',
+        'invalid_token' => 'This password reset token is invalid.',
     ],
 
     'seo' => [

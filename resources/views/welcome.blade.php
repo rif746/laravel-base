@@ -1,2 +1,2 @@
-<x-layout.guest>
-</x-layout.guest>
+<x-layouts.guest>
+</x-layouts.guest>

@@ -44,16 +44,18 @@ enum UserSettingKey: string
     {
         return match ($this) {
             self::LANGUAGE => [
-                ['key' => 'en', 'label' => __('domains/account.enum.user_settings.options.language.en')],
-                ['key' => 'id', 'label' => __('domains/account.enum.user_settings.options.language.id')],
+                'en' => __('domains/account.enum.user_settings.options.language.en'),
+                'id' => __('domains/account.enum.user_settings.options.language.id'),
             ],
             self::TIMEZONE => [
-                ['key' => 'UTC', 'label' => 'UTC'],
-                ['key' => 'Asia/Jakarta', 'label' => 'Asia/Jakarta'],
+                'UTC' => 'UTC',
+                'Asia/Jakarta' => 'Asia/Jakarta',
+                'Asia/Makassar' => 'Asia/Makassar',
+                'Asia/Jayapura' => 'Asia/Jayapura',
             ],
             self::NOTIFICATION => [
-                ['key' => 1, 'label' => __('domains/account.enum.user_settings.options.notification.on')],
-                ['key' => 0, 'label' => __('domains/account.enum.user_settings.options.notification.off')],
+                1 => __('domains/account.enum.user_settings.options.notification.on'),
+                0 => __('domains/account.enum.user_settings.options.notification.off'),
             ],
             default => [],
         };

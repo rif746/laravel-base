@@ -5,6 +5,10 @@
     'feedback' => null,
 ])
 
+@php
+    $name = $attributes->has('wire:model') ? $attributes->get('wire:model') : $name;
+@endphp
+
 <div x-data="select2('{{ $url }}')">
     <select x-ref="select2" class="form-control"></select>
 </div>
@@ -14,7 +18,7 @@
     <label for="{{ $name }}" class="form-label">{{ $label }}</label>
     <select
         {{ $attributes->merge([
-            'class' => 'form-select',
+            'class' => 'form-select' . ($errors->has($name) ? ' is-invalid' : ''),
             'name' => $name,
             'x-ref' => 'select2',
             'id' => $attributes->has('id') ? $attributes->get('id') : $name,

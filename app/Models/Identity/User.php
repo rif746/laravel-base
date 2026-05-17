@@ -2,11 +2,10 @@
 
 namespace App\Models\Identity;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use App\Models\Account\Profile;
 use App\Policies\Identity\UserPolicy;
-use Database\Factories\UserFactory;
+use Database\Factories\Identity\UserFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
@@ -18,7 +17,7 @@ use Spatie\Permission\Traits\HasRoles;
 #[Fillable(['name', 'email', 'password', 'settings'])]
 #[Hidden(['password', 'remember_token'])]
 #[UsePolicy(UserPolicy::class)]
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasRoles, Notifiable;

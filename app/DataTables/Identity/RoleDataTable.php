@@ -15,14 +15,14 @@ class RoleDataTable extends DataTable
     /**
      * Build the DataTable class.
      *
-     * @param QueryBuilder<Role> $query Results from query() method.
+     * @param  QueryBuilder<Role>  $query  Results from query() method.
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn(
                 'action',
-                fn($role) => view('datatables.action-button', [
+                fn ($role) => view('datatables.action-button', [
                     'view' => [
                         'modal' => 'role-view-modal',
                         'permission' => 'role index',
@@ -32,8 +32,9 @@ class RoleDataTable extends DataTable
                         'permission' => 'role edit',
                     ],
                     'delete' => [
-                        'url' => route('roles.destroy', $role->id),
+                        'url' => null,
                         'message' => __('ui.crud.confirmation.delete', ['resource' => __('resources.role')]),
+                        'success_message' => __('ui.crud.success.deleted', ['resource' => __('resources.role')]),
                     ],
                     'table_name' => 'role-table',
                     'id' => $role->id,
@@ -112,6 +113,6 @@ class RoleDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Role_' . date('YmdHis');
+        return 'Role_'.date('YmdHis');
     }
 }

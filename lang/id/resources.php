@@ -5,4 +5,5 @@ return [
     'role' => 'Peran',
     'profile' => 'Profil',
     'settings' => 'Pengaturan',
+    'password' => 'Kata Sandi',
 ];

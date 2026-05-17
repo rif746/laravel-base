@@ -3,22 +3,32 @@
 return [
     'seo' => [
         'default_title' => 'Laravel',
-        'default_description' => 'Dasar Laravel menggunakan bootstrap dan datatables oleh Syarif Ubaidillah.',
+        'default_description' => 'Dasar Laravel menggunakan Livewire v4, Bootstrap, and DataTables.net oleh Syarif Ubaidillah.',
+        'settings' => [
+            'title' => 'Pengaturan Sistem',
+            'description' => 'Pengaturan dan konfigurasi sistem.',
+            'keywords' => 'sistem, pengaturan, konfigurasi',
+        ],
     ],
     'settings' => [
         'sections' => [
-            'company' => 'Perusahaan',
+            'web' => 'Web',
             'general' => 'Umum',
+            'webmaster' => 'Webmaster',
         ],
-        'company' => [
-            'name' => 'Nama Perusahaan',
-            'address' => 'Alamat Perusahaan',
-            'phone' => 'Telepon Perusahaan',
-            'email' => 'Email Perusahaan',
-            'logo' => 'Logo Perusahaan',
-            'favicon' => 'Favicon Perusahaan',
+        'web' => [
+            'name' => 'Nama Web',
+            'address' => 'Alamat Web',
+            'phone' => 'Telepon Web',
+            'email' => 'Email Web',
+            'logo' => 'Logo Web',
+            'favicon' => 'Favicon Web',
         ],
         'default_language' => 'Bahasa Default',
         'timezone' => 'Zona Waktu',
+        'google' => [
+            'tag_manager_id' => 'ID Google Tag Manager',
+            'webmaster_id' => 'ID Google Webmaster',
+        ],
     ],
 ];

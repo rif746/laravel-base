@@ -31,6 +31,7 @@ return [
         'save' => 'Save Changes',
         'cancel' => 'Cancel',
         'back' => 'Back',
+        'close' => 'Close',
         'create' => 'Create',
         'update' => 'Update',
         'edit' => 'Edit',
@@ -39,6 +40,8 @@ return [
         'yes' => 'Yes',
         'no' => 'No',
         'lookup' => 'Search...',
+        'logout' => 'Logout',
+        'system_setting' => 'System Setting',
     ],
     'crud' => [
         'success' => [

@@ -31,6 +31,7 @@ return [
         'save' => 'Simpan Perubahan',
         'cancel' => 'Batal',
         'back' => 'Kembali',
+        'close' => 'Tutup',
         'create' => 'Buat',
         'update' => 'Perbarui',
         'edit' => 'Ubah',
@@ -39,6 +40,8 @@ return [
         'yes' => 'Ya',
         'no' => 'Tidak',
         'lookup' => 'Cari...',
+        'logout' => 'Keluar',
+        'system_setting' => 'Pengaturan Sistem',
     ],
     'crud' => [
         'success' => [

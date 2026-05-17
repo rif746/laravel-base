@@ -4,11 +4,15 @@
     'feedback' => null,
 ])
 
+@php
+    $name = $attributes->has('wire:model') ? $attributes->get('wire:model') : $name;
+@endphp
+
 <div class="mb-3" @if ($attributes->has('x-show')) x-show="{{ $attributes->get('x-show') }}" x-cloak @endif>
     <label for="{{ $name }}" class="form-label">{{ $label }}</label>
     <input
         {{ $attributes->merge([
-            'class' => 'form-control',
+            'class' => 'form-control' . ($errors->has($name) ? ' is-invalid' : ''),
             'name' => $name,
             'id' => $attributes->has('id') ? $attributes->get('id') : $name,
             'placeholder' => $attributes->has('placeholder') ? $attributes->get('placeholder') : $label,

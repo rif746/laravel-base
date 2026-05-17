@@ -11,8 +11,7 @@
         @if (isset($view['permission']) ? auth('web')->user()->can($view['permission']) : true)
             @if (isset($view['modal']))
                 <button class="btn btn-sm btn-info" data-id="{{ $id }}" data-bs-toggle="modal"
-                    data-bs-target="#{{ $view['modal'] }}" data-bs-toggle="tooltip"
-                    title="{{ trans('ui.button.view') }}">
+                    data-bs-target="#{{ $view['modal'] }}" data-bs-toggle="tooltip" title="{{ trans('ui.button.view') }}">
                     @svg('tabler-eye', ['width' => 16, 'height' => 16])
                 </button>
             @else
@@ -43,15 +42,19 @@
 
     @if (!empty($delete))
         @if (isset($delete['permission']) ? auth('web')->user()->can($delete['permission']) : true)
-            <button class="btn btn-sm btn-danger" data-message="{{ $delete['message'] }}"
-                data-title="{{ trans('ui.button.delete') }}" data-text="{{ $delete['message'] }}"
-                data-confirm-text="{{ trans('ui.button.yes') }}"
-                data-cancel-text="{{ trans('ui.button.no') }}"
-                x-remove-data="async () => {
-                    await $delete('{{ $delete['url'] }}');
-                    LaravelDataTables['{{ $table_name }}'].draw();
-                    toast('{{ trans('ui.button.delete') }}', 'success');
-                }">
+            <button class="btn btn-sm btn-danger"
+                x-on:click="$remove.livewire('delete-data', {
+                title: '{{ trans('ui.button.delete') }}',
+                textMessage: '{{ $delete['message'] }}',
+                confirmText: '{{ trans('ui.button.yes') }}',
+                cancelText: '{{ trans('ui.button.no') }}',
+                successMessage: '{{ $delete['success_message'] }}',
+                table_name: '{{ $table_name }}',
+                id: '{{ $id }}',
+                successFunction: () => {
+                    LaravelDataTables['{{ $table_name }}'].ajax.reload();
+                }
+            })">
                 @svg('tabler-trash', ['width' => 16, 'height' => 16])
             </button>
         @endcan

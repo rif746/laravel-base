@@ -1,49 +1,78 @@
+import Swal from "sweetalert2";
+
 export default function removeData(Alpine) {
-    Alpine.directive('remove-data', (el, { expression }, { evaluateLater, cleanup }) => {
-        let evaluate = evaluateLater(expression)
-
-        let handler = (e) => {
-            e.preventDefault()
-            e.stopPropagation()
-
-            let title = el.dataset.title
-            let text = el.dataset.text
-            let confirmButtonText = el.dataset.confirmText
-            let cancelButtonText = el.dataset.cancelText
-
-            if (Swal) {
-                Swal.fire({
-                    title: title,
-                    text: text,
+    Alpine.magic('remove', () => {
+        return {
+            ajax: (url, { title, textMessage, confirmText, cancelText, successMessage, onSuccess = () => { } }) => {
+                return Swal.fire({
+                    title,
+                    text: textMessage,
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: confirmButtonText,
-                    cancelButtonText: cancelButtonText,
+                    confirmButtonText: confirmText,
+                    cancelButtonText: cancelText,
                     showLoaderOnConfirm: true,
-                    preConfirm: () => {
-                        return new Promise((resolve, reject) => {
-                            try {
-                                evaluate()
-                            } catch (error) {
-
-                                reject(error)
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: 'Something went wrong',
-                                    icon: 'error',
-                                    showCancelButton: false,
-                                    confirmButtonText: 'OK'
-                                })
-                            }
-                        })
+                    preConfirm: async () => {
+                        try {
+                            await axios.delete(url);
+                            onSuccess();
+                            toast(successMessage, 'success');
+                        } catch (error) {
+                            toast(error.message, 'error');
+                        }
                     }
-                })
+                });
+            },
+            livewire: (eventName, { id, title, textMessage, confirmText, cancelText, successMessage, onSuccess = () => { } }) => {
+                return Swal.fire({
+                    title,
+                    text: textMessage,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: confirmText,
+                    cancelButtonText: cancelText,
+                    showLoaderOnConfirm: true,
+                    preConfirm: async () => {
+                        return new Promise((resolve, reject) => {
+                            const completeEvent = eventName + '-completed';
+                            const cleanupListener = Livewire.on(completeEvent, () => {
+                                onSuccess();
+                                resolve();
+                                cleanupListener();
+                                setTimeout(() => {
+                                    toast(successMessage, 'success');
+                                }, 100);
+                            });
+                            setTimeout(() => {
+                                cleanupListener();
+                                reject(new Error('Server timeout while waiting for completion.'));
+                            }, 10000);
+                            Livewire.dispatch(eventName, { id: id });
+                        }).catch((error) => {
+                            Swal.showValidationMessage(`Request failed: ${error.message}`);
+                        });
+                    }
+                });
+            },
+            session: ({ title, textMessage, confirmText, cancelText, successMessage, onSuccess = () => { } }) => {
+                return Swal.fire({
+                    title,
+                    text: textMessage,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: confirmText,
+                    cancelButtonText: cancelText,
+                    showLoaderOnConfirm: true,
+                    preConfirm: async () => {
+                        try {
+                            await onSuccess();
+                            toast(successMessage, 'success');
+                        } catch (error) {
+                            toast(error.message, 'error');
+                        }
+                    }
+                });
             }
         }
-
-        el.addEventListener('click', handler)
-        cleanup(() => {
-            el.removeEventListener('click', handler)
-        })
     })
 }
