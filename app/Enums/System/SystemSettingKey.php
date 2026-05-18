@@ -96,10 +96,10 @@ enum SystemSettingKey: string
 
     public function isImage(): bool
     {
-        return match ($this) {
-            self::WEB_LOGO, self::WEB_FAVICON => true,
-            default => false,
-        };
+        return in_array($this, [
+            self::WEB_LOGO,
+            self::WEB_FAVICON,
+        ]);
     }
 
     public static function effect(string $key, mixed $value): void

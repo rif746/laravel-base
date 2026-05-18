@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @livewireStyles
+    @stack('scripts')
     @vite(['resources/scss/app.scss', 'resources/js/alpinejs.js', 'resources/js/plugin/jquery.js', 'resources/js/bootstrap.js', 'resources/js/plugin/sweetalert2.js'])
     @stack('styles')
 </head>
@@ -33,9 +34,6 @@
         </footer>
     </main>
 
-
-
-    @stack('scripts')
     @livewireScriptConfig()
 </body>
 

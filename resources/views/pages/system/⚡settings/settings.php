@@ -8,6 +8,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Spatie\LivewireFilepond\WithFilePond;
 
 new #[Layout('components.layouts.app')]
@@ -39,9 +40,21 @@ class extends Component
     {
         $this->validate(['form.' . $key->value => $key->validation()]);
 
+        $value = $this->form[$key->value];
+
+        if ($key->isImage()) {
+            if ($this->settingsValue[$key->value]) {
+                remove_file($this->settingsValue[$key->value]);
+            }
+
+            if ($value instanceof TemporaryUploadedFile) {
+                $value = $value->store('/system/settings/' . $key->value);
+            }
+        }
+
         SystemSettings::updateOrCreate(
             ['key' => $key->value],
-            ['value' => $this->form[$key->value]],
+            ['value' => $value],
         );
 
         $key->effect($key->value, $this->form[$key->value]);

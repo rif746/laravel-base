@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\File;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 function temp_asset(string $path, $time = null, $options = [])
@@ -28,9 +28,17 @@ function temp_asset(string $path, $time = null, $options = [])
     return $url;
 }
 
-function upload_file(File $file, string $path) {}
+function upload_file(UploadedFile $file, string $path)
+{
+    return $file->store($path, config('filesystems.default'));
+}
 
-function remove_file(string $path) {}
+function remove_file(string $path)
+{
+    if (Storage::disk(config('filesystems.default'))->exists($path)) {
+        Storage::disk(config('filesystems.default'))->delete($path);
+    }
+}
 
 function jwt_extract(string $token)
 {
