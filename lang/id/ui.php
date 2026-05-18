@@ -60,4 +60,9 @@ return [
     ],
     'loading' => 'Memuat...',
     'logout' => 'Apakah Anda yakin ingin keluar?',
+    'notification' => [
+        'empty' => 'Tidak ada pemberitahuan',
+        'read_all' => 'Baca semua pemberitahuan',
+        'unread' => 'pesan belum dibaca',
+    ],
 ];

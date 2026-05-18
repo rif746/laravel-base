@@ -4,11 +4,12 @@ namespace App\Actions\System;
 
 use App\Attributes\Seo;
 use Artesaos\SEOTools\Facades\SEOTools;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
 
 class SetSeoMetadata
 {
-    public function applySeo(Seo $seo, array $viewData): void
+    public function applySeo(Seo $seo, array $viewData, Request $request): void
     {
         // 1. Resolve Dynamic Data (e.g., 'user.name')
         $name = $this->resolveDynamicValue($seo->name, $viewData);
@@ -21,7 +22,7 @@ class SetSeoMetadata
         // 3. Fallback to Defaults
         SEOTools::setTitle($title ?? __('domains/system.seo.default_title'));
         SEOTools::setDescription($description ?? __('domains/system.seo.default_description'));
-        SEOTools::metatags()->setCanonical(request()->url());
+        SEOTools::metatags()->setCanonical($request->url());
 
         if ($keywords) {
             SEOTools::metatags()->setKeywords($keywords);

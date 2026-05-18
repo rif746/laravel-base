@@ -23,7 +23,7 @@ class HandleSeoAttribute
             $seoInstance = $this->getSeoAttributeDirectly($route);
 
             if ($seoInstance) {
-                $this->setSeo->applySeo($seoInstance, $request->all());
+                $this->setSeo->applySeo($seoInstance, $request->all(), $request);
             }
         }
 
@@ -33,7 +33,7 @@ class HandleSeoAttribute
     /**
      * Extracts the attribute directly from the route structure safely.
      */
-    private function getSeoAttributeDirectly($route): ?Seo
+    private function getSeoAttributeDirectly(mixed $route): ?Seo
     {
         if (isset($route->defaults['seo']) && $route->defaults['seo'] instanceof Seo) {
             return $route->defaults['seo'];

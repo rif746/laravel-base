@@ -17,12 +17,14 @@
                 </x-slot:label>
             </x-link>
             <hr class="my-0 border-dashed" />
-            <x-link class="dropdown-item" :href="route('system-setting.index')">
-                <x-slot:label>
-                    <x-tabler-settings width="16" />
-                    @lang('ui.button.system_setting')
-                </x-slot:label>
-            </x-link>
+            @can('system-setting index')
+                <x-link class="dropdown-item" :href="route('system-setting.index')">
+                    <x-slot:label>
+                        <x-tabler-settings width="16" />
+                        @lang('ui.button.system_setting')
+                    </x-slot:label>
+                </x-link>
+            @endcan
             <hr class="my-0 border-dashed" />
             <a class="dropdown-item text-danger" href="javascript:void(0)"
                 x-on:click="$remove.session({

@@ -21,7 +21,7 @@ enum SystemSettingKey: string
 
     public function label(): string
     {
-        return __('domains/system.settings.' . str_replace('-', '.', $this->value));
+        return __('domains/system.settings.'.str_replace('-', '.', $this->value));
     }
 
     public static function section(): array
@@ -117,13 +117,6 @@ enum SystemSettingKey: string
         match ($enumKey) {
             self::DEFAULT_LANGUAGE => app()->setLocale($value),
             self::TIMEZONE => config(['app.timezone' => $value]),
-            self::GOOGLE_TAG_MANAGER_ID => SEOMeta::addMeta('gtm', "
-                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','{$value}');
-            "),
             self::GOOGLE_WEBMASTER_ID => SEOMeta::addMeta('google-site-verification', $value),
             default => null,
         };

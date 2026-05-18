@@ -2,6 +2,7 @@
 
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
+use App\Notifications\Auth\SignInActivity;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -46,6 +47,8 @@ class extends Component
         }
 
         RateLimiter::clear($this->throttleKey());
+
+        Auth::user()->notify(new SignInActivity(request()->ip(), request()->userAgent()));
 
         $this->redirectIntended(route('dashboard', absolute: false), navigate: true);
     }

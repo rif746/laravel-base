@@ -60,4 +60,9 @@ return [
     ],
     'loading' => 'Loading...',
     'logout' => 'Are you sure want to logout?',
+    'notification' => [
+        'empty' => 'No notifications',
+        'read_all' => 'Read all notifications',
+        'unread' => 'unread messages',
+    ],
 ];

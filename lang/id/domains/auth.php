@@ -102,4 +102,19 @@ return [
             'keywords' => 'konfirmasi kata sandi, auth',
         ],
     ],
+
+    'notifications' => [
+        'sign_in_activity' => [
+            'subject' => 'Masuk baru ke akun Anda',
+            'greeting' => 'Halo :name!',
+            'intro' => 'Kami menyadari ada aktivitas masuk baru ke akun :app Anda.',
+            'time' => 'Waktu: :time',
+            'ip' => 'Alamat IP: :ip',
+            'browser' => 'Peramban: :browser',
+            'outro' => 'Jika ini Anda, Anda dapat mengabaikan email ini. Jika Anda tidak masuk, harap segera amankan akun Anda.',
+            'action' => 'Ke Dasbor',
+            'title' => 'Aktivitas Masuk',
+            'message' => 'Anda telah berhasil masuk ke akun Anda dari :ip.',
+        ],
+    ],
 ];

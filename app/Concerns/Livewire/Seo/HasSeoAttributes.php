@@ -28,7 +28,7 @@ trait HasSeoAttributes
             $seo = $attribute->newInstance();
             $viewData = method_exists($this, 'all') ? $this->all() : [];
 
-            $setSeo->applySeo($seo, $viewData);
+            $setSeo->applySeo($seo, $viewData, request());
         }
     }
 

@@ -6,11 +6,8 @@ use App\Models\Identity\User;
 
 class SystemSettingPolicy
 {
-    /**
-     * Create a new policy instance.
-     */
-    public function __construct()
+    public function viewAny(User $user): bool
     {
-        //
+        return $user->can('system-setting index');
     }
 }
