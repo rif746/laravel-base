@@ -6,6 +6,7 @@ use App\Enums\System\SystemSettingKey;
 use App\Models\System\SystemSettings;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Spatie\LivewireFilepond\WithFilePond;
 
@@ -19,12 +20,36 @@ class extends Component
 
     public function mount()
     {
-        $this->form = SystemSettings::all()->pluck('value', 'key')->toArray();
+        $this->form = $this->settingsValue;
     }
 
     #[Computed]
     public function settings()
     {
         return SystemSettingKey::section();
+    }
+
+    #[Computed]
+    public function settingsValue()
+    {
+        return SystemSettings::all()->pluck('value', 'key')->toArray();
+    }
+
+    public function save(SystemSettingKey $key)
+    {
+        $this->validate(['form.' . $key->value => $key->validation()]);
+
+        SystemSettings::updateOrCreate(
+            ['key' => $key->value],
+            ['value' => $this->form[$key->value]],
+        );
+
+        $key->effect($key->value, $this->form[$key->value]);
+        cache()->forget('system-settings');
+        unset($this->settingsValue);
+
+        $this->js("toast('" . __('ui.crud.success.updated', ['resource' => $key->label()]) . "', 'success');");
+        $this->dispatch('refresh-' . $key->value);
+        $this->dispatch('$refresh');
     }
 };

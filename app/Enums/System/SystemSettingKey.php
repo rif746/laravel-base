@@ -55,6 +55,15 @@ enum SystemSettingKey: string
         };
     }
 
+    public function validation(): array
+    {
+        return match ($this) {
+            self::WEB_LOGO, self::WEB_FAVICON => ['required', 'file', 'image'],
+            self::DEFAULT_LANGUAGE, self::TIMEZONE => ['required', 'string'],
+            default => ['required', 'string'],
+        };
+    }
+
     public function default(): string
     {
         return match ($this) {
