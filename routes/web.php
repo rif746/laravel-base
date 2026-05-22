@@ -8,7 +8,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', fn () => redirect()->route('dashboard'));
 
 Route::middleware(['web', 'auth', 'verified', 'seo'])->group(function () {
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::view('/dashboard', 'dashboard')
+        ->defaults('seo', new Seo(
+            title: 'domains/system.seo.dashboard.title',
+            description: 'domains/system.seo.dashboard.description',
+            keywords: 'domains/system.seo.dashboard.keywords'
+        ))->name('dashboard');
+
     Route::get('/users', UserController::class)->name('users.index');
     Route::get('/roles', RoleController::class)->name('roles.index');
 

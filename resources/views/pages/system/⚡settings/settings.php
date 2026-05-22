@@ -48,7 +48,7 @@ class extends Component
             }
 
             if ($value instanceof TemporaryUploadedFile) {
-                $value = $value->store('/system/settings/' . $key->value);
+                $value = upload_file(file: $value, path: '/system/settings/' . $key->value, disk: 'public');
             }
         }
 

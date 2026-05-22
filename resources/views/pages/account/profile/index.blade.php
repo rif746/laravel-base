@@ -11,4 +11,7 @@
     <livewire:pages::account.profile.update-profile-modal />
     <livewire:pages::account.profile.update-password-modal />
 
+    @push('scripts')
+        @vite(['resources/js/plugin/quill.js'])
+    @endpush
 </x-layouts.app>

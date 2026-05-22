@@ -15,8 +15,8 @@ export default defineConfig({
                 'resources/js/plugin/jquery.js',
                 'resources/js/plugin/datatables.js',
                 'resources/js/plugin/apexchart.js',
-                'resources/js/plugin/filepond.js',
                 'resources/js/plugin/select2.js',
+                'resources/js/plugin/quill.js',
                 'resources/js/plugin/sweetalert2.js',
             ],
             refresh: true,
@@ -29,6 +29,6 @@ export default defineConfig({
         }
     },
     optimizeDeps: {
-        include: ['jquery', 'datatables.net-dt', 'datatables.net-bs5'],
+        include: ['jquery', 'datatables.net-dt', 'datatables.net-bs5', 'select2'],
     },
 });

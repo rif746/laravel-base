@@ -3,6 +3,8 @@ import { Alpine, Livewire } from '../../vendor/livewire/livewire/dist/livewire.e
 import bs from './alpine/bs';
 import alpineAxios from './alpine/axios';
 import removeData from './alpine/remove-data';
+import alpineSelect2 from "./alpine/select2.js";
+import alpineQuill from "./alpine/quill.js";
 
 // 1. Expose both instances globally so Blade directives can see them
 window.Alpine = Alpine;
@@ -13,6 +15,8 @@ document.addEventListener('alpine:init', () => {
     Alpine.plugin(bs);
     Alpine.plugin(alpineAxios);
     Alpine.plugin(removeData);
+    Alpine.plugin(alpineSelect2);
+    Alpine.plugin(alpineQuill);
 });
 
 // 3. Boot Livewire
