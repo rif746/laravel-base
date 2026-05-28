@@ -10,6 +10,14 @@ return [
             'keywords' => 'sistem, pengaturan, konfigurasi',
         ],
     ],
+    'backups' => [
+        'title' => 'Katalog Cadangan Sistem',
+        'backup' => 'Cadangkan',
+        'upload_backup' => 'Unggah Berkas Cadangan',
+        'delete_confirm' => 'Hapus data cadangan ini?',
+        'delete_success' => 'Data cadangan berhasil dihapus',
+        'empty_state' => 'Tidak Ada Berkas Cadangan yang Disimpan',
+    ],
     'settings' => [
         'sections' => [
             'web' => 'Web',

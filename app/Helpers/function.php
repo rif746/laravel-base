@@ -35,7 +35,7 @@ function upload_file(UploadedFile|TemporaryUploadedFile $file, string $path, str
     return $file->store($path, $disk);
 }
 
-function remove_file(string $path, string $disk = 'local'): void
+function remove_file(string $path): void
 {
     if (Storage::disk('local')->exists($path)) {
         Storage::disk('local')->delete($path);

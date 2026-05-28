@@ -1,14 +1,15 @@
 <aside id="sidebar" class="sidebar">
     <div class="logo-area">
         @if ($settings['web-logo'])
-            <x-link href="{{ url('/') }}" class="h-100">
-                <x-slot:label>
-                    <img src="{{ asset_static($settings['web-logo']) }}" alt="Web Logo" class="w-100 h-100">
+            <x-link href="{{ url('/') }}" class="d-inline-flex p-3 w-100 h-100">
+                <x-slot:label class="d-flex flex-row gap-2 align-items-center h-100">
+                    <img src="{{ asset_static($settings['web-logo']) }}" alt="Web Logo" class="h-100" />
+                    <span class="fs-5 fw-bold ms-2">{{ $settings['web-name'] }}</span>
                 </x-slot:label>
             </x-link>
         @else
-            <x-link href="{{ url('/') }}" class="d-inline-flex" icon="tabler-brand-laravel" :label="env('APP_NAME')">
-                <x-slot:label class="fs-5 ms-2"> {{ env('APP_NAME') }}</x-slot:label>
+            <x-link href="{{ url('/') }}" class="d-inline-flex p-3" icon="tabler-brand-laravel" :label="env('APP_NAME')">
+                <x-slot:label class="fs-5 fw-bold ms-2"> {{ env('APP_NAME') }}</x-slot:label>
             </x-link>
         @endif
     </div>

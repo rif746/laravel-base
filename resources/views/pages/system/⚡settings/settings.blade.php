@@ -13,7 +13,7 @@
                                             <x-icon name="tabler-edit" width="14" height="14"/>
                                         </button>
                                     </div>
-                                    @if ($item->isImage())
+                                    @if ($item->isImage() && !is_null($this->settingsValue[$item->value]))
                                         <div class="p-2">
                                             <img src="{{ asset_static($this->settingsValue[$item->value]) }}"
                                                  alt="{{ $item->label() }}" class="w-100">

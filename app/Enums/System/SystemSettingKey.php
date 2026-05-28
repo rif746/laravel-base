@@ -64,7 +64,7 @@ enum SystemSettingKey: string
         };
     }
 
-    public function default(): string
+    public function default(): ?string
     {
         return match ($this) {
             self::DEFAULT_LANGUAGE => 'en',
@@ -73,7 +73,7 @@ enum SystemSettingKey: string
             self::WEB_ADDRESS => '123 Main St, Anytown, USA',
             self::WEB_PHONE => '+1234567890',
             self::WEB_EMAIL => 'acme@web.io',
-            default => '-'
+            default => null
         };
     }
 

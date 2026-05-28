@@ -14,6 +14,19 @@ return [
             'description' => 'System settings and configurations.',
             'keywords' => 'system, settings, configurations',
         ],
+        'backups' => [
+            'title' => 'System Backups',
+            'description' => 'Backup and Restore database and asset.',
+            'keywords' => 'backup, restore, database, asset',
+        ],
+    ],
+    'backups' => [
+        'title' => 'System Backup Catalogs',
+        'backup' => 'Back Up',
+        'upload_backup' => 'Upload Backup File',
+        'delete_confirm' => 'Delete this backup data?',
+        'delete_success' => 'Backup data deleted successfully',
+        'empty_state' => 'No Backup File Stored',
     ],
     'settings' => [
         'sections' => [

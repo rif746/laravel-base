@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8"/>
     {!! SEO::generate() !!}
-    <link rel="icon" href="{{ asset_static($settings['web-favicon']) }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ asset_static($settings['web-favicon']) }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset_static($settings['web-favicon'] ?? 'images/logo.svg') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset_static($settings['web-favicon'] ?? 'images/logo.svg') }}" type="image/x-icon">
     @if (isset($settings['google-tag_manager_id']))
         <!-- Google Tag Manager -->
         <script>

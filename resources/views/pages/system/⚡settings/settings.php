@@ -6,7 +6,6 @@ use App\Enums\System\SystemSettingKey;
 use App\Models\System\SystemSettings;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Spatie\LivewireFilepond\WithFilePond;
@@ -19,24 +18,26 @@ class extends Component
 
     public array $form = [];
 
-    public function mount()
+    public function mount(): void
     {
-        $this->form = $this->settingsValue;
+        if (!empty($this->settingsValue)) {
+            $this->form = $this->settingsValue;
+        }
     }
 
     #[Computed]
-    public function settings()
+    public function settings(): array
     {
         return SystemSettingKey::section();
     }
 
     #[Computed]
-    public function settingsValue()
+    public function settingsValue(): array
     {
         return SystemSettings::all()->pluck('value', 'key')->toArray();
     }
 
-    public function save(SystemSettingKey $key)
+    public function save(SystemSettingKey $key): void
     {
         $this->validate(['form.' . $key->value => $key->validation()]);
 

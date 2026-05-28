@@ -20,6 +20,7 @@ Route::middleware(['web', 'auth', 'verified', 'seo'])->group(function () {
 
     Route::middleware('password.confirm')->group(function () {
         Route::livewire('/system/settings', 'pages::system.settings')->name('system-setting.index');
+        Route::livewire('/system/backups', 'pages::system.backups')->name('system-backup.index');
 
         Route::view('/profile', 'pages.account.profile.index')
             ->defaults('seo', new Seo(

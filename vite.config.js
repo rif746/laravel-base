@@ -11,7 +11,6 @@ export default defineConfig({
 
                 'resources/js/alpinejs.js',
                 'resources/js/bootstrap.js',
-                'resources/js/sidebar.js',
                 'resources/js/plugin/jquery.js',
                 'resources/js/plugin/datatables.js',
                 'resources/js/plugin/apexchart.js',
