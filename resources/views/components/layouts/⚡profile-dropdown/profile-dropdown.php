@@ -5,7 +5,7 @@ use Livewire\Component;
 
 new class extends Component
 {
-    public function logout()
+    public function logout(): void
     {
         Auth::logout();
         session()->invalidate();

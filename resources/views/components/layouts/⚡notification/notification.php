@@ -1,12 +1,13 @@
 <?php
 
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 new class extends Component
 {
     #[Computed]
-    public function notifications()
+    public function notifications(): Collection
     {
         return auth('web')->user()->notifications()->latest()->get();
     }

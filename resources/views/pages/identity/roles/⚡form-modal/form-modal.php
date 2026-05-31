@@ -1,6 +1,7 @@
 <?php
 
 use App\Concerns\Livewire\Shared\WithModal;
+use App\Concerns\Livewire\Shared\WithToast;
 use App\Models\Identity\Permission;
 use App\Models\Identity\Role;
 use Livewire\Attributes\Computed;
@@ -11,6 +12,7 @@ use Livewire\Component;
 new class extends Component
 {
     use WithModal;
+    use WithToast;
 
     #[Locked]
     public ?int $id = null;
@@ -24,17 +26,17 @@ new class extends Component
     #[Validate('required|array')]
     public array $selected_permissions = [];
 
-    protected string $mode = 'create';
+    public string $mode = 'create';
 
     protected string $resourceName = 'role';
 
     #[Computed]
-    public function permissions()
+    public function permissions(): array
     {
         return Permission::all(['name', 'group', 'description']);
     }
 
-    public function save()
+    public function save(): void
     {
         $this->validate();
         $role = Role::updateOrCreate(['id' => $this->id], [
@@ -42,10 +44,11 @@ new class extends Component
             'guard_name' => $this->guard_name,
         ]);
         $role->syncPermissions($this->selected_permissions);
-        $this->reset();
-        $this->resetValidation();
+        $this->success($this->message);
         $this->dispatch('hide-role-form-modal');
         $this->js("LaravelDataTables['role-table'].ajax.reload()");
+        $this->reset();
+        $this->resetValidation();
     }
 
     public function show(int|string $id): void

@@ -18,7 +18,7 @@ new class extends Component
     protected string $resourceName = 'role';
 
     #[Computed]
-    public function role()
+    public function role(): Role
     {
         return $this->id ? Role::with('permissions')->findOrFail($this->id) : new Role;
     }

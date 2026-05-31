@@ -12,7 +12,7 @@ class extends Component
 {
     use HasSeoAttributes;
 
-    public function mount()
+    public function mount(): void
     {
         $this->checkVerified();
     }
@@ -34,7 +34,7 @@ class extends Component
         $this->js("toast('".__('domains/auth.pages.verify_email.resend_link')."', 'success')");
     }
 
-    public function logout()
+    public function logout(): void
     {
         Auth::logout();
         $this->redirectRoute('login', navigate: true);

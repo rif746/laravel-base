@@ -2,15 +2,20 @@
 
 use App\Actions\System\Backup\SystemBackup;
 use App\Actions\System\Backup\SystemRestore;
+use App\Actions\System\Backup\UploadBackupFile;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
+use App\Concerns\Livewire\Shared\WithToast;
 use App\Models\System\Backup;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Spatie\LivewireFilepond\WithFilePond;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 new #[Layout('components.layouts.app')]
@@ -18,6 +23,11 @@ new #[Layout('components.layouts.app')]
 class extends Component
 {
     use HasSeoAttributes;
+    use WithFilePond;
+    use WithToast;
+
+    #[Validate(['file', 'extensions:zip'])]
+    public ?TemporaryUploadedFile $file = null;
 
     #[Computed]
     public function backupsData(): Collection|array
@@ -29,18 +39,18 @@ class extends Component
     {
         try {
             $backup->execute();
-            $this->js("window.toast('System Backup successfully', 'success')");
+            $this->success(__('domains/system.backups.backup_success'));
         } catch (Exception $exception) {
             logger($exception->getMessage());
-            $this->js("window.toast('Failed to Backup System', 'error')");
+            $this->error(__('domains/system.backups.backup_error'));
         }
     }
 
     public function download(Backup $backup): StreamedResponse
     {
         $file = Storage::disk($backup->disk)->exists($backup->path);
-        if (!$file) {
-            $this->js("window.toast('Failed to download $backup->path', 'error');)");
+        if (! $file) {
+            $this->error(__('domains/system.backups.download_error', ['path' => $backup->path]));
         }
 
         return Storage::disk($backup->disk)->download($backup->path);
@@ -50,11 +60,20 @@ class extends Component
     {
         try {
             $restore->execute($backup);
-            $this->js("window.toast('System Restore successfully', 'success')");
+            $this->success(__('domains/system.backups.restored_success'));
         } catch (Exception $exception) {
             logger($exception->getMessage());
-            $this->js("window.toast('Failed to Restore System', 'error')");
+            $this->error(__('domains/system.backups.restored_error'));
         }
+    }
+
+    public function uploadFile(UploadBackupFile $uploadBackupFile): void
+    {
+        $this->validate();
+        $uploadBackupFile->execute($this->file);
+        $this->js("$('#backup-file-upload-modal').modal('hide')");
+        $this->success(__('ui.crud.success.uploaded', ['resource' => __('resources.backup_file')]));
+        $this->dispatch('hide-backup-file-upload-modal');
     }
 
     #[On('delete-data')]

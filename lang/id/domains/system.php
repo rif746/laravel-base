@@ -13,10 +13,17 @@ return [
     'backups' => [
         'title' => 'Katalog Cadangan Sistem',
         'backup' => 'Cadangkan',
+        'upload_title' => 'Unggah Berkas Cadangan',
+        'backup_file' => 'Berkas Cadangan',
         'upload_backup' => 'Unggah Berkas Cadangan',
         'delete_confirm' => 'Hapus data cadangan ini?',
         'delete_success' => 'Data cadangan berhasil dihapus',
         'empty_state' => 'Tidak Ada Berkas Cadangan yang Disimpan',
+        'backup_success' => 'Sistem berhasil dicadangkan',
+        'backup_error' => 'Gagal mencadangkan sistem',
+        'restored_success' => 'Sistem berhasil dipulihkan',
+        'restored_error' => 'Gagal memulihkan sistem',
+        'download_error' => 'Gagal mengunduh :path',
     ],
     'settings' => [
         'sections' => [

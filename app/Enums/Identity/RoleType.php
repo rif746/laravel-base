@@ -92,10 +92,21 @@ enum RoleType: string
                 'guard_name' => 'web',
                 'roles' => [self::ADMIN],
             ],
+
+            // System Setting
             [
-                'name' => 'system-setting index',
-                'description' => 'permissions.system-setting.index',
+                'name' => 'system-setting manage',
+                'description' => 'permissions.system-setting.manage',
                 'group' => 'system-setting',
+                'guard_name' => 'web',
+                'roles' => [self::ADMIN],
+            ],
+
+            // System Backup
+            [
+                'name' => 'system-backup manage',
+                'description' => 'permissions.system-backup.manage',
+                'group' => 'system-backup',
                 'guard_name' => 'web',
                 'roles' => [self::ADMIN],
             ],

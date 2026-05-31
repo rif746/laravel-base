@@ -23,6 +23,10 @@ return [
     ],
     'system-setting' => [
         'group-name' => 'Pengaturan Sistem',
-        'index' => 'Memungkinkan untuk melihat pengaturan sistem',
+        'manage' => 'Memberikan akses pengaturan sistem.',
+    ],
+    'system-backup' => [
+        'group-name' => 'Cadangkan Sistem',
+        'manage' => 'Memberikan akses untuk membuat cadangan dan memulihkan sistem.',
     ],
 ];

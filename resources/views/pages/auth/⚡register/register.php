@@ -24,7 +24,7 @@ class extends Component
 
     public string $password_confirmation;
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => ['required', 'string', 'max:255', ValidationRule::unique(User::class, 'name')],

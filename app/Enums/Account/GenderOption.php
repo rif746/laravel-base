@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\Identity;
+namespace App\Enums\Account;
 
 enum GenderOption: string
 {

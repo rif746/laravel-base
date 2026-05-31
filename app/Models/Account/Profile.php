@@ -2,7 +2,7 @@
 
 namespace App\Models\Account;
 
-use App\Enums\Identity\GenderOption;
+use App\Enums\Account\GenderOption;
 use App\Models\Identity\User;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;

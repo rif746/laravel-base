@@ -26,7 +26,7 @@ class extends Component
 
     public string $password_confirmation;
 
-    public function resetPassword()
+    public function resetPassword(): void
     {
         $this->validate([
             'token' => ['required'],

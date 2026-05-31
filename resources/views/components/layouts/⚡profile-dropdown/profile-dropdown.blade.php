@@ -17,11 +17,19 @@
                 </x-slot:label>
             </x-link>
             <hr class="my-0 border-dashed" />
-            @can('system-setting index')
+            @can('system-setting manage')
                 <x-link class="dropdown-item" :href="route('system-setting.index')">
                     <x-slot:label>
                         <x-tabler-settings width="16" />
-                        @lang('ui.button.system_setting')
+                        @lang('ui.menu.settings')
+                    </x-slot:label>
+                </x-link>
+            @endcan
+            @can('system-backup manage')
+                <x-link class="dropdown-item" :href="route('system-backup.index')">
+                    <x-slot:label>
+                        <x-tabler-restore width="16" />
+                        @lang('ui.menu.system_backup')
                     </x-slot:label>
                 </x-link>
             @endcan

@@ -1,7 +1,7 @@
 <?php
 
 use App\Concerns\Livewire\Shared\WithModal;
-use App\Enums\Identity\GenderOption;
+use App\Enums\Account\GenderOption;
 use App\Models\Identity\User;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
@@ -34,7 +34,7 @@ new class extends Component
 
     protected string $resourceName = 'profile';
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($this->id)],
@@ -57,7 +57,7 @@ new class extends Component
         $this->id = $user->id;
     }
 
-    public function save()
+    public function save(): void
     {
         $this->validate();
         $user = auth('web')->user();

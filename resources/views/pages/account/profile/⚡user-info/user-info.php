@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Identity\User;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -8,7 +9,7 @@ new class extends Component
 {
     #[Computed]
     #[On('reload-user-info')]
-    public function user()
+    public function user(): ?User
     {
         return auth('web')->user()->load(['profile']);
     }

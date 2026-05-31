@@ -13,7 +13,7 @@ class extends Component
 
     public string $password;
 
-    public function confirmPassword()
+    public function confirmPassword(): void
     {
         $this->validate([
             'password' => 'required|string|current_password',

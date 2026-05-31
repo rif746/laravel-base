@@ -9,7 +9,7 @@ new class extends Component
 
     public array $form = [];
 
-    public function mount()
+    public function mount(): void
     {
         $userSettings = auth('web')->user()->settings ?? collect();
 
@@ -27,7 +27,7 @@ new class extends Component
         }
     }
 
-    public function save()
+    public function save(): void
     {
         $rules = [];
         foreach (UserSettingKey::cases() as $key) {

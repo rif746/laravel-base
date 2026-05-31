@@ -9,7 +9,7 @@ new class extends Component {
     public string $model = '';
 
     #[On('delete-data')]
-    public function delete(int|string $id)
+    public function delete(int|string $id): void
     {
         $this->model::destroy($id);
         $this->dispatch('delete-data-completed');

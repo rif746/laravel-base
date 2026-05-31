@@ -7,6 +7,7 @@ return [
         'users' => 'Pengguna',
         'roles' => 'Peran & Izin',
         'settings' => 'Pengaturan Sistem',
+        'system_backup' => 'Cadangkan Sistem',
     ],
     'title' => [
         'index' => 'Data :resource',
@@ -41,13 +42,13 @@ return [
         'no' => 'Tidak',
         'lookup' => 'Cari...',
         'logout' => 'Keluar',
-        'system_setting' => 'Pengaturan Sistem',
     ],
     'crud' => [
         'success' => [
             'created' => ':resource telah berhasil dibuat.',
             'updated' => ':resource telah berhasil diperbarui.',
             'deleted' => ':resource telah dihapus.',
+            'uploaded' => ':resource telah berhasil diunggah.',
         ],
         'error' => [
             'forbidden' => 'Anda tidak memiliki izin untuk melakukan tindakan ini.',

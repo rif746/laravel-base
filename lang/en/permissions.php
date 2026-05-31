@@ -23,6 +23,10 @@ return [
     ],
     'system-setting' => [
         'group-name' => 'System Setting',
-        'index' => 'Allows to view system setting',
+        'manage' => 'Allows to view and manage system setting',
+    ],
+    'system-backup' => [
+        'group-name' => 'System Backup',
+        'manage' => 'Allows to view and manage system backup',
     ],
 ];

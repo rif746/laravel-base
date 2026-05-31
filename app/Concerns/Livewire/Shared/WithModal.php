@@ -25,8 +25,19 @@ trait WithModal
         return match ($this->mode) {
             'create' => __('ui.title.create', ['resource' => $resource]),
             'update' => __('ui.title.update', ['resource' => $resource]),
-            'view' => __('ui.title.view', ['resource' => $resource]),
-            default => __('ui.title.update', ['resource' => $resource]),
+            default => __('ui.title.view', ['resource' => $resource]),
+        };
+    }
+
+    #[Computed]
+    public function message(): string
+    {
+        $resource = __('resources.'.$this->resourceName);
+
+        return match ($this->mode) {
+            'create' => __('ui.crud.success.created', ['resource' => $resource]),
+            'update' => __('ui.crud.success.update', ['resource' => $resource]),
+            default => __('ui.crud.success.deleted', ['resource' => $resource]),
         };
     }
 }

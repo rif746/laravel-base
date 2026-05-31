@@ -7,6 +7,7 @@ return [
         'users' => 'Users',
         'roles' => 'Roles & Permissions',
         'settings' => 'System Settings',
+        'system_backup' => 'System Backup',
     ],
     'title' => [
         'index' => ':resource Data',
@@ -41,13 +42,13 @@ return [
         'no' => 'No',
         'lookup' => 'Search...',
         'logout' => 'Logout',
-        'system_setting' => 'System Setting',
     ],
     'crud' => [
         'success' => [
             'created' => ':resource has been created successfully.',
             'updated' => ':resource has been updated successfully.',
             'deleted' => ':resource has been removed.',
+            'uploaded' => ':resource has been uploaded successfully.',
         ],
         'error' => [
             'forbidden' => 'You do not have permission to perform this action.',

@@ -1,8 +1,10 @@
 <?php
 
 use App\Concerns\Livewire\Shared\WithModal;
+use App\Concerns\Livewire\Shared\WithToast;
 use App\Models\Identity\Role;
 use App\Models\Identity\User;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Attributes\Computed;
@@ -13,6 +15,7 @@ use Livewire\Component;
 new class extends Component
 {
     use WithModal;
+    use WithToast;
 
     #[Locked]
     public ?int $id = null;
@@ -32,11 +35,11 @@ new class extends Component
     #[Validate(as: 'domains/identity.fields.user.password_confirmation')]
     public ?string $password_confirmation = null;
 
-    protected string $mode = 'create';
+    public string $mode = 'create';
 
     protected string $resourceName = 'user';
 
-    public function rules()
+    public function rules(): array
     {
         $rules = [
             'name' => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($this->id)],
@@ -53,12 +56,12 @@ new class extends Component
     }
 
     #[Computed]
-    public function roles()
+    public function roles(): Collection
     {
         return Role::orderBy('name', 'asc')->get(['name'])->pluck('name', 'name');
     }
 
-    public function save()
+    public function save(): void
     {
         $this->validate();
 
@@ -76,7 +79,9 @@ new class extends Component
             $update
         )->syncRoles($this->role_name);
 
+        $this->success($this->message);
         $this->dispatch('hide-user-form-modal');
+
         $this->js("LaravelDataTables['user-table'].ajax.reload()");
     }
 

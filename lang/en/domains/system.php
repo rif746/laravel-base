@@ -23,10 +23,17 @@ return [
     'backups' => [
         'title' => 'System Backup Catalogs',
         'backup' => 'Back Up',
+        'upload_title' => 'Upload Backup File',
+        'backup_file' => 'Backup File',
         'upload_backup' => 'Upload Backup File',
         'delete_confirm' => 'Delete this backup data?',
         'delete_success' => 'Backup data deleted successfully',
         'empty_state' => 'No Backup File Stored',
+        'backup_success' => 'System Backup successfully',
+        'backup_error' => 'Failed to Backup System',
+        'restored_success' => 'System Restore successfully',
+        'restored_error' => 'Failed to Restore System',
+        'download_error' => 'Failed to download :path',
     ],
     'settings' => [
         'sections' => [
