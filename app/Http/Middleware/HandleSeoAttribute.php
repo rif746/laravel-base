@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Actions\System\SetSeoMetadata;
+use App\Domains\System\Actions\SetSeoMetadata;
 use App\Attributes\Seo;
 use Closure;
 use Illuminate\Http\Request;

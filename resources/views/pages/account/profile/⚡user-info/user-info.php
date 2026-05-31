@@ -1,7 +1,7 @@
 <?php
 
-use App\Actions\Account\ResendVerificationEmail;
-use App\Models\Identity\User;
+use App\Domains\Account\Actions\ResendVerificationEmail;
+use App\Domains\Identity\Models\User;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;

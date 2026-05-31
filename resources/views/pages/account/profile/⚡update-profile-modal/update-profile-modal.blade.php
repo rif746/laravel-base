@@ -2,7 +2,7 @@
     <x-form.input name="name" :label="__('domains/identity.fields.user.name')" wire:model="name"/>
     <x-form.input name="email" :label="__('domains/identity.fields.user.email')" wire:model="email"/>
     <x-form.select name="gender" :label="__('domains/account.fields.profile.gender')" wire:model="gender">
-        @foreach (\App\Enums\Account\GenderOption::cases() as $case)
+        @foreach (\App\Domains\Account\Enums\GenderOption::cases() as $case)
             <option value="{{ $case->value }}">{{ $case->label() }}</option>
         @endforeach
     </x-form.select>

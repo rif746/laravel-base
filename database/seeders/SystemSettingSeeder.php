@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Enums\System\SystemSettingKey;
-use App\Models\System\SystemSettings;
+use App\Domains\System\Enums\SystemSettingKey;
+use App\Domains\System\Models\SystemSettings;
 use Illuminate\Database\Seeder;
 
 class SystemSettingSeeder extends Seeder

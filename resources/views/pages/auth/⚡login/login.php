@@ -1,9 +1,9 @@
 <?php
 
-use App\Actions\Auth\LoginUser;
+use App\Domains\Auth\Actions\LoginUser;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
-use App\DTOs\Auth\LoginUserDTO;
+use App\Domains\Auth\DTOs\LoginUserDTO;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 

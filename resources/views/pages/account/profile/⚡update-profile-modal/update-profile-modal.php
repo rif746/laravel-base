@@ -1,10 +1,10 @@
 <?php
 
-use App\Actions\Account\UpdateProfile;
+use App\Domains\Account\Actions\UpdateProfile;
 use App\Concerns\Livewire\Shared\WithModal;
-use App\DTOs\Account\UpdateProfileDTO;
-use App\Enums\Account\GenderOption;
-use App\Models\Identity\User;
+use App\Domains\Account\DTOs\UpdateProfileDTO;
+use App\Domains\Account\Enums\GenderOption;
+use App\Domains\Identity\Models\User;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;

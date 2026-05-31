@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1\Lookup;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LookupResource;
-use App\Models\Identity\Role;
+use App\Domains\Identity\Models\Role;
 use Illuminate\Http\Request;
 
 class RoleLookupController extends Controller

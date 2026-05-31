@@ -1,8 +1,8 @@
 <?php
 
-use App\Actions\Account\UpdatePassword;
+use App\Domains\Account\Actions\UpdatePassword;
 use App\Concerns\Livewire\Shared\WithModal;
-use App\DTOs\Account\UpdatePasswordDTO;
+use App\Domains\Account\DTOs\UpdatePasswordDTO;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 

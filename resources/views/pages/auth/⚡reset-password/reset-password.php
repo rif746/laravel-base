@@ -1,9 +1,9 @@
 <?php
 
-use App\Actions\Auth\ResetUserPassword;
+use App\Domains\Auth\Actions\ResetUserPassword;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
-use App\DTOs\Auth\ResetPasswordDTO;
+use App\Domains\Auth\DTOs\ResetPasswordDTO;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;

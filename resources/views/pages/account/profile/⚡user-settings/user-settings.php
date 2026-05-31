@@ -1,8 +1,8 @@
 <?php
 
-use App\Actions\Account\UpdateUserSettings;
-use App\DTOs\Account\UpdateUserSettingsDTO;
-use App\Enums\Account\UserSettingKey;
+use App\Domains\Account\Actions\UpdateUserSettings;
+use App\Domains\Account\DTOs\UpdateUserSettingsDTO;
+use App\Domains\Account\Enums\UserSettingKey;
 use Livewire\Component;
 
 new class extends Component

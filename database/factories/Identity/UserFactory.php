@@ -2,7 +2,7 @@
 
 namespace Database\Factories\Identity;
 
-use App\Models\Identity\User;
+use App\Domains\Identity\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -11,6 +11,11 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
+    /**
+     * The name of the factory's corresponding model.
+     */
+    protected $model = User::class;
+
     /**
      * The current password being used by the factory.
      */

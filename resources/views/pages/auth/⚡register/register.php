@@ -1,10 +1,10 @@
 <?php
 
-use App\Actions\Auth\RegisterUser;
+use App\Domains\Auth\Actions\RegisterUser;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
-use App\DTOs\Auth\RegisterUserDTO;
-use App\Models\Identity\User;
+use App\Domains\Auth\DTOs\RegisterUserDTO;
+use App\Domains\Identity\Models\User;
 use Illuminate\Validation\Rule as ValidationRule;
 use Illuminate\Validation\Rules\Password as RulesPassword;
 use Livewire\Attributes\Layout;

@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\System\SystemSettingKey;
-use App\Models\System\SystemSettings;
+use App\Domains\System\Enums\SystemSettingKey;
+use App\Domains\System\Models\SystemSettings;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;

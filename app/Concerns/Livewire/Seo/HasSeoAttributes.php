@@ -2,7 +2,7 @@
 
 namespace App\Concerns\Livewire\Seo;
 
-use App\Actions\System\SetSeoMetadata;
+use App\Domains\System\Actions\SetSeoMetadata;
 use App\Attributes\Seo;
 use Livewire\Component;
 use ReflectionClass;

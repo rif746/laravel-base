@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Enums\Identity\RoleType;
-use App\Models\Identity\Permission;
-use App\Models\Identity\Role;
+use App\Domains\Identity\Enums\RoleType;
+use App\Domains\Identity\Models\Permission;
+use App\Domains\Identity\Models\Role;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\PermissionRegistrar;
 

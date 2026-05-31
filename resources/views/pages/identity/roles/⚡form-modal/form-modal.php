@@ -1,11 +1,11 @@
 <?php
 
-use App\Actions\Identity\SaveRole;
+use App\Domains\Identity\Actions\SaveRole;
 use App\Concerns\Livewire\Shared\WithModal;
 use App\Concerns\Livewire\Shared\WithToast;
-use App\DTOs\Identity\RoleDTO;
-use App\Models\Identity\Permission;
-use App\Models\Identity\Role;
+use App\Domains\Identity\DTOs\RoleDTO;
+use App\Domains\Identity\Models\Permission;
+use App\Domains\Identity\Models\Role;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;

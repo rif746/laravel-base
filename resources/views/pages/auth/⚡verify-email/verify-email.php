@@ -1,6 +1,6 @@
 <?php
 
-use App\Actions\Auth\ResendVerificationEmail;
+use App\Domains\Auth\Actions\ResendVerificationEmail;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
 use Illuminate\Support\Facades\Auth;

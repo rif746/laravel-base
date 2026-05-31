@@ -1,11 +1,11 @@
 <?php
 
-use App\Actions\Identity\SaveUser;
+use App\Domains\Identity\Actions\SaveUser;
 use App\Concerns\Livewire\Shared\WithModal;
 use App\Concerns\Livewire\Shared\WithToast;
-use App\DTOs\Identity\UserDTO;
-use App\Models\Identity\Role;
-use App\Models\Identity\User;
+use App\Domains\Identity\DTOs\UserDTO;
+use App\Domains\Identity\Models\Role;
+use App\Domains\Identity\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;

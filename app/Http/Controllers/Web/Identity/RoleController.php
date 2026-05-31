@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Web\Identity;
 
 use App\Attributes\Seo;
-use App\DataTables\Identity\RoleDataTable;
+use App\Domains\Identity\DataTables\RoleDataTable;
 use App\Http\Controllers\Controller;
-use App\Models\Identity\Role;
+use App\Domains\Identity\Models\Role;
 use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class RoleController extends Controller

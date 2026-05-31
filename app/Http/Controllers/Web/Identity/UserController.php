@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Web\Identity;
 
 use App\Attributes\Seo;
-use App\DataTables\Identity\UserDataTable;
+use App\Domains\Identity\DataTables\UserDataTable;
 use App\Http\Controllers\Controller;
-use App\Models\Identity\User;
+use App\Domains\Identity\Models\User;
 use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class UserController extends Controller

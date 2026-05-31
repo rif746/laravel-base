@@ -5,7 +5,7 @@
 
     <livewire:pages::identity.users.form-modal />
     <livewire:pages::identity.users.view-modal />
-    <livewire:datatables.delete-action :model="\App\Models\Identity\User::class" />
+    <livewire:datatables.delete-action :model="\App\Domains\Identity\Models\User::class" />
 
     @push('scripts')
         @vite('resources/js/plugin/datatables.js')

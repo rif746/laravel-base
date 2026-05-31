@@ -1,11 +1,11 @@
 <?php
 
-use App\Actions\System\SaveSetting;
+use App\Domains\System\Actions\SaveSetting;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
-use App\DTOs\System\SystemSetingDTO;
-use App\Enums\System\SystemSettingKey;
-use App\Models\System\SystemSettings;
+use App\Domains\System\DTOs\SystemSetingDTO;
+use App\Domains\System\Enums\SystemSettingKey;
+use App\Domains\System\Models\SystemSettings;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;

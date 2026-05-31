@@ -1,14 +1,14 @@
 <?php
 
-use App\Actions\System\Backup\DeleteBackup;
-use App\Actions\System\Backup\SystemBackup;
-use App\Actions\System\Backup\SystemRestore;
-use App\Actions\System\Backup\UploadBackupFile;
+use App\Domains\System\Actions\Backup\DeleteBackup;
+use App\Domains\System\Actions\Backup\SystemBackup;
+use App\Domains\System\Actions\Backup\SystemRestore;
+use App\Domains\System\Actions\Backup\UploadBackupFile;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
 use App\Concerns\Livewire\Shared\WithToast;
-use App\DTOs\System\DeleteBackupDTO;
-use App\Models\System\Backup;
+use App\Domains\System\DTOs\DeleteBackupDTO;
+use App\Domains\System\Models\Backup;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
