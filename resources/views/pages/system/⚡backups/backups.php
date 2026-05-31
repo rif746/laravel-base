@@ -1,11 +1,13 @@
 <?php
 
+use App\Actions\System\Backup\DeleteBackup;
 use App\Actions\System\Backup\SystemBackup;
 use App\Actions\System\Backup\SystemRestore;
 use App\Actions\System\Backup\UploadBackupFile;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
 use App\Concerns\Livewire\Shared\WithToast;
+use App\DTOs\System\DeleteBackupDTO;
 use App\Models\System\Backup;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -77,11 +79,9 @@ class extends Component
     }
 
     #[On('delete-data')]
-    public function delete(string $id): void
+    public function delete(string $id, DeleteBackup $action): void
     {
-        $backup = Backup::find($id);
-        remove_file($backup->path);
-        $backup->delete();
+        $action->execute(new DeleteBackupDTO(id: $id));
         $this->dispatch('delete-data-completed');
     }
 };

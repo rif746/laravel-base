@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Auth\ResendVerificationEmail;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
 use Illuminate\Support\Facades\Auth;
@@ -26,10 +27,11 @@ class extends Component
         }
     }
 
-    public function resendEmail(): void
+    public function resendEmail(ResendVerificationEmail $action): void
     {
         $this->checkVerified();
-        request()->user()->sendEmailVerificationNotification();
+
+        $action->execute();
 
         $this->js("toast('".__('domains/auth.pages.verify_email.resend_link')."', 'success')");
     }

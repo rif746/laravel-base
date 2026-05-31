@@ -1,5 +1,7 @@
 <?php
 
+use App\Actions\Account\UpdateUserSettings;
+use App\DTOs\Account\UpdateUserSettingsDTO;
 use App\Enums\Account\UserSettingKey;
 use Livewire\Component;
 
@@ -15,9 +17,9 @@ new class extends Component
 
         $this->settings = collect(UserSettingKey::cases())->map(function ($key) {
             return [
-                'key' => $key->value,
-                'label' => $key->label(),
-                'type' => $key->type(),
+                'key'     => $key->value,
+                'label'   => $key->label(),
+                'type'    => $key->type(),
                 'options' => $key->options(),
             ];
         })->toArray();
@@ -27,7 +29,7 @@ new class extends Component
         }
     }
 
-    public function save(): void
+    public function save(UpdateUserSettings $action): void
     {
         $rules = [];
         foreach (UserSettingKey::cases() as $key) {
@@ -38,9 +40,9 @@ new class extends Component
 
         $this->validate($rules);
 
-        $user = auth('web')->user();
-        $user->settings = collect($this->form);
-        $user->save();
+        $action->execute(new UpdateUserSettingsDTO(
+            settings: $this->form,
+        ));
 
         $this->js("toast('".__('ui.crud.success.updated', ['resource' => __('domains/account.pages.user_settings.title')])."')");
     }

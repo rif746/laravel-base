@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Auth\ConfirmPassword;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
 use Livewire\Attributes\Layout;
@@ -13,13 +14,13 @@ class extends Component
 
     public string $password;
 
-    public function confirmPassword(): void
+    public function confirmPassword(ConfirmPassword $action): void
     {
         $this->validate([
             'password' => 'required|string|current_password',
         ]);
 
-        session()->put('auth.password_confirmed_at', time());
+        $action->execute();
 
         $this->redirectIntended(route('dashboard', absolute: false), navigate: true);
     }

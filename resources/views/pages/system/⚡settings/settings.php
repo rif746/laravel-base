@@ -1,13 +1,14 @@
 <?php
 
+use App\Actions\System\SaveSetting;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
+use App\DTOs\System\SystemSetingDTO;
 use App\Enums\System\SystemSettingKey;
 use App\Models\System\SystemSettings;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Spatie\LivewireFilepond\WithFilePond;
 
 new #[Layout('components.layouts.app')]
@@ -20,7 +21,7 @@ class extends Component
 
     public function mount(): void
     {
-        if (!empty($this->settingsValue)) {
+        if (! empty($this->settingsValue)) {
             $this->form = $this->settingsValue;
         }
     }
@@ -37,29 +38,15 @@ class extends Component
         return SystemSettings::all()->pluck('value', 'key')->toArray();
     }
 
-    public function save(SystemSettingKey $key): void
+    public function save(SystemSettingKey $key, SaveSetting $action): void
     {
         $this->validate(['form.' . $key->value => $key->validation()]);
 
-        $value = $this->form[$key->value];
+        $action->execute(new SystemSetingDTO(
+            key: $key,
+            value: $this->form[$key->value],
+        ));
 
-        if ($key->isImage()) {
-            if ($this->settingsValue[$key->value]) {
-                remove_file($this->settingsValue[$key->value]);
-            }
-
-            if ($value instanceof TemporaryUploadedFile) {
-                $value = upload_file(file: $value, path: '/system/settings/' . $key->value, disk: 'public');
-            }
-        }
-
-        SystemSettings::updateOrCreate(
-            ['key' => $key->value],
-            ['value' => $value],
-        );
-
-        $key->effect($key->value, $this->form[$key->value]);
-        cache()->forget('system-settings');
         unset($this->settingsValue);
 
         $this->js("toast('" . __('ui.crud.success.updated', ['resource' => $key->label()]) . "', 'success');");

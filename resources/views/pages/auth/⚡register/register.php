@@ -1,10 +1,10 @@
 <?php
 
+use App\Actions\Auth\RegisterUser;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
+use App\DTOs\Auth\RegisterUserDTO;
 use App\Models\Identity\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule as ValidationRule;
 use Illuminate\Validation\Rules\Password as RulesPassword;
 use Livewire\Attributes\Layout;
@@ -27,23 +27,21 @@ class extends Component
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', ValidationRule::unique(User::class, 'name')],
-            'email' => ['required', 'string', 'email', ValidationRule::unique(User::class, 'email')],
+            'name'     => ['required', 'string', 'max:255', ValidationRule::unique(User::class, 'name')],
+            'email'    => ['required', 'string', 'email', ValidationRule::unique(User::class, 'email')],
             'password' => [RulesPassword::default(), 'required', 'confirmed'],
         ];
     }
 
-    public function register(): void
+    public function register(RegisterUser $action): void
     {
         $this->validate();
-        $user = User::create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => bcrypt($this->password),
-        ]);
 
-        event(new Registered($user));
-        Auth::login($user);
+        $action->execute(new RegisterUserDTO(
+            name: $this->name,
+            email: $this->email,
+            password: $this->password,
+        ));
 
         $this->redirectRoute('dashboard', absolute: false, navigate: true);
     }

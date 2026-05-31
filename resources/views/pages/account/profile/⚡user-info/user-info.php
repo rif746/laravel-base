@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Account\ResendVerificationEmail;
 use App\Models\Identity\User;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -14,14 +15,16 @@ new class extends Component
         return auth('web')->user()->load(['profile']);
     }
 
-    public function resendVerificationEmail(): void
+    public function resendVerificationEmail(ResendVerificationEmail $action): void
     {
         if ($this->user->email_verified_at) {
-            $this->js("toast('info', __('The email has already been verified.')');");
+            $this->js("toast('info', __('The email has already been verified.')')");
 
             return;
         }
-        $this->user->sendEmailVerificationNotification();
-        $this->js("toast('success', __('The verification email has been sent.')');");
+
+        $action->execute();
+
+        $this->js("toast('success', __('The verification email has been sent.')')");
     }
 };

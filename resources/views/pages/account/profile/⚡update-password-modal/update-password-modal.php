@@ -1,6 +1,8 @@
 <?php
 
+use App\Actions\Account\UpdatePassword;
 use App\Concerns\Livewire\Shared\WithModal;
+use App\DTOs\Account\UpdatePasswordDTO;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -25,19 +27,20 @@ new class extends Component
     {
         return [
             'current_password' => ['required', 'current_password'],
-            'new_password' => ['required', 'min:8', 'confirmed', 'different:current_password'],
+            'new_password'     => ['required', 'min:8', 'confirmed', 'different:current_password'],
         ];
     }
 
     public function show(int|string $id): void {}
 
-    public function save(): void
+    public function save(UpdatePassword $action): void
     {
         $this->validate();
-        $user = auth('web')->user();
-        $user->update([
-            'password' => $this->new_password,
-        ]);
+
+        $action->execute(new UpdatePasswordDTO(
+            new_password: $this->new_password,
+        ));
+
         $this->dispatch('hide-update-password-modal');
         $this->js("toast('".__('ui.crud.success.updated', ['resource' => __('resources.password')])."','success');");
     }

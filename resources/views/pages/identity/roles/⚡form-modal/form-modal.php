@@ -1,9 +1,12 @@
 <?php
 
+use App\Actions\Identity\SaveRole;
 use App\Concerns\Livewire\Shared\WithModal;
 use App\Concerns\Livewire\Shared\WithToast;
+use App\DTOs\Identity\RoleDTO;
 use App\Models\Identity\Permission;
 use App\Models\Identity\Role;
+use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
@@ -31,19 +34,22 @@ new class extends Component
     protected string $resourceName = 'role';
 
     #[Computed]
-    public function permissions(): array
+    public function permissions(): Collection
     {
         return Permission::all(['name', 'group', 'description']);
     }
 
-    public function save(): void
+    public function save(SaveRole $action): void
     {
         $this->validate();
-        $role = Role::updateOrCreate(['id' => $this->id], [
-            'name' => $this->name,
-            'guard_name' => $this->guard_name,
-        ]);
-        $role->syncPermissions($this->selected_permissions);
+
+        $action->execute(new RoleDTO(
+            id: $this->id,
+            name: $this->name,
+            guard_name: $this->guard_name,
+            selected_permissions: $this->selected_permissions,
+        ));
+
         $this->success($this->message);
         $this->dispatch('hide-role-form-modal');
         $this->js("LaravelDataTables['role-table'].ajax.reload()");

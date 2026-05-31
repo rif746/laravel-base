@@ -1,6 +1,8 @@
 <?php
 
+use App\Actions\Account\UpdateProfile;
 use App\Concerns\Livewire\Shared\WithModal;
+use App\DTOs\Account\UpdateProfileDTO;
 use App\Enums\Account\GenderOption;
 use App\Models\Identity\User;
 use Illuminate\Validation\Rule;
@@ -37,9 +39,9 @@ new class extends Component
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($this->id)],
-            'email' => ['required', 'string', 'email', Rule::unique(User::class, 'email')->ignore($this->id)],
-            'gender' => [Rule::in(GenderOption::cases())],
+            'name'         => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($this->id)],
+            'email'        => ['required', 'string', 'email', Rule::unique(User::class, 'email')->ignore($this->id)],
+            'gender'       => [Rule::in(GenderOption::cases())],
             'date_of_birth' => ['required'],
             'phone_number' => ['required', 'numeric', 'min_digits:10'],
         ];
@@ -57,20 +59,18 @@ new class extends Component
         $this->id = $user->id;
     }
 
-    public function save(): void
+    public function save(UpdateProfile $action): void
     {
         $this->validate();
-        $user = auth('web')->user();
-        $user->fill($this->only('email', 'name'));
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-        $user->update();
 
-        $user->profile()->updateOrCreate(
-            ['user_id' => $user->id],
-            $this->only('gender', 'date_of_birth', 'phone_number')
-        );
+        $action->execute(new UpdateProfileDTO(
+            userId: $this->id,
+            name: $this->name,
+            email: $this->email,
+            gender: $this->gender,
+            date_of_birth: $this->date_of_birth,
+            phone_number: $this->phone_number,
+        ));
 
         $this->js("toast('".__('ui.crud.success.updated', ['resource' => __('resources.profile')])."')");
         $this->dispatch('hide-update-profile-modal');

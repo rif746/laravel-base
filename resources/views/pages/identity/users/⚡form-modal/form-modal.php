@@ -1,7 +1,9 @@
 <?php
 
+use App\Actions\Identity\SaveUser;
 use App\Concerns\Livewire\Shared\WithModal;
 use App\Concerns\Livewire\Shared\WithToast;
+use App\DTOs\Identity\UserDTO;
 use App\Models\Identity\Role;
 use App\Models\Identity\User;
 use Illuminate\Support\Collection;
@@ -42,10 +44,10 @@ new class extends Component
     public function rules(): array
     {
         $rules = [
-            'name' => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($this->id)],
-            'email' => ['required', 'string', 'email', Rule::unique(User::class, 'email')->ignore($this->id)],
+            'name'      => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($this->id)],
+            'email'     => ['required', 'string', 'email', Rule::unique(User::class, 'email')->ignore($this->id)],
             'role_name' => ['required'],
-            'password' => [Password::default(), 'required', 'confirmed'],
+            'password'  => [Password::default(), 'required', 'confirmed'],
         ];
 
         if (isset($this->id)) {
@@ -61,27 +63,20 @@ new class extends Component
         return Role::orderBy('name', 'asc')->get(['name'])->pluck('name', 'name');
     }
 
-    public function save(): void
+    public function save(SaveUser $action): void
     {
         $this->validate();
 
-        $update = [
-            'name' => $this->name,
-            'email' => $this->email,
-        ];
-
-        if ((bool) $this->password) {
-            $update['password'] = $this->password;
-        }
-
-        User::updateOrCreate(
-            ['id' => $this->id],
-            $update
-        )->syncRoles($this->role_name);
+        $action->execute(new UserDTO(
+            id: $this->id,
+            name: $this->name,
+            email: $this->email,
+            password: $this->password,
+            role_name: $this->role_name,
+        ));
 
         $this->success($this->message);
         $this->dispatch('hide-user-form-modal');
-
         $this->js("LaravelDataTables['user-table'].ajax.reload()");
     }
 

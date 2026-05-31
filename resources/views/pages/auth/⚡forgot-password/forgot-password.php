@@ -1,7 +1,9 @@
 <?php
 
+use App\Actions\Auth\SendPasswordResetLink;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
+use App\DTOs\Auth\ForgotPasswordDTO;
 use Illuminate\Support\Facades\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -21,14 +23,15 @@ class extends Component
         ];
     }
 
-    public function forgotPassword(): void
+    public function forgotPassword(SendPasswordResetLink $action): void
     {
         $this->validate();
-        $status = Password::sendResetLink(
-            $this->only('email')
-        );
 
-        if ($status == Password::RESET_LINK_SENT) {
+        $status = $action->execute(new ForgotPasswordDTO(
+            email: $this->email,
+        ));
+
+        if ($status === Password::RESET_LINK_SENT) {
             $this->js("window.toast('Password reset link has been sent to your email', 'success');");
         }
     }
