@@ -27,7 +27,7 @@ return [
                  */
                 'include' => [
                     storage_path('/app/private'),
-                    storage_path('/app/public')
+                    storage_path('/app/public'),
                     // storage_path(),  // Include if you use zero downtime deployments and don't follow symlinks
                 ],
 

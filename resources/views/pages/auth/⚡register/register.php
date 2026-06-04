@@ -1,10 +1,11 @@
 <?php
 
-use App\Domains\Auth\Actions\RegisterUser;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
-use App\Domains\Auth\DTOs\RegisterUserDTO;
+use App\Domains\Identity\Actions\Registration\RegisterUser;
+use App\Domains\Identity\DTOs\Registration\RegisterUserDTO;
 use App\Domains\Identity\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule as ValidationRule;
 use Illuminate\Validation\Rules\Password as RulesPassword;
 use Livewire\Attributes\Layout;
@@ -27,8 +28,8 @@ class extends Component
     public function rules(): array
     {
         return [
-            'name'     => ['required', 'string', 'max:255', ValidationRule::unique(User::class, 'name')],
-            'email'    => ['required', 'string', 'email', ValidationRule::unique(User::class, 'email')],
+            'name' => ['required', 'string', 'max:255', ValidationRule::unique(User::class, 'name')],
+            'email' => ['required', 'string', 'email', ValidationRule::unique(User::class, 'email')],
             'password' => [RulesPassword::default(), 'required', 'confirmed'],
         ];
     }
@@ -37,11 +38,15 @@ class extends Component
     {
         $this->validate();
 
-        $action->execute(new RegisterUserDTO(
+        // The Identity Domain creates the user and fires the Registered event.
+        $user = $action->execute(new RegisterUserDTO(
             name: $this->name,
             email: $this->email,
             password: $this->password,
         ));
+
+        // The Gateway owns the session — Auth::login() lives here, not in the domain.
+        Auth::login($user);
 
         $this->redirectRoute('dashboard', absolute: false, navigate: true);
     }

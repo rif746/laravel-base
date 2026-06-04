@@ -1,9 +1,9 @@
 <?php
 
-use App\Domains\Auth\Actions\SendPasswordResetLink;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
-use App\Domains\Auth\DTOs\ForgotPasswordDTO;
+use App\Domains\Identity\Actions\Passwords\SendPasswordResetLink;
+use App\Domains\Identity\DTOs\Passwords\ForgotPasswordDTO;
 use Illuminate\Support\Facades\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Component;

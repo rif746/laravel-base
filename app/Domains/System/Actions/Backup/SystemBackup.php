@@ -24,18 +24,19 @@ class SystemBackup
 
         $files = Storage::disk($disk)->allFiles($backupName);
         if (empty($files)) {
-            throw new Exception("Backup zip file could not be verified on target storage.");
+            throw new Exception('Backup zip file could not be verified on target storage.');
         }
 
         $latestFile = collect($files)->last();
         $fileName = basename($latestFile);
         $sizeInBytes = Storage::disk($disk)->size($latestFile);
+
         return Backup::create([
             'file_name' => $fileName,
             'disk' => $disk,
             'path' => $latestFile,
             'size' => $sizeInBytes,
-            'type' => 'full'
+            'type' => 'full',
         ]);
     }
 }

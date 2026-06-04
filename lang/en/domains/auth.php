@@ -116,5 +116,11 @@ return [
             'title' => 'Sign In Activity',
             'message' => 'You have successfully signed in to your account from :ip.',
         ],
+        'verify_email' => [
+            'subject' => 'Verify your email address',
+            'intro' => 'Please click the button below to verify your email address.',
+            'action' => 'Verify Email Address',
+            'outro' => 'If you did not create an account, no further action is required.',
+        ],
     ],
 ];

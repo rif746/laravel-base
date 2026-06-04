@@ -1,9 +1,9 @@
 <?php
 
-use App\Domains\Auth\Actions\ResetUserPassword;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
-use App\Domains\Auth\DTOs\ResetPasswordDTO;
+use App\Domains\Identity\Actions\Passwords\ResetUserPassword;
+use App\Domains\Identity\DTOs\Passwords\ResetPasswordDTO;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;
@@ -28,8 +28,8 @@ class extends Component
     public function resetPassword(ResetUserPassword $action): void
     {
         $this->validate([
-            'token'    => ['required'],
-            'email'    => ['required', 'email'],
+            'token' => ['required'],
+            'email' => ['required', 'email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 

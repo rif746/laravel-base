@@ -3,16 +3,21 @@
 namespace App\Domains\Account\Actions;
 
 use App\Domains\Account\DTOs\UpdateUserSettingsDTO;
+use App\Domains\Account\Enums\UserSettingKey;
 use App\Domains\Identity\Models\User;
 
 class UpdateUserSettings
 {
-    public function execute(UpdateUserSettingsDTO $dto): void
+    public function execute(User $user, array $newSettings): void
     {
-        /** @var User $user */
-        $user = auth('web')->user();
+        $currentSettings = $user->settings ?? [];
 
-        $user->settings = collect($dto->settings);
-        $user->save();
+        foreach (UserSettingKey::cases() as $key) {
+            if (array_key_exists($key->value, $newSettings)) {
+                $currentSettings[$key->value] = $newSettings[$key->value];
+            }
+        }
+
+        $user->update(['settings' => $currentSettings]);
     }
 }

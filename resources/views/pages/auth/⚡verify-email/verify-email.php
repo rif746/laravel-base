@@ -1,8 +1,8 @@
 <?php
 
-use App\Domains\Auth\Actions\ResendVerificationEmail;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
+use App\Domains\Identity\Actions\Registration\ResendVerificationEmail;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -31,7 +31,9 @@ class extends Component
     {
         $this->checkVerified();
 
-        $action->execute();
+        // The Gateway resolves the User from the session and passes it
+        // explicitly — the domain action has no HTTP/request dependency.
+        $action->execute(Auth::user());
 
         $this->js("toast('".__('domains/auth.pages.verify_email.resend_link')."', 'success')");
     }

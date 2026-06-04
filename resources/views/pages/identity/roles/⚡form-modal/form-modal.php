@@ -1,9 +1,11 @@
 <?php
 
-use App\Domains\Identity\Actions\SaveRole;
 use App\Concerns\Livewire\Shared\WithModal;
 use App\Concerns\Livewire\Shared\WithToast;
-use App\Domains\Identity\DTOs\RoleDTO;
+use App\Domains\Identity\Actions\Roles\CreateSystemRole;
+use App\Domains\Identity\Actions\Roles\UpdateSystemRole;
+use App\Domains\Identity\DTOs\Roles\CreateRoleDTO;
+use App\Domains\Identity\DTOs\Roles\UpdateRoleDTO;
 use App\Domains\Identity\Models\Permission;
 use App\Domains\Identity\Models\Role;
 use Illuminate\Support\Collection;
@@ -39,16 +41,21 @@ new class extends Component
         return Permission::all(['name', 'group', 'description']);
     }
 
-    public function save(SaveRole $action): void
+    public function save(CreateSystemRole $create, UpdateSystemRole $update): void
     {
         $this->validate();
 
-        $action->execute(new RoleDTO(
-            id: $this->id,
-            name: $this->name,
-            guard_name: $this->guard_name,
-            selected_permissions: $this->selected_permissions,
-        ));
+        if($this->mode === 'create') {
+            $create->execute(new CreateRoleDTO(
+                name: $this->name,
+                guard_name: $this->guard_name,
+                permissions: $this->selected_permissions
+            ));
+        } elseif ($this->mode === 'update') {
+            $update->execute(Role::findById($this->id), new UpdateRoleDTO(
+                permissions: $this->selected_permissions,
+            ));
+        }
 
         $this->success($this->message);
         $this->dispatch('hide-role-form-modal');

@@ -1,12 +1,12 @@
 <?php
 
+use App\Attributes\Seo;
+use App\Concerns\Livewire\Seo\HasSeoAttributes;
+use App\Concerns\Livewire\Shared\WithToast;
 use App\Domains\System\Actions\Backup\DeleteBackup;
 use App\Domains\System\Actions\Backup\SystemBackup;
 use App\Domains\System\Actions\Backup\SystemRestore;
 use App\Domains\System\Actions\Backup\UploadBackupFile;
-use App\Attributes\Seo;
-use App\Concerns\Livewire\Seo\HasSeoAttributes;
-use App\Concerns\Livewire\Shared\WithToast;
 use App\Domains\System\DTOs\DeleteBackupDTO;
 use App\Domains\System\Models\Backup;
 use Illuminate\Support\Collection;
@@ -79,9 +79,9 @@ class extends Component
     }
 
     #[On('delete-data')]
-    public function delete(string $id, DeleteBackup $action): void
+    public function delete(Backup $id, DeleteBackup $action): void
     {
-        $action->execute(new DeleteBackupDTO(id: $id));
+        $action->execute($id);
         $this->dispatch('delete-data-completed');
     }
 };

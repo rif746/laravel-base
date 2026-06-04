@@ -15,7 +15,7 @@ class ByteHumanReadable implements CastsAttributes
             return null;
         }
 
-        return new ByteUsage((int)$value);
+        return new ByteUsage((int) $value);
     }
 
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
@@ -29,7 +29,7 @@ class ByteHumanReadable implements CastsAttributes
         }
 
         if (is_numeric($value)) {
-            return (int)$value;
+            return (int) $value;
         }
 
         throw new InvalidArgumentException("The {$key} attribute must be an integer or an instance of ByteUsage.");

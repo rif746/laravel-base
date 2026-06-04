@@ -1,17 +1,21 @@
 <?php
 
-use App\Domains\Account\Actions\UpdateProfile;
 use App\Concerns\Livewire\Shared\WithModal;
+use App\Domains\Account\Actions\UpdateProfile;
 use App\Domains\Account\DTOs\UpdateProfileDTO;
 use App\Domains\Account\Enums\GenderOption;
+use App\Domains\Account\Models\Profile;
+use App\Domains\Identity\Actions\Users\UpdateUser;
+use App\Domains\Identity\DTOs\Users\UpdateUserDTO;
 use App\Domains\Identity\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Validation\Rule;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-new class extends Component
-{
+new class extends Component {
     use WithModal;
 
     #[Locked]
@@ -39,40 +43,49 @@ new class extends Component
     public function rules(): array
     {
         return [
-            'name'         => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($this->id)],
-            'email'        => ['required', 'string', 'email', Rule::unique(User::class, 'email')->ignore($this->id)],
-            'gender'       => [Rule::in(GenderOption::cases())],
+            'name' => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($this->id)],
+            'email' => ['required', 'string', 'email', Rule::unique(User::class, 'email')->ignore($this->id)],
+            'gender' => [Rule::in(GenderOption::cases())],
             'date_of_birth' => ['required'],
             'phone_number' => ['required', 'numeric', 'min_digits:10'],
         ];
     }
 
+    #[Computed]
+    public function user(): Authenticatable|User|null
+    {
+        return auth('web')->user()->load(['profile']);
+    }
+
     public function show(int|string $id): void
     {
-        $user = auth('web')->user();
-        $profile = $user->load(['profile'])->profile;
-        $this->fill($user);
+        $profile = $this->user->profile;
+        $this->fill($this->user);
         if ($profile) {
             $this->fill($profile);
             $this->date_of_birth = $profile->date_of_birth?->format('Y-m-d');
         }
-        $this->id = $user->id;
+        $this->id = $this->user->id;
     }
 
-    public function save(UpdateProfile $action): void
+    public function save(UpdateProfile $updateProfile, UpdateUser $updateUser): void
     {
         $this->validate();
 
-        $action->execute(new UpdateProfileDTO(
-            userId: $this->id,
+        $profile = $this->user?->profile ?: new Profile(['user_id' => $this->id]);
+        $updateUser->execute($this->user, new UpdateUserDTO(
             name: $this->name,
             email: $this->email,
+        ));
+
+        $updateProfile->execute($profile, new UpdateProfileDTO(
+            userId: $this->id,
             gender: $this->gender,
             date_of_birth: $this->date_of_birth,
             phone_number: $this->phone_number,
         ));
 
-        $this->js("toast('".__('ui.crud.success.updated', ['resource' => __('resources.profile')])."')");
+        $this->js("toast('" . __('ui.crud.success.updated', ['resource' => __('resources.profile')]) . "')");
         $this->dispatch('hide-update-profile-modal');
         $this->dispatch('reload-user-info');
     }

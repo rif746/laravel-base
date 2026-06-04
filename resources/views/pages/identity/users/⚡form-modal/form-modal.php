@@ -1,9 +1,13 @@
 <?php
 
-use App\Domains\Identity\Actions\SaveUser;
 use App\Concerns\Livewire\Shared\WithModal;
 use App\Concerns\Livewire\Shared\WithToast;
+use App\Domains\Identity\Actions\SaveUser;
+use App\Domains\Identity\Actions\Users\ProvisionNewUser;
+use App\Domains\Identity\Actions\Users\UpdateUser;
 use App\Domains\Identity\DTOs\UserDTO;
+use App\Domains\Identity\DTOs\Users\ProvisionUserDTO;
+use App\Domains\Identity\DTOs\Users\UpdateUserDTO;
 use App\Domains\Identity\Models\Role;
 use App\Domains\Identity\Models\User;
 use Illuminate\Support\Collection;
@@ -44,10 +48,10 @@ new class extends Component
     public function rules(): array
     {
         $rules = [
-            'name'      => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($this->id)],
-            'email'     => ['required', 'string', 'email', Rule::unique(User::class, 'email')->ignore($this->id)],
+            'name' => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($this->id)],
+            'email' => ['required', 'string', 'email', Rule::unique(User::class, 'email')->ignore($this->id)],
             'role_name' => ['required'],
-            'password'  => [Password::default(), 'required', 'confirmed'],
+            'password' => [Password::default(), 'required', 'confirmed'],
         ];
 
         if (isset($this->id)) {
@@ -63,30 +67,42 @@ new class extends Component
         return Role::orderBy('name', 'asc')->get(['name'])->pluck('name', 'name');
     }
 
-    public function save(SaveUser $action): void
+    public function save(ProvisionNewUser $create, UpdateUser $update): void
     {
         $this->validate();
 
-        $action->execute(new UserDTO(
-            id: $this->id,
-            name: $this->name,
-            email: $this->email,
-            password: $this->password,
-            role_name: $this->role_name,
-        ));
+        if($this->mode === 'create') {
+            $create->execute(new ProvisionUserDTO(
+                name: $this->name,
+                email: $this->email,
+                password: $this->password,
+                role: $this->role_name,
+            ));
+        } elseif ($this->mode === 'update') {
+            $update->execute($this->user, new UpdateUserDTO(
+                name: $this->name,
+                email: $this->email,
+                role: $this->role_name,
+            ));
+        }
 
         $this->success($this->message);
         $this->dispatch('hide-user-form-modal');
         $this->js("LaravelDataTables['user-table'].ajax.reload()");
     }
 
+    #[Computed]
+    public function user(): ?User
+    {
+        return $this->id ? User::findOrFail($this->id) : null;
+    }
+
     public function show(int|string $id): void
     {
         $this->id = $id;
         $this->mode = 'update';
-        $user = User::findOrFail($id);
-        $this->fill($user);
-        $this->role_name = $user->roles->first()?->name;
+        $this->fill($this->user);
+        $this->role_name = $this->user->role_name;
     }
 
     public function hide(): void

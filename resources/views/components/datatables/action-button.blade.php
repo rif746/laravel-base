@@ -51,7 +51,7 @@
                 successMessage: '{{ $delete['success_message'] }}',
                 table_name: '{{ $table_name }}',
                 id: '{{ $id }}',
-                successFunction: () => {
+                onSuccess: () => {
                     LaravelDataTables['{{ $table_name }}'].ajax.reload();
                 }
             })">

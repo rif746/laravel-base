@@ -10,7 +10,7 @@ class ByteUsage implements Stringable
     public function __construct(public int $bytes)
     {
         if ($this->bytes < 0) {
-            throw new InvalidArgumentException("Bytes cannot be negative.");
+            throw new InvalidArgumentException('Bytes cannot be negative.');
         }
     }
 

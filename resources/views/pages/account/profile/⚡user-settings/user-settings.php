@@ -17,9 +17,9 @@ new class extends Component
 
         $this->settings = collect(UserSettingKey::cases())->map(function ($key) {
             return [
-                'key'     => $key->value,
-                'label'   => $key->label(),
-                'type'    => $key->type(),
+                'key' => $key->value,
+                'label' => $key->label(),
+                'type' => $key->type(),
                 'options' => $key->options(),
             ];
         })->toArray();
@@ -40,9 +40,7 @@ new class extends Component
 
         $this->validate($rules);
 
-        $action->execute(new UpdateUserSettingsDTO(
-            settings: $this->form,
-        ));
+        $action->execute(auth('web')->user(), $this->form);
 
         $this->js("toast('".__('ui.crud.success.updated', ['resource' => __('domains/account.pages.user_settings.title')])."')");
     }

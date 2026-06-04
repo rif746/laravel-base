@@ -116,5 +116,11 @@ return [
             'title' => 'Aktivitas Masuk',
             'message' => 'Anda telah berhasil masuk ke akun Anda dari :ip.',
         ],
+        'verify_email' => [
+            'subject' => 'Verifikasi alamat email Anda',
+            'intro' => 'Silakan klik tombol di bawah ini untuk memverifikasi alamat email Anda.',
+            'action' => 'Verifikasi Alamat Email',
+            'outro' => 'Jika Anda tidak membuat akun, tidak ada tindakan lebih lanjut yang diperlukan.',
+        ],
     ],
 ];

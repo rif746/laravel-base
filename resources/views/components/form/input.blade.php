@@ -2,6 +2,7 @@
     'label' => '',
     'name' => '',
     'feedback' => null,
+    'disabled' => false
 ])
 
 @php
@@ -14,6 +15,7 @@
         {{ $attributes->merge([
             'class' => 'form-control' . ($errors->has($name) ? ' is-invalid' : ''),
             'name' => $name,
+            'disabled' => $disabled,
             'id' => $attributes->has('id') ? $attributes->get('id') : $name,
             'placeholder' => $attributes->has('placeholder') ? $attributes->get('placeholder') : $label,
             'x-bind:class' => $feedback ? "{'is-invalid': feedback?.$name}" : false,

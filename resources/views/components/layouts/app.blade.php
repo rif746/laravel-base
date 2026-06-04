@@ -66,6 +66,7 @@
     </footer>
 </main>
 
+@stack('page-scripts')
 @livewireScriptConfig()
 </body>
 

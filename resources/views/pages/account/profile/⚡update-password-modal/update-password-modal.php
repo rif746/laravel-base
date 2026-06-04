@@ -1,8 +1,8 @@
 <?php
 
-use App\Domains\Account\Actions\UpdatePassword;
 use App\Concerns\Livewire\Shared\WithModal;
-use App\Domains\Account\DTOs\UpdatePasswordDTO;
+use App\Domains\Identity\Actions\Passwords\UpdatePassword;
+use App\Domains\Identity\DTOs\Passwords\UpdatePasswordDTO;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -27,7 +27,7 @@ new class extends Component
     {
         return [
             'current_password' => ['required', 'current_password'],
-            'new_password'     => ['required', 'min:8', 'confirmed', 'different:current_password'],
+            'new_password' => ['required', 'min:8', 'confirmed', 'different:current_password'],
         ];
     }
 

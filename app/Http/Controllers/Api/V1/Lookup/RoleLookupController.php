@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1\Lookup;
 
+use App\Domains\Identity\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LookupResource;
-use App\Domains\Identity\Models\Role;
 use Illuminate\Http\Request;
 
 class RoleLookupController extends Controller

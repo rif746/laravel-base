@@ -26,8 +26,8 @@ class UserRequest extends ApiRequest
     {
         return [
             'email' => __('domains/identity.fields.user.email'),
-            'name'  => __('domains/identity.fields.user.name'),
-            'role'  => __('resources.role'),
+            'name' => __('domains/identity.fields.user.name'),
+            'role' => __('resources.role'),
             'password' => __('domains/identity.fields.user.password'),
         ];
     }

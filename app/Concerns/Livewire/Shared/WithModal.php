@@ -36,7 +36,7 @@ trait WithModal
 
         return match ($this->mode) {
             'create' => __('ui.crud.success.created', ['resource' => $resource]),
-            'update' => __('ui.crud.success.update', ['resource' => $resource]),
+            'update' => __('ui.crud.success.updated', ['resource' => $resource]),
             default => __('ui.crud.success.deleted', ['resource' => $resource]),
         };
     }

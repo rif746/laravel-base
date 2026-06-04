@@ -2,6 +2,8 @@
 
 namespace App\Domains\Account\Enums;
 
+use Illuminate\Validation\Rule;
+
 enum UserSettingKey: string
 {
     case NOTIFICATION = 'notification';
@@ -34,8 +36,8 @@ enum UserSettingKey: string
     public function type(): string
     {
         return match ($this) {
-            self::NOTIFICATION => 'option',
-            self::LANGUAGE => 'option',
+            self::NOTIFICATION,
+            self::LANGUAGE,
             self::TIMEZONE => 'option',
         };
     }
@@ -61,13 +63,11 @@ enum UserSettingKey: string
         };
     }
 
-    public function validation(): string
+    public function validation(): array
     {
-        return match ($this) {
-            self::LANGUAGE => 'required|in:en,id',
-            self::TIMEZONE => 'required|in:UTC,Asia/Jakarta',
-            self::NOTIFICATION => 'required|in:0,1',
-            default => '',
-        };
+        return [
+            'required',
+            Rule::in(array_keys($this->options())),
+        ];
     }
 }

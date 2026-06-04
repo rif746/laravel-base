@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1\Lookup;
 
+use App\Domains\Identity\Models\Permission;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Web\Identity\PermissionResource;
-use App\Domains\Identity\Models\Permission;
 use Illuminate\Http\Request;
 
 class PermissionLookupController extends Controller

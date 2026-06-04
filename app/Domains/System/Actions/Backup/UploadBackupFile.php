@@ -3,14 +3,11 @@
 namespace App\Domains\System\Actions\Backup;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class UploadBackupFile
 {
-    public function __construct(protected SyncBackupCatalog $syncBackupCatalog)
-    {
-    }
+    public function __construct(protected SyncBackupCatalog $syncBackupCatalog) {}
 
     public function execute(UploadedFile|TemporaryUploadedFile $file): void
     {

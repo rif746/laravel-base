@@ -38,6 +38,10 @@ window.checkAndFlushDataTables = function () {
     }
 };
 
+document.addEventListener('livewire:navigate', (event) => {
+    document.dispatchEvent(new CustomEvent('DOMContentLoaded'))
+})
+
 document.addEventListener('livewire:navigating', () => {
     Object.keys(window.LaravelDataTables).forEach(id => {
         const selector = `#${id}`;
@@ -56,7 +60,7 @@ document.addEventListener('livewire:navigating', () => {
             }
 
             // OPTIMIZATION 2: Flush Internal Data Cache
-            // Calling .clear() purges DataTables' internal array of row data BEFORE 
+            // Calling .clear() purges DataTables' internal array of row data BEFORE
             // we destroy it, saving the browser's Garbage Collector from doing the heavy lifting.
             dtInstance.clear().destroy();
 
@@ -66,9 +70,9 @@ document.addEventListener('livewire:navigating', () => {
         }
 
         // OPTIMIZATION 4: Explicitly sever the reference
-        // Using 'delete' tells the V8 JavaScript engine to immediately flag 
+        // Using 'delete' tells the V8 JavaScript engine to immediately flag
         // this specific object memory for sweeping, rather than waiting for reassignment.
         delete window.LaravelDataTables[id];
     });
-    window.LaravelDataTables = {};
+    window.LaravelDataTables = [];
 });

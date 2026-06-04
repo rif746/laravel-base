@@ -56,7 +56,7 @@
                                     cancelText: '{{ trans('ui.button.no') }}',
                                     successMessage: '{{ trans('domains/system.backups.delete_success') }}',
                                     id: '{{ $backup->id }}',
-                                    successFunction: () => {
+                                    onSuccess: () => {
                                         $dispatch('$refresh')
                                     }
                                 })" />

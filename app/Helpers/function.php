@@ -4,7 +4,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-if(!function_exists('asset_static')) {
+if (! function_exists('asset_static')) {
     /**
      * @throws Exception
      */
@@ -18,11 +18,11 @@ if(!function_exists('asset_static')) {
             $time = now()->addMinutes(5);
         }
 
-        if(Storage::disk('local')->exists($path)) {
+        if (Storage::disk('local')->exists($path)) {
             return Storage::temporaryUrl($path, $time, $options);
         }
 
-        if(Storage::disk('public')->exists($path)) {
+        if (Storage::disk('public')->exists($path)) {
             return Storage::url($path);
         }
 

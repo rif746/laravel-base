@@ -1,8 +1,8 @@
 <?php
 
-use App\Domains\System\Actions\SaveSetting;
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
+use App\Domains\System\Actions\Settings\UpdateSettings;
 use App\Domains\System\DTOs\SystemSetingDTO;
 use App\Domains\System\Enums\SystemSettingKey;
 use App\Domains\System\Models\SystemSettings;
@@ -38,9 +38,9 @@ class extends Component
         return SystemSettings::all()->pluck('value', 'key')->toArray();
     }
 
-    public function save(SystemSettingKey $key, SaveSetting $action): void
+    public function save(SystemSettingKey $key, UpdateSettings $action): void
     {
-        $this->validate(['form.' . $key->value => $key->validation()]);
+        $this->validate(['form.'.$key->value => $key->validation()]);
 
         $action->execute(new SystemSetingDTO(
             key: $key,
@@ -49,8 +49,8 @@ class extends Component
 
         unset($this->settingsValue);
 
-        $this->js("toast('" . __('ui.crud.success.updated', ['resource' => $key->label()]) . "', 'success');");
-        $this->dispatch('refresh-' . $key->value);
+        $this->js("toast('".__('ui.crud.success.updated', ['resource' => $key->label()])."', 'success');");
+        $this->dispatch('refresh-'.$key->value);
         $this->dispatch('$refresh');
     }
 };

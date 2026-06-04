@@ -2,8 +2,8 @@
 
     <div class="row">
         <div class="col-sm-12 col-md-6">
-            <x-form.input name="name" :label="__('domains/identity.fields.role.name')" wire:model="name" />
-            <x-form.select name="guard_name" :label="__('domains/identity.fields.role.guard_name')" wire:model="guard_name">
+            <x-form.input name="name" :disabled="$id" :label="__('domains/identity.fields.role.name')" wire:model="name" />
+            <x-form.select name="guard_name" :disabled="$id" :label="__('domains/identity.fields.role.guard_name')" wire:model="guard_name">
                 <option value="web">Web</option>
                 <option value="api">Api</option>
             </x-form.select>
