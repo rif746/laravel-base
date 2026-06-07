@@ -1,29 +1,12 @@
 <div class="d-flex gap-4 flex-column">
-    <x-modal id="backup-file-upload-modal" :title="trans('domains/system.backups.upload_title')">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="form-input mb-3">
-                    <label class="form-control-label">{{ trans('domains/system.backups.backup_file') }}</label>
-                    <x-filepond::upload wire:model="file" @class(['is-invalid' => $errors->first('file'), 'm-0', 'border-0']) />
-                    @error('file')
-                        <small class="text-danger">{{ $errors->first('file') }}</small>
-                    @enderror
-                </div>
-            </div>
-        </div>
-        <x-slot:footer>
-            <x-button theme="success" wire:click="uploadFile" :label="__('ui.button.upload')" />
-            <x-button theme="secondary" data-bs-toggle="modal" :label="__('ui.button.cancel')" />
-        </x-slot:footer>
-    </x-modal>
-    <x-card :title="trans('domains/system.backups.title')">
+    <x-card :title="trans('domains/system.pages.backup.title')">
         <x-slot:actions>
-            <x-button :label="trans('domains/system.backups.backup')" class="btn-sm" wire:click="backup" wire:loading wire:target="backup"
+            <x-button :label="trans('domains/system.pages.backup.backup_button')" class="btn-sm" wire:click="backup" wire:loading wire:target="backup"
                 theme="primary" :icon-property="[
                     'width' => 16,
                     'height' => 16,
                 ]" icon="tabler-database-export" />
-            <x-button :label="trans('domains/system.backups.upload_backup')" class="btn-sm" :icon-property="[
+            <x-button :label="trans('domains/system.pages.backup.upload_button')" class="btn-sm" :icon-property="[
                 'width' => 16,
                 'height' => 16,
             ]" theme="info" icon="tabler-cloud-upload"
@@ -51,10 +34,10 @@
                             ]"
                                 x-on:click="$remove.livewire('delete-data', {
                                     title: '{{ trans('ui.button.delete') }}',
-                                    textMessage: '{{ trans('domains/system.backups.delete_confirm') }}',
+                                    textMessage: '{{ trans('domains/system.pages.backup.delete_confirm') }}',
                                     confirmText: '{{ trans('ui.button.yes') }}',
                                     cancelText: '{{ trans('ui.button.no') }}',
-                                    successMessage: '{{ trans('domains/system.backups.delete_success') }}',
+                                    successMessage: '{{ trans('domains/system.messages.backup.delete_success') }}',
                                     id: '{{ $backup->id }}',
                                     onSuccess: () => {
                                         $dispatch('$refresh')
@@ -68,14 +51,11 @@
 
                 <a href="#" class="list-group-item list-group-item-action" aria-current="true">
                     <div class="d-flex w-100 justify-content-center">
-                        <p class="mb-1">{{ trans('domains/system.backups.empty_state') }}</p>
+                        <p class="mb-1">{{ trans('domains/system.pages.backup.empty_state') }}</p>
                     </div>
                 </a>
             @endforelse
         </div>
     </x-card>
-</div>
-@push('scripts')
-    @filepondScripts
-@endpush
+    <livewire:pages::system.backups.upload-backup-modal />
 </div>

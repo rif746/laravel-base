@@ -5,15 +5,10 @@ use App\Domains\Account\Enums\GenderOption;
 return [
     'fields' => [
         'profile' => [
+            'avatar' => 'Avatar',
             'gender' => 'Gender',
             'date_of_birth' => 'Date of Birth',
             'phone_number' => 'Phone Number',
-        ],
-    ],
-    'enums' => [
-        'gender' => [
-            GenderOption::MALE->value => 'Male',
-            GenderOption::FEMALE->value => 'Female',
         ],
     ],
     'pages' => [
@@ -50,6 +45,10 @@ return [
                     'off' => 'Off',
                 ],
             ],
+        ],
+        'gender' => [
+            GenderOption::MALE->value => 'Male',
+            GenderOption::FEMALE->value => 'Female',
         ],
     ],
 

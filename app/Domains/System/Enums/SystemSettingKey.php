@@ -21,44 +21,48 @@ enum SystemSettingKey: string
 
     public function label(): string
     {
-        return __('domains/system.settings.'.str_replace('-', '.', $this->value));
+        return __('domains/system.fields.settings.'.str_replace('-', '.', $this->value));
     }
 
     public static function section(): array
     {
         return [
-            __('domains/system.settings.sections.web') => [
-                self::WEB_NAME,
-                self::WEB_ADDRESS,
-                self::WEB_PHONE,
-                self::WEB_EMAIL,
-                self::WEB_LOGO,
-                self::WEB_FAVICON,
+            [
+                __('domains/system.pages.settings.sections.web') => [
+                    self::WEB_NAME,
+                    self::WEB_ADDRESS,
+                    self::WEB_PHONE,
+                    self::WEB_EMAIL,
+                    self::WEB_LOGO,
+                    self::WEB_FAVICON,
+                ],
             ],
-            __('domains/system.settings.sections.general') => [
-                self::DEFAULT_LANGUAGE,
-                self::TIMEZONE,
-            ],
-            __('domains/system.settings.sections.webmaster') => [
-                self::GOOGLE_TAG_MANAGER_ID,
-                self::GOOGLE_WEBMASTER_ID,
-            ],
+            [
+                __('domains/system.pages.settings.sections.general') => [
+                    self::DEFAULT_LANGUAGE,
+                    self::TIMEZONE,
+                ],
+                __('domains/system.pages.settings.sections.webmaster') => [
+                    self::GOOGLE_TAG_MANAGER_ID,
+                    self::GOOGLE_WEBMASTER_ID,
+                ],
+            ]
         ];
     }
 
-    public function inputType(): string
+    public function inputType(): InputType
     {
         return match ($this) {
-            self::WEB_LOGO, self::WEB_FAVICON => 'file',
-            self::DEFAULT_LANGUAGE, self::TIMEZONE => 'options',
-            default => 'text',
+            self::WEB_LOGO, self::WEB_FAVICON => InputType::FILE,
+            self::DEFAULT_LANGUAGE, self::TIMEZONE => InputType::SELECT,
+            default => InputType::TEXTLINE
         };
     }
 
     public function validation(): array
     {
         return match ($this) {
-            self::WEB_LOGO, self::WEB_FAVICON => ['required', 'file', 'image'],
+            self::WEB_LOGO, self::WEB_FAVICON => ['required', 'file', 'mimetypes:'.implode(',', FileType::IMAGE->mimeType()), 'max:1024'],
             default => ['required', 'string'],
         };
     }

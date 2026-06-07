@@ -26,6 +26,7 @@ return [
         'download_error' => 'Gagal mengunduh :path',
     ],
     'settings' => [
+        'update_title' => 'Perbarui Pengaturan',
         'sections' => [
             'web' => 'Web',
             'general' => 'Umum',

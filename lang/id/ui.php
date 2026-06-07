@@ -35,6 +35,7 @@ return [
         'close' => 'Tutup',
         'create' => 'Buat',
         'update' => 'Perbarui',
+        'upload' => 'Unggah',
         'edit' => 'Ubah',
         'delete' => 'Hapus',
         'view' => 'Lihat',

@@ -19,8 +19,8 @@ Route::middleware(['web', 'auth', 'verified', 'seo'])->group(function () {
     Route::get('/roles', RoleController::class)->name('roles.index');
 
     Route::middleware('password.confirm')->group(function () {
-        Route::livewire('/system/settings', 'pages::system.settings')->name('system-setting.index');
-        Route::livewire('/system/backups', 'pages::system.backups')->name('system-backup.index');
+        Route::livewire('/system/settings', 'pages::system.settings.setting-list')->name('system-setting.index');
+        Route::livewire('/system/backups', 'pages::system.backups.backup-list')->name('system-backup.index');
 
         Route::view('/profile', 'pages.account.profile.index')
             ->defaults('seo', new Seo(

@@ -24,12 +24,9 @@ new #[Layout('components.layouts.app')]
 class extends Component
 {
     use HasSeoAttributes;
-    use WithFilePond;
     use WithToast;
 
-    #[Validate(['file', 'extensions:zip'])]
-    public ?TemporaryUploadedFile $file = null;
-
+    #[On('reload-backup-data')]
     #[Computed]
     public function backupsData(): Collection|array
     {
@@ -40,10 +37,10 @@ class extends Component
     {
         try {
             $backup->execute();
-            $this->success(__('domains/system.backups.backup_success'));
+            $this->success(__('domains/system.messages.backup.backup_success'));
         } catch (Exception $exception) {
             logger($exception->getMessage());
-            $this->error(__('domains/system.backups.backup_error'));
+            $this->error(__('domains/system.messages.backup.backup_error'));
         }
     }
 
@@ -51,7 +48,7 @@ class extends Component
     {
         $file = Storage::disk($backup->disk)->exists($backup->path);
         if (! $file) {
-            $this->error(__('domains/system.backups.download_error', ['path' => $backup->path]));
+            $this->error(__('domains/system.messages.backup.download_error', ['path' => $backup->path]));
         }
 
         return Storage::disk($backup->disk)->download($backup->path);
@@ -61,20 +58,11 @@ class extends Component
     {
         try {
             $restore->execute($backup);
-            $this->success(__('domains/system.backups.restored_success'));
+            $this->success(__('domains/system.messages.backup.restored_success'));
         } catch (Exception $exception) {
             logger($exception->getMessage());
-            $this->error(__('domains/system.backups.restored_error'));
+            $this->error(__('domains/system.messages.backup.restored_error'));
         }
-    }
-
-    public function uploadFile(UploadBackupFile $uploadBackupFile): void
-    {
-        $this->validate();
-        $uploadBackupFile->execute($this->file);
-        $this->js("$('#backup-file-upload-modal').modal('hide')");
-        $this->success(__('ui.crud.success.uploaded', ['resource' => __('resources.backup_file')]));
-        $this->dispatch('hide-backup-file-upload-modal');
     }
 
     #[On('delete-data')]

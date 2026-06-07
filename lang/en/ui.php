@@ -35,6 +35,7 @@ return [
         'close' => 'Close',
         'create' => 'Create',
         'update' => 'Update',
+        'upload' => 'Upload',
         'edit' => 'Edit',
         'delete' => 'Delete',
         'view' => 'View',

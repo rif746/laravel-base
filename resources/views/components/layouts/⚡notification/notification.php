@@ -9,18 +9,18 @@ new class extends Component
     #[Computed]
     public function notifications(): Collection
     {
-        return auth('web')->user()->notifications()->latest()->get();
+        return auth('web')->user()->unreadNotifications()->latest()->get();
     }
 
     public function read(string $id): void
     {
-        auth('web')->user()->unreadNotifications()->where('id', $id)->first()?->markAsRead();
+        $this->notifications->where('id', $id)->first()?->markAsRead();
         $this->__unset('notifications');
     }
 
     public function readAll(): void
     {
-        auth('web')->user()->unreadNotifications()->update(['read_at' => now()]);
+        $this->notifications->update(['read_at' => now()]);
         $this->__unset('notifications');
     }
 };

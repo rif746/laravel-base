@@ -21,17 +21,16 @@
 ]) }}
     @if ($livewire) x-init="$bs.modal.on('show', (e) => {
         let id = e?.relatedTarget?.dataset?.id;
-        console.log(id);
             if (id) $wire.show(id);
         });
-        
+
         $bs.modal.on('hide', () => {
             $wire.hide();
         });"
     x-on:hide-{{ $id }}.window="$bs.modal.instance($el).hide();" @endif>
     <div class="modal-dialog {{ $size }}">
         @if ($form)
-            <form @if ($attributes->has('x-on:submit')) wire:submit="{{ $attributes->get('x-on:submit') }}" @endif
+            <form @if ($attributes->has('x-on:submit')) x-on:submit="{{ $attributes->get('x-on:submit') }}" @endif
                 @if ($attributes->has('wire:submit')) wire:submit.prevent="{{ $attributes->get('wire:submit') }}" @endif>
         @endif
         <div class="modal-content">

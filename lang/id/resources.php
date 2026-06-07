@@ -9,4 +9,5 @@ return [
     'backup' => 'Cadangan',
     'backup_file' => 'Berkas Cadangan',
     'avatar' => 'Avatar',
+    'system_settings' => 'Pengaturan Sistem',
 ];

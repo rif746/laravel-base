@@ -1,17 +1,25 @@
 <div>
-    <a class="position-relative btn-icon btn-sm btn-light btn rounded-circle" data-bs-toggle="dropdown"
+    <a class="position-relative btn-icon btn-sm btn-link btn rounded-circle" data-bs-toggle="dropdown"
         aria-expanded="false" href="#" role="button">
-        <x-tabler-user-circle width="26" class="avatar avatar-sm rounded-circle" />
+        @isset($this->user->avatar)
+            <img src="{{ $this->user->avatar->url }}" alt="User Avatar" width="26" class="avatar avatar-sm rounded-circle" />
+        @else
+            <x-tabler-user-circle width="26" class="avatar avatar-sm rounded-circle" />
+        @endisset
     </a>
     <div class="dropdown-menu dropdown-menu-end dropdown-menu-md p-0">
         <div>
             <x-link class="dropdown-item" :href="route('profile.index')">
                 <x-slot:label>
                     <div class="d-flex align-items-center gap-3 px-3 py-3">
-                        <x-tabler-user-circle width="26" class="avatar avatar-sm rounded-circle" />
+                        @isset($this->user->avatar)
+                            <img src="{{ $this->user->avatar->url }}" alt="User Avatar" width="26" class="avatar avatar-sm rounded-circle" />
+                        @else
+                            <x-tabler-user-circle width="26" class="avatar avatar-sm rounded-circle" />
+                        @endisset
                         <div>
-                            <h4 class="small mb-0">{{ auth()->user()->name }}</h4>
-                            <p class="small mb-0">{{ auth()->user()->email }}</p>
+                            <h4 class="small mb-0">{{ auth('web')->user()->name }}</h4>
+                            <p class="small mb-0">{{ auth('web')->user()->email }}</p>
                         </div>
                     </div>
                 </x-slot:label>

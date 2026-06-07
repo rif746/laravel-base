@@ -9,7 +9,7 @@
 @endphp
 
 <div @if($attributes->has('x-select2')) wire:ignore @endif class="mb-3" @if ($attributes->has('x-show')) x-show="{{ $attributes->get('x-show') }}" x-cloak @endif>
-    <label for="{{ $name }}" class="form-label">{{ $label }}</label>
+    <label for="{{ $name }}" class="form-label fw-bold">{{ $label }}</label>
     <select
         {{ $attributes->merge([
             'class' => 'form-select' . ($errors->has($name) ? ' is-invalid' : ''),

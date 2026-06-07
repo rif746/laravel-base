@@ -23,6 +23,7 @@ class SyncBackupCatalog
             if (Str::endsWith($file, '.zip')) {
                 // Ensure we just store the relative filename if that's your convention
                 $filename = basename($file);
+                $filename = $backupDirectory . ' ' . basename($filename);
                 $physicalFilePaths[] = $file;
 
                 // Restore the 'disappeared' record using the file's raw metadata

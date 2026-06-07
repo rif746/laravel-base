@@ -10,7 +10,7 @@
 @endphp
 
 <div class="mb-3" @if ($attributes->has('x-show')) x-show="{{ $attributes->get('x-show') }}" x-cloak @endif>
-    <label for="{{ $name }}" class="form-label">{{ $label }}</label>
+    <label for="{{ $name }}" class="form-label fw-bold">{{ $label }}</label>
     <input
         {{ $attributes->merge([
             'class' => 'form-control' . ($errors->has($name) ? ' is-invalid' : ''),

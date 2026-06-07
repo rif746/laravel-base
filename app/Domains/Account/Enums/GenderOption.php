@@ -9,6 +9,6 @@ enum GenderOption: string
 
     public function label(): string
     {
-        return __("domains/identity.enum.gender.{$this->value}");
+        return __("domains/account.enum.gender.{$this->value}");
     }
 }
