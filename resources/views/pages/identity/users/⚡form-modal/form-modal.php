@@ -2,10 +2,8 @@
 
 use App\Concerns\Livewire\Shared\WithModal;
 use App\Concerns\Livewire\Shared\WithToast;
-use App\Domains\Identity\Actions\SaveUser;
 use App\Domains\Identity\Actions\Users\ProvisionNewUser;
 use App\Domains\Identity\Actions\Users\UpdateUser;
-use App\Domains\Identity\DTOs\UserDTO;
 use App\Domains\Identity\DTOs\Users\ProvisionUserDTO;
 use App\Domains\Identity\DTOs\Users\UpdateUserDTO;
 use App\Domains\Identity\Models\Role;
@@ -41,6 +39,7 @@ new class extends Component
     #[Validate(as: 'domains/identity.fields.user.password_confirmation')]
     public ?string $password_confirmation = null;
 
+    #[Locked]
     public string $mode = 'create';
 
     protected string $resourceName = 'user';
@@ -71,7 +70,7 @@ new class extends Component
     {
         $this->validate();
 
-        if($this->mode === 'create') {
+        if ($this->mode === 'create') {
             $create->execute(new ProvisionUserDTO(
                 name: $this->name,
                 email: $this->email,

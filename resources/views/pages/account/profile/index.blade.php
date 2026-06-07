@@ -9,6 +9,7 @@
     </div>
 
     <livewire:pages::account.profile.update-profile-modal />
+    <livewire:pages::account.profile.update-avatar-modal />
     <livewire:pages::account.profile.update-password-modal />
 
     @push('scripts')

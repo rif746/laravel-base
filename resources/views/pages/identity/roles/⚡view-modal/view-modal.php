@@ -13,7 +13,8 @@ new class extends Component
     #[Locked]
     public ?int $id = null;
 
-    protected string $mode = 'view';
+    #[Locked]
+    public string $mode = 'view';
 
     protected string $resourceName = 'role';
 

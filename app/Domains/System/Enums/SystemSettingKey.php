@@ -59,7 +59,6 @@ enum SystemSettingKey: string
     {
         return match ($this) {
             self::WEB_LOGO, self::WEB_FAVICON => ['required', 'file', 'image'],
-            self::DEFAULT_LANGUAGE, self::TIMEZONE => ['required', 'string'],
             default => ['required', 'string'],
         };
     }

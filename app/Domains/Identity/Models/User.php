@@ -6,6 +6,7 @@ use App\Domains\Account\Models\Profile;
 use App\Domains\Identity\Enums\UserStatus;
 use App\Domains\Identity\Notifications\VerifyEmailNotification;
 use App\Domains\Identity\Policies\UserPolicy;
+use App\Domains\System\Traits\Model\HasFile;
 use Database\Factories\Identity\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -24,7 +26,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, HasRoles, Notifiable;
+    use HasFactory, HasFile, HasRoles, Notifiable;
 
     /**
      * Cast attributes
@@ -53,6 +55,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getRoleNameAttribute()
     {
         return $this->roles->first()->name ?? '-';
+    }
+
+    public function avatar(): MorphOne
+    {
+        return $this->hasSingleFile('avatar');
     }
 
     public function profile(): HasOne

@@ -1,7 +1,6 @@
 <?php
 
-use App\Domains\Account\Actions\UpdateUserSettings;
-use App\Domains\Account\DTOs\UpdateUserSettingsDTO;
+use App\Domains\Account\Actions\Profile\UpdateUserSettings;
 use App\Domains\Account\Enums\UserSettingKey;
 use Livewire\Component;
 

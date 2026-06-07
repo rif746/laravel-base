@@ -5,7 +5,7 @@ use App\Concerns\Livewire\Seo\HasSeoAttributes;
 use App\Domains\Identity\Actions\Passwords\ResetUserPassword;
 use App\Domains\Identity\DTOs\Passwords\ResetPasswordDTO;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rules\Password as PasswordRule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -30,7 +30,7 @@ class extends Component
         $this->validate([
             'token' => ['required'],
             'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', PasswordRule::defaults()],
         ]);
 
         $status = $action->execute(new ResetPasswordDTO(

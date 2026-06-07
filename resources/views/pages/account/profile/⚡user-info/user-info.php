@@ -1,6 +1,6 @@
 <?php
 
-use App\Domains\Account\Actions\ResendVerificationEmail;
+use App\Domains\Identity\Actions\Registration\ResendVerificationEmail;
 use App\Domains\Identity\Models\User;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -12,7 +12,7 @@ new class extends Component
     #[On('reload-user-info')]
     public function user(): ?User
     {
-        return auth('web')->user()->load(['profile']);
+        return auth('web')->user()->load(['profile', 'avatar']);
     }
 
     public function resendVerificationEmail(ResendVerificationEmail $action): void

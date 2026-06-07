@@ -1,11 +1,14 @@
 <?php
 
+use App\Domains\Identity\Enums\UserStatus;
+
 return [
     'fields' => [
         'user' => [
             'label' => 'User',
             'name' => 'Full Name',
             'email' => 'Email Address',
+            'status' => 'Status',
             'password' => 'Secure Password',
             'current_password' => 'Current Password',
             'new_password' => 'New Password',
@@ -23,9 +26,9 @@ return [
         ],
     ],
     'enum' => [
-        'gender' => [
-            'male' => 'Male',
-            'female' => 'Female',
+        'user_status' => [
+            UserStatus::ACTIVE->value => 'Active',
+            UserStatus::INACTIVE->value => 'Inactive',
         ],
     ],
     'seo' => [

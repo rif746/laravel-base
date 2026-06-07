@@ -20,6 +20,7 @@ class UserDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->editColumn('status', fn ($model) => $model->status->badge())
             ->addColumn(
                 'action',
                 fn ($user) => view('datatables.action-button', [
@@ -40,6 +41,7 @@ class UserDataTable extends DataTable
                     'id' => $user->id,
                 ])
             )
+            ->rawColumns(['action', 'status'])
             ->addIndexColumn();
     }
 
@@ -102,6 +104,8 @@ class UserDataTable extends DataTable
             Column::make('email')
                 ->title(__('domains/identity.fields.user.email'))
                 ->searchable(true),
+            Column::computed('status')
+                ->title(__('domains/identity.fields.user.status')),
             Column::computed('roles[0].name')
                 ->title(__('resources.role')),
             Column::computed('action')

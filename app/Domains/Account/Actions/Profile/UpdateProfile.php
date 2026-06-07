@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domains\Account\Actions;
+namespace App\Domains\Account\Actions\Profile;
 
-use App\Domains\Account\DTOs\UpdateProfileDTO;
+use App\Domains\Account\DTOs\Profile\UpdateProfileDTO;
 use App\Domains\Account\Models\Profile;
 
 class UpdateProfile

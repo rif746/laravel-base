@@ -35,7 +35,7 @@ class extends Component
     #[Computed]
     public function settingsValue(): array
     {
-        return SystemSettings::all()->pluck('value', 'key')->toArray();
+        return SystemSettings::all()->pluck('translated_value', 'key')->toArray();
     }
 
     public function save(SystemSettingKey $key, UpdateSettings $action): void

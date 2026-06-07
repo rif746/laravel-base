@@ -27,6 +27,7 @@ class DomainMakeCommand extends Command
         'listener' => 'Listeners',
         'notification' => 'Notifications',
         'policy' => 'Policies',
+        'trait' => 'Traits',
         'datatable' => 'DataTables',
         'query' => 'Queries',
     ];
@@ -88,6 +89,7 @@ class DomainMakeCommand extends Command
             'action' => $this->actionStub($namespace, $name),
             'dto' => $this->dtoStub($namespace, $name),
             'enum' => $this->enumStub($namespace, $name),
+            'trait' => $this->traitStub($namespace, $name),
             'event' => $this->eventStub($namespace, $name),
             'listener' => $this->listenerStub($namespace, $name),
             'notification' => $this->notificationStub($namespace, $name),
@@ -104,7 +106,7 @@ class DomainMakeCommand extends Command
             ? "\nuse Database\\Factories\\{$domain}\\{$name}Factory;\nuse Illuminate\\Database\\Eloquent\\Factories\\Factory;"
             : '';
         $factoryMethod = $this->option('factory')
-            ? "\n\n    protected static function newFactory(): Factory\n    {\n        return {$name}Factory::new();\n    }"
+            ? "\n    protected static function newFactory(): Factory\n    {\n        return {$name}Factory::new();\n    }"
             : '';
 
         return <<<PHP
@@ -177,8 +179,13 @@ PHP;
 
 namespace {$namespace};
 
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+
 class {$name}
 {
+
+    use Dispatchable, SerializesModels;
     public function __construct(
         //
     ) {}
@@ -382,6 +389,20 @@ class {$name}
     {
         return new Collection();
     }
+}
+PHP;
+    }
+
+    private function traitStub(string $namespace, string $name): string
+    {
+        return <<<PHP
+<?php
+
+namespace {$namespace};
+
+trait {$name}
+{
+    //
 }
 PHP;
     }

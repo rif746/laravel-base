@@ -11,14 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HandleSystemSettingEffect
 {
-    public function __construct(public GetSystemSettings $getSystemSettings)
-    {
-    }
+    public function __construct(public GetSystemSettings $getSystemSettings) {}
 
     /**
      * Handle an incoming request.
      *
-     * @param Closure(Request): (Response) $next
+     * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {

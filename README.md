@@ -135,7 +135,7 @@ php artisan domain:make {type} {domain} {name} [options]
 
 **Arguments:**
 
-* `type`: The file type to generate (`model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `datatable`, `query`).
+* `type`: The file type to generate (`model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `trait`, `datatable`, `query`).
 * `domain`: The target Domain folder (e.g., `Identity`, `Account`, `System`).
 * `name`: The class name. Supports sub-directory grouping (e.g., `Management/ProvisionNewUser`).
 
@@ -167,4 +167,65 @@ php artisan domain:make dto Identity Management/ProvisionUserDTO
 
 ```
 
+## 7. Universal File Management (The System Domain)
+
+File handling (uploads, attachments, image cropping, and deletions) is a universally shared capability. To prevent every domain from writing its own file storage logic, all physical files are managed by a centralized engine within the **`System`** domain.
+
+### The Polymorphic Engine
+
+We do not add file paths directly to business tables (e.g., no `avatar_path` column on the `users` table). Instead, we use a central `files` table and the `System\Models\File` model.
+
+* Files are attached **polymorphically** to any entity in the application.
+* The `files` table includes a strictly typed `relation_name` string column (e.g., `'avatar'`) to prevent multiple file types attached to the same model from colliding.
+
+### The Consumer Trait
+
+When a Domain Model (like `User` or `Invoice`) needs to accept a file attachment, it pulls in the `HasFile` trait. This trait provides isolated relationship builders.
+
+```php
+namespace App\Domains\Identity\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use App\Domains\System\Traits\HasFile;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+
+class User extends Model
+{
+    use HasFile; 
+
+    // The string 'avatar' perfectly isolates this file in the database
+    public function avatar(): MorphOne
+    {
+        return $this->singleFile('avatar'); 
+    }
+}
+
+```
+
+### File Actions (No DTOs Required)
+
+Because Laravel's `Illuminate\Http\UploadedFile` is already a strictly-typed object, we **do not** wrap files in DTOs. The Gateway passes the raw file and the target `relation_name` directly into the central System Actions.
+
+* **`UploadAndAttachFile`**: The base action. It stores the physical file to the disk and creates the polymorphic database record. It also handles server-side image compression (via Intervention Image) based on mime-types.
+* **`ReplaceSingleFile`**: Used for 1-to-1 replacements (like changing an avatar). It safely deletes the old file before delegating the new upload back to the base action.
+
+**Gateway Example:**
+
+```php
+$action->execute(
+    targetModel: auth()->user()->profile,
+    relationName: 'avatar', // Matches the relation method name exactly
+    uploadedFile: $request->file('photo'),
+    disks: 'local',
+    directory: 'avatars'
+);
+
+```
+
+### Self-Cleaning & Garbage Collection
+
+This architecture is designed to never leave stranded files on the server.
+
+1. **Self-Cleaning Models:** The `System\Models\File` model hooks into its own `deleted` event. If the database row is deleted, the physical file is automatically removed from the storage disk.
+2. **The Pruner Command:** A weekly scheduled command (`php artisan system:prune-files`) sweeps the database and disks for orphaned files or interrupted uploads. **Note:** This command utilizes a Master Whitelist and is explicitly programmed to ignore disaster recovery files (e.g., `spatie/laravel-backup` archives).
 ---

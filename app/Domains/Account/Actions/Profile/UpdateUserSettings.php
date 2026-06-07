@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Domains\Account\Actions;
+namespace App\Domains\Account\Actions\Profile;
 
-use App\Domains\Account\DTOs\UpdateUserSettingsDTO;
 use App\Domains\Account\Enums\UserSettingKey;
 use App\Domains\Identity\Models\User;
 

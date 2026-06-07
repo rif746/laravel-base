@@ -16,9 +16,10 @@ class CreateSystemRole
     {
         return DB::transaction(function () use ($dto) {
             $role = Role::create([
-                'name' => $dto->name
+                'name' => $dto->name,
             ]);
             $role->syncPermissions($dto->permissions);
+
             return true;
         });
     }

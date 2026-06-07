@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Account\DTOs;
+namespace App\Domains\Account\DTOs\Profile;
 
 readonly class UpdateProfileDTO
 {

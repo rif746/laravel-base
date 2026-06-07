@@ -1,11 +1,14 @@
 <?php
 
+use App\Domains\Identity\Enums\UserStatus;
+
 return [
     'fields' => [
         'user' => [
             'label' => 'Pengguna',
             'name' => 'Nama Lengkap',
             'email' => 'Alamat Email',
+            'status' => 'Status',
             'password' => 'Kata Sandi Aman',
             'current_password' => 'Kata Sandi Saat Ini',
             'new_password' => 'Kata Sandi Baru',
@@ -23,9 +26,9 @@ return [
         ],
     ],
     'enum' => [
-        'gender' => [
-            'male' => 'Laki-laki',
-            'female' => 'Perempuan',
+        'user_status' => [
+            UserStatus::ACTIVE->value => 'Aktif',
+            UserStatus::INACTIVE->value => 'Non Aktif',
         ],
     ],
     'seo' => [

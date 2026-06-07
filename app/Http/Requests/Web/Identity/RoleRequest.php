@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Web\Identity;
 
-use Gate;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class RoleRequest extends FormRequest
 {

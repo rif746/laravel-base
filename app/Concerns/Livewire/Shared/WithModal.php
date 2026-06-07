@@ -13,7 +13,10 @@ use Livewire\Component;
  */
 trait WithModal
 {
-    abstract public function show(int|string $id): void;
+    public function show(int|string $id): void
+    {
+        // do nothing
+    }
 
     abstract public function hide(): void;
 

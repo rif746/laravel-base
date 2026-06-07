@@ -13,7 +13,7 @@ class UpdateUserStatus
      */
     public function execute(User $user, UserStatus $status): void
     {
-        if($user->status === $status) {
+        if ($user->status === $status) {
             throw new Exception("User is already {$status}.");
         }
 

@@ -31,6 +31,7 @@ new class extends Component
     #[Validate('required|array')]
     public array $selected_permissions = [];
 
+    #[Locked]
     public string $mode = 'create';
 
     protected string $resourceName = 'role';
@@ -45,7 +46,7 @@ new class extends Component
     {
         $this->validate();
 
-        if($this->mode === 'create') {
+        if ($this->mode === 'create') {
             $create->execute(new CreateRoleDTO(
                 name: $this->name,
                 guard_name: $this->guard_name,

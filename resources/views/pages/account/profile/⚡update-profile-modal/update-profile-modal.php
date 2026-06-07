@@ -1,8 +1,8 @@
 <?php
 
 use App\Concerns\Livewire\Shared\WithModal;
-use App\Domains\Account\Actions\UpdateProfile;
-use App\Domains\Account\DTOs\UpdateProfileDTO;
+use App\Domains\Account\Actions\Profile\UpdateProfile;
+use App\Domains\Account\DTOs\Profile\UpdateProfileDTO;
 use App\Domains\Account\Enums\GenderOption;
 use App\Domains\Account\Models\Profile;
 use App\Domains\Identity\Actions\Users\UpdateUser;
@@ -15,7 +15,8 @@ use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-new class extends Component {
+new class extends Component
+{
     use WithModal;
 
     #[Locked]
@@ -36,7 +37,8 @@ new class extends Component {
     #[Validate(as: 'domains/account.fields.profile.phone_number')]
     public ?string $phone_number = null;
 
-    protected string $mode = 'update';
+    #[Locked]
+    public string $mode = 'update';
 
     protected string $resourceName = 'profile';
 
@@ -85,7 +87,7 @@ new class extends Component {
             phone_number: $this->phone_number,
         ));
 
-        $this->js("toast('" . __('ui.crud.success.updated', ['resource' => __('resources.profile')]) . "')");
+        $this->js("toast('".__('ui.crud.success.updated', ['resource' => __('resources.profile')])."')");
         $this->dispatch('hide-update-profile-modal');
         $this->dispatch('reload-user-info');
     }

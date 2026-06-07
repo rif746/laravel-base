@@ -15,7 +15,7 @@
                                     </div>
                                     @if ($item->isImage() && !is_null($this->settingsValue[$item->value]))
                                         <div class="p-2">
-                                            <img src="{{ asset_static($this->settingsValue[$item->value]) }}"
+                                            <img src="{{ $this->settingsValue[$item->value] }}"
                                                  alt="{{ $item->label() }}" class="w-100">
                                         </div>
                                     @else
@@ -27,8 +27,10 @@
                                         <x-filepond::upload wire:model.live="form.{{ $item->value }}"
                                                             :chunk-uploads="true"
                                                             chunk-size="10000" allow-revert="true" allow-remove="true"
-                                                            :label="$item->label()" allow-image-crop
-                                                            image-crop-aspect-ratio="1:1"/>
+                                                            :label="$item->label()" allow-image-crop allow-image-resize
+                                                            allow-image-transform
+                                                            image-crop-aspect-ratio="1:1" image-resize-target-width="500"
+                                                            image-resize-target-height="500" />
                                     @elseif ($item->inputType() == 'options')
                                         <x-form.select :label="$item->label()" :name="$item->value"
                                                        wire:model="form.{{ $item->value }}">
@@ -36,6 +38,7 @@
                                                 <option value="{{ $key }}">{{ $value }}</option>
                                             @endforeach
                                         </x-form.select>
+                                        <span class="invalid-feedback">{{ $errors->first("form.$item->value") }}</span>
                                     @else
                                         <x-form.input :label="$item->label()" :name="$item->value"
                                                       wire:model="form.{{ $item->value }}" type="text"/>

@@ -8,4 +8,5 @@ return [
     'password' => 'Kata Sandi',
     'backup' => 'Cadangan',
     'backup_file' => 'Berkas Cadangan',
+    'avatar' => 'Avatar',
 ];

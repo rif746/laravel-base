@@ -3,6 +3,7 @@
 use App\Concerns\Livewire\Shared\WithModal;
 use App\Domains\Identity\Actions\Passwords\UpdatePassword;
 use App\Domains\Identity\DTOs\Passwords\UpdatePasswordDTO;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -19,7 +20,8 @@ new class extends Component
     #[Validate(as: 'domains/identity.fields.user.confirm_password')]
     public string $new_password_confirmation;
 
-    protected string $mode = 'update';
+    #[Locked]
+    public string $mode = 'update';
 
     protected string $resourceName = 'password';
 
@@ -31,13 +33,11 @@ new class extends Component
         ];
     }
 
-    public function show(int|string $id): void {}
-
     public function save(UpdatePassword $action): void
     {
         $this->validate();
 
-        $action->execute(new UpdatePasswordDTO(
+        $action->execute(auth('web')->user(), new UpdatePasswordDTO(
             new_password: $this->new_password,
         ));
 

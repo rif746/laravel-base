@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Domains\Identity\Listeners;
+namespace App\Domains\Identity\Listeners\Authentication;
 
 use App\Domains\Identity\Events\Authentication\UserLoggedIn;
 use App\Domains\Identity\Notifications\SignInActivity;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Throwable;
 
-class SendSignInActivityNotification implements ShouldQueue
+class SendSignInActivityNotification
 {
     use InteractsWithQueue;
 

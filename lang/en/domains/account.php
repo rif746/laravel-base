@@ -1,5 +1,7 @@
 <?php
 
+use App\Domains\Account\Enums\GenderOption;
+
 return [
     'fields' => [
         'profile' => [
@@ -8,7 +10,12 @@ return [
             'phone_number' => 'Phone Number',
         ],
     ],
-
+    'enums' => [
+        'gender' => [
+            GenderOption::MALE->value => 'Male',
+            GenderOption::FEMALE->value => 'Female',
+        ],
+    ],
     'pages' => [
         'profile' => [
             'title' => 'Profile Information',

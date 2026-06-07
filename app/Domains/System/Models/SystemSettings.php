@@ -2,11 +2,28 @@
 
 namespace App\Domains\System\Models;
 
+use App\Domains\System\Enums\SystemSettingKey;
+use Exception;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable(['key', 'value'])]
+#[WithoutTimestamps]
 class SystemSettings extends Model
 {
-    public $timestamps = false;
+    /**
+     * @throws Exception
+     */
+    public function getTranslatedValueAttribute(): ?string
+    {
+        $key = SystemSettingKey::tryFrom($this->attributes['key']);
+        if ($key->inputType() == 'file' && isset($this->attributes['value'])) {
+            return asset_static($this->attributes['value']);
+        } elseif ($key->inputType() == 'options') {
+            return $key->options()[$this->attributes['value']];
+        }
+
+        return $this->attributes['value'];
+    }
 }

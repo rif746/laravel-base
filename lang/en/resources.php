@@ -8,4 +8,5 @@ return [
     'password' => 'Password',
     'backup' => 'Backup',
     'backup_file' => 'Backup File',
+    'avatar' => 'Avatar',
 ];
