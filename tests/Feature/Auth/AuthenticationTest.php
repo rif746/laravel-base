@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\User;
+use App\Domains\Identity\Models\User;
+use Livewire\Livewire;
 
 test('login screen can be rendered', function () {
     $response = $this->get('/login');
@@ -11,31 +12,34 @@ test('login screen can be rendered', function () {
 test('users can authenticate using the login screen', function () {
     $user = User::factory()->create();
 
-    $response = $this->post('/login', [
-        'email' => $user->email,
-        'password' => 'password',
-    ]);
+    $component = Livewire::test('pages::auth.login')
+        ->set('email', $user->email)
+        ->set('password', 'password')
+        ->call('login');
 
+    $component->assertHasNoErrors();
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
 });
 
 test('users can not authenticate with invalid password', function () {
     $user = User::factory()->create();
 
-    $this->post('/login', [
-        'email' => $user->email,
-        'password' => 'wrong-password',
-    ]);
+    $component = Livewire::test('pages::auth.login')
+        ->set('email', $user->email)
+        ->set('password', 'wrong-password')
+        ->call('login');
 
+    $component->assertHasErrors(['email']);
     $this->assertGuest();
 });
 
 test('users can logout', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->post('/logout');
+    $component = Livewire::actingAs($user)
+        ->test('layouts::profile-dropdown')
+        ->call('logout');
 
+    $component->assertRedirect(route('login'));
     $this->assertGuest();
-    $response->assertRedirect('/');
 });

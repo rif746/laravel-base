@@ -1,6 +1,7 @@
 <?php
 
 use App\Concerns\Livewire\Shared\WithModal;
+use App\Concerns\Livewire\Shared\WithToast;
 use App\Domains\Account\Actions\Profile\UpdateProfile;
 use App\Domains\Account\DTOs\Profile\UpdateProfileDTO;
 use App\Domains\Account\Enums\GenderOption;
@@ -18,6 +19,7 @@ use Livewire\Component;
 new class extends Component
 {
     use WithModal;
+    use WithToast;
 
     #[Locked]
     public ?int $id = null;
@@ -87,9 +89,9 @@ new class extends Component
             phone_number: $this->phone_number,
         ));
 
-        $this->js("toast('".__('ui.crud.success.updated', ['resource' => __('resources.profile')])."')");
+        $this->success($this->message);
         $this->dispatch('hide-update-profile-modal');
-        $this->dispatch('reload-user-info');
+        $this->dispatch('profile-updated');
     }
 
     public function hide(): void

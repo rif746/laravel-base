@@ -27,6 +27,7 @@ return [
         'created_at' => 'Created At',
         'updated_at' => 'Updated At',
         'status' => 'Status',
+        'no_data' => 'No Data',
     ],
     'button' => [
         'save' => 'Save Changes',

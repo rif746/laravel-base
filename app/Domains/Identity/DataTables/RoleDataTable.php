@@ -22,7 +22,8 @@ class RoleDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn(
                 'action',
-                fn ($role) => view('datatables.action-button', [
+                fn ($role) => view('components.datatables.action-button', [
+                    'log' => true,
                     'view' => [
                         'modal' => 'role-view-modal',
                         'permission' => 'role index',

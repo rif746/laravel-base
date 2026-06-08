@@ -24,7 +24,7 @@ class UpdateUser
             ]);
 
             if ($user->isDirty('email')) {
-                $user->email_validated_at = null;
+                $user->email_verified_at = null;
                 $user->sendEmailVerificationNotification();
             }
 

@@ -1,4 +1,5 @@
 @props([
+    'log' => false,
     'view' => [],
     'edit' => [],
     'delete' => [],
@@ -7,6 +8,12 @@
 ])
 
 <div class="btn-group" role="group" aria-label="DataTableActionGroup" x-data>
+    @if($log)
+        <button class="btn btn-sm btn-secondary" data-id="{{ $id }}" data-bs-toggle="modal"
+                data-bs-target="#audit-view-modal" data-bs-toggle="tooltip" title="{{ trans('ui.button.log') }}">
+            @svg('tabler-logs', ['width' => 16, 'height' => 16])
+        </button>
+    @endif
     @if (!empty($view))
         @if (isset($view['permission']) ? auth('web')->user()->can($view['permission']) : true)
             @if (isset($view['modal']))

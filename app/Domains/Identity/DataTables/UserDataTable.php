@@ -9,6 +9,7 @@ use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
+use function __;
 
 class UserDataTable extends DataTable
 {
@@ -23,7 +24,8 @@ class UserDataTable extends DataTable
             ->editColumn('status', fn ($model) => $model->status->badge())
             ->addColumn(
                 'action',
-                fn ($user) => view('datatables.action-button', [
+                fn ($user) => view('components.datatables.action-button', [
+                    'log' => true,
                     'view' => [
                         'modal' => 'user-view-modal',
                         'permission' => 'user index',
@@ -104,10 +106,10 @@ class UserDataTable extends DataTable
             Column::make('email')
                 ->title(__('domains/identity.fields.user.email'))
                 ->searchable(true),
-            Column::computed('status')
-                ->title(__('domains/identity.fields.user.status')),
             Column::computed('roles[0].name')
                 ->title(__('resources.role')),
+            Column::computed('status')
+                ->title(__('domains/identity.fields.user.status')),
             Column::computed('action')
                 ->title(__('ui.label.actions'))
                 ->exportable(false)

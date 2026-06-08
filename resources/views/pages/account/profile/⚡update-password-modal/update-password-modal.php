@@ -1,6 +1,7 @@
 <?php
 
 use App\Concerns\Livewire\Shared\WithModal;
+use App\Concerns\Livewire\Shared\WithToast;
 use App\Domains\Identity\Actions\Passwords\UpdatePassword;
 use App\Domains\Identity\DTOs\Passwords\UpdatePasswordDTO;
 use Livewire\Attributes\Locked;
@@ -10,6 +11,7 @@ use Livewire\Component;
 new class extends Component
 {
     use WithModal;
+    use WithToast;
 
     #[Validate(as: 'domains/identity.fields.user.current_password')]
     public string $current_password;
@@ -42,11 +44,12 @@ new class extends Component
         ));
 
         $this->dispatch('hide-update-password-modal');
-        $this->js("toast('".__('ui.crud.success.updated', ['resource' => __('resources.password')])."','success');");
+        $this->success($this->message);
     }
 
     public function hide(): void
     {
         $this->reset();
+        $this->resetErrorBag();
     }
 };

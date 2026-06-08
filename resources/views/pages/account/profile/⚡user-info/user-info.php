@@ -8,8 +8,8 @@ use Livewire\Component;
 
 new class extends Component
 {
+    #[On('profile-updated')]
     #[Computed]
-    #[On('reload-user-info')]
     public function user(): ?User
     {
         return auth('web')->user()->load(['profile', 'avatar']);

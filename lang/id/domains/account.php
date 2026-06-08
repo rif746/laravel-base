@@ -11,12 +11,6 @@ return [
             'phone_number' => 'Nomor Telepon',
         ],
     ],
-    'enums' => [
-        'gender' => [
-            GenderOption::MALE->value => 'Laki-laki',
-            GenderOption::FEMALE->value => 'Perempuan',
-        ],
-    ],
     'pages' => [
         'profile' => [
             'title' => 'Informasi Profil',
@@ -51,6 +45,10 @@ return [
                     'off' => 'Nonaktif',
                 ],
             ],
+        ],
+        'gender' => [
+            GenderOption::MALE->value => 'Laki-laki',
+            GenderOption::FEMALE->value => 'Perempuan',
         ],
     ],
 

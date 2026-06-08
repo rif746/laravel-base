@@ -4,6 +4,7 @@ use App\Concerns\Livewire\Shared\WithModal;
 use App\Concerns\Livewire\Shared\WithToast;
 use App\Domains\System\Actions\Settings\UpdateSettings;
 use App\Domains\System\DTOs\SystemSetingDTO;
+use App\Domains\System\Enums\InputType;
 use App\Domains\System\Enums\SystemSettingKey;
 use App\Domains\System\Models\SystemSettings;
 use Livewire\Attributes\Computed;
@@ -39,7 +40,13 @@ new class extends Component
     public function show(int|string $id): void
     {
         $this->settingKey = $id;
-        $this->settingValue = SystemSettings::where('key', $id)->first()->translated_value;
+        $setting = SystemSettings::where('key', $id)
+            ->first();
+        if($this->settingEnum->inputType() == InputType::SELECT) {
+            $this->settingValue = $setting->value;
+        } else {
+            $this->settingValue = $setting->translated_value;
+        }
     }
 
     #[Computed]

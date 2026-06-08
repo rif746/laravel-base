@@ -10,20 +10,21 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "ext-zip": "*",
         "artesaos/seotools": "^1.4",
         "laravel/ai": "^0.6.4",
         "laravel/breeze": "^2.4",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0",
         "maatwebsite/excel": "4.x-dev",
+        "owen-it/laravel-auditing": "^14.0",
         "secondnetwork/blade-tabler-icons": "^3.41",
         "spatie/laravel-backup": "^10.2",
         "spatie/laravel-permission": "^7.3",
         "spatie/livewire-filepond": "^1.7",
         "tightenco/ziggy": "^2.6",
         "yajra/laravel-datatables": "^13.0",
-        "yajra/laravel-datatables-buttons": "^13.2",
-        "ext-zip": "*"
+        "yajra/laravel-datatables-buttons": "^13.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.2",

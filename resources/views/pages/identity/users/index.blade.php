@@ -5,6 +5,7 @@
 
     <livewire:pages::identity.users.form-modal />
     <livewire:pages::identity.users.view-modal />
+    <livewire:pages::system.audit.audit-view-modal :model="\App\Domains\Identity\Models\User::class" translation="domains/identity.fields.user." />
     <livewire:datatables.delete-action :model="\App\Domains\Identity\Models\User::class" :action="\App\Domains\Identity\Actions\Users\SuspendUser::class" />
 
     @push('scripts')

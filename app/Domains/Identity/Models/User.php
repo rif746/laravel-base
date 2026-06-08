@@ -18,15 +18,20 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password', 'status', 'settings'])]
 #[Hidden(['password', 'remember_token'])]
 #[UsePolicy(UserPolicy::class)]
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, Auditable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, HasFile, HasRoles, Notifiable;
+    use HasFactory;
+    use HasFile;
+    use HasRoles;
+    use Notifiable;
+    use \OwenIt\Auditing\Auditable;
 
     /**
      * Cast attributes
@@ -38,6 +43,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
         'settings' => 'collection',
         'status' => UserStatus::class,
+    ];
+
+    /**
+     * Attributes to include in the Audit.
+     *
+     * @var array
+     */
+    protected array $auditInclude = [
+        'name',
+        'email',
     ];
 
     protected $with = ['roles'];

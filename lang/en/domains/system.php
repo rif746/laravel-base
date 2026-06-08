@@ -21,6 +21,13 @@ return [
                 'webmaster_id' => 'Google Webmaster ID',
             ],
         ],
+        'audit' => [
+            'ip_address' => 'IP Address',
+            'browser' => 'Browser',
+            'field' => 'Field',
+            'old' => 'Old',
+            'new' => 'New',
+        ],
     ],
 
     'pages' => [
@@ -71,5 +78,12 @@ return [
             'description' => 'Backup and Restore database and asset.',
             'keywords' => 'backup, restore, database, asset',
         ],
+    ],
+
+    'event' => [
+        'created' => 'Created',
+        'updated' => 'Updated',
+        'deleted' => 'Deleted',
+        'permissions_synced' => 'Permissions synced',
     ],
 ];
