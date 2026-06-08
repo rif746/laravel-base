@@ -1,5 +1,6 @@
 <?php
 
+use App\Concerns\Livewire\Shared\WithToast;
 use App\Domains\Identity\Actions\Registration\ResendVerificationEmail;
 use App\Domains\Identity\Models\User;
 use Livewire\Attributes\Computed;
@@ -8,6 +9,7 @@ use Livewire\Component;
 
 new class extends Component
 {
+    use WithToast;
     #[On('profile-updated')]
     #[Computed]
     public function user(): ?User
@@ -18,13 +20,13 @@ new class extends Component
     public function resendVerificationEmail(ResendVerificationEmail $action): void
     {
         if ($this->user->email_verified_at) {
-            $this->js("toast('info', __('The email has already been verified.')')");
+            $this->warning(__('The email has already been verified.'));
 
             return;
         }
 
         $action->execute();
 
-        $this->js("toast('success', __('The verification email has been sent.')')");
+        $this->success(__('The verification email has been sent.'));
     }
 };

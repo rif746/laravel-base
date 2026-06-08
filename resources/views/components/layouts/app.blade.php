@@ -6,26 +6,10 @@
     {!! SEO::generate() !!}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{ asset_static($settings['web-favicon'] ?? 'images/logo.svg') }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ asset_static($settings['web-favicon'] ?? 'images/logo.svg') }}" type="image/x-icon">
-    @if (isset($settings['google-tag_manager_id']))
-        <!-- Google Tag Manager -->
-        <script>
-            (function (w, d, s, l, i) {
-                w[l] = w[l] || [];
-                w[l].push({
-                    'gtm.start': new Date().getTime(),
-                    event: 'gtm.js'
-                });
-                const f = d.getElementsByTagName(s)[0];
-                j = d.createElement(s);
-                const dl = l != 'dataLayer' ? '&l=' + l : '';
-                j.async = true;
-                j.src = 'https://googletagmanager.com'
-            })(window, document, 'script', 'dataLayer', '{{ $settings['google-tag_manager_id'] }}');
-        </script>
-        <!-- End Google Tag Manager -->
-    @endif
+    <link rel="icon" href="{{ asset_static($favicon ?? 'images/logo.svg') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset_static($favicon ?? 'images/logo.svg') }}" type="image/x-icon">
+    @webmasterMeta
+    @gtmHead
 
     @livewireStyles
     @stack('styles')
@@ -35,14 +19,7 @@
 </head>
 
 <body>
-@if (isset($settings['google-tag_manager_id']))
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-        <iframe src="https://googletagmanager.com" height="0" width="0"
-                style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
-@endif
+@gtmBody
 
 <div id="overlay" class="overlay"></div>
 <!-- TOPBAR -->

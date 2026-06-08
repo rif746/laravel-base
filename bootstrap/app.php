@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Middleware\HandlePreferredLanguage;
+use App\Http\Middleware\HandlePreferredTimezone;
 use App\Http\Middleware\HandleSeoAttribute;
-use App\Http\Middleware\HandleSystemSettingEffect;
-use App\Http\Middleware\HandleUserSettingEffect;
+use App\Http\Middleware\HandleSeoSetting;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -25,8 +26,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'seo' => HandleSeoAttribute::class,
         ]);
         $middleware->web(append: [
-            HandleSystemSettingEffect::class,
-            HandleUserSettingEffect::class,
+            HandleSeoSetting::class,
+            HandlePreferredTimezone::class,
+            HandlePreferredLanguage::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

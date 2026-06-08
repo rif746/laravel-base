@@ -18,7 +18,7 @@
                                             @if($field->inputType() == InputType::FILE)
                                                 <img class="card-img mt-1 border" src="{{ $this->settingsValue[$field->value] }}" alt="">
                                             @else
-                                                {{ $this->settingsValue[$field->value] }}
+                                                {{ $this->settingsValue[$field->value] ?? '-' }}
                                             @endif
                                         </x-form.vertical-group>
                                     @endforeach

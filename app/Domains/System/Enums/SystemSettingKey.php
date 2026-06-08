@@ -7,6 +7,7 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 enum SystemSettingKey: string
 {
     case WEB_NAME = 'web-name';
+    case WEB_DESCRIPTION = 'web-description';
     case WEB_LOGO = 'web-logo';
     case WEB_FAVICON = 'web-favicon';
     case WEB_PHONE = 'web-phone';
@@ -30,6 +31,7 @@ enum SystemSettingKey: string
             [
                 __('domains/system.pages.settings.sections.web') => [
                     self::WEB_NAME,
+                    self::WEB_DESCRIPTION,
                     self::WEB_ADDRESS,
                     self::WEB_PHONE,
                     self::WEB_EMAIL,
@@ -55,8 +57,27 @@ enum SystemSettingKey: string
         return match ($this) {
             self::WEB_LOGO, self::WEB_FAVICON => InputType::FILE,
             self::DEFAULT_LANGUAGE, self::TIMEZONE => InputType::SELECT,
+            self::WEB_DESCRIPTION => InputType::TEXTAREA,
             default => InputType::TEXTLINE
         };
+    }
+
+    public function inputAttributes(): array
+    {
+        $options = match ($this) {
+            self::WEB_LOGO, self::WEB_FAVICON => [
+                'allow-image-crop' => true,
+                'allow-image-resize' => true,
+                'allow-image-transform' => true,
+                'image-crop-aspect-ratio' => "1:1",
+                'image-resize-target-width' => "500",
+                'image-resize-target-height'=> "500"
+            ],
+            self::TIMEZONE, self::DEFAULT_LANGUAGE => ['options' => $this->options()],
+            default => [],
+        };
+        $options['label'] = $this->label();
+        return $options;
     }
 
     public function validation(): array
@@ -103,25 +124,5 @@ enum SystemSettingKey: string
             self::WEB_LOGO,
             self::WEB_FAVICON,
         ]);
-    }
-
-    public static function effect(string $key, mixed $value): void
-    {
-        $enumKey = self::tryFrom($key);
-
-        if ($enumKey === self::WEB_NAME) {
-            config(['seotools.meta.defaults.title' => $value]);
-            config(['seotools.opengraph.defaults.title' => $value]);
-            config(['seotools.json-ld.defaults.title' => $value]);
-
-            return;
-        }
-
-        match ($enumKey) {
-            self::DEFAULT_LANGUAGE => app()->setLocale($value),
-            self::TIMEZONE => config(['app.timezone' => $value]),
-            self::GOOGLE_WEBMASTER_ID => SEOMeta::addMeta('google-site-verification', $value),
-            default => null,
-        };
     }
 }

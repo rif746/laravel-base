@@ -45,7 +45,7 @@ new class extends Component
         if($this->settingEnum->inputType() == InputType::SELECT) {
             $this->settingValue = $setting->value;
         } else {
-            $this->settingValue = $setting->translated_value;
+            $this->settingValue = $setting?->translated_value ?? '-';
         }
     }
 

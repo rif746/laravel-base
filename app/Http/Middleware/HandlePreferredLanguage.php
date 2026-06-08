@@ -2,16 +2,18 @@
 
 namespace App\Http\Middleware;
 
+use App\Domains\Account\Enums\UserSettingKey;
 use App\Domains\System\Enums\SystemSettingKey;
 use App\Domains\System\Queries\GetSystemSettings;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\Response;
 
-class HandleSystemSettingEffect
+class HandlePreferredLanguage
 {
-    public function __construct(public GetSystemSettings $getSystemSettings) {}
+    public function __construct(protected GetSystemSettings $getSystemSettings)
+    {
+    }
 
     /**
      * Handle an incoming request.
@@ -20,15 +22,14 @@ class HandleSystemSettingEffect
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $systemSettings = $this->getSystemSettings->fetch();
+        $lang = $this->getSystemSettings->get(SystemSettingKey::DEFAULT_LANGUAGE);
+        $userSetting = $request->user()?->settings;
 
-        foreach ($systemSettings as $key => $value) {
-            if ($value !== null) {
-                SystemSettingKey::effect($key, $value);
-            }
+        if($userSetting !== null) {
+            $lang = $userSetting[UserSettingKey::LANGUAGE->value];
         }
 
-        View::share('settings', $systemSettings);
+        app()->setLocale($lang);
 
         return $next($request);
     }

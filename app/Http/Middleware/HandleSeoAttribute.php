@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Attributes\Seo;
 use App\Domains\System\Actions\Settings\SetSeoMetadata;
 use Closure;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\ViewController;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,6 +33,7 @@ class HandleSeoAttribute
 
     /**
      * Extracts the attribute directly from the route structure safely.
+     * @throws Exception
      */
     private function getSeoAttributeDirectly(mixed $route): ?Seo
     {
@@ -59,7 +61,11 @@ class HandleSeoAttribute
                 $attributes = $reflection->getAttributes(Seo::class);
 
                 if (! empty($attributes)) {
-                    return $attributes[0]->newInstance();
+                    $seoInstance = $attributes[0]->newInstance();
+                    if(!$seoInstance instanceof Seo) {
+                        throw new Exception('Expected type of Seo object');
+                    }
+                    return $seoInstance;
                 }
             }
         } catch (\ReflectionException $e) {

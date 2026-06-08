@@ -2,6 +2,7 @@
 
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
+use App\Concerns\Livewire\Shared\WithToast;
 use App\Domains\Identity\Actions\Registration\ResendVerificationEmail;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
@@ -11,7 +12,7 @@ new #[Layout('components.layouts.guest', ['title' => 'domains/auth.pages.verify_
 #[Seo(title: 'domains/auth.seo.verify_email.title', description: 'domains/auth.seo.verify_email.description', keywords: 'domains/auth.seo.verify_email.keywords')]
 class extends Component
 {
-    use HasSeoAttributes;
+    use HasSeoAttributes, WithToast;
 
     public function mount(): void
     {
@@ -35,7 +36,7 @@ class extends Component
         // explicitly — the domain action has no HTTP/request dependency.
         $action->execute(Auth::user());
 
-        $this->js("toast('".__('domains/auth.pages.verify_email.resend_link')."', 'success')");
+        $this->success(__('domains/auth.pages.verify_email.resend_link'));
     }
 
     public function logout(): void

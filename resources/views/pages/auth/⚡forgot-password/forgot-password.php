@@ -2,6 +2,7 @@
 
 use App\Attributes\Seo;
 use App\Concerns\Livewire\Seo\HasSeoAttributes;
+use App\Concerns\Livewire\Shared\WithToast;
 use App\Domains\Identity\Actions\Passwords\SendPasswordResetLink;
 use App\Domains\Identity\DTOs\Passwords\ForgotPasswordDTO;
 use Illuminate\Support\Facades\Password;
@@ -12,7 +13,7 @@ new #[Layout('components.layouts.guest', ['title' => 'domains/auth.pages.forgot_
 #[Seo(title: 'domains/auth.seo.forgot_password.title', description: 'domains/auth.seo.forgot_password.description', keywords: 'domains/auth.seo.forgot_password.keywords')]
 class extends Component
 {
-    use HasSeoAttributes;
+    use HasSeoAttributes, WithToast;
 
     public string $email;
 
@@ -32,7 +33,7 @@ class extends Component
         ));
 
         if ($status === Password::RESET_LINK_SENT) {
-            $this->js("window.toast('Password reset link has been sent to your email', 'success');");
+            $this->success(__('Password reset link has been sent to your email'));
         }
     }
 };

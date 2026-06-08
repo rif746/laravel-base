@@ -4,7 +4,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-if (! function_exists('asset_static')) {
+if (!function_exists('asset_static')) {
     /**
      * @throws Exception
      */
@@ -30,25 +30,21 @@ if (! function_exists('asset_static')) {
     }
 }
 
-function upload_file(UploadedFile|TemporaryUploadedFile $file, string $path, string $disk = 'local'): bool|string
-{
-    return $file->store($path, $disk);
-}
-
-function remove_file(string $path): void
-{
-    if (Storage::disk('local')->exists($path)) {
-        Storage::disk('local')->delete($path);
-    }
-    if (Storage::disk('public')->exists($path)) {
-        Storage::disk('public')->delete($path);
+if (!function_exists('upload_file')) {
+    function upload_file(UploadedFile|TemporaryUploadedFile $file, string $path, string $disk = 'local'): bool|string
+    {
+        return $file->store($path, $disk);
     }
 }
 
-function jwt_extract(string $token)
-{
-    [$header, $payload, $signature] = explode('.', $token);
-    $payload = base64_decode(strtr($payload, '-_', '+/'));
-
-    return json_decode($payload, true);
+if (!function_exists('remove_file')) {
+    function remove_file(string $path): void
+    {
+        if (Storage::disk('local')->exists($path)) {
+            Storage::disk('local')->delete($path);
+        }
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
+    }
 }

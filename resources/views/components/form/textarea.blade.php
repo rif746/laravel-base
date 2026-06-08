@@ -2,31 +2,24 @@
     'label' => '',
     'name' => '',
     'feedback' => null,
-    'options' => [],
+    'disabled' => false
 ])
 
 @php
     $name = $attributes->has('wire:model') ? $attributes->get('wire:model') : $name;
 @endphp
 
-<div @if($attributes->has('x-select2')) wire:ignore @endif class="mb-3" @if ($attributes->has('x-show')) x-show="{{ $attributes->get('x-show') }}" x-cloak @endif>
+<div class="mb-3" @if ($attributes->has('x-show')) x-show="{{ $attributes->get('x-show') }}" x-cloak @endif>
     <label for="{{ $name }}" class="form-label fw-bold">{{ $label }}</label>
-    <select
+    <textarea
         {{ $attributes->merge([
-            'class' => 'form-select' . ($errors->has($name) ? ' is-invalid' : ''),
+            'class' => 'form-control' . ($errors->has($name) ? ' is-invalid' : ''),
             'name' => $name,
+            'disabled' => $disabled,
             'id' => $attributes->has('id') ? $attributes->get('id') : $name,
+            'placeholder' => $attributes->has('placeholder') ? $attributes->get('placeholder') : $label,
             'x-bind:class' => $feedback ? "{'is-invalid': feedback?.$name}" : false,
-        ]) }}>
-        <option value="">{{ $label }}</option>
-        @if(!empty($options))
-            @foreach($options as $key => $value)
-                <option value="{{ $key }}">{{ $value }}</option>
-            @endforeach
-        @else
-            {{ $slot }}
-        @endif
-    </select>
+        ]) }}></textarea>
     @if ($feedback)
         <span x-text="feedback?.{{ $name }}"
             x-bind:class="{ 'invalid-feedback': feedback?.{{ $name }} }"></span>

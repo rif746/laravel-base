@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class DomainMakeCommand extends Command
 {
     protected $signature = 'domain:make
-        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, datatable, query}
+        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, datatable, query, provider}
         {domain : Domain name, e.g. Identity, Account, System}
         {name   : Class name, supports sub-paths e.g. Backup/DeleteBackup}
         {--factory   : Also generate a factory (model only)}
@@ -30,6 +30,7 @@ class DomainMakeCommand extends Command
         'trait' => 'Traits',
         'datatable' => 'DataTables',
         'query' => 'Queries',
+        'provider' => 'Providers',
     ];
 
     public function __construct(protected Filesystem $files)
@@ -96,6 +97,7 @@ class DomainMakeCommand extends Command
             'policy' => $this->policyStub($namespace, $name),
             'datatable' => $this->datatableStub($namespace, $name),
             'query' => $this->queryStub($namespace, $name),
+            'provider' => $this->providerStub($namespace, $name),
             default => '',
         };
     }
@@ -403,6 +405,30 @@ namespace {$namespace};
 trait {$name}
 {
     //
+}
+PHP;
+    }
+
+    private function providerStub(string $namespace, string $name)
+    {
+        return <<<PHP
+<?php
+
+namespace {$namespace};
+
+use Illuminate\Support\ServiceProvider;
+
+class {$name} extends ServiceProvider
+{
+    public function register(): void
+    {
+        //
+    }
+
+    public function boot(): void
+    {
+        //
+    }
 }
 PHP;
     }

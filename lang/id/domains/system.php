@@ -8,6 +8,7 @@ return [
         'settings' => [
             'web' => [
                 'name' => 'Nama Web',
+                'description' => 'Desckripsi Web',
                 'address' => 'Alamat Web',
                 'phone' => 'Telepon Web',
                 'email' => 'Email Web',

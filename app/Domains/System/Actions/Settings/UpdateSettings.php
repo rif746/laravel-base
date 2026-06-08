@@ -33,8 +33,6 @@ class UpdateSettings
             ['value' => $value],
         );
 
-        $dto->key->effect($dto->key->value, $value);
-
         cache()->forget('system_settings');
     }
 }

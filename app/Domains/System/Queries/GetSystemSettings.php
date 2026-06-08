@@ -8,9 +8,20 @@ use Illuminate\Support\Facades\Cache;
 
 class GetSystemSettings
 {
+    private ?array $settings = null;
+
+    public function get(SystemSettingKey $setting): ?string
+    {
+        return $this->fetch()[$setting->value] ?? $setting->default();
+    }
+
     public function fetch(): array
     {
-        return Cache::rememberForever('system_settings', function () {
+        if ($this->settings !== null) {
+            return $this->settings;
+        }
+
+        $this->settings = Cache::rememberForever('system_settings', function () {
             $settings = SystemSettings::pluck('value', 'key')->toArray();
             $finalSettings = [];
             foreach (SystemSettingKey::cases() as $key) {
@@ -19,10 +30,15 @@ class GetSystemSettings
 
             return $finalSettings;
         });
+
+        return $this->settings;
     }
 
-    public function get(SystemSettingKey $setting): string
+    /**
+     * Clears the local memory. Crucial for long-running processes like Laravel Octane.
+     */
+    public function flushMemory(): void
     {
-        return $this->fetch()[$setting->value] ?? $setting->default();
+        $this->settings = null;
     }
 }
