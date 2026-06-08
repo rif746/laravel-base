@@ -111,7 +111,7 @@ You are an autonomous Senior Laravel Architect specializing in Pragmatic Domain-
 - Action Composition: Inject Actions into other Actions via the constructor to reuse logic (e.g., injecting `UpdateUserRoles` into `UpdateUserProfile`).
 - Events: Use Events to decouple side effects (Notifications, Activity Logs).
 
-### 4. File Generation Rules**
+### 4. File Generation Rules
 * NEVER use standard Laravel generators (e.g., `php artisan make:model`) for Domain classes.
 * ALWAYS use the custom `domain:make` command to create Domain files.
 * Example: `php artisan domain:make action Identity Passwords/UpdateUserPassword`
@@ -120,6 +120,9 @@ You are an autonomous Senior Laravel Architect specializing in Pragmatic Domain-
 Write modern PHP 8.2+ code with strict typing. Ensure all PSR-4 namespaces perfectly match the directory structure.
 
 ```
+
+---
+
 ## 6. Development Tools & Generators
 
 To maintain the strict folder structure of the Antigravity architecture, **do not use standard `make:` commands (like `make:model`) for Domain files.** Use the custom `domain:make` command to generate classes in the correct `app/Domains/` namespaces.
@@ -135,7 +138,7 @@ php artisan domain:make {type} {domain} {name} [options]
 
 **Arguments:**
 
-* `type`: The file type to generate (`model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `trait`, `datatable`, `query`).
+* `type`: The file type to generate (`model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `trait`, `datatable`, `query`, `provider`).
 * `domain`: The target Domain folder (e.g., `Identity`, `Account`, `System`).
 * `name`: The class name. Supports sub-directory grouping (e.g., `Management/ProvisionNewUser`).
 
@@ -144,28 +147,7 @@ php artisan domain:make {type} {domain} {name} [options]
 * `--factory`: Generates an associated database factory.
 * `--migration`: Generates a database migration file.
 
-### Usage Examples
-
-**1. Generate a Model with a Factory and Migration:**
-
-```bash
-php artisan domain:make model Identity User --factory --migration
-
-```
-
-**2. Generate a Grouped Action:**
-
-```bash
-php artisan domain:make action Identity Management/ProvisionNewUser
-
-```
-
-**3. Generate a DTO:**
-
-```bash
-php artisan domain:make dto Identity Management/ProvisionUserDTO
-
-```
+---
 
 ## 7. Universal File Management (The System Domain)
 
@@ -222,10 +204,36 @@ $action->execute(
 
 ```
 
-### Self-Cleaning & Garbage Collection
+### System Asset Helper
 
-This architecture is designed to never leave stranded files on the server.
+To avoid polluting Laravel's global namespace with a junk `app/helpers.php` file, we maintain a strictly domain-bound helper file at `app/Domains/System/Helpers/assets.php`. It is autoloaded via `composer.json` and provides the `system_asset()` function to elegantly resolve public and private files in our Blade views.
 
-1. **Self-Cleaning Models:** The `System\Models\File` model hooks into its own `deleted` event. If the database row is deleted, the physical file is automatically removed from the storage disk.
-2. **The Pruner Command:** A weekly scheduled command (`php artisan system:prune-files`) sweeps the database and disks for orphaned files or interrupted uploads. **Note:** This command utilizes a Master Whitelist and is explicitly programmed to ignore disaster recovery files (e.g., `spatie/laravel-backup` archives).
 ---
+
+## 8. Global Settings & Application State
+
+Settings that dictate the runtime state of the application (Timezones, Localization, SEO tags) are managed by the `System` domain to ensure high performance and context awareness.
+
+* **Memoization & Singletons:** The `GetSystemSettings` query is registered as a Singleton in the `SystemServiceProvider`. It fetches data from the database/cache *once* and stores it in local PHP memory for the duration of the request.
+* **Contextual Middlewares:** We use dedicated middlewares (`HandlePreferredLanguage`, `HandlePreferredTimezone`) to dynamically check the authenticated user's preferences, falling back to the global settings if no preference exists.
+* **View Composers:** Global layout variables (like Logos and Web Names) are injected globally via View Composers in the Service Provider, preventing repetitive `@inject` directives.
+
+---
+
+## 9. Audit Logging & Tracking
+
+All critical database mutations are tracked to maintain a compliant historical ledger.
+
+* **Model Auditing:** We utilize Eloquent events to automatically log row changes.
+* **Complex Relation Auditing:** Tracking many-to-many relationship changes (like Spatie `syncPermissions`) bypasses standard Eloquent events. Therefore, we explicitly dispatch Custom Audit Events directly inside the relevant Domain Action (e.g., `UpdateRolePermissions`). This guarantees the "Before" and "After" state is captured cleanly in a single transactional row.
+
+---
+
+## 10. Dynamic UIs & Livewire Interoperability
+
+When building data-driven interfaces (like dynamic settings forms), we utilize the **Renderable Enum** pattern combined with Laravel's native dynamic components.
+
+* Enums act as **Metadata Providers** (returning the string name of the target Blade component).
+* We use `<x-dynamic-component>` in the Blade file to swap UI elements.
+* **CRITICAL:** Enums must never return raw HTML strings compiled via the `Blade` facade. Doing so breaks Livewire's DOM-diffing engine and severs `wire:model` bindings.
+

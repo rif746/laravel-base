@@ -8,13 +8,11 @@ use Exception;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Model;
-use OwenIt\Auditing\Contracts\Auditable;
 
 #[Fillable(['key', 'value'])]
 #[WithoutTimestamps]
-class SystemSettings extends Model implements Auditable
+class SystemSettings extends Model
 {
-    use \OwenIt\Auditing\Auditable;
 
     /**
      * @throws Exception

@@ -12,7 +12,7 @@ new class extends Component
     #[Computed]
     public function user(): ?User
     {
-        return auth('web')->user()->load(['profile', 'avatar']);
+        return auth('web')->user()->load(['avatar']);
     }
 
     public function logout(): void
