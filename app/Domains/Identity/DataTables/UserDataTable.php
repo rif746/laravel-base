@@ -2,6 +2,7 @@
 
 namespace App\Domains\Identity\DataTables;
 
+use App\Domains\Identity\Exports\UserExport;
 use App\Domains\Identity\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -13,6 +14,9 @@ use function __;
 
 class UserDataTable extends DataTable
 {
+    public bool $fastExcel = false;
+    public string $exportClass = UserExport::class;
+
     /**
      * Build the DataTable class.
      *

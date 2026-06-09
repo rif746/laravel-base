@@ -47,8 +47,8 @@ class DomainMakeCommand extends Command
         $domain = ucfirst($this->argument('domain'));
         $name = $this->argument('name'); // may contain sub-path, e.g. Backup/DeleteBackup
 
-        if (! isset($this->types[$type])) {
-            $this->components->error("Unknown type [{$type}]. Supported: ".implode(', ', array_keys($this->types)));
+        if (!isset($this->types[$type])) {
+            $this->components->error("Unknown type [{$type}]. Supported: " . implode(', ', array_keys($this->types)));
 
             return self::FAILURE;
         }
@@ -57,8 +57,8 @@ class DomainMakeCommand extends Command
         $className = class_basename(str_replace('/', '\\', $name));
         $subPath = str_contains($name, '/') ? dirname($name) : null;
 
-        $relativeDir = "Domains/{$domain}/{$subDir}".($subPath ? "/{$subPath}" : '');
-        $namespace = 'App\\'.str_replace('/', '\\', $relativeDir);
+        $relativeDir = "Domains/{$domain}/{$subDir}" . ($subPath ? "/{$subPath}" : '');
+        $namespace = 'App\\' . str_replace('/', '\\', $relativeDir);
         $path = app_path("{$relativeDir}/{$className}.php");
 
         if ($this->files->exists($path)) {
@@ -179,6 +179,20 @@ enum {$name}: string
 PHP;
     }
 
+    private function traitStub(string $namespace, string $name): string
+    {
+        return <<<PHP
+<?php
+
+namespace {$namespace};
+
+trait {$name}
+{
+    //
+}
+PHP;
+    }
+
     protected function eventStub(string $namespace, string $name): string
     {
         return <<<PHP
@@ -289,6 +303,8 @@ class {$name}
 PHP;
     }
 
+    // ─── Factory ──────────────────────────────────────────────────────────────
+
     protected function datatableStub(string $namespace, string $name): string
     {
         $tableId = Str::kebab(Str::singular($name));
@@ -341,7 +357,288 @@ class {$name} extends DataTable
 PHP;
     }
 
-    // ─── Factory ──────────────────────────────────────────────────────────────
+    protected function queryStub(string $namespace, string $name): string
+    {
+        return <<<PHP
+<?php
+
+namespace {$namespace};
+
+use Illuminate\Database\Eloquent\Collection;
+
+class {$name}
+{
+    public function fetch(): Collection
+    {
+        return new Collection();
+    }
+}
+PHP;
+    }
+
+    private function providerStub(string $namespace, string $name): string
+    {
+        return <<<PHP
+<?php
+
+namespace {$namespace};
+
+use Illuminate\Support\ServiceProvider;
+
+class {$name} extends ServiceProvider
+{
+    public function register(): void
+    {
+        //
+    }
+
+    public function boot(): void
+    {
+        //
+    }
+}
+PHP;
+    }
+
+    protected function exportStub(string $namespace, string $name, string $domain): string
+    {
+        $modelOption = $this->option('model');
+        $modelImport = '';
+        $modelClass = 'YourModel';
+
+        if ($modelOption) {
+            $modelData = $this->resolveModel($modelOption, $domain);
+            $modelImport = "use {$modelData['full']};\n";
+            $modelClass = $modelData['class'];
+        }
+
+        $body = <<<PHP
+    use Exportable;
+
+    // Accept UI filters directly into the Export class
+    public function __construct(
+        private array \$filters = []
+    ) {}
+
+    /**
+     * We use FromQuery instead of FromCollection to allow chunking.
+     */
+    public function query(): Builder
+    {
+PHP;
+
+        if ($modelOption) {
+            $body .= <<<PHP
+
+        return {$modelClass}::query()
+            // ->with('profile') // CRITICAL: Eager load any relations used in map()
+            // ->when(isset(\$this->filters['status']), fn(Builder \$q) => \$q->where('status', \$this->filters['status']))
+            ;
+    }
+PHP;
+        } else {
+            $body .= <<<PHP
+
+        // return {$modelClass}::query();
+    }
+PHP;
+        }
+
+        $body .= <<<PHP
+
+
+    public function headings(): array
+    {
+        return [
+            'ID',
+            'Created At',
+            'Amount', // Example column for currency
+        ];
+    }
+
+    /**
+     * @param mixed \$row
+     */
+    public function map(\$row): array
+    {
+        return [
+            \$row->id,
+            // To format as a true Excel date, pass a native PHP DateTime object or an Excel timestamp
+            // \PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel(\$row->created_at),
+            \$row->created_at?->format('Y-m-d H:i'),
+            // \$row->amount,
+        ];
+    }
+
+    /**
+     * Apply Excel formatting to specific columns (Dates, Currency, Percentages).
+     */
+    public function columnFormats(): array
+    {
+        return [
+            // Example: Format Column B as a true Date
+            // 'B' => NumberFormat::FORMAT_DATE_YYYYMMDD,
+
+            // Example: Format Column C as Currency
+            // 'C' => NumberFormat::FORMAT_CURRENCY_USD_SIMPLE,
+        ];
+    }
+
+    /**
+     * Apply visual styling to specific rows or columns.
+     */
+    public function styles(Worksheet \$sheet)
+    {
+        return [
+            // Make the first row (the headings) bold
+            1 => ['font' => ['bold' => true]],
+        ];
+    }
+PHP;
+
+        return <<<PHP
+<?php
+
+namespace {$namespace};
+
+use Illuminate\Database\Eloquent\Builder;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+{$modelImport}
+class {$name} implements FromQuery, WithHeadings, WithMapping, WithStyles, WithColumnFormatting
+{
+{$body}
+}
+PHP;
+    }
+
+    protected function resolveModel(string $modelOption, string $domain): array
+    {
+        if (Str::contains($modelOption, ['\\', '/'])) {
+            if (Str::startsWith(str_replace('/', '\\', $modelOption), 'App\\')) {
+                $full = str_replace('/', '\\', $modelOption);
+                $class = class_basename($full);
+            } else {
+                $parts = explode('/', str_replace('\\', '/', $modelOption));
+                $targetDomain = ucfirst($parts[0]);
+                $targetName = implode('\\', array_map('ucfirst', array_slice($parts, 1)));
+                $full = "App\\Domains\\{$targetDomain}\\Models\\{$targetName}";
+                $class = class_basename($full);
+            }
+        } else {
+            $full = "App\\Domains\\{$domain}\\Models\\" . ucfirst($modelOption);
+            $class = ucfirst($modelOption);
+        }
+
+        return [
+            'full' => $full,
+            'class' => $class,
+        ];
+    }
+
+    protected function importStub(string $namespace, string $name, string $domain): string
+    {
+        $modelOption = $this->option('model');
+        $modelImport = '';
+        $modelClass = 'YourModel';
+
+        if ($modelOption) {
+            $modelData = $this->resolveModel($modelOption, $domain);
+            $modelImport = "use {$modelData['full']};\n";
+            $modelClass = $modelData['class'];
+        }
+
+        // Base implementation for the constructor and collection method
+        $body = <<<PHP
+    public function __construct(
+        // Inject your Domain Actions here
+        // private ProvisionAction \$provisionAction,
+        // private UpdateAction \$updateAction
+    ) {}
+
+    /**
+     * @param Collection \$rows A chunk of rows defined by chunkSize()
+     */
+    public function collection(Collection \$rows): void
+    {
+PHP;
+
+        // If a model is provided, scaffold the highly-optimized Upsert pattern
+        if ($modelOption) {
+            $body .= <<<PHP
+
+        // 1. Pre-fetch existing records for this chunk to prevent N+1 queries
+        // \$keys = \$rows->pluck('unique_column')->filter()->toArray();
+        // \$existingRecords = {$modelClass}::whereIn('unique_column', \$keys)->get()->keyBy('unique_column');
+
+        // 2. Process rows and delegate to Domain Actions
+        foreach (\$rows as \$row) {
+            try {
+                // if (\$existingRecords->has(\$row['unique_column'])) {
+                //     // UPDATE ROUTE: map to DTO and execute UpdateAction
+                // } else {
+                //     // INSERT ROUTE: map to DTO and execute ProvisionAction
+                // }
+            } catch (\Exception \$e) {
+                // Log failure to prevent a single bad row from killing the whole chunk
+                Log::error("Import failed for row: " . \$e->getMessage());
+            }
+        }
+PHP;
+        } else {
+            // Standard generic loop if no model is provided
+            $body .= <<<PHP
+
+        // Process rows and delegate to Domain Actions
+        foreach (\$rows as \$row) {
+            try {
+                // Map array data to a strictly typed DTO
+                // \$dto = new MyDataTransferObject(...\$row);
+
+                // Execute the Domain Action
+                // \$this->provisionAction->execute(\$dto);
+            } catch (\Exception \$e) {
+                // Log failure to prevent a single bad row from killing the whole chunk
+                Log::error("Import failed for row: " . \$e->getMessage());
+            }
+        }
+PHP;
+        }
+
+        // Add the ChunkSize method mandatory for WithChunkReading
+        $body .= <<<PHP
+
+    }
+
+    public function chunkSize(): int
+    {
+        return 200; // Optimal balance for shared hosting memory limits
+    }
+PHP;
+
+        return <<<PHP
+<?php
+
+namespace {$namespace};
+
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+{$modelImport}
+class {$name} implements ToCollection, WithHeadingRow, WithChunkReading
+{
+{$body}
+}
+PHP;
+    }
 
     protected function createFactory(string $domain, string $name, string $modelNamespace): void
     {
@@ -376,165 +673,9 @@ class {$name}Factory extends Factory
         return [];
     }
 }
-PHP);
+PHP
+        );
 
         $this->components->info("Factory [database/factories/{$domain}/{$name}Factory.php] created successfully.");
-    }
-
-    protected function queryStub(string $namespace, string $name): string
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-use Illuminate\Database\Eloquent\Collection;
-
-class {$name}
-{
-    public function fetch(): Collection
-    {
-        return new Collection();
-    }
-}
-PHP;
-    }
-
-    private function traitStub(string $namespace, string $name): string
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-trait {$name}
-{
-    //
-}
-PHP;
-    }
-
-        private function providerStub(string $namespace, string $name)
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-use Illuminate\Support\ServiceProvider;
-
-class {$name} extends ServiceProvider
-{
-    public function register(): void
-    {
-        //
-    }
-
-    public function boot(): void
-    {
-        //
-    }
-}
-PHP;
-    }
-
-    protected function exportStub(string $namespace, string $name, string $domain): string
-    {
-        $modelOption = $this->option('model');
-
-        if ($modelOption) {
-            $modelData = $this->resolveModel($modelOption, $domain);
-            $modelImport = "\nuse {$modelData['full']};";
-            $modelClass = $modelData['class'];
-            $collectionBody = "return {$modelClass}::all();";
-        } else {
-            $modelImport = '';
-            $collectionBody = "return collect();";
-        }
-
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-{$modelImport}
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Illuminate\Support\Collection;
-
-class {$name} implements FromCollection
-{
-    public function collection(): Collection
-    {
-        {$collectionBody}
-    }
-}
-PHP;
-    }
-
-    protected function importStub(string $namespace, string $name, string $domain): string
-    {
-        $modelOption = $this->option('model');
-
-        if ($modelOption) {
-            $modelData = $this->resolveModel($modelOption, $domain);
-            $modelImport = "\nuse {$modelData['full']};";
-            $modelClass = $modelData['class'];
-            $implements = 'ToModel';
-            $useImplements = "use Maatwebsite\Excel\Concerns\ToModel;\nuse Illuminate\Database\Eloquent\Model;";
-            $body = <<<PHP
-    public function model(array \$row): Model|null
-    {
-        return new {$modelClass}([
-            //
-        ]);
-    }
-PHP;
-        } else {
-            $modelImport = '';
-            $implements = 'ToCollection';
-            $useImplements = "use Maatwebsite\Excel\Concerns\ToCollection;\nuse Illuminate\Support\Collection;";
-            $body = <<<PHP
-    public function collection(Collection \$collection): void
-    {
-        //
-    }
-PHP;
-        }
-
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-{$modelImport}
-{$useImplements}
-
-class {$name} implements {$implements}
-{
-{$body}
-}
-PHP;
-    }
-
-    protected function resolveModel(string $modelOption, string $domain): array
-    {
-        if (Str::contains($modelOption, ['\\', '/'])) {
-            if (Str::startsWith(str_replace('/', '\\', $modelOption), 'App\\')) {
-                $full = str_replace('/', '\\', $modelOption);
-                $class = class_basename($full);
-            } else {
-                $parts = explode('/', str_replace('\\', '/', $modelOption));
-                $targetDomain = ucfirst($parts[0]);
-                $targetName = implode('\\', array_map('ucfirst', array_slice($parts, 1)));
-                $full = "App\\Domains\\{$targetDomain}\\Models\\{$targetName}";
-                $class = class_basename($full);
-            }
-        } else {
-            $full = "App\\Domains\\{$domain}\\Models\\" . ucfirst($modelOption);
-            $class = ucfirst($modelOption);
-        }
-
-        return [
-            'full' => $full,
-            'class' => $class,
-        ];
     }
 }
