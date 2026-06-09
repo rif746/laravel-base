@@ -14,6 +14,10 @@
             <li>
                 <livewire:layouts::notification />
             </li>
+            <!-- Language switcher -->
+            <li>
+                <livewire:layouts::language-switcher />
+            </li>
             <!-- Dropdown -->
             <li class="ms-3">
                 <livewire:layouts::profile-dropdown />

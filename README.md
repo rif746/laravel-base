@@ -115,6 +115,9 @@ You are an autonomous Senior Laravel Architect specializing in Pragmatic Domain-
 * NEVER use standard Laravel generators (e.g., `php artisan make:model`) for Domain classes.
 * ALWAYS use the custom `domain:make` command to create Domain files.
 * Example: `php artisan domain:make action Identity Passwords/UpdateUserPassword`
+* Examples for Laravel Excel:
+  * `php artisan domain:make export Identity UserExport --model=User`
+  * `php artisan domain:make import Identity UserImport --model=User`
 * Queries: For complex database reads (e.g., massive filtering or reporting), create a Query class in app/Domains/{Concept}/Queries/. Queries are read-only, do not use transactions, do not mutate state, and do not dispatch events.
 
 Write modern PHP 8.2+ code with strict typing. Ensure all PSR-4 namespaces perfectly match the directory structure.
@@ -138,14 +141,15 @@ php artisan domain:make {type} {domain} {name} [options]
 
 **Arguments:**
 
-* `type`: The file type to generate (`model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `trait`, `datatable`, `query`, `provider`).
+* `type`: The file type to generate (`model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `trait`, `datatable`, `query`, `provider`, `export`, `import`).
 * `domain`: The target Domain folder (e.g., `Identity`, `Account`, `System`).
 * `name`: The class name. Supports sub-directory grouping (e.g., `Management/ProvisionNewUser`).
 
-**Options (Models Only):**
+**Options:**
 
-* `--factory`: Generates an associated database factory.
-* `--migration`: Generates a database migration file.
+* `--factory`: Generates an associated database factory (Models only).
+* `--migration`: Generates a database migration file (Models only).
+* `--model=`: Associates the export or import class with an Eloquent model (Exports & Imports only).
 
 ---
 

@@ -9,11 +9,12 @@ use Illuminate\Support\Str;
 class DomainMakeCommand extends Command
 {
     protected $signature = 'domain:make
-        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, datatable, query, provider}
+        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, datatable, query, provider, export, import}
         {domain : Domain name, e.g. Identity, Account, System}
         {name   : Class name, supports sub-paths e.g. Backup/DeleteBackup}
         {--factory   : Also generate a factory (model only)}
-        {--migration : Also generate a migration (model only)}';
+        {--migration : Also generate a migration (model only)}
+        {--model=    : Associate the export or import with a model}';
 
     protected $description = 'Generate a file directly into the domain structure (app/Domains/)';
 
@@ -31,6 +32,8 @@ class DomainMakeCommand extends Command
         'datatable' => 'DataTables',
         'query' => 'Queries',
         'provider' => 'Providers',
+        'export' => 'Exports',
+        'import' => 'Imports',
     ];
 
     public function __construct(protected Filesystem $files)
@@ -98,6 +101,8 @@ class DomainMakeCommand extends Command
             'datatable' => $this->datatableStub($namespace, $name),
             'query' => $this->queryStub($namespace, $name),
             'provider' => $this->providerStub($namespace, $name),
+            'export' => $this->exportStub($namespace, $name, $domain),
+            'import' => $this->importStub($namespace, $name, $domain),
             default => '',
         };
     }
@@ -409,7 +414,7 @@ trait {$name}
 PHP;
     }
 
-    private function providerStub(string $namespace, string $name)
+        private function providerStub(string $namespace, string $name)
     {
         return <<<PHP
 <?php
@@ -431,5 +436,105 @@ class {$name} extends ServiceProvider
     }
 }
 PHP;
+    }
+
+    protected function exportStub(string $namespace, string $name, string $domain): string
+    {
+        $modelOption = $this->option('model');
+
+        if ($modelOption) {
+            $modelData = $this->resolveModel($modelOption, $domain);
+            $modelImport = "\nuse {$modelData['full']};";
+            $modelClass = $modelData['class'];
+            $collectionBody = "return {$modelClass}::all();";
+        } else {
+            $modelImport = '';
+            $collectionBody = "return collect();";
+        }
+
+        return <<<PHP
+<?php
+
+namespace {$namespace};
+{$modelImport}
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Support\Collection;
+
+class {$name} implements FromCollection
+{
+    public function collection(): Collection
+    {
+        {$collectionBody}
+    }
+}
+PHP;
+    }
+
+    protected function importStub(string $namespace, string $name, string $domain): string
+    {
+        $modelOption = $this->option('model');
+
+        if ($modelOption) {
+            $modelData = $this->resolveModel($modelOption, $domain);
+            $modelImport = "\nuse {$modelData['full']};";
+            $modelClass = $modelData['class'];
+            $implements = 'ToModel';
+            $useImplements = "use Maatwebsite\Excel\Concerns\ToModel;\nuse Illuminate\Database\Eloquent\Model;";
+            $body = <<<PHP
+    public function model(array \$row): Model|null
+    {
+        return new {$modelClass}([
+            //
+        ]);
+    }
+PHP;
+        } else {
+            $modelImport = '';
+            $implements = 'ToCollection';
+            $useImplements = "use Maatwebsite\Excel\Concerns\ToCollection;\nuse Illuminate\Support\Collection;";
+            $body = <<<PHP
+    public function collection(Collection \$collection): void
+    {
+        //
+    }
+PHP;
+        }
+
+        return <<<PHP
+<?php
+
+namespace {$namespace};
+{$modelImport}
+{$useImplements}
+
+class {$name} implements {$implements}
+{
+{$body}
+}
+PHP;
+    }
+
+    protected function resolveModel(string $modelOption, string $domain): array
+    {
+        if (Str::contains($modelOption, ['\\', '/'])) {
+            if (Str::startsWith(str_replace('/', '\\', $modelOption), 'App\\')) {
+                $full = str_replace('/', '\\', $modelOption);
+                $class = class_basename($full);
+            } else {
+                $parts = explode('/', str_replace('\\', '/', $modelOption));
+                $targetDomain = ucfirst($parts[0]);
+                $targetName = implode('\\', array_map('ucfirst', array_slice($parts, 1)));
+                $full = "App\\Domains\\{$targetDomain}\\Models\\{$targetName}";
+                $class = class_basename($full);
+            }
+        } else {
+            $full = "App\\Domains\\{$domain}\\Models\\" . ucfirst($modelOption);
+            $class = ucfirst($modelOption);
+        }
+
+        return [
+            'full' => $full,
+            'class' => $class,
+        ];
     }
 }

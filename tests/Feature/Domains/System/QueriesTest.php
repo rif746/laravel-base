@@ -27,6 +27,7 @@ test('GetSystemSettings query fetches settings with defaults and returns specifi
     
     // Clear cache to force DB refresh
     Cache::forget('system_settings');
+    $query->flushMemory();
 
     $refreshedSettings = $query->fetch();
     expect($refreshedSettings[SystemSettingKey::WEB_NAME->value])->toBe('My Test App');

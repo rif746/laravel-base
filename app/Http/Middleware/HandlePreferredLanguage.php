@@ -22,11 +22,15 @@ class HandlePreferredLanguage
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $lang = $this->getSystemSettings->get(SystemSettingKey::DEFAULT_LANGUAGE);
-        $userSetting = $request->user()?->settings;
+        if (session()->has('locale')) {
+            $lang = session()->get('locale');
+        } else {
+            $lang = $this->getSystemSettings->get(SystemSettingKey::DEFAULT_LANGUAGE);
+            $userSetting = $request->user()?->settings;
 
-        if($userSetting !== null) {
-            $lang = $userSetting[UserSettingKey::LANGUAGE->value];
+            if ($userSetting !== null && isset($userSetting[UserSettingKey::LANGUAGE->value])) {
+                $lang = $userSetting[UserSettingKey::LANGUAGE->value];
+            }
         }
 
         app()->setLocale($lang);
