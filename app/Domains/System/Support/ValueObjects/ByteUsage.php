@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support\ValueObjects;
+namespace App\Domains\System\Support\ValueObjects;
 
 use InvalidArgumentException;
 use Stringable;

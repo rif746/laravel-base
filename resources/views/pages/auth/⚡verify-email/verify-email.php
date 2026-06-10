@@ -1,9 +1,9 @@
 <?php
 
 use App\Attributes\Seo;
-use App\Concerns\Livewire\Seo\HasSeoAttributes;
-use App\Concerns\Livewire\Shared\WithToast;
 use App\Domains\Identity\Actions\Registration\ResendVerificationEmail;
+use App\Livewire\Concerns\HasSeoAttributes;
+use App\Livewire\Concerns\WithToast;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;

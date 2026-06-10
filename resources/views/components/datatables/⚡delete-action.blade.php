@@ -1,6 +1,6 @@
 <?php
 
-use App\Concerns\Livewire\Shared\WithToast;
+use App\Livewire\Concerns\WithToast;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;

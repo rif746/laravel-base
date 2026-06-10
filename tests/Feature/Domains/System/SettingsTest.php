@@ -1,12 +1,12 @@
 <?php
 
 use App\Attributes\Seo;
-use App\Domains\System\Actions\Settings\SetSeoMetadata;
 use App\Domains\System\Actions\Settings\UpdateSettings;
 use App\Domains\System\DTOs\DeleteBackupDTO;
 use App\Domains\System\DTOs\SystemSetingDTO;
 use App\Domains\System\Enums\SystemSettingKey;
 use App\Domains\System\Models\SystemSettings;
+use App\UI\Actions\SetSeoMetadata;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Http\Request;
 

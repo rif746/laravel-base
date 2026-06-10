@@ -12,11 +12,7 @@ use App\Domains\Identity\Models\User;
 
 class UserImport implements ToCollection, WithHeadingRow, WithChunkReading
 {
-    public function __construct(
-        // Inject your Domain Actions here
-        // private ProvisionAction $provisionAction,
-        // private UpdateAction $updateAction
-    ) {}
+    public function __construct(protected int $initiatorId) {}
 
     /**
      * @param Collection $rows A chunk of rows defined by chunkSize()

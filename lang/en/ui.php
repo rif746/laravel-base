@@ -15,6 +15,7 @@ return [
         'update' => 'Update :resource',
         'delete' => 'Delete :resource',
         'view' => 'View :resource',
+        'upload' => 'Upload :resource',
         'restore' => 'Restore :resource',
     ],
     'greetings' => [
@@ -67,5 +68,14 @@ return [
         'empty' => 'No notifications',
         'read_all' => 'Read all notifications',
         'unread' => 'unread messages',
+    ],
+    'excel' => [
+        'import' => [
+            'file_label' => 'Excel File',
+            'success' => 'Import queued. You will receive an email when it is complete.',
+        ],
+        'export' => [
+            'success' => 'Export queued. You will receive an email with the file when it is ready.',
+        ],
     ],
 ];

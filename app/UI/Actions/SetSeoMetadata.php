@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\System\Actions\Settings;
+namespace App\UI\Actions;
 
 use App\Attributes\Seo;
 use Artesaos\SEOTools\Facades\SEOTools;

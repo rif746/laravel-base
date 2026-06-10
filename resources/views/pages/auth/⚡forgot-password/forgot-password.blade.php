@@ -7,7 +7,7 @@
     {{-- <x-auth-session-status class="mb-4" :status="session('status')" /> --}}
 
     <form wire:submit="forgotPassword" class="needs-validation mt-3" novalidate>
-        <x-form.input name="email" :label="__('domains/auth.fields.forgot_password.email')" type="email" placeholder="name@example.com" wire:model="email"
+        <x-form.input name="form.email" :label="__('domains/auth.fields.forgot_password.email')" type="email" placeholder="name@example.com" wire:model="form.email"
             required autofocus />
 
         <x-button type="submit" :label="__('domains/auth.fields.forgot_password.submit')" class="w-100" theme="primary" />

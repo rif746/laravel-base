@@ -1,7 +1,8 @@
 <?php
 
 use App\Attributes\Seo;
-use App\Concerns\Livewire\Seo\HasSeoAttributes;
+use App\Livewire\Concerns\HasSeoAttributes;
+use App\Livewire\Forms\Auth\ConfirmPasswordForm;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -11,13 +12,11 @@ class extends Component
 {
     use HasSeoAttributes;
 
-    public string $password;
+    public ConfirmPasswordForm $form;
 
     public function confirmPassword(): void
     {
-        $this->validate([
-            'password' => 'required|string|current_password',
-        ]);
+        $this->form->validate();
 
         session()->put('auth.password_confirmed_at', time());
 

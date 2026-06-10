@@ -2,8 +2,8 @@
 
     <div class="row">
         <div class="col-sm-12 col-md-6">
-            <x-form.input name="name" :disabled="$id" :label="__('domains/identity.fields.role.name')" wire:model="name" />
-            <x-form.select name="guard_name" :disabled="$id" :label="__('domains/identity.fields.role.guard_name')" wire:model="guard_name">
+            <x-form.input name="form.name" :disabled="$id" :label="__('domains/identity.fields.role.name')" wire:model="form.name" />
+            <x-form.select name="form.guard_name" :disabled="$id" :label="__('domains/identity.fields.role.guard_name')" wire:model="form.guard_name">
                 <option value="web">Web</option>
                 <option value="api">Api</option>
             </x-form.select>
@@ -22,8 +22,8 @@
                                     <ul class="list-unstyled mb-0">
                                         @foreach ($group as $permission)
                                             <li class="small d-flex align-items-center mb-1">
-                                                <x-form.checkbox id="selected_permissions.{{ $permission->name }}"
-                                                    :label="__($permission->description)" wire:model="selected_permissions"
+                                                <x-form.checkbox id="form.selected_permissions.{{ $permission->name }}"
+                                                    :label="__($permission->description)" wire:model="form.selected_permissions"
                                                     :value="$permission->name" />
                                             </li>
                                         @endforeach

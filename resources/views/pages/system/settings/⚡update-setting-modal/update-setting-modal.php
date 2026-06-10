@@ -1,12 +1,12 @@
 <?php
 
-use App\Concerns\Livewire\Shared\WithModal;
-use App\Concerns\Livewire\Shared\WithToast;
 use App\Domains\System\Actions\Settings\UpdateSettings;
 use App\Domains\System\DTOs\SystemSetingDTO;
-use App\Domains\System\Enums\InputType;
 use App\Domains\System\Enums\SystemSettingKey;
 use App\Domains\System\Models\SystemSettings;
+use App\Livewire\Concerns\WithModal;
+use App\Livewire\Concerns\WithToast;
+use App\UI\Enums\InputType;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;

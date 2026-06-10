@@ -1,8 +1,8 @@
 <?php
 
-use App\Concerns\Livewire\Shared\WithToast;
 use App\Domains\Account\Actions\Profile\UpdateUserSettings;
 use App\Domains\Account\Enums\UserSettingKey;
+use App\Livewire\Concerns\WithToast;
 use Livewire\Component;
 
 new class extends Component

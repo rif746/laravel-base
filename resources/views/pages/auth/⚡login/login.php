@@ -1,8 +1,9 @@
 <?php
 
 use App\Attributes\Seo;
-use App\Concerns\Livewire\Seo\HasSeoAttributes;
 use App\Domains\Identity\Events\Authentication\UserLoggedIn;
+use App\Livewire\Concerns\HasSeoAttributes;
+use App\Livewire\Forms\Auth\LoginForm;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -17,37 +18,25 @@ class extends Component
 {
     use HasSeoAttributes;
 
-    public string $email = '';
-
-    public string $password = '';
-
-    public bool $remember = false;
-
-    public function rules(): array
-    {
-        return [
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-        ];
-    }
+    public LoginForm $form;
 
     /**
      * @throws ValidationException
      */
     public function login(): void
     {
-        $this->validate();
+        $this->form->validate();
 
         $this->ensureIsNotRateLimited();
 
         if (! Auth::attempt(
-            ['email' => $this->email, 'password' => $this->password],
-            $this->remember,
+            ['email' => $this->form->email, 'password' => $this->form->password],
+            $this->form->remember,
         )) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'form.email' => trans('auth.failed'),
             ]);
         }
 
@@ -80,7 +69,7 @@ class extends Component
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
+            'form.email' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -89,6 +78,6 @@ class extends Component
 
     private function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
+        return Str::transliterate(Str::lower($this->form->email).'|'.request()->ip());
     }
 };

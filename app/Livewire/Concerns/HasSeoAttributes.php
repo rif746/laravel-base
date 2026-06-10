@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Concerns\Livewire\Seo;
+namespace App\Livewire\Concerns;
 
 use App\Attributes\Seo;
-use App\Domains\System\Actions\Settings\SetSeoMetadata;
+use App\UI\Actions\SetSeoMetadata;
 use Livewire\Component;
 use ReflectionClass;
 

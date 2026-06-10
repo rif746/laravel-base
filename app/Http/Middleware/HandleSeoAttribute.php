@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Attributes\Seo;
-use App\Domains\System\Actions\Settings\SetSeoMetadata;
+use App\UI\Actions\SetSeoMetadata;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;

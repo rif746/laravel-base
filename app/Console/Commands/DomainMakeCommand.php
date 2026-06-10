@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class DomainMakeCommand extends Command
 {
     protected $signature = 'domain:make
-        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, datatable, query, provider, export, import}
+        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, query, provider, export, import}
         {domain : Domain name, e.g. Identity, Account, System}
         {name   : Class name, supports sub-paths e.g. Backup/DeleteBackup}
         {--factory   : Also generate a factory (model only)}
@@ -29,7 +29,6 @@ class DomainMakeCommand extends Command
         'notification' => 'Notifications',
         'policy' => 'Policies',
         'trait' => 'Traits',
-        'datatable' => 'DataTables',
         'query' => 'Queries',
         'provider' => 'Providers',
         'export' => 'Exports',
@@ -98,7 +97,6 @@ class DomainMakeCommand extends Command
             'listener' => $this->listenerStub($namespace, $name),
             'notification' => $this->notificationStub($namespace, $name),
             'policy' => $this->policyStub($namespace, $name),
-            'datatable' => $this->datatableStub($namespace, $name),
             'query' => $this->queryStub($namespace, $name),
             'provider' => $this->providerStub($namespace, $name),
             'export' => $this->exportStub($namespace, $name, $domain),
@@ -303,59 +301,6 @@ class {$name}
 PHP;
     }
 
-    // ─── Factory ──────────────────────────────────────────────────────────────
-
-    protected function datatableStub(string $namespace, string $name): string
-    {
-        $tableId = Str::kebab(Str::singular($name));
-
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Yajra\DataTables\EloquentDataTable;
-use Yajra\DataTables\Html\Builder as HtmlBuilder;
-use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Services\DataTable;
-
-class {$name} extends DataTable
-{
-    public function dataTable(QueryBuilder \$query): EloquentDataTable
-    {
-        return (new EloquentDataTable(\$query))
-            ->addIndexColumn();
-    }
-
-    public function query(): QueryBuilder
-    {
-        //
-    }
-
-    public function html(): HtmlBuilder
-    {
-        return \$this->builder()
-            ->setTableId('{$tableId}-table')
-            ->columns(\$this->getColumns())
-            ->minifiedAjax()
-            ->orderBy(-1);
-    }
-
-    public function getColumns(): array
-    {
-        return [
-            Column::computed('DT_RowIndex')->title('#')->searchable(false)->orderable(false),
-        ];
-    }
-
-    protected function filename(): string
-    {
-        return '{$name}_' . date('YmdHis');
-    }
-}
-PHP;
-    }
 
     protected function queryStub(string $namespace, string $name): string
     {

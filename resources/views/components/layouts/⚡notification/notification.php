@@ -20,7 +20,7 @@ new class extends Component
 
     public function readAll(): void
     {
-        $this->notifications->update(['read_at' => now()]);
+        $this->notifications->markAsRead();
         $this->__unset('notifications');
     }
 };

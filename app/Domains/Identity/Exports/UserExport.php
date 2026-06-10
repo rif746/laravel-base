@@ -2,22 +2,16 @@
 
 namespace App\Domains\Identity\Exports;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
-use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Border;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use App\Domains\Identity\Models\User;
 
-class UserExport implements FromQuery, WithHeadings, WithMapping, WithStyles, WithColumnFormatting, ShouldAutoSize, ShouldQueue
+class UserExport implements FromQuery, WithHeadings, WithMapping, WithColumnFormatting
 {
     use Exportable;
 
@@ -73,18 +67,5 @@ class UserExport implements FromQuery, WithHeadings, WithMapping, WithStyles, Wi
             'E' => NumberFormat::FORMAT_DATE_DDMMYYYY,
             'F' => NumberFormat::FORMAT_NUMBER,
         ];
-    }
-
-    /**
-     * Apply visual styling to specific rows or columns.
-     */
-    public function styles(Worksheet $sheet): void
-    {
-        $sheet->freezePane('A2');
-        $sheet->getPageSetup()->setOrientation('landscape');
-        $columnStyle = $sheet->getStyle('A1:' . $sheet->getHighestColumn() . $sheet->getHighestRow());
-        $columnStyle->getAlignment()->setWrapText(true);
-        $columnStyle->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
-        $columnStyle->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
     }
 }

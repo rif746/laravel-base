@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Casts;
+namespace App\Domains\System\Casts;
 
-use App\Support\ValueObjects\ByteUsage;
+use App\Domains\System\Support\ValueObjects\ByteUsage;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;

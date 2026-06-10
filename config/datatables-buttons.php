@@ -13,7 +13,7 @@ return [
          * With Model: App\User (default model)
          * Export filename: users_timestamp
          */
-        'base' => 'DataTables',
+        'base' => 'Http\DataTables',
 
         /*
          * Base namespace/directory where your model's are located.
@@ -23,7 +23,7 @@ return [
          * With Model: App\Post
          * Export filename: posts_timestamp
          */
-        'model' => 'App\\Models',
+        'model' => 'App\\Domains\\*\\Models\\',
     ],
 
     /*

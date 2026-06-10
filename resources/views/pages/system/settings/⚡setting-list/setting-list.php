@@ -1,12 +1,10 @@
 <?php
 
 use App\Attributes\Seo;
-use App\Concerns\Livewire\Seo\HasSeoAttributes;
-use App\Concerns\Livewire\Shared\WithToast;
-use App\Domains\System\Actions\Settings\UpdateSettings;
-use App\Domains\System\DTOs\SystemSetingDTO;
 use App\Domains\System\Enums\SystemSettingKey;
 use App\Domains\System\Models\SystemSettings;
+use App\Livewire\Concerns\HasSeoAttributes;
+use App\Livewire\Concerns\WithToast;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;

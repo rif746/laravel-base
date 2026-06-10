@@ -37,7 +37,7 @@
                     </div>
                 </li>
             @endforelse
-            @if ($this->notifications->filter(fn($value, $key) => !$value->read_at)->count() > 2)
+            @if ($this->notifications->filter(fn($value, $key) => !$value->read_at)->count() > 1)
                 <li class="px-4 py-3 text-center">
                     <x-button wire:click="readAll" theme="primary"
                         class="w-full">{{ __('ui.notification.read_all') }}</x-button>

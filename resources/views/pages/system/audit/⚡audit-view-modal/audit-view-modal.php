@@ -1,7 +1,7 @@
 <?php
 
-use App\Concerns\Livewire\Shared\WithModal;
 use App\Domains\System\Queries\GetModelAuditLog;
+use App\Livewire\Concerns\WithModal;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;

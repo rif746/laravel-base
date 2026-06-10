@@ -2,7 +2,7 @@
 
 namespace App\Domains\System\Models;
 
-use App\Domains\System\Enums\InputType;
+use App\UI\Enums\InputType;
 use App\Domains\System\Enums\SystemSettingKey;
 use Exception;
 use Illuminate\Database\Eloquent\Attributes\Fillable;

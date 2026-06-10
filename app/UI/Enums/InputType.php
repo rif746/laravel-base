@@ -1,9 +1,6 @@
 <?php
 
-namespace App\Domains\System\Enums;
-
-use Illuminate\Support\Facades\Blade;
-use Illuminate\View\AnonymousComponent;
+namespace App\UI\Enums;
 
 enum InputType: string
 {

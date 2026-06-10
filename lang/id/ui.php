@@ -15,6 +15,7 @@ return [
         'update' => 'Perbarui :resource',
         'delete' => 'Hapus :resource',
         'view' => 'Lihat :resource',
+        'upload' => 'Unggah :resource',
         'restore' => 'Pulihkan :resource',
     ],
     'greetings' => [
@@ -67,5 +68,14 @@ return [
         'empty' => 'Tidak ada pemberitahuan',
         'read_all' => 'Baca semua pemberitahuan',
         'unread' => 'pesan belum dibaca',
+    ],
+    'excel' => [
+        'import' => [
+            'file_label' => 'Berkas Excel',
+            'success' => 'Impor dijadwalkan. Anda akan menerima email ketika selesai.',
+        ],
+        'export' => [
+            'success' => 'Ekspor dijadwalkan. Anda akan menerima email beserta berkasnya ketika siap.',
+        ],
     ],
 ];

@@ -1,65 +1,57 @@
 <?php
 
-namespace App\Domains\Identity\DataTables;
+namespace App\Http\DataTables\Identity;
 
-use App\Domains\Identity\Exports\UserExport;
-use App\Domains\Identity\Models\User;
+use App\Domains\Identity\Models\Role;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
-use function __;
 
-class UserDataTable extends DataTable
+class RoleDataTable extends DataTable
 {
-    public bool $fastExcel = false;
-    public string $exportClass = UserExport::class;
-
     /**
      * Build the DataTable class.
      *
-     * @param  QueryBuilder<User>  $query  Results from query() method.
+     * @param  QueryBuilder<Role>  $query  Results from query() method.
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->editColumn('status', fn ($model) => $model->status->badge())
             ->addColumn(
                 'action',
-                fn ($user) => view('components.datatables.action-button', [
+                fn ($role) => view('components.datatables.action-button', [
                     'log' => true,
                     'view' => [
-                        'modal' => 'user-view-modal',
-                        'permission' => 'user index',
+                        'modal' => 'role-view-modal',
+                        'permission' => 'role index',
                     ],
                     'edit' => [
-                        'modal' => 'user-form-modal',
-                        'permission' => 'user edit',
+                        'modal' => 'role-form-modal',
+                        'permission' => 'role edit',
                     ],
                     'delete' => [
                         'url' => null,
-                        'message' => __('ui.crud.confirmation.delete', ['resource' => __('resources.user')]),
-                        'success_message' => __('ui.crud.success.deleted', ['resource' => __('resources.user')]),
+                        'message' => __('ui.crud.confirmation.delete', ['resource' => __('resources.role')]),
+                        'success_message' => __('ui.crud.success.deleted', ['resource' => __('resources.role')]),
                     ],
-                    'table_name' => 'user-table',
-                    'id' => $user->id,
+                    'table_name' => 'role-table',
+                    'id' => $role->id,
                 ])
             )
-            ->rawColumns(['action', 'status'])
             ->addIndexColumn();
     }
 
     /**
      * Get the query source of dataTable.
      *
-     * @return QueryBuilder<User>
+     * @return QueryBuilder<Role>
      */
-    public function query(User $model): QueryBuilder
+    public function query(Role $model): QueryBuilder
     {
-        return $model->with(['roles' => fn ($mdl) => $mdl->first()])
-            ->newQuery();
+        return $model->withCount('permissions')->newQuery();
     }
 
     /**
@@ -68,20 +60,16 @@ class UserDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('user-table')
+            ->setTableId('role-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->orderBy(-1)
             ->parameters([
                 'dom' => config('datatables-buttons.parameters.dom'),
-                'language' => [
-                    'search' => '',
-                    'searchPlaceholder' => 'Search...',
-                ],
             ])
             ->buttons([
                 Button::make('add')
-                    ->action('$("#user-form-modal").modal("show");')
+                    ->action('$("#role-form-modal").modal("show");')
                     ->text(svg('tabler-plus', ['width' => 16, 'height' => 16])->toHtml())
                     ->addClass('btn-sm'),
                 Button::make('excel')
@@ -103,17 +91,15 @@ class UserDataTable extends DataTable
     {
         return [
             Column::computed('DT_RowIndex')
-                ->title('#'),
+                ->title('#')
+                ->searchable(false)
+                ->orderable(false),
             Column::make('name')
-                ->title(__('domains/identity.fields.user.name'))
-                ->searchable(true),
-            Column::make('email')
-                ->title(__('domains/identity.fields.user.email'))
-                ->searchable(true),
-            Column::computed('roles[0].name')
-                ->title(__('resources.role')),
-            Column::computed('status')
-                ->title(__('domains/identity.fields.user.status')),
+                ->title(__('domains/identity.fields.role.name')),
+            Column::computed('permissions_count')
+                ->title(__('domains/identity.fields.role.permission_count')),
+            Column::computed('guard_name')
+                ->title(__('domains/identity.fields.role.guard_name')),
             Column::computed('action')
                 ->title(__('ui.label.actions'))
                 ->exportable(false)
@@ -128,6 +114,6 @@ class UserDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'User_'.date('YmdHis');
+        return 'Role_'.date('YmdHis');
     }
 }

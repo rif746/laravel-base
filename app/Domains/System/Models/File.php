@@ -2,7 +2,7 @@
 
 namespace App\Domains\System\Models;
 
-use App\Casts\ByteHumanReadable;
+use App\Domains\System\Casts\ByteHumanReadable;
 use Database\Factories\System\FileFactory;
 use Exception;
 use Illuminate\Database\Eloquent\Attributes\Fillable;

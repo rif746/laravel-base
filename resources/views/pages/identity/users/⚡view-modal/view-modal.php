@@ -1,7 +1,7 @@
 <?php
 
-use App\Concerns\Livewire\Shared\WithModal;
 use App\Domains\Identity\Models\User;
+use App\Livewire\Concerns\WithModal;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component;

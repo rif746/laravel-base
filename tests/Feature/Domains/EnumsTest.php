@@ -1,7 +1,7 @@
 <?php
 
 use App\Domains\Identity\Enums\UserStatus;
-use App\Domains\System\Enums\FileType;
+use App\UI\Enums\FileType;
 
 test('UserStatus enum returns correct label and badge HTML', function () {
     $active = UserStatus::ACTIVE;

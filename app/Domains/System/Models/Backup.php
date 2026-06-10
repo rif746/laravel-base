@@ -2,7 +2,7 @@
 
 namespace App\Domains\System\Models;
 
-use App\Casts\ByteHumanReadable;
+use App\Domains\System\Casts\ByteHumanReadable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Model;

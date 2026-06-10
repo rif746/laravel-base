@@ -1,8 +1,8 @@
 <?php
 
-use App\Concerns\Livewire\Shared\WithToast;
 use App\Domains\Identity\Actions\Registration\ResendVerificationEmail;
 use App\Domains\Identity\Models\User;
+use App\Livewire\Concerns\WithToast;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;

@@ -2,6 +2,8 @@
 
 namespace App\Domains\System\Enums;
 
+use App\UI\Enums\FileType;
+use App\UI\Enums\InputType;
 use Artesaos\SEOTools\Facades\SEOMeta;
 
 enum SystemSettingKey: string

@@ -5,7 +5,7 @@
 
     <form wire:submit="confirmPassword" class="needs-validation mt-3" novalidate>
 
-        <x-form.input name="password" wire:model="password" :label="__('domains/auth.fields.confirm_password.password')" type="password" placeholder="Password"
+        <x-form.input name="form.password" wire:model="form.password" :label="__('domains/auth.fields.confirm_password.password')" type="password" placeholder="Password"
             required autocomplete="current-password" />
 
         <x-button wire:loading theme="primary" class="w-100 mt-4" :label="__('domains/auth.fields.confirm_password.submit')" type="submit" />

@@ -1,10 +1,11 @@
 <?php
 
 use App\Attributes\Seo;
-use App\Concerns\Livewire\Seo\HasSeoAttributes;
-use App\Concerns\Livewire\Shared\WithToast;
 use App\Domains\Identity\Actions\Passwords\SendPasswordResetLink;
 use App\Domains\Identity\DTOs\Passwords\ForgotPasswordDTO;
+use App\Livewire\Concerns\HasSeoAttributes;
+use App\Livewire\Concerns\WithToast;
+use App\Livewire\Forms\Auth\ForgotPasswordForm;
 use Illuminate\Support\Facades\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -15,21 +16,14 @@ class extends Component
 {
     use HasSeoAttributes, WithToast;
 
-    public string $email;
-
-    public function rules(): array
-    {
-        return [
-            'email' => ['required', 'email', 'exists:users,email'],
-        ];
-    }
+    public ForgotPasswordForm $form;
 
     public function forgotPassword(SendPasswordResetLink $action): void
     {
-        $this->validate();
+        $this->form->validate();
 
         $status = $action->execute(new ForgotPasswordDTO(
-            email: $this->email,
+            email: $this->form->email,
         ));
 
         if ($status === Password::RESET_LINK_SENT) {

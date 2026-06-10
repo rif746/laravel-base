@@ -1,10 +1,11 @@
-@use(App\Domains\System\Enums\InputType)
+@use(App\UI\Enums\InputType)
 <x-modal id="update-setting-modal" :title="$this->title" form wire:submit="save" livewire>
     <div class="row">
         <div class="col-sm-12" wire:key="{{ $settingKey }}">
             @if($this->settingEnum)
                 <x-dynamic-component :component="$this->settingEnum?->inputType()->component()"
-                                     :attributes="$attributes->merge($this->settingEnum?->inputAttributes())" wire:model="settingValue" />
+                                     :attributes="$attributes->merge($this->settingEnum?->inputAttributes())"
+                                     wire:model="settingValue"/>
             @endif
         </div>
     </div>

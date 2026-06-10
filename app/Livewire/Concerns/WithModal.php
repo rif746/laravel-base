@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Concerns\Livewire\Shared;
+namespace App\Livewire\Concerns;
 
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -25,11 +25,7 @@ trait WithModal
     {
         $resource = __('resources.'.$this->resourceName);
 
-        return match ($this->mode) {
-            'create' => __('ui.title.create', ['resource' => $resource]),
-            'update' => __('ui.title.update', ['resource' => $resource]),
-            default => __('ui.title.view', ['resource' => $resource]),
-        };
+        return  __('ui.title.'.$this->mode, ['resource' => $resource]);
     }
 
     #[Computed]

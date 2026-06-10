@@ -1,7 +1,7 @@
 <?php
 
-use App\Concerns\Livewire\Shared\WithModal;
 use App\Domains\Account\Actions\Profile\UpdateUserAvatar;
+use App\Livewire\Concerns\WithModal;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Spatie\LivewireFilepond\WithFilePond;

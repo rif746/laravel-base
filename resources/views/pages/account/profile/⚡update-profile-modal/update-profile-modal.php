@@ -1,19 +1,17 @@
 <?php
 
-use App\Concerns\Livewire\Shared\WithModal;
-use App\Concerns\Livewire\Shared\WithToast;
 use App\Domains\Account\Actions\Profile\UpdateProfile;
 use App\Domains\Account\DTOs\Profile\UpdateProfileDTO;
-use App\Domains\Account\Enums\GenderOption;
 use App\Domains\Account\Models\Profile;
 use App\Domains\Identity\Actions\Users\UpdateUser;
 use App\Domains\Identity\DTOs\Users\UpdateUserDTO;
 use App\Domains\Identity\Models\User;
+use App\Livewire\Concerns\WithModal;
+use App\Livewire\Concerns\WithToast;
+use App\Livewire\Forms\Account\UpdateProfileForm;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 new class extends Component
@@ -24,36 +22,12 @@ new class extends Component
     #[Locked]
     public ?int $id = null;
 
-    #[Validate(as: 'domains/identity.fields.user.email')]
-    public ?string $email = null;
-
-    #[Validate(as: 'domains/identity.fields.user.name')]
-    public ?string $name = null;
-
-    #[Validate(as: 'domains/account.fields.profile.gender')]
-    public ?string $gender = null;
-
-    #[Validate(as: 'domains/account.fields.profile.date_of_birth')]
-    public ?string $date_of_birth = null;
-
-    #[Validate(as: 'domains/account.fields.profile.phone_number')]
-    public ?string $phone_number = null;
-
     #[Locked]
     public string $mode = 'update';
 
-    protected string $resourceName = 'profile';
+    public UpdateProfileForm $form;
 
-    public function rules(): array
-    {
-        return [
-            'name' => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($this->id)],
-            'email' => ['required', 'string', 'email', Rule::unique(User::class, 'email')->ignore($this->id)],
-            'gender' => [Rule::in(GenderOption::cases())],
-            'date_of_birth' => ['required'],
-            'phone_number' => ['required', 'numeric', 'min_digits:10'],
-        ];
-    }
+    protected string $resourceName = 'profile';
 
     #[Computed]
     public function user(): Authenticatable|User|null
@@ -64,29 +38,29 @@ new class extends Component
     public function show(int|string $id): void
     {
         $profile = $this->user->profile;
-        $this->fill($this->user);
+        $this->form->fill($this->user->only(['name', 'email']));
         if ($profile) {
-            $this->fill($profile);
-            $this->date_of_birth = $profile->date_of_birth?->format('Y-m-d');
+            $this->form->fill($profile->only(['gender', 'phone_number']));
+            $this->form->date_of_birth = $profile->date_of_birth?->format('Y-m-d');
         }
         $this->id = $this->user->id;
     }
 
     public function save(UpdateProfile $updateProfile, UpdateUser $updateUser): void
     {
-        $this->validate();
+        $this->form->validate($this->form->rules($this->id));
 
         $profile = $this->user?->profile ?: new Profile(['user_id' => $this->id]);
         $updateUser->execute($this->user, new UpdateUserDTO(
-            name: $this->name,
-            email: $this->email,
+            name: $this->form->name,
+            email: $this->form->email,
         ));
 
         $updateProfile->execute($profile, new UpdateProfileDTO(
             userId: $this->id,
-            gender: $this->gender,
-            date_of_birth: $this->date_of_birth,
-            phone_number: $this->phone_number,
+            gender: $this->form->gender,
+            date_of_birth: $this->form->date_of_birth,
+            phone_number: $this->form->phone_number,
         ));
 
         $this->success($this->message);
@@ -96,6 +70,7 @@ new class extends Component
 
     public function hide(): void
     {
-        $this->reset();
+        $this->form->reset();
+        $this->reset('id');
     }
 };

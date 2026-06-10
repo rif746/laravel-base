@@ -1,4 +1,4 @@
-@use(App\Domains\System\Enums\InputType)
+@use(App\UI\Enums\InputType)
 <div class="row justify-content-center">
     <div class="row gx-4 row-gap-4">
         @foreach ($this->settings as $group)
@@ -7,21 +7,22 @@
                     @foreach($group as $title => $section)
                         <div class="col-sm-12">
                             <x-card :title="$title">
-                                    @foreach($section as $field)
-                                        <x-form.vertical-group :label="$field->label()">
-                                            <x-slot:action>
-                                                <button class="btn btn-sm btn-info" data-bs-target="#update-setting-modal"
-                                                        data-bs-toggle="modal" data-id="{{ $field->value }}">
-                                                    @svg('tabler-edit', ['width' => 16, 'height' => 16])
-                                                </button>
-                                            </x-slot:action>
-                                            @if($field->inputType() == InputType::FILE)
-                                                <img class="card-img mt-1 border" src="{{ $this->settingsValue[$field->value] }}" alt="">
-                                            @else
-                                                {{ $this->settingsValue[$field->value] ?? '-' }}
-                                            @endif
-                                        </x-form.vertical-group>
-                                    @endforeach
+                                @foreach($section as $field)
+                                    <x-form.vertical-group :label="$field->label()">
+                                        <x-slot:action>
+                                            <button class="btn btn-sm btn-info" data-bs-target="#update-setting-modal"
+                                                    data-bs-toggle="modal" data-id="{{ $field->value }}">
+                                                @svg('tabler-edit', ['width' => 16, 'height' => 16])
+                                            </button>
+                                        </x-slot:action>
+                                        @if($field->inputType() == InputType::FILE)
+                                            <img class="card-img mt-1 border"
+                                                 src="{{ $this->settingsValue[$field->value] }}" alt="">
+                                        @else
+                                            {{ $this->settingsValue[$field->value] ?? '-' }}
+                                        @endif
+                                    </x-form.vertical-group>
+                                @endforeach
                             </x-card>
                         </div>
                     @endforeach

@@ -1,9 +1,9 @@
 <?php
 
-use App\Domains\Identity\DataTables\RoleDataTable;
-use App\Domains\Identity\DataTables\UserDataTable;
 use App\Domains\Identity\Models\Role;
 use App\Domains\Identity\Models\User;
+use App\Http\DataTables\Identity\RoleDataTable;
+use App\Http\DataTables\Identity\UserDataTable;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Database\Eloquent\Builder;
 use Yajra\DataTables\EloquentDataTable;

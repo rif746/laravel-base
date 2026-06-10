@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\System\Enums;
+namespace App\UI\Enums;
 
 enum FileType: string
 {

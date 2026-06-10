@@ -1,13 +1,11 @@
 <?php
 
 use App\Attributes\Seo;
-use App\Concerns\Livewire\Seo\HasSeoAttributes;
 use App\Domains\Identity\Actions\Registration\RegisterUser;
 use App\Domains\Identity\DTOs\Registration\RegisterUserDTO;
-use App\Domains\Identity\Models\User;
+use App\Livewire\Concerns\HasSeoAttributes;
+use App\Livewire\Forms\Auth\RegisterForm;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -17,32 +15,17 @@ class extends Component
 {
     use HasSeoAttributes;
 
-    public string $email;
-
-    public string $name;
-
-    public string $password;
-
-    public string $password_confirmation;
-
-    public function rules(): array
-    {
-        return [
-            'name' => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')],
-            'email' => ['required', 'string', 'email', Rule::unique(User::class, 'email')],
-            'password' => [Password::default(), 'required', 'confirmed'],
-        ];
-    }
+    public RegisterForm $form;
 
     public function register(RegisterUser $action): void
     {
-        $this->validate();
+        $this->form->validate();
 
         // The Identity Domain creates the user and fires the Registered event.
         $user = $action->execute(new RegisterUserDTO(
-            name: $this->name,
-            email: $this->email,
-            password: $this->password,
+            name: $this->form->name,
+            email: $this->form->email,
+            password: $this->form->password,
         ));
 
         // The Gateway owns the session — Auth::login() lives here, not in the domain.

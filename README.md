@@ -23,23 +23,69 @@ The application is divided by **Business Concepts**, not technical features.
 
 ```text
 app/
-├── Http/                     <-- The Gateway (Controllers, Middleware)
+├── Attributes/               <-- PHP 8 Attributes (e.g., #[Seo])
+├── Console/
+│   └── Commands/             <-- Custom Artisan commands (DomainMakeCommand, CleanOrphanedFiles)
+├── Http/                     <-- The Gateway (HTTP Layer)
+│   ├── Controllers/
+│   │   ├── Api/
+│   │   │   └── V1/           <-- Versioned API controllers
+│   │   └── Web/
+│   │       ├── Auth/         <-- Authentication controllers
+│   │       ├── Identity/     <-- User & role management controllers
+│   │       └── System/       <-- System settings controllers
+│   ├── Middleware/           <-- HandlePreferredLanguage, HandlePreferredTimezone, HandleSeoSetting, etc.
+│   ├── Requests/
+│   │   ├── Api/              <-- API form requests
+│   │   └── Web/              <-- Web form requests
+│   └── Resources/            <-- API resources (LookupResource, SuccessResource, etc.)
+├── Livewire/
+│   └── Concerns/             <-- Shared Livewire traits (WithModal, WithToast, HasSeoAttributes)
+├── Providers/                <-- AppServiceProvider
+├── UI/
+│   ├── Actions/              <-- UI-layer actions (non-domain mutations)
+│   └── Enums/
 └── Domains/
     ├── Identity/             <-- Business Concept: Authentication & Users
     │   ├── Actions/          <-- Actions (Mutations)
-    │   │   ├── Management/   <-- Grouped by specific workflows
-    │   │   ├── Registration/
-    │   │   └── Roles/
+    │   │   ├── Passwords/    <-- ResetUserPassword, UpdatePassword, SendPasswordResetLink
+    │   │   ├── Registration/ <-- RegisterUser, VerifyUserEmail, ResendVerificationEmail
+    │   │   ├── Roles/        <-- CreateSystemRole, UpdateSystemRole, UpdateUserRole, RemoveSystemRole
+    │   │   └── Users/        <-- ProvisionNewUser, SuspendUser, UpdateUser, UpdateUserStatus
     │   ├── DTOs/             <-- Data Transfer Objects
     │   ├── DataTables/
     │   ├── Enums/
     │   ├── Events/
+    │   ├── Exports/
+    │   ├── Imports/
     │   ├── Listeners/
-    │   ├── Models/
+    │   ├── Models/           <-- User, Role, Permission
     │   ├── Notifications/
     │   ├── Policies/
-    │   └── Queries/          <-- Complex Reads (Queries)
-    └── Account/              <-- Business Concept: Profiles & Billing
+    │   └── Queries/          <-- Complex Reads (reserved for future use)
+    ├── Account/              <-- Business Concept: Profiles & Billing
+    │   ├── Actions/
+    │   │   └── Profile/
+    │   ├── DTOs/
+    │   ├── Enums/
+    │   └── Models/
+    └── System/               <-- Business Concept: Cross-cutting Infrastructure
+        ├── Actions/
+        │   ├── Backup/
+        │   ├── Files/        <-- UploadAndAttachFile, ReplaceSingleFile
+        │   └── Settings/
+        ├── Casts/            <-- Custom Eloquent casts (e.g., ByteHumanReadable)
+        ├── DTOs/
+        ├── Enums/
+        ├── Helpers/          <-- assets.php (system_asset() helper, autoloaded via composer.json)
+        ├── Models/           <-- File, SystemSettings, Backup
+        ├── Policies/
+        ├── Providers/        <-- SystemServiceProvider (Singleton registration, View Composers)
+        ├── Queries/          <-- GetSystemSettings, GetModelAuditLog
+        ├── Support/
+        │   └── ValueObjects/
+        └── Traits/
+            └── Model/        <-- HasFile trait
 
 ```
 
@@ -240,4 +286,50 @@ When building data-driven interfaces (like dynamic settings forms), we utilize t
 * Enums act as **Metadata Providers** (returning the string name of the target Blade component).
 * We use `<x-dynamic-component>` in the Blade file to swap UI elements.
 * **CRITICAL:** Enums must never return raw HTML strings compiled via the `Blade` facade. Doing so breaks Livewire's DOM-diffing engine and severs `wire:model` bindings.
+
+---
+
+## 11. Excel Import & Export
+
+The `<livewire:components.datatables.excel-manager>` component provides a reusable, queue-backed mechanism for importing and exporting Excel files in any DataTable page.
+
+### How It Works
+
+* **Import:** The user uploads an `.xlsx` file via the modal. The file is stored to `local/excel/import/{resource}` and the import job is dispatched to the queue via `Excel::queueImport()`. A success toast (`ui.excel.import.success`) is shown immediately, and the user receives a confirmation email when the import completes.
+* **Export:** A Livewire event (`export-excel`) triggers the `export()` method. The export is queued via `Excel::queue()`, chained with the `NotifyExportReady` job. A success toast (`ui.excel.export.success`) is shown immediately, and the exported file is sent to the user's email as an attachment.
+
+### Component Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `importClass` | `string` | Fully-qualified class name of the domain Import (e.g., `App\Domains\Identity\Imports\UserImport`). |
+| `exportClass` | `string` | Fully-qualified class name of the domain Export (e.g., `App\Domains\Identity\Exports\UserExport`). |
+| `resourceName` | `string` | A slug used to name the stored file (e.g., `users`). |
+
+### Generating Import & Export Classes
+
+Use the `domain:make` command to create Import/Export classes in the correct namespace:
+
+```bash
+php artisan domain:make export Identity UserExport --model=User
+php artisan domain:make import Identity UserImport --model=User
+```
+
+### Mailables
+
+Two Mailable classes handle the email notifications:
+
+* **`App\Mail\ExcelImportEmail`** — Sent when a queued import finishes. Uses `domains/system.notifications.excel.import_email.*` translations.
+* **`App\Mail\ExcelExportEmail`** — Sent when a queued export is ready, with the file attached. Uses `domains/system.notifications.excel.export_email.*` translations.
+
+### Translation Keys
+
+| File | Key | Purpose |
+| --- | --- | --- |
+| `lang/{locale}/ui.php` | `ui.excel.import.file_label` | Filepond upload label inside the import modal. |
+| `lang/{locale}/ui.php` | `ui.excel.import.success` | Toast shown after import is queued. |
+| `lang/{locale}/ui.php` | `ui.excel.export.success` | Toast shown after export is queued. |
+| `lang/{locale}/domains/system.php` | `notifications.excel.import_email.*` | Email body for the import completion notification. |
+| `lang/{locale}/domains/system.php` | `notifications.excel.export_email.*` | Email body for the export ready notification. |
+
 
