@@ -1,9 +1,9 @@
 <?php
 
-use App\Domains\Identity\Actions\Users\ProvisionNewUser;
-use App\Domains\Identity\Actions\Users\UpdateUser;
-use App\Domains\Identity\DTOs\Users\ProvisionUserDTO;
-use App\Domains\Identity\DTOs\Users\UpdateUserDTO;
+use App\Domains\Identity\Actions\Onboarding\ProvisionNewUser;
+use App\Domains\Identity\Actions\Onboarding\UpdateUser;
+use App\Domains\Identity\DTOs\Onboarding\ProvisionUserDTO;
+use App\Domains\Identity\DTOs\Onboarding\UpdateUserDTO;
 use App\Domains\Identity\Models\Role;
 use App\Domains\Identity\Models\User;
 use App\Livewire\Concerns\WithModal;

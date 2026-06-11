@@ -9,12 +9,12 @@ use Illuminate\Support\Str;
 class DomainMakeCommand extends Command
 {
     protected $signature = 'domain:make
-        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, query, provider, export, import}
+        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, query, provider, export, mapper}
         {domain : Domain name, e.g. Identity, Account, System}
         {name   : Class name, supports sub-paths e.g. Backup/DeleteBackup}
         {--factory   : Also generate a factory (model only)}
         {--migration : Also generate a migration (model only)}
-        {--model=    : Associate the export or import with a model}';
+        {--model=    : Associate the export with a model}';
 
     protected $description = 'Generate a file directly into the domain structure (app/Domains/)';
 
@@ -32,7 +32,8 @@ class DomainMakeCommand extends Command
         'query' => 'Queries',
         'provider' => 'Providers',
         'export' => 'Exports',
-        'import' => 'Imports',
+        // Integration layer — files live under Integration/<subDir>/
+        'mapper' => 'Integration/Mappers',
     ];
 
     public function __construct(protected Filesystem $files)
@@ -56,7 +57,21 @@ class DomainMakeCommand extends Command
         $className = class_basename(str_replace('/', '\\', $name));
         $subPath = str_contains($name, '/') ? dirname($name) : null;
 
-        $relativeDir = "Domains/{$domain}/{$subDir}" . ($subPath ? "/{$subPath}" : '');
+        // ── Integration / Mapper special handling ─────────────────────────────
+        // Automatically append the 'DataMapper' suffix when the developer omits it,
+        // keeping the class name consistent with the DataPayloadMapper contract.
+        if ($type === 'mapper' && !str_ends_with($className, 'DataMapper')) {
+            $className .= 'DataMapper';
+        }
+
+        // The $subDir for 'mapper' already encodes the full Integration/Mappers
+        // nested path, so we must not double-nest an additional subPath beneath it.
+        // Extra sub-path segments are intentionally ignored for the mapper type.
+        $relativeDir = ($type === 'mapper')
+            ? "Domains/{$domain}/{$subDir}"
+            : "Domains/{$domain}/{$subDir}" . ($subPath ? "/{$subPath}" : '');
+        // ─────────────────────────────────────────────────────────────────────
+
         $namespace = 'App\\' . str_replace('/', '\\', $relativeDir);
         $path = app_path("{$relativeDir}/{$className}.php");
 
@@ -100,7 +115,7 @@ class DomainMakeCommand extends Command
             'query' => $this->queryStub($namespace, $name),
             'provider' => $this->providerStub($namespace, $name),
             'export' => $this->exportStub($namespace, $name, $domain),
-            'import' => $this->importStub($namespace, $name, $domain),
+            'mapper' => $this->mapperStub($namespace, $name, $domain),
             default => '',
         };
     }
@@ -487,100 +502,39 @@ PHP;
         ];
     }
 
-    protected function importStub(string $namespace, string $name, string $domain): string
+    protected function mapperStub(string $namespace, string $name, string $domain): string
     {
-        $modelOption = $this->option('model');
-        $modelImport = '';
-        $modelClass = 'YourModel';
-
-        if ($modelOption) {
-            $modelData = $this->resolveModel($modelOption, $domain);
-            $modelImport = "use {$modelData['full']};\n";
-            $modelClass = $modelData['class'];
-        }
-
-        // Base implementation for the constructor and collection method
-        $body = <<<PHP
-    public function __construct(
-        // Inject your Domain Actions here
-        // private ProvisionAction \$provisionAction,
-        // private UpdateAction \$updateAction
-    ) {}
-
-    /**
-     * @param Collection \$rows A chunk of rows defined by chunkSize()
-     */
-    public function collection(Collection \$rows): void
-    {
-PHP;
-
-        // If a model is provided, scaffold the highly-optimized Upsert pattern
-        if ($modelOption) {
-            $body .= <<<PHP
-
-        // 1. Pre-fetch existing records for this chunk to prevent N+1 queries
-        // \$keys = \$rows->pluck('unique_column')->filter()->toArray();
-        // \$existingRecords = {$modelClass}::whereIn('unique_column', \$keys)->get()->keyBy('unique_column');
-
-        // 2. Process rows and delegate to Domain Actions
-        foreach (\$rows as \$row) {
-            try {
-                // if (\$existingRecords->has(\$row['unique_column'])) {
-                //     // UPDATE ROUTE: map to DTO and execute UpdateAction
-                // } else {
-                //     // INSERT ROUTE: map to DTO and execute ProvisionAction
-                // }
-            } catch (\Exception \$e) {
-                // Log failure to prevent a single bad row from killing the whole chunk
-                Log::error("Import failed for row: " . \$e->getMessage());
-            }
-        }
-PHP;
-        } else {
-            // Standard generic loop if no model is provided
-            $body .= <<<PHP
-
-        // Process rows and delegate to Domain Actions
-        foreach (\$rows as \$row) {
-            try {
-                // Map array data to a strictly typed DTO
-                // \$dto = new MyDataTransferObject(...\$row);
-
-                // Execute the Domain Action
-                // \$this->provisionAction->execute(\$dto);
-            } catch (\Exception \$e) {
-                // Log failure to prevent a single bad row from killing the whole chunk
-                Log::error("Import failed for row: " . \$e->getMessage());
-            }
-        }
-PHP;
-        }
-
-        // Add the ChunkSize method mandatory for WithChunkReading
-        $body .= <<<PHP
-
-    }
-
-    public function chunkSize(): int
-    {
-        return 200; // Optimal balance for shared hosting memory limits
-    }
-PHP;
-
         return <<<PHP
 <?php
 
 namespace {$namespace};
 
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
-use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-{$modelImport}
-class {$name} implements ToCollection, WithHeadingRow, WithChunkReading
+use Illuminate\Database\Eloquent\Model;
+use App\Domains\System\Support\Integration\DataPayloadMapper;
+
+class {$name} implements DataPayloadMapper
 {
-{$body}
+    public function __construct()
+    {
+        // Inject required Domain and Cross-Domain Actions via constructor composition
+    }
+
+    public function getLookupKey(): string
+    {
+        // Return the unique string key used to identify existing records (e.g., 'email')
+        return 'id';
+    }
+
+    public function transform(array \$rawData): array
+    {
+        // Normalize incoming data array formats into an internal domain-safe layout
+        return \$rawData;
+    }
+
+    public function updateOrCreateDomainState(array \$payload, ?Model \$existingModel = null): void
+    {
+        // Allocate mapped payloads into strict DTOs and fire internal/external Domain Actions
+    }
 }
 PHP;
     }

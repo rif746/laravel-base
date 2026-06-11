@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
         $admin->profile()->create($profile->definition());
         $admin->assignRole(RoleType::ADMIN);
 
-        foreach (range(1, 10) as $i) {
+        foreach (range(1, 1) as $i) {
             User::factory()
                 ->count(100)
                 ->create()

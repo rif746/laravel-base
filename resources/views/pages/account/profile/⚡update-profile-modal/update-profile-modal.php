@@ -3,8 +3,8 @@
 use App\Domains\Account\Actions\Profile\UpdateProfile;
 use App\Domains\Account\DTOs\Profile\UpdateProfileDTO;
 use App\Domains\Account\Models\Profile;
-use App\Domains\Identity\Actions\Users\UpdateUser;
-use App\Domains\Identity\DTOs\Users\UpdateUserDTO;
+use App\Domains\Identity\Actions\Onboarding\UpdateUser;
+use App\Domains\Identity\DTOs\Onboarding\UpdateUserDTO;
 use App\Domains\Identity\Models\User;
 use App\Livewire\Concerns\WithModal;
 use App\Livewire\Concerns\WithToast;

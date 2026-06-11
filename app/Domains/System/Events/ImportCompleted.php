@@ -9,8 +9,5 @@ class ImportCompleted
 {
 
     use Dispatchable, SerializesModels;
-    public function __construct(
-        public readonly string $recipientEmail,
-        public readonly string $filePath,
-    ) {}
+    public function __construct(public readonly string $recipientEmail) {}
 }

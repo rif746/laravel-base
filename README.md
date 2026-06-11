@@ -47,18 +47,28 @@ app/
 │   └── Enums/
 └── Domains/
     ├── Identity/             <-- Business Concept: Authentication & Users
-    │   ├── Actions/          <-- Actions (Mutations)
+    │   ├── Actions/          <-- Capability-grouped mutations
+    │   │   ├── Onboarding/   <-- ProvisionNewUser, UpdateUser
+    │   │   ├── AccessControl/<-- CreateSystemRole, UpdateSystemRole, UpdateUserRole, RemoveSystemRole
+    │   │   ├── Governance/   <-- SuspendUser, UpdateUserStatus
     │   │   ├── Passwords/    <-- ResetUserPassword, UpdatePassword, SendPasswordResetLink
-    │   │   ├── Registration/ <-- RegisterUser, VerifyUserEmail, ResendVerificationEmail
-    │   │   ├── Roles/        <-- CreateSystemRole, UpdateSystemRole, UpdateUserRole, RemoveSystemRole
-    │   │   └── Users/        <-- ProvisionNewUser, SuspendUser, UpdateUser, UpdateUserStatus
-    │   ├── DTOs/             <-- Data Transfer Objects
+    │   │   └── Registration/ <-- RegisterUser, VerifyUserEmail, ResendVerificationEmail
+    │   ├── DTOs/             <-- Capability-grouped Data Transfer Objects
+    │   │   ├── Onboarding/   <-- ProvisionUserDTO, UpdateUserDTO
+    │   │   ├── AccessControl/<-- CreateRoleDTO, UpdateRoleDTO
+    │   │   └── Passwords/    <-- ForgotPasswordDTO, ResetPasswordDTO, UpdatePasswordDTO
     │   ├── DataTables/
     │   ├── Enums/
-    │   ├── Events/
+    │   ├── Events/           <-- Past-tense truths, grouped by capability
+    │   │   ├── Authentication/<-- UserLoggedIn
+    │   │   ├── Onboarding/   <-- UserWasProvisioned
+    │   │   ├── Governance/   <-- UserWasSuspended
+    │   │   └── Registration/ <-- UserRegistered, UserEmailVerified
     │   ├── Exports/
-    │   ├── Imports/
-    │   ├── Listeners/
+    │   ├── Integration/
+    │   │   └── Mappers/      <-- DataPayloadMapper implementations
+    │   ├── Listeners/        <-- Active-verb handlers, grouped by capability
+    │   │   └── Authentication/<-- SendSignInActivityNotification
     │   ├── Models/           <-- User, Role, Permission
     │   ├── Notifications/
     │   ├── Policies/
@@ -112,25 +122,88 @@ Actions are the only place database mutations (`create`, `update`, `delete`, `sy
 
 Use Event-Driven Architecture for all side effects (emails, logging, background processing).
 
-* The Gateway dispatches Events for non-mutating actions (like `UserLoggedIn`).
-* Actions dispatch Events immediately after mutating state (like `UserProvisioned`).
-* Listeners handle the reaction outside the main HTTP lifecycle.
+* The Gateway dispatches Events for non-mutating session facts (e.g., `UserLoggedIn`).
+* Actions dispatch Events immediately after a successful state mutation (e.g., `UserWasProvisioned`).
+* Listeners handle the reaction outside the main HTTP lifecycle and are the **only** place `Notification::send()`, `Mail::send()`, or logging calls are made in response to a Domain Event.
+* Events and Listeners must be **grouped under the same capability folder** as the Action that dispatches them (e.g., `Events/Onboarding/`, `Listeners/Onboarding/`).
 
 ---
 
-## 4. Ubiquitous Language (Naming Conventions)
+## 4. Naming Conventions
 
-We do not name files after database operations. We name them after the **Business Intent**.
+This architecture uses a strict, intentional naming language. Every name must communicate **Business Intent**, not database operations.
 
-| CRUD Term (Avoid) | Business Intent (Use These) | Scenario |
-| --- | --- | --- |
-| `CreateUser` | `RegisterUser` | A user signs up via the frontend. |
-| `CreateUser` | `ProvisionNewUser` | An admin creates an account from a dashboard. |
-| `UpdateUser` | `UpdateUserProfile` | Updating a name, bio, or email. |
-| `UpdateUser` | `UpdateUserRoles` | Changing Spatie permissions. |
-| `DeleteUser` | `SuspendUserAccount` | Revoking access without destroying data. |
+### 4.1 Domain Folders (`app/Domains/{Name}/`)
 
-*Note: Standard CRUD naming (e.g., `CreateCategory`) is permissible only for trivial lookup tables that trigger no side effects.*
+Domain names are **Business Concepts**, not technical layers. They must be a singular noun that describes a bounded context.
+
+| ✅ Correct | ❌ Wrong | Why |
+|---|---|---|
+| `Identity` | `Users` | Identity covers auth, roles, and user lifecycle — not just a table |
+| `Account` | `Profile` | Account owns the full user account surface, not one model |
+| `System` | `Utils` / `Helpers` | System is a real bounded context for cross-cutting infrastructure |
+
+### 4.2 Capability Folders (Action / DTO / Event / Listener subdirectories)
+
+Subdirectories inside `Actions/`, `DTOs/`, `Events/`, and `Listeners/` must be named after **Business Capabilities**, not database nouns.
+
+| ✅ Correct | ❌ Wrong | Why |
+|---|---|---|
+| `Onboarding/` | `Users/` | Describes the lifecycle stage, not the DB table |
+| `AccessControl/` | `Roles/` | Describes the capability, not the resource |
+| `Governance/` | `Admin/` | Describes the compliance intent |
+| `Passwords/` | `Auth/` | Narrow, precise scope |
+| `Registration/` | `Signup/` | Uses the system's formal language |
+
+**Rule:** If a folder name is also a valid Eloquent Model name, it is wrong.
+
+### 4.3 Action Class Names
+
+Actions must be named after the **specific Business Intent** they fulfill. Use an active verb + business noun pattern.
+
+| ✅ Correct | ❌ Wrong | Why |
+|---|---|---|
+| `ProvisionNewUser` | `CreateUser` | Describes *who* triggers it and *why* |
+| `SuspendUser` | `DeleteUser` | Reveals the business consequence (soft revoke, not destroy) |
+| `UpdateUserRole` | `SaveRole` | Explicit about the subject and property being changed |
+| `RegisterUser` | `StoreUser` | Domain language, not HTTP verb language |
+| `SendPasswordResetLink` | `ResetPassword` | Reflects the actual side effect triggered |
+
+CRUD names (`CreateCategory`, `UpdateSetting`) are only acceptable for trivial lookup tables with **no side effects**.
+
+### 4.4 DTO Class Names
+
+DTOs are named after the Action they serve, with a `DTO` suffix.
+
+| Action | DTO |
+|---|---|
+| `ProvisionNewUser` | `ProvisionUserDTO` |
+| `UpdateUser` | `UpdateUserDTO` |
+| `CreateSystemRole` | `CreateRoleDTO` |
+
+### 4.5 Event Class Names
+
+Events are **past-tense facts** about something that already happened in the domain. The class name must be grammatically a completed truth.
+
+| ✅ Correct | ❌ Wrong | Why |
+|---|---|---|
+| `UserWasProvisioned` | `UserProvisioned` | Explicit past-tense removes ambiguity |
+| `UserWasSuspended` | `UserSuspended` | Reads as a state, not a completed fact |
+| `UserLoggedIn` | `LoginEvent` | Noun + verb pattern; avoids the `Event` suffix |
+| `UserEmailVerified` | `EmailVerification` | Describes the completed action |
+
+**Rule:** Never suffix Events with `Event` (e.g., `UserRegisteredEvent` is wrong). The namespace `Events\` already communicates the type.
+
+### 4.6 Listener Class Names
+
+Listeners describe the **active reaction** to an event using an imperative verb phrase.
+
+| ✅ Correct | ❌ Wrong | Why |
+|---|---|---|
+| `SendSignInActivityNotification` | `UserLoggedInListener` | Describes what the listener *does*, not what it reacts to |
+| `DispatchWelcomeNotification` | `WelcomeListener` | Imperative verb makes the intent crystal clear |
+
+**Rule:** Never suffix Listeners with `Listener` in the class name. The namespace `Listeners\` already communicates the type.
 
 ---
 
@@ -154,16 +227,24 @@ You are an autonomous Senior Laravel Architect specializing in Pragmatic Domain-
 ### 3. Execution & Workflow
 - DTOs: Must be strictly typed readonly classes.
 - Actions: Must represent a specific Business Intent (e.g., `ProvisionNewUser` not `SaveUser`). Actions that perform multiple database writes must wrap them in a `DB::transaction()`.
-- Action Composition: Inject Actions into other Actions via the constructor to reuse logic (e.g., injecting `UpdateUserRoles` into `UpdateUserProfile`).
-- Events: Use Events to decouple side effects (Notifications, Activity Logs).
+- Action Composition: Inject Actions into other Actions via the constructor to reuse logic (e.g., injecting `AccessControl\UpdateUserRole` into `Onboarding\ProvisionNewUser`).
+- Events: Use Events to decouple side effects (Notifications, Activity Logs). Events must be **past-tense** (e.g., `UserWasProvisioned` not `UserProvisioned`).
 
-### 4. File Generation Rules
+### 4. Naming Rules
+- **Domains**: Singular Business Concepts, never database nouns (✅ `Identity` ❌ `Users`).
+- **Capability Folders**: Name subdirectories after business capabilities, never after models (✅ `Onboarding/`, `AccessControl/`, `Governance/` ❌ `Users/`, `Roles/`).
+- **Actions**: Active verb + business noun (✅ `ProvisionNewUser` ❌ `CreateUser`).
+- **Events**: Past-tense completed facts, no `Event` suffix (✅ `UserWasProvisioned` ❌ `UserProvisionedEvent`).
+- **Listeners**: Imperative active-verb phrases, no `Listener` suffix (✅ `SendSignInActivityNotification` ❌ `UserLoggedInListener`).
+
+### 5. File Generation Rules
 * NEVER use standard Laravel generators (e.g., `php artisan make:model`) for Domain classes.
 * ALWAYS use the custom `domain:make` command to create Domain files.
-* Example: `php artisan domain:make action Identity Passwords/UpdateUserPassword`
-* Examples for Laravel Excel:
+* Example: `php artisan domain:make action Identity Onboarding/ProvisionNewUser`
+* Examples for the Integration layer:
   * `php artisan domain:make export Identity UserExport --model=User`
-  * `php artisan domain:make import Identity UserImport --model=User`
+  * `php artisan domain:make mapper Identity User` → generates `Integration/Mappers/UserDataMapper.php`
+* Excel ingestion (Import) classes live in the **Gateway layer** at `app/Http/Ingestion/` — do NOT generate them with `domain:make`.
 * Queries: For complex database reads (e.g., massive filtering or reporting), create a Query class in app/Domains/{Concept}/Queries/. Queries are read-only, do not use transactions, do not mutate state, and do not dispatch events.
 
 Write modern PHP 8.2+ code with strict typing. Ensure all PSR-4 namespaces perfectly match the directory structure.
@@ -187,7 +268,7 @@ php artisan domain:make {type} {domain} {name} [options]
 
 **Arguments:**
 
-* `type`: The file type to generate (`model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `trait`, `datatable`, `query`, `provider`, `export`, `import`).
+* `type`: The file type to generate (`model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `trait`, `query`, `provider`, `export`, `mapper`).
 * `domain`: The target Domain folder (e.g., `Identity`, `Account`, `System`).
 * `name`: The class name. Supports sub-directory grouping (e.g., `Management/ProvisionNewUser`).
 
@@ -195,7 +276,7 @@ php artisan domain:make {type} {domain} {name} [options]
 
 * `--factory`: Generates an associated database factory (Models only).
 * `--migration`: Generates a database migration file (Models only).
-* `--model=`: Associates the export or import class with an Eloquent model (Exports & Imports only).
+* `--model=`: Associates the export class with an Eloquent model (Exports only).
 
 ---
 
@@ -291,42 +372,96 @@ When building data-driven interfaces (like dynamic settings forms), we utilize t
 
 ## 11. Excel Import & Export
 
-The `<livewire:components.datatables.excel-manager>` component provides a reusable, queue-backed mechanism for importing and exporting Excel files in any DataTable page.
+The Laravel component `resources/views/components/datatables/⚡excel-manager.blade.php` (registered as `<livewire:datatables.excel-manager>`) provides a reusable, queue-backed mechanism for importing and exporting Excel files in any DataTable page. It is a **unified single-file Laravel component** — PHP class logic and Blade template co-exist in the same file, following the `⚡` naming convention used across all Laravel components in this project.
+
+### Architecture Overview
+
+The component relies on three collaborating layers:
+
+1. **The Laravel Component** (`⚡excel-manager.blade.php`) — Handles UI state, file uploads via `WithFilePond`, validation, and Livewire event listeners. All props are secured with `#[Locked]` to prevent client-side tampering.
+2. **The `StyledExport` Decorator** (`App\UI\Support\Excel\StyledExport`) — A UI-layer wrapper that enriches any domain Export with standardized visual styling (frozen header row, landscape orientation, thin borders, centered alignment, and auto-sized columns) without polluting domain Export classes with presentation logic.
+3. **The Event-Driven Notification Pipeline** — After the export file is written to disk, a queued `NotifyExportReady` job dispatches the `ExportCompleted` event, which is handled by the `SendExportReportEmail` listener to deliver the file via email.
 
 ### How It Works
 
-* **Import:** The user uploads an `.xlsx` file via the modal. The file is stored to `local/excel/import/{resource}` and the import job is dispatched to the queue via `Excel::queueImport()`. A success toast (`ui.excel.import.success`) is shown immediately, and the user receives a confirmation email when the import completes.
-* **Export:** A Livewire event (`export-excel`) triggers the `export()` method. The export is queued via `Excel::queue()`, chained with the `NotifyExportReady` job. A success toast (`ui.excel.export.success`) is shown immediately, and the exported file is sent to the user's email as an attachment.
+* **Import:** The user uploads an `.xlsx` file via the FilePond modal. The file is stored to `local/excel/import/{resourceName}` and a new import instance is constructed with a UUID (`$importId`) and the authenticated user's ID (`$initiatorId`) before being dispatched to the queue via `Excel::queueImport()`. The Ingestion class lives in `app/Http/Ingestion/` (Gateway layer) and implements `WithChunkReading` (chunk size: 200 rows) to stay within shared-hosting memory limits. A success toast (`ui.excel.import.success`) is shown immediately upon queuing.
+
+* **Export:** A Livewire browser event (`export-excel`) — dispatched by the DataTable's Export button — triggers the `export()` method via `#[On('export-excel')]`. The domain Export is wrapped in `StyledExport` and queued via `Excel::queue()`. The job chain appends `NotifyExportReady`, which dispatches `ExportCompleted`, which is handled by `SendExportReportEmail` to send the file as an email attachment to the authenticated user. A success toast (`ui.excel.export.success`) is shown immediately upon queuing.
 
 ### Component Props
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `importClass` | `string` | Fully-qualified class name of the domain Import (e.g., `App\Domains\Identity\Imports\UserImport`). |
+| `importClass` | `string` | Fully-qualified class name of the Gateway Ingestion class (e.g., `App\Http\Ingestion\Identity\UserImport`). |
 | `exportClass` | `string` | Fully-qualified class name of the domain Export (e.g., `App\Domains\Identity\Exports\UserExport`). |
-| `resourceName` | `string` | A slug used to name the stored file (e.g., `users`). |
+| `resourceName` | `string` | A slug used to name the stored import file and the timestamped export file (e.g., `user`). |
 
-### Generating Import & Export Classes
+### Usage
 
-Use the `domain:make` command to create Import/Export classes in the correct namespace:
+Embed the component in any DataTable page view. All props must be provided as fully-qualified PHP class name strings:
+
+```blade
+<livewire:datatables.excel-manager
+    :export-class="\App\Domains\Identity\Exports\UserExport::class"
+    :import-class="\App\Http\Ingestion\Identity\UserImport::class"
+    resource-name="user"
+/>
+```
+
+The DataTable's Export button should dispatch the `export-excel` Livewire event, and the Import button should open the `#excel-import-modal` Bootstrap modal:
+
+```php
+// In your DataTable html() builder:
+Button::make('excel')
+    ->action("Livewire.dispatch('export-excel')"),
+
+Button::make('excel')
+    ->action("$('#excel-import-modal').modal('show')"),
+```
+
+### Generating Export & Mapper Classes
+
+Use the `domain:make` command to create Export and Integration layer classes:
 
 ```bash
+# Generate a domain Export class
 php artisan domain:make export Identity UserExport --model=User
-php artisan domain:make import Identity UserImport --model=User
+
+# Generate an Integration Mapper (auto-appends DataMapper suffix)
+php artisan domain:make mapper Identity User
+# → app/Domains/Identity/Integration/Mappers/UserDataMapper.php
 ```
+
+Domain Export classes must implement `FromQuery & WithHeadings & WithMapping & WithColumnFormatting`. The `StyledExport` decorator will apply all visual styling automatically at queue time — do **not** implement `WithStyles` directly on domain Exports.
+
+> **Gateway Layer:** Excel Ingestion (Import) classes live in `app/Http/Ingestion/` and are **not** generated by `domain:make`. Create them manually or with `make:class` as standard PHP classes implementing `ToCollection`, `WithHeadingRow`, and `WithChunkReading`.
+
+### The Notification Pipeline
+
+The export notification flow follows a strict, fully-queued event-driven chain:
+
+```
+Excel::queue(StyledExport, $path)
+  └─> NotifyExportReady (Job)        [app/Domains/System/Jobs/]
+        └─> ExportCompleted::dispatch (Event)  [app/Domains/System/Events/]
+              └─> SendExportReportEmail (Listener)  [app/Domains/System/Listeners/]
+                    └─> ExcelExportEmail (Mailable)  [app/Domains/System/Mail/]
+```
+
+The import notification is sent by the domain Import class itself upon completion, using `ExcelImportEmail` from the same `App\Domains\System\Mail\` namespace.
 
 ### Mailables
 
-Two Mailable classes handle the email notifications:
+Both Mailable classes live in the **System domain**, not the root `App\Mail\` namespace:
 
-* **`App\Mail\ExcelImportEmail`** — Sent when a queued import finishes. Uses `domains/system.notifications.excel.import_email.*` translations.
-* **`App\Mail\ExcelExportEmail`** — Sent when a queued export is ready, with the file attached. Uses `domains/system.notifications.excel.export_email.*` translations.
+* **`App\Domains\System\Mail\ExcelImportEmail`** — Sent when a queued import finishes. Uses `domains/system.notifications.excel.import_email.*` translations.
+* **`App\Domains\System\Mail\ExcelExportEmail`** — Sent when a queued export is ready, with the file attached from the `local` disk. Uses `domains/system.notifications.excel.export_email.*` translations.
 
 ### Translation Keys
 
 | File | Key | Purpose |
 | --- | --- | --- |
-| `lang/{locale}/ui.php` | `ui.excel.import.file_label` | Filepond upload label inside the import modal. |
+| `lang/{locale}/ui.php` | `ui.excel.import.file_label` | FilePond upload label inside the import modal. |
 | `lang/{locale}/ui.php` | `ui.excel.import.success` | Toast shown after import is queued. |
 | `lang/{locale}/ui.php` | `ui.excel.export.success` | Toast shown after export is queued. |
 | `lang/{locale}/domains/system.php` | `notifications.excel.import_email.*` | Email body for the import completion notification. |

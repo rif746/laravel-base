@@ -6,7 +6,7 @@
     <livewire:pages::identity.roles.form-modal />
     <livewire:pages::identity.roles.view-modal />
     <livewire:pages::system.audit.audit-view-modal :model="\App\Domains\Identity\Models\Role::class" translation="domains/identity.fields.role." />
-    <livewire:datatables.delete-action :model="\App\Domains\Identity\Models\Role::class" :action="\App\Domains\Identity\Actions\Roles\RemoveSystemRole::class" />
+    <livewire:datatables.delete-action :model="\App\Domains\Identity\Models\Role::class" :action="\App\Domains\Identity\Actions\AccessControl\RemoveSystemRole::class" />
 
     @push('page-scripts')
         @vite('resources/js/plugin/datatables.js')

@@ -1,9 +1,10 @@
 <?php
 
-use App\Domains\System\Jobs\NotifyExportReady;
-use App\Exports\StyledExport;
+use App\Domains\System\Jobs\Excel\NotifyExportReady;
+use App\Domains\System\Jobs\Excel\NotifyImportComplete;
 use App\Livewire\Concerns\WithModal;
 use App\Livewire\Concerns\WithToast;
+use App\UI\Support\Excel\StyledExport;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
@@ -43,12 +44,15 @@ new class extends Component {
         if (!$this->importClass) return;
 
         $filePath = $this->file->store('excel/import/' . $this->resourceName, ['disk' => 'local']);
-        $initiatorId = auth('web')->id();
+        $recipentEmail = auth('web')->user()->email;
         $importId = Str::uuid()->toString();
 
-        $importInstance = new $this->importClass($importId, $initiatorId);
-        Excel::queueImport($importInstance, $filePath);
+        $importInstance = new $this->importClass();
+        Excel::queueImport($importInstance, $filePath)->chain([
+            new NotifyImportComplete(recipientEmail: $recipentEmail)
+        ]);
         $this->success(__('ui.excel.import.success'));
+        $this->dispatch('hide-excel-import-modal');
     }
 
     #[On('export-excel')]
@@ -74,6 +78,7 @@ new class extends Component {
     public function hide(): void
     {
         $this->reset('file');
+        $this->dispatch('filepond-reset-file');
         $this->resetValidation();
         $this->resetErrorBag();
     }

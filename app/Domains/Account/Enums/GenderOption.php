@@ -11,4 +11,12 @@ enum GenderOption: string
     {
         return __("domains/account.enum.gender.{$this->value}");
     }
+
+    public static function fromLabel($value): self
+    {
+        return match ($value) {
+            self::MALE->label() => self::MALE,
+            self::FEMALE->label() => self::FEMALE,
+        };
+    }
 }
