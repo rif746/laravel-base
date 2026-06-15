@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domains\Identity\Actions\Registration;
+namespace App\Domains\Identity\Actions\Onboarding;
 
-use App\Domains\Identity\Events\Registration\UserEmailVerified;
+use App\Domains\Identity\Events\Onboarding\UserEmailWasVerified;
 use App\Domains\Identity\Models\User;
 use Illuminate\Auth\Events\Verified;
 
@@ -18,8 +18,8 @@ class VerifyUserEmail
      * Fires two events:
      *  - Illuminate\Auth\Events\Verified — preserves Laravel's built-in
      *    verification contract for any framework listeners.
-     *  - App\Domains\Identity\Events\UserEmailVerified — the domain event
-     *    for application-specific listeners (onboarding, role grants, etc.).
+     *  - App\Domains\Identity\Events\Onboarding\UserEmailWasVerified — the
+     *    domain event for application-specific listeners (role grants, etc.).
      */
     public function execute(User $user): bool
     {
@@ -33,7 +33,7 @@ class VerifyUserEmail
         event(new Verified($user));
 
         // Domain event: for application-level listeners.
-        UserEmailVerified::dispatch($user);
+        UserEmailWasVerified::dispatch($user);
 
         return true;
     }

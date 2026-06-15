@@ -3,8 +3,8 @@
 use App\Domains\Account\Actions\Profile\UpdateProfile;
 use App\Domains\Account\DTOs\Profile\UpdateProfileDTO;
 use App\Domains\Account\Models\Profile;
-use App\Domains\Identity\Actions\Onboarding\UpdateUser;
-use App\Domains\Identity\DTOs\Onboarding\UpdateUserDTO;
+use App\Domains\Identity\Actions\IdentityMaintenance\UpdateUserIdentity;
+use App\Domains\Identity\DTOs\IdentityMaintenance\UpdateUserIdentityDTO;
 use App\Domains\Identity\Models\User;
 use App\Livewire\Concerns\WithModal;
 use App\Livewire\Concerns\WithToast;
@@ -46,12 +46,12 @@ new class extends Component
         $this->id = $this->user->id;
     }
 
-    public function save(UpdateProfile $updateProfile, UpdateUser $updateUser): void
+    public function save(UpdateProfile $updateProfile, UpdateUserIdentity $updateUser): void
     {
         $this->form->validate($this->form->rules($this->id));
 
         $profile = $this->user?->profile ?: new Profile(['user_id' => $this->id]);
-        $updateUser->execute($this->user, new UpdateUserDTO(
+        $updateUser->execute($this->user, new UpdateUserIdentityDTO(
             name: $this->form->name,
             email: $this->form->email,
         ));

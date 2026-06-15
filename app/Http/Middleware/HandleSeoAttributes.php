@@ -8,9 +8,11 @@ use Closure;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\ViewController;
+use ReflectionException;
+use ReflectionMethod;
 use Symfony\Component\HttpFoundation\Response;
 
-class HandleSeoAttribute
+class HandleSeoAttributes
 {
     public function __construct(
         protected SetSeoMetadata $setSeo
@@ -57,7 +59,7 @@ class HandleSeoAttribute
             }
 
             if (method_exists($controller, $method)) {
-                $reflection = new \ReflectionMethod($controller, $method);
+                $reflection = new ReflectionMethod($controller, $method);
                 $attributes = $reflection->getAttributes(Seo::class);
 
                 if (! empty($attributes)) {
@@ -68,7 +70,7 @@ class HandleSeoAttribute
                     return $seoInstance;
                 }
             }
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             return null;
         }
 

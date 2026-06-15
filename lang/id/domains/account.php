@@ -11,6 +11,29 @@ return [
             'phone_number' => 'Nomor Telepon',
         ],
     ],
+
+    'enum' => [
+        'gender' => [
+            GenderOption::MALE->value => 'Laki-laki',
+            GenderOption::FEMALE->value => 'Perempuan',
+        ],
+        'user_settings' => [
+            'notification' => 'Notifikasi',
+            'language' => 'Bahasa',
+            'timezone' => 'Zona Waktu',
+            'options' => [
+                'language' => [
+                    'en' => 'Inggris',
+                    'id' => 'Indonesia',
+                ],
+                'notification' => [
+                    'on' => 'Aktif',
+                    'off' => 'Nonaktif',
+                ],
+            ],
+        ],
+    ],
+
     'pages' => [
         'profile' => [
             'title' => 'Informasi Profil',
@@ -27,28 +50,6 @@ return [
         'user_settings' => [
             'title' => 'Pengaturan Pengguna',
             'description' => 'Kelola preferensi aplikasi Anda seperti tema dan bahasa.',
-        ],
-    ],
-
-    'enum' => [
-        'user_settings' => [
-            'notification' => 'Notifikasi',
-            'language' => 'Bahasa',
-            'timezone' => 'Zona Waktu',
-            'options' => [
-                'language' => [
-                    'en' => 'Inggris',
-                    'id' => 'Indonesia',
-                ],
-                'notification' => [
-                    'on' => 'Aktif',
-                    'off' => 'Nonaktif',
-                ],
-            ],
-        ],
-        'gender' => [
-            GenderOption::MALE->value => 'Laki-laki',
-            GenderOption::FEMALE->value => 'Perempuan',
         ],
     ],
 

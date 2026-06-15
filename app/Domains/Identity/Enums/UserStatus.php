@@ -21,4 +21,9 @@ enum UserStatus: string
 
         return "<span class='badge {$color}'>{$this->labels()}</span>";
     }
+
+    public function isActive(): bool
+    {
+        return $this == self::ACTIVE;
+    }
 }

@@ -41,10 +41,15 @@ return [
         'edit' => 'Ubah',
         'delete' => 'Hapus',
         'view' => 'Lihat',
+        'log' => 'Log',
         'yes' => 'Ya',
         'no' => 'Tidak',
         'lookup' => 'Cari...',
         'logout' => 'Keluar',
+    ],
+    'confirmation' => [
+        'logout' => 'Apakah Anda yakin ingin keluar?',
+        'delete' => 'Apakah Anda yakin ingin menghapus :resource ini? Tindakan ini tidak dapat dibatalkan.',
     ],
     'crud' => [
         'success' => [
@@ -58,12 +63,14 @@ return [
             'validation_failed' => 'Data yang diberikan tidak valid.',
             'generic' => 'Terjadi kesalahan. Silakan coba lagi.',
         ],
-        'confirmation' => [
-            'delete' => 'Apakah Anda yakin ingin menghapus :resource ini? Tindakan ini tidak dapat dibatalkan.',
-        ],
     ],
     'loading' => 'Memuat...',
-    'logout' => 'Apakah Anda yakin ingin keluar?',
+    'errors' => [
+        'oops' => 'Ups... Terjadi kesalahan.',
+        '404' => 'Maaf, halaman yang Anda cari tidak ditemukan.',
+        '500' => 'Maaf, server kami sedang mengalami gangguan.',
+        'take_me_home' => 'Kembali ke Beranda',
+    ],
     'notification' => [
         'empty' => 'Tidak ada pemberitahuan',
         'read_all' => 'Baca semua pemberitahuan',

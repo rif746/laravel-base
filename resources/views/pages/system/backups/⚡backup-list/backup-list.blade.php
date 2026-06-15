@@ -1,5 +1,5 @@
 <div class="d-flex gap-4 flex-column">
-    <x-card :title="trans('domains/system.pages.backup.title')">
+    <x-card>
         <x-slot:actions>
             <x-button :label="trans('domains/system.pages.backup.backup_button')" class="btn-sm" wire:click="backup" wire:loading wire:target="backup"
                 theme="primary" :icon-property="[
@@ -32,9 +32,9 @@
                                 'width' => 16,
                                 'height' => 16,
                             ]"
-                                x-on:click="$remove.livewire('delete-data', {
+                                x-on:click="$swal.livewire('delete-data', {
                                     title: '{{ trans('ui.button.delete') }}',
-                                    textMessage: '{{ trans('domains/system.pages.backup.delete_confirm') }}',
+                                    textMessage: '{{ trans('domains/system.pages.backup.confirmation.delete') }}',
                                     confirmText: '{{ trans('ui.button.yes') }}',
                                     cancelText: '{{ trans('ui.button.no') }}',
                                     successMessage: '{{ trans('domains/system.messages.backup.delete_success') }}',

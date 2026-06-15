@@ -5,10 +5,12 @@
 
 <div {{ $attributes->merge(['class' => 'card']) }}>
     <div class="card-body">
-        @if ($title)
             <div class="mb-3 d-flex justify-content-between align-items-center">
                 <div>
-                    <h3 class="card-title">{{ $title }}</h3>
+                    @if ($title)
+                        <h3 class="card-title">{{ $title }}</h3>
+                    @endif
+
                     @if ($subtitle)
                         <h6 class="card-subtitle text-muted">{{ $subtitle }}</h6>
                     @endif
@@ -19,7 +21,6 @@
                     </div>
                 @endisset
             </div>
-        @endif
 
         {{ $slot }}
     </div>

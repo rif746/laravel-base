@@ -15,7 +15,7 @@
         </button>
     @endif
     @if (!empty($view))
-        @if (isset($view['permission']) ? auth('web')->user()->can($view['permission']) : true)
+        @if (!isset($view['permission']) || auth('web')->user()->hasPermissionTo($view['permission']))
             @if (isset($view['modal']))
                 <button class="btn btn-sm btn-info" data-id="{{ $id }}" data-bs-toggle="modal"
                     data-bs-target="#{{ $view['modal'] }}" data-bs-toggle="tooltip" title="{{ trans('ui.button.view') }}">
@@ -23,7 +23,7 @@
                 </button>
             @else
                 <a href="{{ $view['url'] ?? 'javascript:void(0)' }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip"
-                    title="{{ trans('domains/system.actions.view') }}">
+                    title="{{ trans('ui.button.view') }}">
                     @svg('tabler-eye', ['width' => 16, 'height' => 16])
                 </a>
             @endif
@@ -31,7 +31,7 @@
     @endif
 
     @if (!empty($edit))
-        @if (isset($edit['permission']) ? auth('web')->user()->can($edit['permission']) : true)
+        @if (!isset($edit['permission']) || auth('web')->user()->hasPermissionTo($edit['permission']))
             @if (isset($edit['modal']))
                 <button class="btn btn-sm btn-warning" data-id="{{ $id }}" data-bs-toggle="modal"
                     data-bs-target="#{{ $edit['modal'] }}" data-bs-toggle="tooltip"
@@ -40,7 +40,7 @@
                 </button>
             @else
                 <a href="{{ $edit['url'] ?? 'javascript:void(0)' }}" class="btn btn-sm btn-warning"
-                    data-bs-toggle="tooltip" title="{{ trans('domains/system.actions.edit') }}">
+                    data-bs-toggle="tooltip" title="{{ trans('ui.button.edit') }}">
                     @svg('tabler-pencil', ['width' => 16, 'height' => 16])
                 </a>
             @endif
@@ -48,9 +48,9 @@
     @endif
 
     @if (!empty($delete))
-        @if (isset($delete['permission']) ? auth('web')->user()->can($delete['permission']) : true)
+        @if (!isset($delete['permission']) || auth('web')->user()->hasPermissionTo($delete['permission']))
             <button class="btn btn-sm btn-danger"
-                x-on:click="$remove.livewire('delete-data', {
+                x-on:click="$ask.livewire('delete-data', {
                 title: '{{ trans('ui.button.delete') }}',
                 textMessage: '{{ $delete['message'] }}',
                 confirmText: '{{ trans('ui.button.yes') }}',

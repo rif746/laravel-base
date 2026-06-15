@@ -11,7 +11,7 @@ trait WithToast
 {
     public function success(string $message): void
     {
-        $this->js("window.toast('$message', 'success')");
+        $this->js("window.toast(\"$message\", \"success\")");
     }
 
     public function warning(string $message): void
@@ -21,6 +21,6 @@ trait WithToast
 
     public function error(string $message): void
     {
-        $this->js("window.toast('$message', 'error')");
+        $this->js("window.toast(\"$message\", \"warning\")");
     }
 }

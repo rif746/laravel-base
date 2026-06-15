@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Domains\Identity\Actions\Registration;
+namespace App\Domains\Identity\Actions\Onboarding;
 
-use App\Domains\Identity\DTOs\Registration\RegisterUserDTO;
-use App\Domains\Identity\Events\Registration\UserRegistered;
+use App\Domains\Identity\DTOs\Onboarding\RegisterSelfServiceUserDTO;
+use App\Domains\Identity\Events\Onboarding\UserWasRegistered;
 use App\Domains\Identity\Models\User;
 use Illuminate\Auth\Events\Registered;
 
-class RegisterUser
+class RegisterSelfServiceUser
 {
     /**
-     * Create a new user and dispatch all registration events.
+     * Create a new user via self-service registration and dispatch all events.
      *
      * Fires two events:
      *  - Illuminate\Auth\Events\Registered — triggers Laravel's built-in
      *    email verification notification listener automatically.
-     *  - App\Domains\Identity\Events\UserRegistered — the domain event for
-     *    any application-specific listeners (onboarding, role assignment, etc.).
+     *  - App\Domains\Identity\Events\Onboarding\UserWasRegistered — the domain
+     *    event for any application-specific listeners (welcome emails, etc.).
      *
      * Note: Auth::login() is intentionally absent. Logging the user into the
      * session is a framework/HTTP concern that belongs to the Auth Gateway.
      */
-    public function execute(RegisterUserDTO $dto): User
+    public function execute(RegisterSelfServiceUserDTO $dto): User
     {
         $user = User::create([
-            'name' => $dto->name,
-            'email' => $dto->email,
+            'name'     => $dto->name,
+            'email'    => $dto->email,
             'password' => $dto->password,
         ]);
 
@@ -33,7 +33,7 @@ class RegisterUser
         event(new Registered($user));
 
         // Domain event: for application-level listeners.
-        UserRegistered::dispatch($user, $dto);
+        UserWasRegistered::dispatch($user, $dto);
 
         return $user;
     }

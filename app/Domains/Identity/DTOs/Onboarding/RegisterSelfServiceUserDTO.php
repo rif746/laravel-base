@@ -2,11 +2,11 @@
 
 namespace App\Domains\Identity\DTOs\Onboarding;
 
-readonly class UpdateUserDTO
+readonly class RegisterSelfServiceUserDTO
 {
     public function __construct(
         public string $name,
         public string $email,
-        public ?string $role = null,
+        public string $password,
     ) {}
 }

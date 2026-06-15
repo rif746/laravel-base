@@ -43,12 +43,12 @@
             @endcan
             <hr class="my-0 border-dashed" />
             <a class="dropdown-item text-danger" href="javascript:void(0)"
-                x-on:click="$remove.session({
-                    textMessage: 'Are you sure to logout?',
-                    confirmText: 'Yes',
-                    cancelText: 'No',
-                    onSuccess: async() => {
-                        await $wire.logout()
+                x-on:click="$ask.ajax({
+                    textMessage: '{{ __('ui.confirmation.logout') }}',
+                    confirmText: '{{ __('ui.button.yes') }}',
+                    cancelText: '{{ __('ui.button.no') }}',
+                    onSuccess: () => {
+                        return $wire.logout()
                     }
                 })">
                 <x-tabler-logout width="16" />

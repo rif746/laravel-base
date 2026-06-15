@@ -34,7 +34,7 @@ class RoleDataTable extends DataTable
                     ],
                     'delete' => [
                         'url' => null,
-                        'message' => __('ui.crud.confirmation.delete', ['resource' => __('resources.role')]),
+                        'message' => __('ui.confirmation.delete', ['resource' => __('resources.role')]),
                         'success_message' => __('ui.crud.success.deleted', ['resource' => __('resources.role')]),
                     ],
                     'table_name' => 'role-table',
@@ -66,6 +66,10 @@ class RoleDataTable extends DataTable
             ->orderBy(-1)
             ->parameters([
                 'dom' => config('datatables-buttons.parameters.dom'),
+                'language' => [
+                    'search' => '',
+                    'searchPlaceholder' => __('ui.button.lookup'),
+                ],
             ])
             ->buttons([
                 Button::make('add')

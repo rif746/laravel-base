@@ -26,7 +26,7 @@ new class extends Component {
             }
             $this->dispatch('delete-data-completed');
         } catch (Exception $e) {
-            $this->warning($e->getMessage());
+            $this->dispatch('delete-data-failed', message: $e->getMessage());
         }
     }
 };

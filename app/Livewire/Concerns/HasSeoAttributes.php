@@ -26,16 +26,15 @@ trait HasSeoAttributes
 
         if ($attribute) {
             $seo = $attribute->newInstance();
-            $viewData = method_exists($this, 'all') ? $this->all() : [];
 
-            $setSeo->applySeo($seo, $viewData, request());
+            $setSeo->applySeo($seo, $this, request());
         }
     }
 
     /**
      * Livewire Lifecycle hook: triggers on every render.
      */
-    public function rendering(SetSeoMetadata $setSeo): void
+    public function renderingHasSeoAttributes(SetSeoMetadata $setSeo): void
     {
         $this->applySeoMetadata($setSeo);
     }

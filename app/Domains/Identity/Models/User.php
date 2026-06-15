@@ -55,8 +55,6 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
         'email',
     ];
 
-    protected $with = ['roles'];
-
     protected static function newFactory(): Factory
     {
         return UserFactory::new();

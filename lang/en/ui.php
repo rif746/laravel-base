@@ -41,10 +41,15 @@ return [
         'edit' => 'Edit',
         'delete' => 'Delete',
         'view' => 'View',
+        'log' => 'Log',
         'yes' => 'Yes',
         'no' => 'No',
         'lookup' => 'Search...',
         'logout' => 'Logout',
+    ],
+    'confirmation' => [
+        'logout' => 'Are you sure you want to logout?',
+        'delete' => 'Are you sure you want to delete this :resource? This action cannot be undone.',
     ],
     'crud' => [
         'success' => [
@@ -58,12 +63,14 @@ return [
             'validation_failed' => 'The given data was invalid.',
             'generic' => 'Something went wrong. Please try again.',
         ],
-        'confirmation' => [
-            'delete' => 'Are you sure you want to delete this :resource? This action cannot be undone.',
-        ],
     ],
     'loading' => 'Loading...',
-    'logout' => 'Are you sure want to logout?',
+    'errors' => [
+        'oops' => 'Oops… You just found an error page',
+        '404' => 'We are sorry but the page you are looking for was not found.',
+        '500' => 'We are sorry but our server encountered an internal error.',
+        'take_me_home' => 'Take me home',
+    ],
     'notification' => [
         'empty' => 'No notifications',
         'read_all' => 'Read all notifications',

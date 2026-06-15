@@ -8,7 +8,7 @@ return [
         'settings' => [
             'web' => [
                 'name' => 'Nama Web',
-                'description' => 'Desckripsi Web',
+                'description' => 'Deskripsi Web',
                 'address' => 'Alamat Web',
                 'phone' => 'Telepon Web',
                 'email' => 'Email Web',
@@ -38,7 +38,9 @@ return [
             'upload_button' => 'Unggah Berkas Cadangan',
             'upload_modal_title' => 'Unggah Berkas Cadangan',
             'empty_state' => 'Tidak Ada Berkas Cadangan yang Disimpan',
-            'delete_confirm' => 'Hapus data cadangan ini?',
+            'confirmation' => [
+                'delete' => 'Apakah Anda yakin ingin menghapus cadangan ini?',
+            ],
         ],
         'settings' => [
             'update_title' => 'Perbarui Pengaturan',
@@ -52,17 +54,19 @@ return [
 
     'messages' => [
         'backup' => [
-            'delete_success' => 'Data cadangan berhasil dihapus',
-            'backup_success' => 'Sistem berhasil dicadangkan',
-            'backup_error' => 'Gagal mencadangkan sistem',
-            'restored_success' => 'Sistem berhasil dipulihkan',
-            'restored_error' => 'Gagal memulihkan sistem',
-            'download_error' => 'Gagal mengunduh :path',
+            'delete_success' => 'Data cadangan berhasil dihapus.',
+            'backup_success' => 'Sistem berhasil dicadangkan.',
+            'backup_error' => 'Gagal mencadangkan sistem.',
+            'verification_error' => 'Berkas zip cadangan tidak dapat diverifikasi di penyimpanan target.',
+            'restored_success' => 'Sistem berhasil dipulihkan.',
+            'restored_error' => 'Gagal memulihkan sistem.',
+            'download_error' => 'Gagal mengunduh :path.',
+            'file_not_found' => 'Berkas cadangan tidak ditemukan.',
         ],
     ],
 
     'seo' => [
-        'default_title' => 'Laravel',
+        'default_title' => 'Laravel Base',
         'default_description' => 'Dasar Laravel menggunakan Livewire v4, Bootstrap, dan DataTables.net oleh Syarif Ubaidillah.',
         'dashboard' => [
             'title' => 'Dasbor',
@@ -76,7 +80,7 @@ return [
         ],
         'backup' => [
             'title' => 'Cadangan Sistem',
-            'description' => 'Cadangkan dan Pulihkan basis data dan aset.',
+            'description' => 'Cadangkan dan pulihkan basis data dan aset.',
             'keywords' => 'cadangkan, pulihkan, basis data, aset',
         ],
     ],

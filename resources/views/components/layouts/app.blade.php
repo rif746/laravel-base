@@ -31,6 +31,20 @@
 <!-- MAIN CONTENT -->
 <main id="content" class="content">
     <div class="container-fluid min-vh-90 pt-10">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h1 class="fs-3">{{ $header }}</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    @foreach($breadcrumbs as $breadcrumb)
+                        <li class="breadcrumb-item {{ $loop->index==0 ? 'active' : '' }}" aria-current="page">
+                            @if($breadcrumb['url']) <a href="{{ $breadcrumb['url'] }}"> @endif
+                            {{ $breadcrumb['label'] }}
+                            @if($breadcrumb['url']) </a> @endif
+                        </li>
+                    @endforeach
+                </ol>
+            </nav>
+        </div>
         {{ $slot }}
     </div>
 
@@ -45,6 +59,7 @@
 
 @stack('page-scripts')
 @livewireScriptConfig()
+<div id="swal-container" wire:ignore></div>
 </body>
 
 </html>

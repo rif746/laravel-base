@@ -2,6 +2,7 @@
 
 namespace App\Http\DataTables\Identity;
 
+use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Exports\UserExport;
 use App\Domains\Identity\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -31,17 +32,17 @@ class UserDataTable extends DataTable
                 fn ($user) => view('components.datatables.action-button', [
                     'log' => true,
                     'view' => [
-                        'modal' => 'user-view-modal',
-                        'permission' => 'user index',
+                        'url' => route('users.view', ['user_id' => $user->id]),
                     ],
                     'edit' => [
                         'modal' => 'user-form-modal',
-                        'permission' => 'user edit',
+                        'permission' => $user->hasRole(RoleType::SYSTEM_ADMIN) ? null : 'user edit',
                     ],
                     'delete' => [
                         'url' => null,
-                        'message' => __('ui.crud.confirmation.delete', ['resource' => __('resources.user')]),
+                        'message' => __('ui.confirmation.delete', ['resource' => __('resources.user')]),
                         'success_message' => __('ui.crud.success.deleted', ['resource' => __('resources.user')]),
+                        'permission' => $user->hasRole(RoleType::SYSTEM_ADMIN) ? null : 'user delete',
                     ],
                     'table_name' => 'user-table',
                     'id' => $user->id,
@@ -58,7 +59,7 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->with(['roles' => fn ($mdl) => $mdl->first()])
+        return $model->with(['roles'])
             ->newQuery();
     }
 
@@ -76,7 +77,7 @@ class UserDataTable extends DataTable
                 'dom' => config('datatables-buttons.parameters.dom'),
                 'language' => [
                     'search' => '',
-                    'searchPlaceholder' => 'Search...',
+                    'searchPlaceholder' => __('ui.button.lookup'),
                 ],
             ])
             ->buttons([

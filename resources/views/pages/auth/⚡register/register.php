@@ -1,8 +1,8 @@
 <?php
 
 use App\Attributes\Seo;
-use App\Domains\Identity\Actions\Registration\RegisterUser;
-use App\Domains\Identity\DTOs\Registration\RegisterUserDTO;
+use App\Domains\Identity\Actions\Onboarding\RegisterSelfServiceUser;
+use App\Domains\Identity\DTOs\Onboarding\RegisterSelfServiceUserDTO;
 use App\Livewire\Concerns\HasSeoAttributes;
 use App\Livewire\Forms\Auth\RegisterForm;
 use Illuminate\Support\Facades\Auth;
@@ -17,12 +17,12 @@ class extends Component
 
     public RegisterForm $form;
 
-    public function register(RegisterUser $action): void
+    public function register(RegisterSelfServiceUser $action): void
     {
         $this->form->validate();
 
         // The Identity Domain creates the user and fires the Registered event.
-        $user = $action->execute(new RegisterUserDTO(
+        $user = $action->execute(new RegisterSelfServiceUserDTO(
             name: $this->form->name,
             email: $this->form->email,
             password: $this->form->password,

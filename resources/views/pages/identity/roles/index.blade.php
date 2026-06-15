@@ -1,5 +1,5 @@
-<x-layouts.app :title="__('ui.title.index', ['resource' => __('resources.role')])">
-    <x-card :title="__('ui.title.index', ['resource' => __('resources.role')])">
+<x-layouts.app>
+    <x-card>
         {{ $dataTable->table() }}
     </x-card>
 

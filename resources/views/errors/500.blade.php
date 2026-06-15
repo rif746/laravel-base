@@ -2,9 +2,9 @@
     <div class="container-tight py-4">
         <div class="empty">
             <div class="empty-header">500</div>
-            <p class="empty-title">Oops… You just found an error page</p>
+            <p class="empty-title">{{ __('ui.errors.oops') }}</p>
             <p class="empty-subtitle text-secondary">
-                We are sorry but our server encountered an internal error
+                {{ __('ui.errors.500') }}
             </p>
             <div class="empty-action">
                 <a href="{{ route('dashboard') }}" class="btn btn-primary">
@@ -16,7 +16,7 @@
                         <path d="M5 12l6 6"></path>
                         <path d="M5 12l6 -6"></path>
                     </svg>
-                    Take me home
+                    {{ __('ui.errors.take_me_home') }}
                 </a>
             </div>
         </div>

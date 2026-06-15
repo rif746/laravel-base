@@ -48,22 +48,21 @@ app/
 └── Domains/
     ├── Identity/             <-- Business Concept: Authentication & Users
     │   ├── Actions/          <-- Capability-grouped mutations
-    │   │   ├── Onboarding/   <-- ProvisionNewUser, UpdateUser
+    │   │   ├── Onboarding/   <-- RegisterSelfServiceUser, ProvisionNewUser,
+    │   │   │               <-- UpdateUser, VerifyUserEmail, ResendVerificationEmail
     │   │   ├── AccessControl/<-- CreateSystemRole, UpdateSystemRole, UpdateUserRole, RemoveSystemRole
     │   │   ├── Governance/   <-- SuspendUser, UpdateUserStatus
-    │   │   ├── Passwords/    <-- ResetUserPassword, UpdatePassword, SendPasswordResetLink
-    │   │   └── Registration/ <-- RegisterUser, VerifyUserEmail, ResendVerificationEmail
+    │   │   └── Passwords/    <-- ResetUserPassword, UpdatePassword, SendPasswordResetLink
     │   ├── DTOs/             <-- Capability-grouped Data Transfer Objects
-    │   │   ├── Onboarding/   <-- ProvisionUserDTO, UpdateUserDTO
+    │   │   ├── Onboarding/   <-- RegisterSelfServiceUserDTO, ProvisionUserDTO, UpdateUserDTO
     │   │   ├── AccessControl/<-- CreateRoleDTO, UpdateRoleDTO
     │   │   └── Passwords/    <-- ForgotPasswordDTO, ResetPasswordDTO, UpdatePasswordDTO
     │   ├── DataTables/
     │   ├── Enums/
     │   ├── Events/           <-- Past-tense truths, grouped by capability
     │   │   ├── Authentication/<-- UserLoggedIn
-    │   │   ├── Onboarding/   <-- UserWasProvisioned
-    │   │   ├── Governance/   <-- UserWasSuspended
-    │   │   └── Registration/ <-- UserRegistered, UserEmailVerified
+    │   │   ├── Onboarding/   <-- UserWasRegistered, UserWasProvisioned, UserEmailWasVerified
+    │   │   └── Governance/   <-- UserWasSuspended
     │   ├── Exports/
     │   ├── Integration/
     │   │   └── Mappers/      <-- DataPayloadMapper implementations

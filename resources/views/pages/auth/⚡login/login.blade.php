@@ -2,7 +2,7 @@
     <form class="needs-validation mt-3" wire:submit="login" novalidate>
         <x-form.input name="form.email" wire:model="form.email" :label="__('domains/auth.fields.login.email')" type="email" placeholder="name@example.com"
             required autofocus />
-        <x-form.input name="form.password" wire:model="form.password" :label="__('domains/auth.fields.login.password')" type="password" placeholder="Password"
+        <x-form.input name="form.password" wire:model="form.password" :label="__('domains/auth.fields.login.password')" type="password" :placeholder="__('domains/auth.fields.login.password')"
             required minlength="6" />
 
         <div class="d-flex justify-content-between align-items-center mb-3">

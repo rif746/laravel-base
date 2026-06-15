@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Domains\Identity\Events\Registration;
+namespace App\Domains\Identity\Events\Onboarding;
 
-use App\Domains\Identity\DTOs\Registration\RegisterUserDTO;
 use App\Domains\Identity\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserRegistered
+class UserEmailWasVerified
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * The DTO is carried alongside the User so listeners have full context
-     * of what input triggered the registration (e.g. for welcome emails).
+     * Fired after a user's email address has been successfully marked as
+     * verified for the first time. Listeners can use this for onboarding
+     * flows, role assignment, or welcome notifications.
      */
     public function __construct(
         public readonly User $user,
-        public readonly RegisterUserDTO $dto,
     ) {}
 }

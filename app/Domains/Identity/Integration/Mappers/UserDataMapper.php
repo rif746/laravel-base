@@ -6,10 +6,10 @@ use App\Domains\Account\Actions\Profile\UpdateProfile;
 use App\Domains\Account\DTOs\Profile\UpdateProfileDTO;
 use App\Domains\Account\Enums\GenderOption;
 use App\Domains\Account\Models\Profile;
+use App\Domains\Identity\Actions\IdentityMaintenance\UpdateUserIdentity;
 use App\Domains\Identity\Actions\Onboarding\ProvisionNewUser;
-use App\Domains\Identity\Actions\Onboarding\UpdateUser;
+use App\Domains\Identity\DTOs\IdentityMaintenance\UpdateUserIdentityDTO;
 use App\Domains\Identity\DTOs\Onboarding\ProvisionUserDTO;
-use App\Domains\Identity\DTOs\Onboarding\UpdateUserDTO;
 use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Models\User;
 use App\Domains\System\Support\Integration\DataPayloadMapper;
@@ -20,9 +20,9 @@ use Throwable;
 class UserDataMapper implements DataPayloadMapper
 {
     public function __construct(
-        protected ProvisionNewUser $provisionNewUser,
-        protected UpdateUser $updateUser,
-        protected UpdateProfile $updateProfile
+        protected ProvisionNewUser   $provisionNewUser,
+        protected UpdateUserIdentity $updateUser,
+        protected UpdateProfile      $updateProfile
     ) {}
 
     /**
@@ -60,7 +60,7 @@ class UserDataMapper implements DataPayloadMapper
         if ($user) {
             $this->updateUser->execute(
                 $user,
-                new UpdateUserDTO(name: $payload['name'], email: $payload['email'])
+                new UpdateUserIdentityDTO(name: $payload['name'], email: $payload['email'])
             );
         } else {
             $user = $this->provisionNewUser->execute(

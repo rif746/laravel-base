@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Identity\Actions\Registration;
+namespace App\Domains\Identity\Actions\Onboarding;
 
 use App\Domains\Identity\Models\User;
 

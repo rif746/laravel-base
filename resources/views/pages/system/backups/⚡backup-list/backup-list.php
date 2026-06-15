@@ -1,10 +1,12 @@
 <?php
 
+use App\Attributes\LayoutData;
 use App\Attributes\Seo;
 use App\Domains\System\Actions\Backup\DeleteBackup;
 use App\Domains\System\Actions\Backup\SystemBackup;
 use App\Domains\System\Actions\Backup\SystemRestore;
 use App\Domains\System\Models\Backup;
+use App\Livewire\Concerns\HasLayoutDataAttributes;
 use App\Livewire\Concerns\HasSeoAttributes;
 use App\Livewire\Concerns\WithToast;
 use Illuminate\Database\Eloquent\Collection;
@@ -16,10 +18,23 @@ use Livewire\Component;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 new #[Layout('components.layouts.app')]
-#[Seo(title: 'domains/system.seo.backup.title', description: 'domains/system.seo.backup.description', keywords: 'domains/system.seo.backup.keywords')]
+#[LayoutData(
+    header: 'domains/system.seo.backup.title',
+    breadcrumbs: [
+        'ui.menu.dashboard' => 'dashboard',
+        'domains/system.seo.backup.title' => '',
+    ],
+    context: 'user'
+)]
+#[Seo(
+    title: 'domains/system.seo.backup.title',
+    description: 'domains/system.seo.backup.description',
+    keywords: 'domains/system.seo.backup.keywords'
+)]
 class extends Component
 {
     use HasSeoAttributes;
+    use HasLayoutDataAttributes;
     use WithToast;
 
     #[On('reload-backup-data')]

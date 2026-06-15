@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web\Auth;
 
-use App\Domains\Identity\Actions\Registration\VerifyUserEmail;
+use App\Domains\Identity\Actions\Onboarding\VerifyUserEmail;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;

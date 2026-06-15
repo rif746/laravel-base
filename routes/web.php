@@ -1,20 +1,28 @@
 <?php
 
+use App\Attributes\LayoutData;
 use App\Attributes\Seo;
+use App\Http\Controllers\Web\Account\ProfileController;
 use App\Http\Controllers\Web\Identity\RoleController;
 use App\Http\Controllers\Web\Identity\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('dashboard'));
 
-Route::middleware(['web', 'auth', 'verified', 'seo'])->group(function () {
+Route::middleware(['web', 'auth', 'verified', 'seo', 'layouts'])->group(function () {
     Route::view('/dashboard', 'dashboard')
         ->defaults('seo', new Seo(
             title: 'domains/system.seo.dashboard.title',
             description: 'domains/system.seo.dashboard.description',
             keywords: 'domains/system.seo.dashboard.keywords'
+        ))->defaults('layout_data', new LayoutData(
+            header: 'domains/system.seo.dashboard.title',
+            breadcrumbs: [
+                'ui.menu.dashboard' => 'dashboard',
+            ],
         ))->name('dashboard');
 
+    Route::livewire('/user/{user_id}', 'pages::identity.users.detail-view')->name('users.view');
     Route::get('/users', UserController::class)->name('users.index');
     Route::get('/roles', RoleController::class)->name('roles.index');
 
@@ -22,12 +30,7 @@ Route::middleware(['web', 'auth', 'verified', 'seo'])->group(function () {
         Route::livewire('/system/settings', 'pages::system.settings.setting-list')->name('system-setting.index');
         Route::livewire('/system/backups', 'pages::system.backups.backup-list')->name('system-backup.index');
 
-        Route::view('/profile', 'pages.account.profile.index')
-            ->defaults('seo', new Seo(
-                title: 'domains/account.seo.profile.title',
-                description: 'domains/account.seo.profile.description',
-                keywords: 'domains/account.seo.profile.keywords'
-            ))->name('profile.index');
+        Route::get('/profile', ProfileController::class)->name('profile.index');
     });
 });
 

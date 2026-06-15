@@ -2,9 +2,9 @@
 import { Alpine, Livewire } from '../../vendor/livewire/livewire/dist/livewire.esm';
 import bs from './alpine/bs';
 import alpineAxios from './alpine/axios';
-import removeData from './alpine/remove-data';
 import alpineSelect2 from "./alpine/select2.js";
 import alpineQuill from "./alpine/quill.js";
+import alpineAsk from "./alpine/ask.js";
 
 // 1. Expose both instances globally so Blade directives can see them
 window.Alpine = Alpine;
@@ -14,7 +14,7 @@ window.Livewire = Livewire;
 document.addEventListener('alpine:init', () => {
     Alpine.plugin(bs);
     Alpine.plugin(alpineAxios);
-    Alpine.plugin(removeData);
+    Alpine.plugin(alpineAsk);
     Alpine.plugin(alpineSelect2);
     Alpine.plugin(alpineQuill);
 });

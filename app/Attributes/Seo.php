@@ -6,7 +6,7 @@ use Attribute;
 
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-class Seo
+final readonly class Seo
 {
     public function __construct(
         public string $title,
@@ -16,5 +16,6 @@ class Seo
         public string $image = '',
         public string $url = '',
         public string $type = 'website',
+        public string $context = '',
     ) {}
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Domains\Account\Actions\Profile\UpdateUserAvatar;
+use App\Domains\Identity\Queries\GetAuthenticatedUserContext;
 use App\Livewire\Concerns\WithModal;
 use Livewire\Attributes\Validate;
 use Livewire\Component;

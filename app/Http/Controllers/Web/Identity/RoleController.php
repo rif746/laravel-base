@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web\Identity;
 
+use App\Attributes\LayoutData;
 use App\Attributes\Seo;
 use App\Domains\Identity\Models\Role;
 use App\Http\Controllers\Controller;
@@ -14,6 +15,13 @@ class RoleController extends Controller
      * Display a listing of the resource.
      */
     #[Authorize('viewAny', Role::class)]
+    #[LayoutData(
+        header: 'domains/identity.seo.role.title',
+        breadcrumbs: [
+            'ui.menu.dashboard' => 'dashboard',
+            'domains/identity.seo.role.title' => '',
+        ],
+    )]
     #[Seo(
         title: 'domains/identity.seo.role.title',
         description: 'domains/identity.seo.role.description',

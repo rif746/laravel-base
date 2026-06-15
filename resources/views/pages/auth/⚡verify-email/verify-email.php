@@ -1,7 +1,7 @@
 <?php
 
 use App\Attributes\Seo;
-use App\Domains\Identity\Actions\Registration\ResendVerificationEmail;
+use App\Domains\Identity\Actions\Onboarding\ResendVerificationEmail;
 use App\Livewire\Concerns\HasSeoAttributes;
 use App\Livewire\Concerns\WithToast;
 use Illuminate\Support\Facades\Auth;

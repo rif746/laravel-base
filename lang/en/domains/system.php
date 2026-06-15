@@ -38,7 +38,9 @@ return [
             'upload_button' => 'Upload Backup File',
             'upload_modal_title' => 'Upload Backup File',
             'empty_state' => 'No Backup File Stored',
-            'delete_confirm' => 'Delete this backup data?',
+            'confirmation' => [
+                'delete' => 'Are you sure you want to delete this backup?',
+            ],
         ],
         'settings' => [
             'update_title' => 'Update Settings',
@@ -52,12 +54,14 @@ return [
 
     'messages' => [
         'backup' => [
-            'delete_success' => 'Backup data deleted successfully',
-            'backup_success' => 'System Backup successfully',
-            'backup_error' => 'Failed to Backup System',
-            'restored_success' => 'System Restore successfully',
-            'restored_error' => 'Failed to Restore System',
-            'download_error' => 'Failed to download :path',
+            'delete_success' => 'Backup data deleted successfully.',
+            'backup_success' => 'System backup completed successfully.',
+            'backup_error' => 'Failed to backup the system.',
+            'verification_error' => 'Backup zip file could not be verified on target storage.',
+            'restored_success' => 'System restore completed successfully.',
+            'restored_error' => 'Failed to restore the system.',
+            'download_error' => 'Failed to download :path.',
+            'file_not_found' => 'Backup file not found.',
         ],
     ],
 
@@ -76,7 +80,7 @@ return [
         ],
         'backup' => [
             'title' => 'System Backups',
-            'description' => 'Backup and Restore database and asset.',
+            'description' => 'Backup and restore the database and assets.',
             'keywords' => 'backup, restore, database, asset',
         ],
     ],

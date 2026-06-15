@@ -4,7 +4,7 @@
         <div class="col-sm-12" wire:key="{{ $settingKey }}">
             @if($this->settingEnum)
                 <x-dynamic-component :component="$this->settingEnum?->inputType()->component()"
-                                     :attributes="$attributes->merge($this->settingEnum?->inputAttributes())"
+                                     :attributes="new Illuminate\View\ComponentAttributeBag($this->settingEnum?->inputAttributes())"
                                      wire:model="settingValue"/>
             @endif
         </div>

@@ -1,7 +1,8 @@
 <?php
 
-use App\Domains\Identity\Actions\Registration\ResendVerificationEmail;
+use App\Domains\Identity\Actions\Onboarding\ResendVerificationEmail;
 use App\Domains\Identity\Models\User;
+use App\Domains\Identity\Queries\GetAuthenticatedUserContext;
 use App\Livewire\Concerns\WithToast;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -11,10 +12,15 @@ new class extends Component
 {
     use WithToast;
     #[On('profile-updated')]
+    public function refreshProfile(): void
+    {
+        app(GetAuthenticatedUserContext::class)->refresh();
+    }
+
     #[Computed]
     public function user(): ?User
     {
-        return auth('web')->user()->load(['profile', 'avatar']);
+         return app(GetAuthenticatedUserContext::class)->fetch();
     }
 
     public function resendVerificationEmail(ResendVerificationEmail $action): void

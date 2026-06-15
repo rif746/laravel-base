@@ -22,7 +22,7 @@ class SystemRestore
         $backupPath = Storage::disk($backup->disk)->path($backup->path);
         $restorePath = storage_path('app/restore-temp');
         if (! file_exists($backupPath)) {
-            throw new Exception('Backup file not found');
+            throw new Exception(__('domains/system.messages.backup.file_not_found'));
         }
 
         $zip = new ZipArchive;
@@ -53,7 +53,7 @@ class SystemRestore
             ]);
 
             if ($restoreSql->failed()) {
-                throw new RuntimeException('Database restore failed: '.$restoreSql->errorOutput());
+                throw new RuntimeException(__('domains/system.messages.backup.restored_error') . ' ' . $restoreSql->errorOutput());
             }
         }
     }

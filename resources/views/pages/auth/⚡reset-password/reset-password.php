@@ -17,6 +17,11 @@ class extends Component
 
     public ResetPasswordForm $form;
 
+    public function mount(string $token): void
+    {
+        $this->form->token = $token;
+    }
+
     public function resetPassword(ResetUserPassword $action): void
     {
         $this->form->validate();

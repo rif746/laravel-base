@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Middleware\HandleLayoutDataAttributes;
 use App\Http\Middleware\HandlePreferredLanguage;
 use App\Http\Middleware\HandlePreferredTimezone;
-use App\Http\Middleware\HandleSeoAttribute;
+use App\Http\Middleware\HandleSeoAttributes;
 use App\Http\Middleware\HandleSeoSetting;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -20,7 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'seo' => HandleSeoAttribute::class,
+            'seo' => HandleSeoAttributes::class,
+            'layouts' => HandleLayoutDataAttributes::class,
         ]);
         $middleware->web(append: [
             HandleSeoSetting::class,

@@ -11,6 +11,29 @@ return [
             'phone_number' => 'Phone Number',
         ],
     ],
+
+    'enum' => [
+        'gender' => [
+            GenderOption::MALE->value => 'Male',
+            GenderOption::FEMALE->value => 'Female',
+        ],
+        'user_settings' => [
+            'notification' => 'Notification',
+            'language' => 'Language',
+            'timezone' => 'Timezone',
+            'options' => [
+                'language' => [
+                    'en' => 'English',
+                    'id' => 'Indonesian',
+                ],
+                'notification' => [
+                    'on' => 'On',
+                    'off' => 'Off',
+                ],
+            ],
+        ],
+    ],
+
     'pages' => [
         'profile' => [
             'title' => 'Profile Information',
@@ -27,28 +50,6 @@ return [
         'user_settings' => [
             'title' => 'User Settings',
             'description' => 'Manage your application preferences like theme and language.',
-        ],
-    ],
-
-    'enum' => [
-        'user_settings' => [
-            'notification' => 'Notification',
-            'language' => 'Language',
-            'timezone' => 'Timezone',
-            'options' => [
-                'language' => [
-                    'en' => 'English',
-                    'id' => 'Indonesian',
-                ],
-                'notification' => [
-                    'on' => 'On',
-                    'off' => 'Off',
-                ],
-            ],
-        ],
-        'gender' => [
-            GenderOption::MALE->value => 'Male',
-            GenderOption::FEMALE->value => 'Female',
         ],
     ],
 

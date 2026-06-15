@@ -1,9 +1,9 @@
 <?php
 
+use App\Domains\Identity\Actions\IdentityMaintenance\UpdateUserIdentity;
 use App\Domains\Identity\Actions\Onboarding\ProvisionNewUser;
-use App\Domains\Identity\Actions\Onboarding\UpdateUser;
+use App\Domains\Identity\DTOs\IdentityMaintenance\UpdateUserIdentityDTO;
 use App\Domains\Identity\DTOs\Onboarding\ProvisionUserDTO;
-use App\Domains\Identity\DTOs\Onboarding\UpdateUserDTO;
 use App\Domains\Identity\Models\Role;
 use App\Domains\Identity\Models\User;
 use App\Livewire\Concerns\WithModal;
@@ -29,13 +29,8 @@ new class extends Component
 
     protected string $resourceName = 'user';
 
-    #[Computed]
-    public function roles(): Collection
-    {
-        return Role::orderBy('name', 'asc')->get(['name'])->pluck('name', 'name');
-    }
 
-    public function save(ProvisionNewUser $create, UpdateUser $update): void
+    public function save(ProvisionNewUser $create, UpdateUserIdentity $update): void
     {
         $this->form->validate($this->form->rules($this->id ?? 0, $this->mode === 'update'));
 
@@ -47,10 +42,9 @@ new class extends Component
                 role: $this->form->role_name,
             ));
         } elseif ($this->mode === 'update') {
-            $update->execute($this->user, new UpdateUserDTO(
+            $update->execute($this->user, new UpdateUserIdentityDTO(
                 name: $this->form->name,
                 email: $this->form->email,
-                role: $this->form->role_name,
             ));
         }
 

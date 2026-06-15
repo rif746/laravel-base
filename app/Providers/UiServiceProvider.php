@@ -1,12 +1,21 @@
 <?php
 
-namespace App\Domains\System\Providers;
+namespace App\Providers;
 
+use App\UI\Actions\ResolveDynamicText;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
-class BladeServiceProvider extends ServiceProvider
+class UiServiceProvider extends ServiceProvider
 {
+    public function register()
+    {
+        $this->app->singleton(ResolveDynamicText::class, function ($app) {
+            return new ResolveDynamicText();
+        });
+    }
+
     public function boot(): void
     {
         // Google Tag Manager Head
