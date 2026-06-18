@@ -7,19 +7,17 @@ enum UserStatus: string
     case ACTIVE = 'active';
     case INACTIVE = 'inactive';
 
-    public function labels(): string
+    public function label(): string
     {
         return __('domains/identity.enum.user_status.'.$this->value);
     }
 
-    public function badge(): string
+    public function badgeVariant(): string
     {
-        $color = match ($this) {
-            self::ACTIVE => 'bg-success',
-            self::INACTIVE => 'bg-danger',
+        return match ($this) {
+            self::ACTIVE => 'success',
+            self::INACTIVE => 'danger',
         };
-
-        return "<span class='badge {$color}'>{$this->labels()}</span>";
     }
 
     public function isActive(): bool

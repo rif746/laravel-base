@@ -14,9 +14,12 @@
         @endif
     </div>
     <ul class="nav flex-column">
-        <x-layouts.nav.sidebar.nav-link :route="route('dashboard')" icon="tabler-home" :text="__('ui.menu.dashboard')" />
-        <x-layouts.nav.sidebar.nav-link :route="route('roles.index')" icon="tabler-shield" :text="__('ui.menu.roles')" />
-        <x-layouts.nav.sidebar.nav-link :route="route('users.index')" icon="tabler-user" :text="__('ui.menu.users')" />
+        <x-layouts.nav.sidebar.nav-link :route="route('dashboard')" icon="tabler-home"
+                                        :text="__('ui.menu.dashboard')" permission="dashboard index" />
+        <x-layouts.nav.sidebar.nav-link :route="route('roles.index')" icon="tabler-shield"
+                                        :text="__('ui.menu.roles')" permission="role index" />
+        <x-layouts.nav.sidebar.nav-link :route="route('users.index')" icon="tabler-user"
+                                        :text="__('ui.menu.users')" permission="user index" />
     </ul>
 
 </aside>

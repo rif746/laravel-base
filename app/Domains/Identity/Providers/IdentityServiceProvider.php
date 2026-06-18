@@ -12,7 +12,7 @@ class IdentityServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->singleton(GetAuthenticatedUserContext::class, fn () => new GetAuthenticatedUserContext());
+        $this->app->singleton(GetAuthenticatedUserContext::class, fn () => new GetAuthenticatedUserContext);
     }
 
     public function boot(): void

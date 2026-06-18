@@ -15,15 +15,14 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class StyledExport implements  FromQuery, WithHeadings, WithMapping, WithStyles, WithColumnFormatting, ShouldAutoSize, ShouldQueue
+class StyledExport implements FromQuery, ShouldAutoSize, ShouldQueue, WithColumnFormatting, WithHeadings, WithMapping, WithStyles
 {
     use Exportable;
 
     public function __construct(
         private FromQuery&WithHeadings&WithMapping&WithColumnFormatting $domainExport
-    )
-    {
-    }
+    ) {}
+
     /**
      * We use FromQuery instead of FromCollection to allow chunking.
      */
@@ -37,10 +36,6 @@ class StyledExport implements  FromQuery, WithHeadings, WithMapping, WithStyles,
         return $this->domainExport->headings();
     }
 
-    /**
-     * @param mixed $row
-     * @return array
-     */
     public function map(mixed $row): array
     {
         return $this->domainExport->map($row);
@@ -61,7 +56,7 @@ class StyledExport implements  FromQuery, WithHeadings, WithMapping, WithStyles,
     {
         $sheet->freezePane('A2');
         $sheet->getPageSetup()->setOrientation('landscape');
-        $columnStyle = $sheet->getStyle('A1:' . $sheet->getHighestColumn() . $sheet->getHighestRow());
+        $columnStyle = $sheet->getStyle('A1:'.$sheet->getHighestColumn().$sheet->getHighestRow());
         $columnStyle->getAlignment()->setWrapText(true);
         $columnStyle->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
         $columnStyle->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);

@@ -5,7 +5,6 @@ namespace App\Domains\Identity\Actions\IdentityMaintenance;
 use App\Domains\Identity\Actions\AccessControl\UpdateUserRole;
 use App\Domains\Identity\DTOs\IdentityMaintenance\UpdateUserIdentityDTO;
 use App\Domains\Identity\Models\User;
-use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class UpdateUserIdentity
@@ -18,7 +17,7 @@ class UpdateUserIdentity
     public function execute(User $user, UpdateUserIdentityDTO $dto): User
     {
         $user->fill([
-            'name'  => $dto->name,
+            'name' => $dto->name,
             'email' => $dto->email,
         ]);
 

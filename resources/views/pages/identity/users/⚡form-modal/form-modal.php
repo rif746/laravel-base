@@ -4,12 +4,10 @@ use App\Domains\Identity\Actions\IdentityMaintenance\UpdateUserIdentity;
 use App\Domains\Identity\Actions\Onboarding\ProvisionNewUser;
 use App\Domains\Identity\DTOs\IdentityMaintenance\UpdateUserIdentityDTO;
 use App\Domains\Identity\DTOs\Onboarding\ProvisionUserDTO;
-use App\Domains\Identity\Models\Role;
 use App\Domains\Identity\Models\User;
 use App\Livewire\Concerns\WithModal;
 use App\Livewire\Concerns\WithToast;
 use App\Livewire\Forms\Identity\UserForm;
-use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -28,7 +26,6 @@ new class extends Component
     public UserForm $form;
 
     protected string $resourceName = 'user';
-
 
     public function save(ProvisionNewUser $create, UpdateUserIdentity $update): void
     {

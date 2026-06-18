@@ -11,10 +11,10 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class UserImport implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class UserImport implements ShouldQueue, ToCollection, WithChunkReading, WithHeadingRow
 {
     /**
-     * @param Collection $rows A chunk of rows defined by chunkSize()
+     * @param  Collection  $rows  A chunk of rows defined by chunkSize()
      */
     public function collection(Collection $rows): void
     {

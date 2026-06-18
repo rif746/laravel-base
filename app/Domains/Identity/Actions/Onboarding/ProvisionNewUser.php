@@ -20,8 +20,8 @@ class ProvisionNewUser
     {
         $user = DB::transaction(function () use ($dto) {
             $user = User::create([
-                'name'     => $dto->name,
-                'email'    => $dto->email,
+                'name' => $dto->name,
+                'email' => $dto->email,
                 'password' => $dto->password,
             ]);
             $this->updateUserRole->execute($user, [$dto->role]);

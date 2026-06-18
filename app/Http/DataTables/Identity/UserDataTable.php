@@ -6,16 +6,19 @@ use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Exports\UserExport;
 use App\Domains\Identity\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Blade;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
+
 use function __;
 
 class UserDataTable extends DataTable
 {
     public bool $fastExcel = false;
+
     public string $exportClass = UserExport::class;
 
     /**
@@ -26,23 +29,27 @@ class UserDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->editColumn('status', fn ($model) => $model->status->badge())
+            ->editColumn('status', fn ($model) => view('components.badge', [
+                'label' => $model->status->label(),
+                'variant' => $model->status->badgeVariant(),
+            ]))
             ->addColumn(
                 'action',
                 fn ($user) => view('components.datatables.action-button', [
                     'log' => true,
                     'view' => [
                         'url' => route('users.view', ['user_id' => $user->id]),
+                        'permission' => 'user index',
                     ],
                     'edit' => [
                         'modal' => 'user-form-modal',
-                        'permission' => $user->hasRole(RoleType::SYSTEM_ADMIN) ? null : 'user edit',
+                        'permission' => 'user edit',
                     ],
                     'delete' => [
                         'url' => null,
                         'message' => __('ui.confirmation.delete', ['resource' => __('resources.user')]),
                         'success_message' => __('ui.crud.success.deleted', ['resource' => __('resources.user')]),
-                        'permission' => $user->hasRole(RoleType::SYSTEM_ADMIN) ? null : 'user delete',
+                        'permission' => 'user delete',
                     ],
                     'table_name' => 'user-table',
                     'id' => $user->id,

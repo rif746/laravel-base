@@ -35,6 +35,7 @@ class HandleSeoAttributes
 
     /**
      * Extracts the attribute directly from the route structure safely.
+     *
      * @throws Exception
      */
     private function getSeoAttributeDirectly(mixed $route): ?Seo
@@ -64,9 +65,10 @@ class HandleSeoAttributes
 
                 if (! empty($attributes)) {
                     $seoInstance = $attributes[0]->newInstance();
-                    if(!$seoInstance instanceof Seo) {
+                    if (! $seoInstance instanceof Seo) {
                         throw new Exception('Expected type of Seo object');
                     }
+
                     return $seoInstance;
                 }
             }

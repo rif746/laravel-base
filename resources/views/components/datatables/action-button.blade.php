@@ -15,7 +15,7 @@
         </button>
     @endif
     @if (!empty($view))
-        @if (!isset($view['permission']) || auth('web')->user()->hasPermissionTo($view['permission']))
+        @if (isset($view['permission']) && auth('web')->user()->hasPermissionTo($view['permission']))
             @if (isset($view['modal']))
                 <button class="btn btn-sm btn-info" data-id="{{ $id }}" data-bs-toggle="modal"
                     data-bs-target="#{{ $view['modal'] }}" data-bs-toggle="tooltip" title="{{ trans('ui.button.view') }}">
@@ -31,7 +31,7 @@
     @endif
 
     @if (!empty($edit))
-        @if (!isset($edit['permission']) || auth('web')->user()->hasPermissionTo($edit['permission']))
+        @if (isset($edit['permission']) && auth('web')->user()->hasPermissionTo($edit['permission']))
             @if (isset($edit['modal']))
                 <button class="btn btn-sm btn-warning" data-id="{{ $id }}" data-bs-toggle="modal"
                     data-bs-target="#{{ $edit['modal'] }}" data-bs-toggle="tooltip"
@@ -48,7 +48,7 @@
     @endif
 
     @if (!empty($delete))
-        @if (!isset($delete['permission']) || auth('web')->user()->hasPermissionTo($delete['permission']))
+        @if (isset($delete['permission']) && auth('web')->user()->hasPermissionTo($delete['permission']))
             <button class="btn btn-sm btn-danger"
                 x-on:click="$ask.livewire('delete-data', {
                 title: '{{ trans('ui.button.delete') }}',

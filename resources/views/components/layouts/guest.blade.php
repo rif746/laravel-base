@@ -4,26 +4,6 @@
 <head>
     <meta charset="UTF-8"/>
     {!! SEO::generate() !!}
-    <link rel="icon" href="{{ asset_static($settings['web-favicon'] ?? 'images/logo.svg') }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ asset_static($settings['web-favicon'] ?? 'images/logo.svg') }}" type="image/x-icon">
-    @if (isset($settings['google-tag_manager_id']))
-        <!-- Google Tag Manager -->
-        <script>
-            (function (w, d, s, l, i) {
-                w[l] = w[l] || [];
-                w[l].push({
-                    'gtm.start': new Date().getTime(),
-                    event: 'gtm.js'
-                });
-                const f = d.getElementsByTagName(s)[0];
-                j = d.createElement(s);
-                const dl = l != 'dataLayer' ? '&l=' + l : '';
-                j.async = true;
-                j.src = 'https://googletagmanager.com'
-            })(window, document, 'script', 'dataLayer', '{{ $settings['google-tag_manager_id'] }}');
-        </script>
-        <!-- End Google Tag Manager -->
-    @endif
 
     @livewireStyles
     @stack('styles')

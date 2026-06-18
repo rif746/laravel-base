@@ -33,10 +33,11 @@ new class extends Component
     #[Computed]
     public function audit(): Collection
     {
-        if(is_null($this->model_id)) {
-            return new Collection();
+        if (is_null($this->model_id)) {
+            return new Collection;
         }
         $model = app($this->model)->where('id', $this->model_id)->first();
+
         return app(GetModelAuditLog::class)->get($model);
     }
 

@@ -24,7 +24,7 @@ test('GetSystemSettings query fetches settings with defaults and returns specifi
         'key' => SystemSettingKey::WEB_NAME->value,
         'value' => 'My Test App',
     ]);
-    
+
     // Clear cache to force DB refresh
     Cache::forget('system_settings');
     $query->flushMemory();

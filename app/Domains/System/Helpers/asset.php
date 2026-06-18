@@ -4,7 +4,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-if (!function_exists('asset_static')) {
+if (! function_exists('asset_static')) {
     /**
      * @throws Exception
      */
@@ -30,14 +30,14 @@ if (!function_exists('asset_static')) {
     }
 }
 
-if (!function_exists('upload_file')) {
+if (! function_exists('upload_file')) {
     function upload_file(UploadedFile|TemporaryUploadedFile $file, string $path, string $disk = 'local'): bool|string
     {
         return $file->store($path, $disk);
     }
 }
 
-if (!function_exists('remove_file')) {
+if (! function_exists('remove_file')) {
     function remove_file(string $path): void
     {
         if (Storage::disk('local')->exists($path)) {

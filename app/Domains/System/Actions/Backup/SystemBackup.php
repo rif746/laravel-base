@@ -28,7 +28,7 @@ class SystemBackup
         }
 
         $latestFile = collect($files)->last();
-        $fileName = $backupName . ' ' . basename($latestFile);
+        $fileName = $backupName.' '.basename($latestFile);
         $sizeInBytes = Storage::disk($disk)->size($latestFile);
 
         return Backup::create([

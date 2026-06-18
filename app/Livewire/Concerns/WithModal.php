@@ -25,7 +25,7 @@ trait WithModal
     {
         $resource = __('resources.'.$this->resourceName);
 
-        return  __('ui.title.'.$this->mode, ['resource' => $resource]);
+        return __('ui.title.'.$this->mode, ['resource' => $resource]);
     }
 
     #[Computed]

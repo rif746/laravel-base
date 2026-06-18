@@ -17,7 +17,6 @@ class Profile extends Model
     /** @use HasFactory<ProfileFactory> */
     use HasFactory;
 
-
     protected static function newFactory(): Factory
     {
         return ProfileFactory::new();

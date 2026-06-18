@@ -11,8 +11,8 @@ use Spatie\LivewireFilepond\WithFilePond;
 new class extends Component
 {
     use WithFilePond;
-    use WithToast;
     use WithModal;
+    use WithToast;
 
     #[Validate(['file', 'extensions:zip'])]
     public ?TemporaryUploadedFile $file = null;

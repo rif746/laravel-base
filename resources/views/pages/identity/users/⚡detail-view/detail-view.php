@@ -3,7 +3,6 @@
 use App\Attributes\LayoutData;
 use App\Attributes\Seo;
 use App\Domains\Identity\Actions\Governance\UpdateUserStatus;
-use App\Domains\Identity\Actions\Passwords\ResetUserPassword;
 use App\Domains\Identity\Actions\Passwords\SendPasswordResetLink;
 use App\Domains\Identity\DTOs\Passwords\ForgotPasswordDTO;
 use App\Domains\Identity\Enums\UserStatus;
@@ -18,23 +17,12 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 
 new #[Layout('components.layouts.app')]
-#[LayoutData(
-    header: 'domains/identity.seo.user_detail.title',
-    breadcrumbs: [
-        'ui.menu.dashboard' => 'dashboard',
-        'domains/identity.seo.user.title' => 'users.index',
-        '{name}' => ''
-    ],
-    context: 'user'
-)]
-#[Seo(
-    title: 'domains/identity.seo.user_detail.title',
-    context: 'user'
-)]
+#[LayoutData(header: 'domains/identity.seo.user_detail.title', breadcrumbs: ['ui.menu.dashboard' => 'dashboard', 'domains/identity.seo.user.title' => 'users.index', '{name}' => ''], context: 'user')]
+#[Seo(title: 'domains/identity.seo.user_detail.title', context: 'user')]
 class extends Component
 {
-    use HasSeoAttributes;
     use HasLayoutDataAttributes;
+    use HasSeoAttributes;
     use WithToast;
 
     #[Locked]
@@ -45,6 +33,7 @@ class extends Component
         $this->id = $user_id;
     }
 
+    #[On('refresh-user-data')]
     #[Computed]
     public function user(): ?User
     {

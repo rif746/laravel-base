@@ -34,6 +34,7 @@ class RoleDataTable extends DataTable
                     ],
                     'delete' => [
                         'url' => null,
+                        'permission' => 'role delete',
                         'message' => __('ui.confirmation.delete', ['resource' => __('resources.role')]),
                         'success_message' => __('ui.crud.success.deleted', ['resource' => __('resources.role')]),
                     ],

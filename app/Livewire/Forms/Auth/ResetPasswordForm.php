@@ -24,8 +24,8 @@ class ResetPasswordForm extends Form
     public function rules(): array
     {
         return [
-            'token'    => ['required'],
-            'email'    => ['required', 'email'],
+            'token' => ['required'],
+            'email' => ['required', 'email'],
             'password' => ['required', 'confirmed', PasswordRule::defaults()],
         ];
     }

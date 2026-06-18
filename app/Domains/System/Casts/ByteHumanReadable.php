@@ -18,7 +18,7 @@ class ByteHumanReadable implements CastsAttributes
         return new ByteUsage((int) $value);
     }
 
-    public function set(Model $model, string $key, mixed $value, array $attributes): mixed
+    public function set(Model $model, string $key, mixed $value, array $attributes): ?int
     {
         if (is_null($value)) {
             return null;

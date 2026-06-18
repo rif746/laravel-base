@@ -11,6 +11,7 @@ use Livewire\Component;
 new class extends Component
 {
     use WithToast;
+
     #[On('profile-updated')]
     public function refreshProfile(): void
     {
@@ -20,7 +21,7 @@ new class extends Component
     #[Computed]
     public function user(): ?User
     {
-         return app(GetAuthenticatedUserContext::class)->fetch();
+        return app(GetAuthenticatedUserContext::class)->fetch();
     }
 
     public function resendVerificationEmail(ResendVerificationEmail $action): void
@@ -31,7 +32,7 @@ new class extends Component
             return;
         }
 
-        $action->execute();
+        $action->execute($this->user);
 
         $this->success(__('The verification email has been sent.'));
     }

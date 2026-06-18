@@ -11,7 +11,7 @@ class GetAuthenticatedUserContext
 
     public function fetch(): ?User
     {
-        if($this->cache !== null) {
+        if ($this->cache !== null) {
             return $this->cache['user'];
         }
 

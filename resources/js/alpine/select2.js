@@ -6,15 +6,24 @@ export default function alpineSelect2(Alpine) {
         if((window.jQuery||window.jquery||window.$) && (typeof window.$.fn.select2 !== 'undefined')) {
             let $el = $(el).select2(config)
 
+            const modelName = el.getAttribute('wire:model') ||
+                el.getAttribute('wire:model.live') ||
+                el.getAttribute('wire:model.blur') || 'select2-clear';
+
             let isUpdating = false
 
-            console.log($el)
             $el.on('change', (e) => {
                 if(isUpdating) return
                 isUpdating = true
                 el.dispatchEvent(new Event('change', {bubbles: true}))
                 isUpdating = false
             })
+
+            const event = (e) => {
+                $el.val(null).trigger('change', {bubbles: true})
+            }
+
+            window.addEventListener(`${modelName}-clear`, event)
 
             const observer = new MutationObserver(() => {
                 if (isUpdating) return;
@@ -27,6 +36,7 @@ export default function alpineSelect2(Alpine) {
 
             cleanup(() => {
                 $el.select2('destroy')
+                window.removeEventListener(`${modelName}-clear`, event)
                 observer.disconnect()
             })
         }

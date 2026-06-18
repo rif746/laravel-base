@@ -9,7 +9,7 @@ use Illuminate\Queue\SerializesModels;
 
 class ExportCompleted implements ShouldQueue
 {
-    use Queueable, Dispatchable, SerializesModels;
+    use Dispatchable, Queueable, SerializesModels;
 
     public function __construct(
         public readonly string $recipientEmail,

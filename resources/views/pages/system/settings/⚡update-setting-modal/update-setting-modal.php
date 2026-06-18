@@ -42,7 +42,7 @@ new class extends Component
         $this->settingKey = $id;
         $setting = SystemSettings::where('key', $id)
             ->first();
-        if($this->settingEnum->inputType() == InputType::SELECT) {
+        if ($this->settingEnum->inputType() == InputType::SELECT) {
             $this->settingValue = $setting->value;
         } else {
             $this->settingValue = $setting?->translated_value ?? '-';

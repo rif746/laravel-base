@@ -7,7 +7,7 @@ use Illuminate\Queue\SerializesModels;
 
 class ImportCompleted
 {
-
     use Dispatchable, SerializesModels;
+
     public function __construct(public readonly string $recipientEmail) {}
 }

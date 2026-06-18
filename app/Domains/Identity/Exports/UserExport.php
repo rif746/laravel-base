@@ -2,16 +2,16 @@
 
 namespace App\Domains\Identity\Exports;
 
+use App\Domains\Identity\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use App\Domains\Identity\Models\User;
 
-class UserExport implements FromQuery, WithHeadings, WithMapping, WithColumnFormatting
+class UserExport implements FromQuery, WithColumnFormatting, WithHeadings, WithMapping
 {
     use Exportable;
 
@@ -35,15 +35,12 @@ class UserExport implements FromQuery, WithHeadings, WithMapping, WithColumnForm
         ];
     }
 
-    /**
-     * @param mixed $row
-     * @return array
-     */
     public function map(mixed $row): array
     {
         $gender = $row->profile?->gender?->label() ?: '-';
         $dateOfBirth = $row->profile?->date_of_birth ?: '-';
         $phone = $row->profile?->phone_number ?: '-';
+
         return [
             '=ROW()-1',
             $row->name,

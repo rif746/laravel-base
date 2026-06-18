@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 test('UpdateProfile action creates or updates user profile', function () {
     $user = User::factory()->create();
-    $profile = new Profile();
+    $profile = new Profile;
 
     $dto = new UpdateProfileDTO(
         userId: $user->id,

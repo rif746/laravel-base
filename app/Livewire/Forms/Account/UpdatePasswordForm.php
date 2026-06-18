@@ -20,7 +20,7 @@ class UpdatePasswordForm extends Form
     {
         return [
             'current_password' => ['required', 'current_password'],
-            'new_password'     => ['required', 'min:8', 'confirmed', 'different:current_password'],
+            'new_password' => ['required', 'min:8', 'confirmed', 'different:current_password'],
         ];
     }
 }

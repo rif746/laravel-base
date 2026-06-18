@@ -3,9 +3,10 @@
 namespace App\Domains\Identity\Actions\AccessControl;
 
 use App\Domains\Identity\DTOs\AccessControl\UpdateRoleDTO;
-use App\Domains\Identity\Models\Role;
 use Illuminate\Support\Facades\DB;
+use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Events\AuditCustom;
+use Spatie\Permission\Contracts\Role;
 use Throwable;
 
 class UpdateSystemRole
@@ -24,13 +25,14 @@ class UpdateSystemRole
         $newPermissions = $role->permissions->pluck('name')->toArray();
 
         if ($newPermissions !== $oldPermissions) {
+            /** @var Auditable $role */
+
             // Tell Owen-It exactly what to log
-            $role->auditEvent    = 'permissions_synced';
+            $role->auditEvent = 'permissions_synced';
             $role->isCustomEvent = true;
             $role->auditCustomOld = ['permissions' => implode(', ', $oldPermissions)];
             $role->auditCustomNew = ['permissions' => implode(', ', $newPermissions)];
 
-            // Dispatch the event to generate the row in the `audits` table
             event(new AuditCustom($role));
         }
 

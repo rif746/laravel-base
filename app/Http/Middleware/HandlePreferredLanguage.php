@@ -8,17 +8,18 @@ use App\Domains\System\Queries\GetSystemSettings;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class HandlePreferredLanguage
 {
-    public function __construct(protected GetSystemSettings $getSystemSettings)
-    {
-    }
+    public function __construct(protected GetSystemSettings $getSystemSettings) {}
 
     /**
      * Handle an incoming request.
      *
      * @param  Closure(Request): (Response)  $next
+     *
+     * @throws Throwable
      */
     public function handle(Request $request, Closure $next): Response
     {

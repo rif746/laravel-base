@@ -17,8 +17,7 @@ class NotifyExportReady implements ShouldQueue
         private readonly string $recipientEmail,
         private readonly string $filePath,
         private readonly string $downloadName,
-    )
-    {
+    ) {
         //
     }
 

@@ -1,10 +1,11 @@
 <?php
+
 namespace App\UI\Actions;
 
 use Illuminate\Support\Facades\Lang;
 use ReflectionClass;
-use ReflectionProperty;
 use ReflectionMethod;
+use ReflectionProperty;
 use Throwable;
 
 class ResolveDynamicText
@@ -17,7 +18,9 @@ class ResolveDynamicText
 
     public function execute(?string $value, array|object $context, ?string $contextTarget = null): ?string
     {
-        if (! $value) return null;
+        if (! $value) {
+            return null;
+        }
 
         if (str_contains($value, '.') && Lang::has($value)) {
             return $this->localizeAndBind($value, $context, $contextTarget);
@@ -51,7 +54,9 @@ class ResolveDynamicText
     private function resolveExplicitPlaceholders(string $text, array|object $data, ?string $contextTarget): string
     {
         preg_match_all('/\{([^}]+)\}/', $text, $matches);
-        if (empty($matches[1])) return $text;
+        if (empty($matches[1])) {
+            return $text;
+        }
 
         foreach ($matches[1] as $placeholder) {
             if (str_contains($placeholder, '.')) {
@@ -94,8 +99,12 @@ class ResolveDynamicText
             return $target && is_scalar($target) ? (string) $target : '';
         }
 
-        if ($target && is_object($target) && isset($target->{$property})) return (string) $target->{$property};
-        if ($target && is_array($target) && isset($target[$property])) return (string) $target[$property];
+        if ($target && is_object($target) && isset($target->{$property})) {
+            return (string) $target->{$property};
+        }
+        if ($target && is_array($target) && isset($target[$property])) {
+            return (string) $target[$property];
+        }
 
         return '';
     }
@@ -116,7 +125,7 @@ class ResolveDynamicText
 
         // Scan Public Methods (e.g. Livewire 4 #[Computed] properties)
         foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-            if ($method->getNumberOfParameters() === 0 && !$method->isStatic()) {
+            if ($method->getNumberOfParameters() === 0 && ! $method->isStatic()) {
                 try {
                     $name = $method->getName();
                     // Ignore internal framework overrides and lifecycle names

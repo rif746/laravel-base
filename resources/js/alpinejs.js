@@ -19,5 +19,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.plugin(alpineQuill);
 });
 
+Livewire.pl
+
 // 3. Boot Livewire
 Livewire.start();

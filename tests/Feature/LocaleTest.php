@@ -1,5 +1,7 @@
 <?php
 
+use App\Domains\Account\Enums\UserSettingKey;
+use App\Domains\Identity\Models\User;
 use App\Domains\System\Enums\SystemSettingKey;
 use App\Domains\System\Models\SystemSettings;
 use Illuminate\Support\Facades\Route;
@@ -36,10 +38,10 @@ test('middleware respects session locale over system default settings', function
 });
 
 test('middleware respects session locale over authenticated user settings', function () {
-    $user = \App\Domains\Identity\Models\User::factory()->create([
+    $user = User::factory()->create([
         'settings' => [
-            \App\Domains\Account\Enums\UserSettingKey::LANGUAGE->value => 'en',
-            \App\Domains\Account\Enums\UserSettingKey::TIMEZONE->value => 'UTC',
+            UserSettingKey::LANGUAGE->value => 'en',
+            UserSettingKey::TIMEZONE->value => 'UTC',
         ],
     ]);
 

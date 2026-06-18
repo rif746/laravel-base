@@ -9,6 +9,7 @@ use App\Domains\System\Models\SystemSettings;
 use App\UI\Actions\SetSeoMetadata;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {
     cache()->forget('system_settings');
@@ -100,8 +101,8 @@ test('SystemSettings model returns translated values correctly', function () {
         'value' => 'logos/logo.png',
     ]);
     // Since asset_static is tested via config/storage mocks
-    \Illuminate\Support\Facades\Storage::fake('public');
-    \Illuminate\Support\Facades\Storage::disk('public')->put('logos/logo.png', 'content');
+    Storage::fake('public');
+    Storage::disk('public')->put('logos/logo.png', 'content');
     expect($settingFile->translated_value)->toBeString();
 });
 

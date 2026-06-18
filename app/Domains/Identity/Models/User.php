@@ -24,10 +24,11 @@ use Spatie\Permission\Traits\HasRoles;
 #[Fillable(['name', 'email', 'password', 'status', 'settings'])]
 #[Hidden(['password', 'remember_token'])]
 #[UsePolicy(UserPolicy::class)]
-class User extends Authenticatable implements MustVerifyEmail, Auditable
+class User extends Authenticatable implements Auditable, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory;
+
     use HasFile;
     use HasRoles;
     use Notifiable;
@@ -47,8 +48,6 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
 
     /**
      * Attributes to include in the Audit.
-     *
-     * @var array
      */
     protected array $auditInclude = [
         'name',

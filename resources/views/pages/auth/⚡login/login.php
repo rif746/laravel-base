@@ -40,6 +40,14 @@ class extends Component
             ]);
         }
 
+        $user = Auth::user();
+        if(!$user->status->isActive()) {
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'form.email' => trans('auth.not_activated'),
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
 
         // Regenerate the session to prevent fixation attacks.

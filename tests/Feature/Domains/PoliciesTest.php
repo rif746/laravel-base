@@ -16,7 +16,7 @@ test('UserPolicy checks correct permissions', function () {
     $user = User::factory()->create();
     $targetUser = User::factory()->create();
 
-    $policy = new UserPolicy();
+    $policy = new UserPolicy;
 
     // 1. viewAny / view
     expect($policy->viewAny($user))->toBeFalse();
@@ -46,7 +46,7 @@ test('RolePolicy checks correct permissions', function () {
     $user = User::factory()->create();
     $targetRole = Role::create(['name' => 'CustomRole', 'guard_name' => 'web']);
 
-    $policy = new RolePolicy();
+    $policy = new RolePolicy;
 
     // 1. viewAny / view
     expect($policy->viewAny($user))->toBeFalse();
@@ -74,7 +74,7 @@ test('RolePolicy checks correct permissions', function () {
 
 test('SystemSettingPolicy checks correct permissions', function () {
     $user = User::factory()->create();
-    $policy = new SystemSettingPolicy();
+    $policy = new SystemSettingPolicy;
 
     expect($policy->viewAny($user))->toBeFalse();
 

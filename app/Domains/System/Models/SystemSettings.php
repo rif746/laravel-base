@@ -2,8 +2,8 @@
 
 namespace App\Domains\System\Models;
 
-use App\UI\Enums\InputType;
 use App\Domains\System\Enums\SystemSettingKey;
+use App\UI\Enums\InputType;
 use Exception;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 #[WithoutTimestamps]
 class SystemSettings extends Model
 {
-
     /**
      * @throws Exception
      */

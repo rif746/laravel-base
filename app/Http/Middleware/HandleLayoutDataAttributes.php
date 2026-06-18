@@ -9,8 +9,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\ViewController;
 use ReflectionException;
-use Symfony\Component\HttpFoundation\Response;
 use ReflectionMethod;
+use Symfony\Component\HttpFoundation\Response;
 
 class HandleLayoutDataAttributes
 {
@@ -40,6 +40,7 @@ class HandleLayoutDataAttributes
 
     /**
      * Extracts the LayoutData attribute directly from the route structure safely.
+     *
      * @throws Exception
      */
     private function getLayoutAttributeDirectly(mixed $route): ?LayoutData
@@ -72,6 +73,7 @@ class HandleLayoutDataAttributes
                     if (! $layoutInstance instanceof LayoutData) {
                         throw new Exception('Expected type of LayoutData object');
                     }
+
                     return $layoutInstance;
                 }
             }

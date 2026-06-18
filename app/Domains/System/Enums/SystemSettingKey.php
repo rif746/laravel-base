@@ -4,7 +4,6 @@ namespace App\Domains\System\Enums;
 
 use App\UI\Enums\FileType;
 use App\UI\Enums\InputType;
-use Artesaos\SEOTools\Facades\SEOMeta;
 
 enum SystemSettingKey: string
 {
@@ -50,7 +49,7 @@ enum SystemSettingKey: string
                     self::GOOGLE_TAG_MANAGER_ID,
                     self::GOOGLE_WEBMASTER_ID,
                 ],
-            ]
+            ],
         ];
     }
 
@@ -71,14 +70,15 @@ enum SystemSettingKey: string
                 'allow-image-crop' => true,
                 'allow-image-resize' => true,
                 'allow-image-transform' => true,
-                'image-crop-aspect-ratio' => "1:1",
-                'image-resize-target-width' => "500",
-                'image-resize-target-height'=> "500"
+                'image-crop-aspect-ratio' => '1:1',
+                'image-resize-target-width' => '500',
+                'image-resize-target-height' => '500',
             ],
             self::TIMEZONE, self::DEFAULT_LANGUAGE => ['options' => $this->options()],
             default => [],
         };
         $options['label'] = $this->label();
+
         return $options;
     }
 

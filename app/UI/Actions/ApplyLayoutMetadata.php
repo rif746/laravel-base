@@ -3,8 +3,8 @@
 namespace App\UI\Actions;
 
 use App\Attributes\LayoutData;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 class ApplyLayoutMetadata
 {
@@ -38,7 +38,7 @@ class ApplyLayoutMetadata
                     }
                 }
                 // SCENARIO B: Route configuration is a simple flat string: "identity.dashboard"
-                else if (is_string($routeConfig)) {
+                elseif (is_string($routeConfig)) {
                     $routeName = $routeConfig;
                 }
 
@@ -53,7 +53,7 @@ class ApplyLayoutMetadata
 
             $breadcrumbs[] = [
                 'label' => $label,
-                'url'   => $url,
+                'url' => $url,
             ];
         }
 
@@ -68,10 +68,13 @@ class ApplyLayoutMetadata
             $header = $lastCrumb['label'] ?? '';
         }
 
-        // 4. Inject properties into the global view instance memory
-        View::share([
+        // 4. Inject properties into the layout view instance memory
+        View::composer([
+            'components.layouts.app',
+            'components.layouts.guest',
+        ], fn($view) => $view->with([
             'breadcrumbs' => $breadcrumbs,
-            'header'       => $header ?? config('app.name', 'Antigravity App'),
-        ]);
+            'header' => $header ?? config('app.name', 'Antigravity App'),
+        ]));
     }
 }

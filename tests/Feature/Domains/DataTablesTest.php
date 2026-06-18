@@ -17,7 +17,7 @@ test('RoleDataTable returns builder, html, columns, and dataTable instance', fun
     $dataTable = app(RoleDataTable::class);
 
     // 1. query
-    $query = $dataTable->query(new Role());
+    $query = $dataTable->query(new Role);
     expect($query)->toBeInstanceOf(Builder::class);
 
     // 2. columns
@@ -37,7 +37,7 @@ test('UserDataTable returns builder, html, columns, and dataTable instance', fun
     $dataTable = app(UserDataTable::class);
 
     // 1. query
-    $query = $dataTable->query(new User());
+    $query = $dataTable->query(new User);
     expect($query)->toBeInstanceOf(Builder::class);
 
     // 2. columns

@@ -11,7 +11,7 @@ use Spatie\Permission\Models\Role as SpatieRole;
 
 #[Fillable(['name', 'guard_name'])]
 #[UsePolicy(RolePolicy::class)]
-class Role extends SpatieRole implements RoleContract, Auditable
+class Role extends SpatieRole implements Auditable, RoleContract
 {
     use \OwenIt\Auditing\Auditable;
 }

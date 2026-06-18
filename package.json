@@ -12,10 +12,10 @@
         "alpinejs-axios": "^1.0.12",
         "apexcharts": "^5.10.5",
         "autoprefixer": "^10.4.27",
-        "axios": ">=1.11.0 <=1.14.0",
+        "axios": "1.15.2",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^3.0.0",
-        "postcss": "^8.5.9",
+        "postcss": "8.5.10",
         "sass": "^1.99.0",
         "sweetalert2": "^11.26.24",
         "vite": "^8.0.7"

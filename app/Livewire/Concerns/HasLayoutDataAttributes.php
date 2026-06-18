@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Livewire\Concerns;
 
 use App\Attributes\LayoutData;

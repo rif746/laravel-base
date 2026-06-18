@@ -17,7 +17,7 @@ class SuspendUser
      */
     public function execute(User $user): void
     {
-        if ($user->hasRole(RoleType::ADMIN)) {
+        if ($user->hasRole([RoleType::SYSTEM_ADMIN, RoleType::ADMIN])) {
             throw new Exception('You can\'t suspend an admin user.');
         }
 

@@ -24,8 +24,8 @@ class RegisterSelfServiceUser
     public function execute(RegisterSelfServiceUserDTO $dto): User
     {
         $user = User::create([
-            'name'     => $dto->name,
-            'email'    => $dto->email,
+            'name' => $dto->name,
+            'email' => $dto->email,
             'password' => $dto->password,
         ]);
 

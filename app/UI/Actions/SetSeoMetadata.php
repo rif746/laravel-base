@@ -13,13 +13,12 @@ class SetSeoMetadata
     public function applySeo(Seo $seo, array|object $viewData, Request $request): void
     {
         $rawData = [
-            'title'       => $seo->title,
+            'title' => $seo->title,
             'description' => $seo->description,
-            'keywords'    => is_array($seo->keywords) ? implode(', ', $seo->keywords) : $seo->keywords,
-            'image'       => $seo->image,
-            'context_target'  => $seo->context, // 👈 Save context target
+            'keywords' => is_array($seo->keywords) ? implode(', ', $seo->keywords) : $seo->keywords,
+            'image' => $seo->image,
+            'context_target' => $seo->context, // 👈 Save context target
         ];
-
 
         $this->updateSeoTools(rawData: $rawData, viewData: $viewData, request: $request);
     }
@@ -29,16 +28,18 @@ class SetSeoMetadata
         $contextTarget = $rawData['context_target'] ?? null;
 
         // Pass the context target to the text resolver
-        $title       = $this->textResolver->execute(value: $rawData['title'], context: $viewData, contextTarget: $contextTarget);
+        $title = $this->textResolver->execute(value: $rawData['title'], context: $viewData, contextTarget: $contextTarget);
         $description = $this->textResolver->execute(value: $rawData['description'], context: $viewData, contextTarget: $contextTarget);
-        $keywords    = $this->textResolver->execute(value: $rawData['keywords'], context:  $viewData, contextTarget: $contextTarget);
-        $image       = $rawData['image'];
+        $keywords = $this->textResolver->execute(value: $rawData['keywords'], context: $viewData, contextTarget: $contextTarget);
+        $image = $rawData['image'];
 
         SEOTools::setTitle($title ?? __('domains/system.seo.default_title'));
         SEOTools::setDescription($description ?? __('domains/system.seo.default_description'));
         SEOTools::metatags()->setCanonical($request->url());
 
-        if ($keywords) SEOTools::metatags()->setKeywords($keywords);
+        if ($keywords) {
+            SEOTools::metatags()->setKeywords($keywords);
+        }
         if ($image) {
             SEOTools::addImages($image);
             SEOTools::opengraph()->addProperty('image', asset($image));

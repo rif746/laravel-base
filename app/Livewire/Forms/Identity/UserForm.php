@@ -28,10 +28,10 @@ class UserForm extends Form
     public function rules(int $userId = 0, bool $isUpdate = false): array
     {
         $rules = [
-            'name'      => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($userId)],
-            'email'     => ['required', 'string', 'email', Rule::unique(User::class, 'email')->ignore($userId)],
+            'name' => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($userId)],
+            'email' => ['required', 'string', 'email', Rule::unique(User::class, 'email')->ignore($userId)],
             'role_name' => ['required'],
-            'password'  => [Password::default(), 'required', 'confirmed'],
+            'password' => [Password::default(), 'required', 'confirmed'],
         ];
 
         if ($isUpdate) {

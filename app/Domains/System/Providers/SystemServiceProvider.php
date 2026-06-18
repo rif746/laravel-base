@@ -19,7 +19,7 @@ class SystemServiceProvider extends ServiceProvider
         // Tell Laravel: "Whenever someone asks for GetSystemSettings,
         // give them the exact same object instance for the entire request."
         $this->app->singleton(GetSystemSettings::class, function ($app) {
-            return new GetSystemSettings();
+            return new GetSystemSettings;
         });
     }
 

@@ -18,7 +18,7 @@ class UpdateUserStatus
             throw new Exception(__('domains/identity.messages.exceptions.user_already_status', ['status' => $status->value]));
         }
 
-        if($user->hasRole(RoleType::ADMIN)) {
+        if ($user->hasRole([RoleType::SYSTEM_ADMIN, RoleType::ADMIN])) {
             throw new Exception(__('domains/identity.messages.exceptions.user_cannot_be_edited'));
         }
 

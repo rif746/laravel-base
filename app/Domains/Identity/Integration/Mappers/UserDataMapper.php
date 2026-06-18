@@ -20,9 +20,9 @@ use Throwable;
 class UserDataMapper implements DataPayloadMapper
 {
     public function __construct(
-        protected ProvisionNewUser   $provisionNewUser,
+        protected ProvisionNewUser $provisionNewUser,
         protected UpdateUserIdentity $updateUser,
-        protected UpdateProfile      $updateProfile
+        protected UpdateProfile $updateProfile
     ) {}
 
     /**
@@ -39,17 +39,18 @@ class UserDataMapper implements DataPayloadMapper
     public function transform(array $rawData): array
     {
         return [
-            'name' => trim((string)$rawData['name']),
-            'email' => trim((string)$rawData['email']),
-            'role' => trim((string)($rawData['role'] ?? 'user')),
-            'gender' => isset($rawData['gender']) ? trim((string)$rawData['gender']) : null,
-            'date_of_birth' => isset($rawData['date_of_birth']) ? trim((string)$rawData['date_of_birth']) : null,
-            'phone_number' => isset($rawData['phone']) ? trim((string)$rawData['phone']) : null,
+            'name' => trim((string) $rawData['name']),
+            'email' => trim((string) $rawData['email']),
+            'role' => trim((string) ($rawData['role'] ?? 'user')),
+            'gender' => isset($rawData['gender']) ? trim((string) $rawData['gender']) : null,
+            'date_of_birth' => isset($rawData['date_of_birth']) ? trim((string) $rawData['date_of_birth']) : null,
+            'phone_number' => isset($rawData['phone']) ? trim((string) $rawData['phone']) : null,
         ];
     }
 
     /**
      * Coordinate and execute internal domain mutations using the transformed payload.
+     *
      * @throws Throwable
      */
     public function updateOrCreateDomainState(array $payload, ?Model $model = null): void
@@ -67,7 +68,7 @@ class UserDataMapper implements DataPayloadMapper
                 new ProvisionUserDTO(
                     name: $payload['name'],
                     email: $payload['email'],
-                    password: bcrypt(Str::random(16)),
+                    password: Str::random(8),
                     role: RoleType::USER->value
                 )
             );
@@ -78,7 +79,7 @@ class UserDataMapper implements DataPayloadMapper
             $user->profile ?? new Profile(['user_id' => $user->id]),
             new UpdateProfileDTO(
                 userId: $user->id,
-                gender:  GenderOption::fromLabel($payload['gender'])->value,
+                gender: GenderOption::fromLabel($payload['gender']),
                 date_of_birth: $payload['date_of_birth'],
                 phone_number: $payload['phone_number']
             )

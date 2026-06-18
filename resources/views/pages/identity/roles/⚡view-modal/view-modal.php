@@ -5,6 +5,7 @@ use App\Livewire\Concerns\WithModal;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
+use Spatie\Permission\Contracts\Role as SpatieRole;
 
 new class extends Component
 {
@@ -19,7 +20,7 @@ new class extends Component
     protected string $resourceName = 'role';
 
     #[Computed]
-    public function role(): Role
+    public function role(): SpatieRole
     {
         return $this->id ? Role::with('permissions')->findOrFail($this->id) : new Role;
     }

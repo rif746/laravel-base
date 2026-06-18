@@ -53,7 +53,7 @@ class SystemRestore
             ]);
 
             if ($restoreSql->failed()) {
-                throw new RuntimeException(__('domains/system.messages.backup.restored_error') . ' ' . $restoreSql->errorOutput());
+                throw new RuntimeException(__('domains/system.messages.backup.restored_error').' '.$restoreSql->errorOutput());
             }
         }
     }

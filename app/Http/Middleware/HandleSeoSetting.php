@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HandleSeoSetting
 {
-    public function __construct(protected GetSystemSettings $getSystemSettings)
-    {
-    }
+    public function __construct(protected GetSystemSettings $getSystemSettings) {}
 
     /**
      * Handle an incoming request.

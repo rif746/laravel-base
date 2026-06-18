@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Account\Models\Profile;
 use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Models\Role;
 use App\Domains\Identity\Models\User;
@@ -17,7 +16,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $profile = new ProfileFactory();
+        $profile = new ProfileFactory;
         $admin = User::create([
             'name' => 'System Administrator',
             'email' => 'system@web.io',

@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class DomainMakeCommand extends Command
 {
     protected $signature = 'domain:make
-        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, query, provider, export, mapper}
+        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, query, provider, export, mapper, scope}
         {domain : Domain name, e.g. Identity, Account, System}
         {name   : Class name, supports sub-paths e.g. Backup/DeleteBackup}
         {--factory   : Also generate a factory (model only)}
@@ -28,6 +28,7 @@ class DomainMakeCommand extends Command
         'listener' => 'Listeners',
         'notification' => 'Notifications',
         'policy' => 'Policies',
+        'scope' => 'Scopes',
         'trait' => 'Traits',
         'query' => 'Queries',
         'provider' => 'Providers',
@@ -47,8 +48,8 @@ class DomainMakeCommand extends Command
         $domain = ucfirst($this->argument('domain'));
         $name = $this->argument('name'); // may contain sub-path, e.g. Backup/DeleteBackup
 
-        if (!isset($this->types[$type])) {
-            $this->components->error("Unknown type [{$type}]. Supported: " . implode(', ', array_keys($this->types)));
+        if (! isset($this->types[$type])) {
+            $this->components->error("Unknown type [{$type}]. Supported: ".implode(', ', array_keys($this->types)));
 
             return self::FAILURE;
         }
@@ -60,7 +61,7 @@ class DomainMakeCommand extends Command
         // ── Integration / Mapper special handling ─────────────────────────────
         // Automatically append the 'DataMapper' suffix when the developer omits it,
         // keeping the class name consistent with the DataPayloadMapper contract.
-        if ($type === 'mapper' && !str_ends_with($className, 'DataMapper')) {
+        if ($type === 'mapper' && ! str_ends_with($className, 'DataMapper')) {
             $className .= 'DataMapper';
         }
 
@@ -69,10 +70,10 @@ class DomainMakeCommand extends Command
         // Extra sub-path segments are intentionally ignored for the mapper type.
         $relativeDir = ($type === 'mapper')
             ? "Domains/{$domain}/{$subDir}"
-            : "Domains/{$domain}/{$subDir}" . ($subPath ? "/{$subPath}" : '');
+            : "Domains/{$domain}/{$subDir}".($subPath ? "/{$subPath}" : '');
         // ─────────────────────────────────────────────────────────────────────
 
-        $namespace = 'App\\' . str_replace('/', '\\', $relativeDir);
+        $namespace = 'App\\'.str_replace('/', '\\', $relativeDir);
         $path = app_path("{$relativeDir}/{$className}.php");
 
         if ($this->files->exists($path)) {
@@ -112,6 +113,7 @@ class DomainMakeCommand extends Command
             'listener' => $this->listenerStub($namespace, $name),
             'notification' => $this->notificationStub($namespace, $name),
             'policy' => $this->policyStub($namespace, $name),
+            'scope' => $this->scopeStub($namespace, $name),
             'query' => $this->queryStub($namespace, $name),
             'provider' => $this->providerStub($namespace, $name),
             'export' => $this->exportStub($namespace, $name, $domain),
@@ -316,6 +318,26 @@ class {$name}
 PHP;
     }
 
+    protected function scopeStub(string $namespace, string $name): string
+    {
+        return <<<PHP
+<?php
+
+namespace {$namespace};
+
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Scope;
+
+class {$name} implements Scope
+{
+    public function apply(Builder \$builder, Model \$model): void
+    {
+        //
+    }
+}
+PHP;
+    }
 
     protected function queryStub(string $namespace, string $name): string
     {
@@ -372,12 +394,12 @@ PHP;
             $modelClass = $modelData['class'];
         }
 
-        $body = <<<PHP
+        $body = <<<'PHP'
     use Exportable;
 
     // Accept UI filters directly into the Export class
     public function __construct(
-        private array \$filters = []
+        private array $filters = []
     ) {}
 
     /**
@@ -492,7 +514,7 @@ PHP;
                 $class = class_basename($full);
             }
         } else {
-            $full = "App\\Domains\\{$domain}\\Models\\" . ucfirst($modelOption);
+            $full = "App\\Domains\\{$domain}\\Models\\".ucfirst($modelOption);
             $class = ucfirst($modelOption);
         }
 

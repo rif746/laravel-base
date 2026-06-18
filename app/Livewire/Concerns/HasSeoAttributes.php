@@ -25,6 +25,7 @@ trait HasSeoAttributes
                   ?? null;
 
         if ($attribute) {
+            /** @var Seo $seo */
             $seo = $attribute->newInstance();
 
             $setSeo->applySeo($seo, $this, request());

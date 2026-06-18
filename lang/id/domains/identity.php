@@ -37,6 +37,11 @@ return [
         'user_detail' => [
             'account_info' => 'Info Akun',
             'user_info' => 'Info Pengguna',
+            'menu' => [
+                'role_update' => 'Ubah Peran',
+                'toggle_status' => 'Ubah Status',
+                'password_reset' => 'Kirim Reset Kata Sandi',
+            ],
             'confirmation' => [
                 'toggle_status' => 'Apakah Anda yakin ingin mengubah status pengguna ini?',
                 'status_changed' => 'Status pengguna berhasil diperbarui.',

@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\UI\Actions\ResolveDynamicText;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class UiServiceProvider extends ServiceProvider
@@ -12,7 +11,7 @@ class UiServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(ResolveDynamicText::class, function ($app) {
-            return new ResolveDynamicText();
+            return new ResolveDynamicText;
         });
     }
 
