@@ -1,11 +1,11 @@
 <?php
 
-use App\Domains\Identity\Actions\Registration\RegisterUser;
-use App\Domains\Identity\Actions\Registration\ResendVerificationEmail;
-use App\Domains\Identity\Actions\Registration\VerifyUserEmail;
-use App\Domains\Identity\DTOs\Registration\RegisterUserDTO;
-use App\Domains\Identity\Events\Registration\UserEmailVerified;
-use App\Domains\Identity\Events\Registration\UserRegistered;
+use App\Domains\Identity\Actions\Onboarding\RegisterSelfServiceUser;
+use App\Domains\Identity\Actions\Onboarding\ResendVerificationEmail;
+use App\Domains\Identity\Actions\Onboarding\VerifyUserEmail;
+use App\Domains\Identity\DTOs\Onboarding\RegisterSelfServiceUserDTO;
+use App\Domains\Identity\Events\Onboarding\UserEmailWasVerified;
+use App\Domains\Identity\Events\Onboarding\UserWasRegistered;
 use App\Domains\Identity\Models\User;
 use App\Domains\Identity\Notifications\VerifyEmailNotification;
 use Illuminate\Auth\Events\Registered;
@@ -16,13 +16,13 @@ use Illuminate\Support\Facades\Notification;
 test('RegisterUser action registers a user, fires events, and stores in database', function () {
     Event::fake();
 
-    $dto = new RegisterUserDTO(
+    $dto = new RegisterSelfServiceUserDTO(
         name: 'John Doe',
         email: 'john@example.com',
         password: 'securepassword123'
     );
 
-    $action = app(RegisterUser::class);
+    $action = app(RegisterSelfServiceUser::class);
     $user = $action->execute($dto);
 
     expect($user)->toBeInstanceOf(User::class);
@@ -39,7 +39,7 @@ test('RegisterUser action registers a user, fires events, and stores in database
         return $event->user->id === $user->id;
     });
 
-    Event::assertDispatched(UserRegistered::class, function ($event) use ($user, $dto) {
+    Event::assertDispatched(UserWasRegistered::class, function ($event) use ($user, $dto) {
         return $event->user->id === $user->id && $event->dto === $dto;
     });
 });
@@ -61,7 +61,7 @@ test('VerifyUserEmail action marks email as verified and dispatches events', fun
         return $event->user->id === $user->id;
     });
 
-    Event::assertDispatched(UserEmailVerified::class, function ($event) use ($user) {
+    Event::assertDispatched(UserEmailWasVerified::class, function ($event) use ($user) {
         return $event->user->id === $user->id;
     });
 });
@@ -79,7 +79,7 @@ test('VerifyUserEmail action returns false if email is already verified', functi
     expect($result)->toBeFalse();
 
     Event::assertNotDispatched(Verified::class);
-    Event::assertNotDispatched(UserEmailVerified::class);
+    Event::assertNotDispatched(UserEmailWasVerified::class);
 });
 
 test('ResendVerificationEmail action triggers VerifyEmailNotification', function () {

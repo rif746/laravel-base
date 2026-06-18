@@ -7,11 +7,11 @@ test('UserStatus enum returns correct label and badge HTML', function () {
     $active = UserStatus::ACTIVE;
     $inactive = UserStatus::INACTIVE;
 
-    expect($active->labels())->toBeString();
-    expect($inactive->labels())->toBeString();
+    expect($active->label())->toBeString();
+    expect($inactive->label())->toBeString();
 
-    expect($active->badge())->toContain('bg-success');
-    expect($inactive->badge())->toContain('bg-danger');
+    expect($active->badgeVariant())->toBe('success');
+    expect($inactive->badgeVariant())->toBe('danger');
 });
 
 test('FileType enum returns correct mime types', function () {

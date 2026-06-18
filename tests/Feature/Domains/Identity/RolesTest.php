@@ -1,10 +1,10 @@
 <?php
 
-use App\Domains\Identity\Actions\Roles\CreateSystemRole;
-use App\Domains\Identity\Actions\Roles\RemoveSystemRole;
-use App\Domains\Identity\Actions\Roles\UpdateSystemRole;
-use App\Domains\Identity\DTOs\Roles\CreateRoleDTO;
-use App\Domains\Identity\DTOs\Roles\UpdateRoleDTO;
+use App\Domains\Identity\Actions\AccessControl\CreateSystemRole;
+use App\Domains\Identity\Actions\AccessControl\RemoveSystemRole;
+use App\Domains\Identity\Actions\AccessControl\UpdateSystemRole;
+use App\Domains\Identity\DTOs\AccessControl\CreateRoleDTO;
+use App\Domains\Identity\DTOs\AccessControl\UpdateRoleDTO;
 use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Models\Role;
 use App\Domains\Identity\Models\User;

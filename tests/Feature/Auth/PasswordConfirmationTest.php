@@ -8,7 +8,7 @@ test('confirm password screen can be rendered', function () {
 
     $response = $this->actingAs($user)->get('/confirm-password');
 
-    $response->assertStatus(200);
+    $response->assertOk();
 });
 
 test('password can be confirmed', function () {
@@ -16,7 +16,7 @@ test('password can be confirmed', function () {
 
     $component = Livewire::actingAs($user)
         ->test('pages::auth.confirm-password')
-        ->set('password', 'password')
+        ->set('form.password', 'password')
         ->call('confirmPassword');
 
     $component->assertHasNoErrors();
@@ -28,8 +28,8 @@ test('password is not confirmed with invalid password', function () {
 
     $component = Livewire::actingAs($user)
         ->test('pages::auth.confirm-password')
-        ->set('password', 'wrong-password')
+        ->set('form.password', 'wrong-password')
         ->call('confirmPassword');
 
-    $component->assertHasErrors(['password']);
+    $component->assertHasErrors(['form.password']);
 });

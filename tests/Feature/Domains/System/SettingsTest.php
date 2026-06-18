@@ -68,7 +68,7 @@ test('SetSeoMetadata action resolves dynamic view data and translations', functi
     // 'domains/auth.notifications.sign_in_activity.greeting' translation key in lang/en/domains/auth.php is: 'Hello :name!'
     $seo = new Seo(
         title: 'domains/auth.notifications.sign_in_activity.greeting',
-        name: 'user.name'
+        context: 'user'
     );
 
     $user = (object) ['name' => 'Alice'];

@@ -6,15 +6,15 @@ use Livewire\Livewire;
 test('login screen can be rendered', function () {
     $response = $this->get('/login');
 
-    $response->assertStatus(200);
+    $response->assertOk();
 });
 
 test('users can authenticate using the login screen', function () {
     $user = User::factory()->create();
 
     $component = Livewire::test('pages::auth.login')
-        ->set('email', $user->email)
-        ->set('password', 'password')
+        ->set('form.email', $user->email)
+        ->set('form.password', 'password')
         ->call('login');
 
     $component->assertHasNoErrors();
@@ -25,11 +25,11 @@ test('users can not authenticate with invalid password', function () {
     $user = User::factory()->create();
 
     $component = Livewire::test('pages::auth.login')
-        ->set('email', $user->email)
-        ->set('password', 'wrong-password')
+        ->set('form.email', $user->email)
+        ->set('form.password', 'wrong-password')
         ->call('login');
 
-    $component->assertHasErrors(['email']);
+    $component->assertHasErrors(['form.email']);
     $this->assertGuest();
 });
 

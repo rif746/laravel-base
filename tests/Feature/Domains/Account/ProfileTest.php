@@ -17,7 +17,7 @@ test('UpdateProfile action creates or updates user profile', function () {
 
     $dto = new UpdateProfileDTO(
         userId: $user->id,
-        gender: GenderOption::MALE->value,
+        gender: GenderOption::MALE,
         date_of_birth: '1995-03-20',
         phone_number: '081234567890'
     );
@@ -35,7 +35,7 @@ test('UpdateProfile action creates or updates user profile', function () {
     // Test updating same profile
     $dtoUpdate = new UpdateProfileDTO(
         userId: $user->id,
-        gender: GenderOption::FEMALE->value,
+        gender: GenderOption::FEMALE,
         date_of_birth: '1995-03-20 00:00:00',
         phone_number: '089999999999'
     );

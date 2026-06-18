@@ -104,7 +104,7 @@ test('SystemBackup action throws exception if command fails', function () {
 
     $action = app(SystemBackup::class);
 
-    expect(fn () => $action->execute())->toThrow(Exception::class, 'Failed to execute backup');
+    expect(fn () => $action->execute())->toThrow(Exception::class, 'Failed to backup the system.');
 });
 
 test('SystemRestore action extracts backup, runs database process, and copies files', function () {

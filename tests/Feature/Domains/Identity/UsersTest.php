@@ -1,15 +1,15 @@
 <?php
 
-use App\Domains\Identity\Actions\Users\ProvisionNewUser;
-use App\Domains\Identity\Actions\Users\SuspendUser;
-use App\Domains\Identity\Actions\Users\UpdateUser;
-use App\Domains\Identity\Actions\Users\UpdateUserStatus;
-use App\Domains\Identity\DTOs\Users\ProvisionUserDTO;
-use App\Domains\Identity\DTOs\Users\UpdateUserDTO;
+use App\Domains\Identity\Actions\Governance\SuspendUser;
+use App\Domains\Identity\Actions\Governance\UpdateUserStatus;
+use App\Domains\Identity\Actions\IdentityMaintenance\UpdateUserIdentity;
+use App\Domains\Identity\Actions\Onboarding\ProvisionNewUser;
+use App\Domains\Identity\DTOs\IdentityMaintenance\UpdateUserIdentityDTO;
+use App\Domains\Identity\DTOs\Onboarding\ProvisionUserDTO;
 use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Enums\UserStatus;
-use App\Domains\Identity\Events\Users\UserProvisioned;
-use App\Domains\Identity\Events\Users\UserSuspended;
+use App\Domains\Identity\Events\Governance\UserWasSuspended;
+use App\Domains\Identity\Events\Onboarding\UserWasProvisioned;
 use App\Domains\Identity\Models\User;
 use App\Domains\Identity\Notifications\VerifyEmailNotification;
 use Database\Seeders\RoleSeeder;
@@ -31,16 +31,13 @@ test('ProvisionNewUser action creates user, assigns role, and dispatches event',
     );
 
     $action = app(ProvisionNewUser::class);
-    $result = $action->execute($dto);
+    $user = $action->execute($dto);
 
-    expect($result)->toBeTrue();
-
-    $user = User::where('email', 'jane@example.com')->first();
-    expect($user)->not->toBeNull();
+    expect($user)->toBeInstanceOf(User::class);
     expect($user->name)->toBe('Jane Smith');
     expect($user->hasRole(RoleType::USER->value))->toBeTrue();
 
-    Event::assertDispatched(UserProvisioned::class);
+    Event::assertDispatched(UserWasProvisioned::class);
 });
 
 test('SuspendUser action throws an exception for admin user', function () {
@@ -64,7 +61,7 @@ test('SuspendUser action sets active user to inactive and dispatches event', fun
 
     expect($user->refresh()->status)->toBe(UserStatus::INACTIVE);
 
-    Event::assertDispatched(UserSuspended::class, function ($event) use ($user) {
+    Event::assertDispatched(UserWasSuspended::class, function ($event) use ($user) {
         return $event->user->id === $user->id;
     });
 });
@@ -89,22 +86,18 @@ test('UpdateUser action updates user details and role without dirty email', func
     ]);
     $user->assignRole(RoleType::USER->value);
 
-    $dto = new UpdateUserDTO(
+    $action = app(UpdateUserIdentity::class);
+    $result = $action->execute($user, new UpdateUserIdentityDTO(
         name: 'Updated Name',
         email: 'original@example.com',
-        role: RoleType::ADMIN->value
-    );
+    ));
 
-    $action = app(UpdateUser::class);
-    $result = $action->execute($user, $dto);
-
-    expect($result)->toBeTrue();
+    expect($result)->toBeInstanceOf(User::class);
     $user->refresh();
 
     expect($user->name)->toBe('Updated Name');
     expect($user->email)->toBe('original@example.com');
     expect($user->email_verified_at)->not->toBeNull();
-    expect($user->hasRole(RoleType::ADMIN->value))->toBeTrue();
 });
 
 test('UpdateUser action marks email unverified and resends verification if email is changed', function () {
@@ -117,16 +110,13 @@ test('UpdateUser action marks email unverified and resends verification if email
     ]);
     $user->assignRole(RoleType::USER->value);
 
-    $dto = new UpdateUserDTO(
+    $action = app(UpdateUserIdentity::class);
+    $result = $action->execute($user, new UpdateUserIdentityDTO(
         name: 'Updated Name',
         email: 'newemail@example.com',
-        role: RoleType::USER->value
-    );
+    ));
 
-    $action = app(UpdateUser::class);
-    $result = $action->execute($user, $dto);
-
-    expect($result)->toBeTrue();
+    expect($result)->toBeInstanceOf(User::class);
     $user->refresh();
 
     expect($user->email)->toBe('newemail@example.com');

@@ -1,8 +1,13 @@
 <?php
 
 use App\Domains\Identity\Models\User;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
+
+beforeEach(function () {
+    $this->seed(RoleSeeder::class);
+});
 
 test('profile page is displayed', function () {
     $user = User::factory()->create();
@@ -21,11 +26,11 @@ test('profile information can be updated via livewire component', function () {
     $component = Livewire::actingAs($user)
         ->test('pages::account.profile.update-profile-modal')
         ->call('show', $user->id)
-        ->set('name', 'Test User')
-        ->set('email', 'test@example.com')
-        ->set('gender', 'male')
-        ->set('date_of_birth', '1995-01-01')
-        ->set('phone_number', '081234567890')
+        ->set('form.name', 'Test User')
+        ->set('form.email', 'test@example.com')
+        ->set('form.gender', 'male')
+        ->set('form.date_of_birth', '1995-01-01')
+        ->set('form.phone_number', '081234567890')
         ->call('save');
 
     $component->assertHasNoErrors();
@@ -40,9 +45,9 @@ test('password can be updated', function () {
 
     $component = Livewire::actingAs($user)
         ->test('pages::account.profile.update-password-modal')
-        ->set('current_password', 'password')
-        ->set('new_password', 'new-password')
-        ->set('new_password_confirmation', 'new-password')
+        ->set('form.current_password', 'password')
+        ->set('form.new_password', 'new-password')
+        ->set('form.new_password_confirmation', 'new-password')
         ->call('save');
 
     $component->assertHasNoErrors();
@@ -55,10 +60,10 @@ test('correct password must be provided to update password', function () {
 
     $component = Livewire::actingAs($user)
         ->test('pages::account.profile.update-password-modal')
-        ->set('current_password', 'wrong-password')
-        ->set('new_password', 'new-password')
-        ->set('new_password_confirmation', 'new-password')
+        ->set('form.current_password', 'wrong-password')
+        ->set('form.new_password', 'new-password')
+        ->set('form.new_password_confirmation', 'new-password')
         ->call('save');
 
-    $component->assertHasErrors(['current_password']);
+    $component->assertHasErrors(['form.current_password']);
 });
