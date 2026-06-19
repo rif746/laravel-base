@@ -5,6 +5,7 @@ import alpineAxios from './alpine/axios';
 import alpineSelect2 from "./alpine/select2.js";
 import alpineQuill from "./alpine/quill.js";
 import alpineAsk from "./alpine/ask.js";
+import AlpineChart from "./alpine/chart.js";
 
 // 1. Expose both instances globally so Blade directives can see them
 window.Alpine = Alpine;
@@ -17,6 +18,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.plugin(alpineAsk);
     Alpine.plugin(alpineSelect2);
     Alpine.plugin(alpineQuill);
+    Alpine.plugin(AlpineChart);
 });
 
 Livewire.pl

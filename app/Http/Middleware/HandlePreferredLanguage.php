@@ -7,6 +7,7 @@ use App\Domains\System\Enums\SystemSettingKey;
 use App\Domains\System\Queries\GetSystemSettings;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -34,6 +35,7 @@ class HandlePreferredLanguage
             }
         }
 
+        setlocale(LC_ALL, $lang);
         app()->setLocale($lang);
 
         return $next($request);
