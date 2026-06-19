@@ -4,7 +4,7 @@
     </x-card>
 
     <livewire:pages::identity.users.form-modal />
-    <livewire:pages::system.audit.audit-view-modal :model="\App\Domains\Identity\Models\User::class" translation="domains/identity.fields.user." />
+    <livewire:pages::system.audit.audit-view-modal :model="\App\Domains\Identity\Models\User::class" translation="domains/identity/field.user." />
     <livewire:datatables.delete-action :model="\App\Domains\Identity\Models\User::class" :action="\App\Domains\Identity\Actions\Governance\SuspendUser::class" />
     <livewire:datatables.excel-manager :export-class="\App\Domains\Identity\Exports\UserExport::class"
                                        :import-class="\App\Http\Ingestion\Excel\Identity\UserImport::class"

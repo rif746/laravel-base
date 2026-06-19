@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-new #[Layout('components.layouts.guest', ['title' => 'domains/auth.pages.reset_password.header'])]
-#[Seo(title: 'domains/auth.seo.reset_password.title', description: 'domains/auth.seo.reset_password.description', keywords: 'domains/auth.seo.reset_password.keywords')]
+new #[Layout('components.layouts.guest', ['title' => 'domains/auth/pages.reset_password.header'])]
+#[Seo(title: 'domains/auth/seo.reset_password.title', description: 'domains/auth/seo.reset_password.description', keywords: 'domains/auth/seo.reset_password.keywords')]
 class extends Component
 {
     use HasSeoAttributes;
@@ -34,10 +34,10 @@ class extends Component
         ));
 
         if ($status === Password::PASSWORD_RESET) {
-            session()->flash('status', __('domains/auth.messages.password_reset'));
+            session()->flash('status', __('domains/auth/messages.password_reset'));
             $this->redirectRoute('login');
         } else {
-            $this->addError('form.email', __('domains/auth.messages.invalid_token'));
+            $this->addError('form.email', __('domains/auth/messages.invalid_token'));
         }
     }
 };

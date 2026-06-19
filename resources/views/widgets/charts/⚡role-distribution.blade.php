@@ -32,8 +32,8 @@ new class extends Component {
                 ])
             </div>
             <div>
-                <h2 class="fs-4">Role Distributions</h2>
-                <p class="text-secondary mb-0 small">User role distributions</p>
+                <h2 class="fs-4">{{ __('domains/identity/dashboard.role_distribution.title') }}</h2>
+                <p class="text-secondary mb-0 small">{{ __('domains/identity/dashboard.role_distribution.subtitle') }}</p>
             </div>
         </div>
         <div id="role-distribution" x-chart="{

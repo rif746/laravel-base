@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-new #[Layout('components.layouts.guest', ['title' => 'domains/auth.pages.forgot_password.header'])]
-#[Seo(title: 'domains/auth.seo.forgot_password.title', description: 'domains/auth.seo.forgot_password.description', keywords: 'domains/auth.seo.forgot_password.keywords')]
+new #[Layout('components.layouts.guest', ['title' => 'domains/auth/pages.forgot_password.header'])]
+#[Seo(title: 'domains/auth/seo.forgot_password.title', description: 'domains/auth/seo.forgot_password.description', keywords: 'domains/auth/seo.forgot_password.keywords')]
 class extends Component
 {
     use HasSeoAttributes, WithToast;

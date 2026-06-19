@@ -20,10 +20,10 @@ class VerifyEmailNotification extends VerifyEmail
         $url = $this->verificationUrl($notifiable);
 
         return (new MailMessage)
-            ->subject(__('domains/auth.notifications.verify_email.subject'))
-            ->line(__('domains/auth.notifications.verify_email.intro'))
-            ->action(__('domains/auth.notifications.verify_email.action'), $url)
-            ->line(__('domains/auth.notifications.verify_email.outro'));
+            ->subject(__('domains/auth/notifications.verify_email.subject'))
+            ->line(__('domains/auth/notifications.verify_email.intro'))
+            ->action(__('domains/auth/notifications.verify_email.action'), $url)
+            ->line(__('domains/auth/notifications.verify_email.outro'));
     }
 
     public function toArray(object $notifiable): array

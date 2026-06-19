@@ -16,16 +16,16 @@ class RoleController extends Controller
      */
     #[Authorize('viewAny', Role::class)]
     #[LayoutData(
-        header: 'domains/identity.seo.role.title',
+        header: 'domains/identity/seo.role.title',
         breadcrumbs: [
             'ui.menu.dashboard' => 'dashboard',
-            'domains/identity.seo.role.title' => '',
+            'domains/identity/seo.role.title' => '',
         ],
     )]
     #[Seo(
-        title: 'domains/identity.seo.role.title',
-        description: 'domains/identity.seo.role.description',
-        keywords: 'domains/identity.seo.role.keywords'
+        title: 'domains/identity/seo.role.title',
+        description: 'domains/identity/seo.role.description',
+        keywords: 'domains/identity/seo.role.keywords'
     )]
     public function __invoke(RoleDataTable $dataTable)
     {

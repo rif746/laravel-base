@@ -40,14 +40,14 @@ class SignInActivity extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject(__('domains/auth.notifications.sign_in_activity.subject'))
-            ->greeting(__('domains/auth.notifications.sign_in_activity.greeting', ['name' => $notifiable->name ?? '']))
-            ->line(__('domains/auth.notifications.sign_in_activity.intro', ['app' => config('app.name')]))
-            ->line(__('domains/auth.notifications.sign_in_activity.time', ['time' => now()->toDayDateTimeString()]))
-            ->line(__('domains/auth.notifications.sign_in_activity.ip', ['ip' => $this->ip]))
-            ->line(__('domains/auth.notifications.sign_in_activity.browser', ['browser' => $this->userAgent]))
-            ->line(__('domains/auth.notifications.sign_in_activity.outro'))
-            ->action(__('domains/auth.notifications.sign_in_activity.action'), url('/dashboard'));
+            ->subject(__('domains/auth/notifications.sign_in_activity.subject'))
+            ->greeting(__('domains/auth/notifications.sign_in_activity.greeting', ['name' => $notifiable->name ?? '']))
+            ->line(__('domains/auth/notifications.sign_in_activity.intro', ['app' => config('app.name')]))
+            ->line(__('domains/auth/notifications.sign_in_activity.time', ['time' => now()->toDayDateTimeString()]))
+            ->line(__('domains/auth/notifications.sign_in_activity.ip', ['ip' => $this->ip]))
+            ->line(__('domains/auth/notifications.sign_in_activity.browser', ['browser' => $this->userAgent]))
+            ->line(__('domains/auth/notifications.sign_in_activity.outro'))
+            ->action(__('domains/auth/notifications.sign_in_activity.action'), url('/dashboard'));
     }
 
     /**
@@ -58,8 +58,8 @@ class SignInActivity extends Notification implements ShouldQueue
     public function toArray(object $notifiable): array
     {
         return [
-            'title' => __('domains/auth.notifications.sign_in_activity.title'),
-            'message' => __('domains/auth.notifications.sign_in_activity.message', ['ip' => $this->ip]),
+            'title' => __('domains/auth/notifications.sign_in_activity.title'),
+            'message' => __('domains/auth/notifications.sign_in_activity.message', ['ip' => $this->ip]),
             'url' => url('/dashboard'),
         ];
     }

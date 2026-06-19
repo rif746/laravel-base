@@ -12,7 +12,7 @@ enum UserSettingKey: string
 
     public function label(): string
     {
-        return __("domains/account.enum.user_settings.{$this->value}");
+        return __("domains/account/enum.user_settings.{$this->value}");
     }
 
     public static function effect(string $settingKey, string|int $value): void
@@ -46,8 +46,8 @@ enum UserSettingKey: string
     {
         return match ($this) {
             self::LANGUAGE => [
-                'en' => __('domains/account.enum.user_settings.options.language.en'),
-                'id' => __('domains/account.enum.user_settings.options.language.id'),
+                'en' => __('domains/account/enum.user_settings.options.language.en'),
+                'id' => __('domains/account/enum.user_settings.options.language.id'),
             ],
             self::TIMEZONE => [
                 'UTC' => 'UTC',
@@ -56,8 +56,8 @@ enum UserSettingKey: string
                 'Asia/Jayapura' => 'Asia/Jayapura',
             ],
             self::NOTIFICATION => [
-                1 => __('domains/account.enum.user_settings.options.notification.on'),
-                0 => __('domains/account.enum.user_settings.options.notification.off'),
+                1 => __('domains/account/enum.user_settings.options.notification.on'),
+                0 => __('domains/account/enum.user_settings.options.notification.off'),
             ],
             default => [],
         };

@@ -1,8 +1,8 @@
 <x-modal id="update-password-modal" :title="$this->title" wire:submit="save" wire:loading form livewire>
 
-    <x-form.input name="form.current_password" type="password" :label="__('domains/identity.fields.user.current_password')" wire:model="form.current_password" />
-    <x-form.input name="form.new_password" type="password" :label="__('domains/identity.fields.user.new_password')" wire:model="form.new_password" />
-    <x-form.input name="form.new_password_confirmation" type="password" :label="__('domains/identity.fields.user.password_confirmation')"
+    <x-form.input name="form.current_password" type="password" :label="__('domains/identity/field.user.current_password')" wire:model="form.current_password" />
+    <x-form.input name="form.new_password" type="password" :label="__('domains/identity/field.user.new_password')" wire:model="form.new_password" />
+    <x-form.input name="form.new_password_confirmation" type="password" :label="__('domains/identity/field.user.password_confirmation')"
         wire:model="form.new_password_confirmation" />
 
     <x-slot:footer>

@@ -2,7 +2,7 @@
 
     <x-form.select x-select2="{
         dropdownParent: $('#role-selection-modal')
-    }" name="form.role_name" wire:model="role" :label="__('domains/identity.fields.role.name')">
+    }" name="form.role_name" wire:model="role" :label="__('domains/identity/field.role.name')">
         @foreach ($this->roles as $role)
             <option value="{{ $role }}">{{ $role }}</option>
         @endforeach

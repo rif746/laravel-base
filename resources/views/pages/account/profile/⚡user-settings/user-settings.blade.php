@@ -1,4 +1,4 @@
-<x-card :title="__('domains/account.pages.user_settings.title')" :subtitle="__('domains/account.pages.user_settings.description')">
+<x-card :title="__('domains/account/pages.user_settings.title')" :subtitle="__('domains/account/pages.user_settings.description')">
     <x-slot:actions>
         <x-button icon="tabler-device-floppy" theme="primary" size="sm" rounded class="btn-icon" wire:click="save" disabled wire:dirty.attr.remove="disabled"
             wire:loading />

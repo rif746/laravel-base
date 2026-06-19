@@ -11,19 +11,19 @@ use Livewire\Form;
 
 class UpdateProfileForm extends Form
 {
-    #[Validate(as: 'domains/identity.fields.user.email')]
+    #[Validate(as: 'domains/identity/field.user.email')]
     public ?string $email = null;
 
-    #[Validate(as: 'domains/identity.fields.user.name')]
+    #[Validate(as: 'domains/identity/field.user.name')]
     public ?string $name = null;
 
-    #[Validate(as: 'domains/account.fields.profile.gender')]
+    #[Validate(as: 'domains/account/field.profile.gender')]
     public ?GenderOption $gender = null;
 
-    #[Validate(as: 'domains/account.fields.profile.date_of_birth')]
+    #[Validate(as: 'domains/account/field.profile.date_of_birth')]
     public ?string $date_of_birth = null;
 
-    #[Validate(as: 'domains/account.fields.profile.phone_number')]
+    #[Validate(as: 'domains/account/field.profile.phone_number')]
     public ?string $phone_number = null;
 
     public function rules(int $userId = 0): array

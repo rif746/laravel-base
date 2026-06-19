@@ -15,11 +15,11 @@ class UpdateUserStatus
     public function execute(User $user, UserStatus $status): void
     {
         if ($user->status === $status) {
-            throw new Exception(__('domains/identity.messages.exceptions.user_already_status', ['status' => $status->value]));
+            throw new Exception(__('domains/identity/messages.exceptions.user_already_status', ['status' => $status->value]));
         }
 
         if ($user->hasRole([RoleType::SYSTEM_ADMIN, RoleType::ADMIN])) {
-            throw new Exception(__('domains/identity.messages.exceptions.user_cannot_be_edited'));
+            throw new Exception(__('domains/identity/messages.exceptions.user_cannot_be_edited'));
         }
 
         $user->update(['status' => $status]);

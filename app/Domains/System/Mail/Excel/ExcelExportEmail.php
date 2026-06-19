@@ -28,7 +28,7 @@ class ExcelExportEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('domains/system.notifications.excel.export_email.subject'),
+            subject: __('domains/system/notifications.excel.export_email.subject'),
         );
     }
 
@@ -38,10 +38,10 @@ class ExcelExportEmail extends Mailable
     public function content(): Content
     {
         $message = (new MailMessage)
-            ->subject(__('domains/system.notifications.excel.export_email.subject'))
-            ->line(__('domains/system.notifications.excel.export_email.intro'))
-            ->line(__('domains/system.notifications.excel.export_email.body'))
-            ->line(__('domains/system.notifications.excel.export_email.outro'))
+            ->subject(__('domains/system/notifications.excel.export_email.subject'))
+            ->line(__('domains/system/notifications.excel.export_email.intro'))
+            ->line(__('domains/system/notifications.excel.export_email.body'))
+            ->line(__('domains/system/notifications.excel.export_email.outro'))
             ->render();
 
         return new Content(

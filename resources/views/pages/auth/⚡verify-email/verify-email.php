@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-new #[Layout('components.layouts.guest', ['title' => 'domains/auth.pages.verify_email.header'])]
-#[Seo(title: 'domains/auth.seo.verify_email.title', description: 'domains/auth.seo.verify_email.description', keywords: 'domains/auth.seo.verify_email.keywords')]
+new #[Layout('components.layouts.guest', ['title' => 'domains/auth/pages.verify_email.header'])]
+#[Seo(title: 'domains/auth/seo.verify_email.title', description: 'domains/auth/seo.verify_email.description', keywords: 'domains/auth/seo.verify_email.keywords')]
 class extends Component
 {
     use HasSeoAttributes, WithToast;
@@ -36,7 +36,7 @@ class extends Component
         // explicitly — the domain action has no HTTP/request dependency.
         $action->execute(Auth::user());
 
-        $this->success(__('domains/auth.pages.verify_email.resend_link'));
+        $this->success(__('domains/auth/pages.verify_email.resend_link'));
     }
 
     public function logout(): void

@@ -16,16 +16,16 @@ class UserController extends Controller
      */
     #[Authorize('viewAny', User::class)]
     #[LayoutData(
-        header: 'domains/identity.seo.user.title',
+        header: 'domains/identity/seo.user.title',
         breadcrumbs: [
             'ui.menu.dashboard' => 'dashboard',
-            'domains/identity.seo.user.title' => '',
+            'domains/identity/seo.user.title' => '',
         ],
     )]
     #[Seo(
-        title: 'domains/identity.seo.user.title',
-        description: 'domains/identity.seo.user.description',
-        keywords: 'domains/identity.seo.user.keywords'
+        title: 'domains/identity/seo.user.title',
+        description: 'domains/identity/seo.user.description',
+        keywords: 'domains/identity/seo.user.keywords'
     )]
     public function __invoke(UserDataTable $userDataTable)
     {

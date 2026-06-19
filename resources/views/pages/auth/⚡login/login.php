@@ -12,8 +12,8 @@ use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-new #[Layout('components.layouts.guest', ['title' => 'domains/auth.pages.login.header'])]
-#[Seo(title: 'domains/auth.seo.login.title', description: 'domains/auth.seo.login.description', keywords: 'domains/auth.seo.login.keywords')]
+new #[Layout('components.layouts.guest', ['title' => 'domains/auth/pages.login.header'])]
+#[Seo(title: 'domains/auth/seo.login.title', description: 'domains/auth/seo.login.description', keywords: 'domains/auth/seo.login.keywords')]
 class extends Component
 {
     use HasSeoAttributes;

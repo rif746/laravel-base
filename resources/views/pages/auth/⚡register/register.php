@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-new #[Layout('components.layouts.guest', ['title' => 'domains/auth.pages.register.header'])]
-#[Seo(title: 'domains/auth.seo.register.title', description: 'domains/auth.seo.register.description', keywords: 'domains/auth.seo.register.keywords')]
+new #[Layout('components.layouts.guest', ['title' => 'domains/auth/pages.register.header'])]
+#[Seo(title: 'domains/auth/seo.register.title', description: 'domains/auth/seo.register.description', keywords: 'domains/auth/seo.register.keywords')]
 class extends Component
 {
     use HasSeoAttributes;

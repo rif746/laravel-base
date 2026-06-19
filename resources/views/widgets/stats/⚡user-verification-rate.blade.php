@@ -21,9 +21,9 @@ new class extends Component {
             ])
         </div>
         <div>
-            <h2 class="mb-3 fs-6" data-heading-tag="H2">User Verification Rates</h2>
+            <h2 class="mb-3 fs-6" data-heading-tag="H2">{{ __('domains/identity/dashboard.user_verification_rate.title') }}</h2>
             <h3 class="fw-bold mb-0" data-heading-tag="H3">{{ $this->userCount['verification_rate'] }}%</h3>
-            <p class="text-warning mb-0 small">{{ $this->userCount['verified'] }} verified / {{ $this->userCount['unverified'] }} Unverified</p>
+            <p class="text-warning mb-0 small">{{ __('domains/identity/dashboard.user_verification_rate.detail', ['verified' => $this->userCount['verified'], 'unverified' => $this->userCount['unverified']]) }}</p>
         </div>
     </div>
 </div>

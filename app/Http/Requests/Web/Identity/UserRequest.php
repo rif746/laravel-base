@@ -35,10 +35,10 @@ class UserRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'email' => __('domains/identity.fields.user.email'),
-            'name' => __('domains/identity.fields.user.name'),
+            'email' => __('domains/identity/field.user.email'),
+            'name' => __('domains/identity/field.user.name'),
             'role' => __('resources.role'),
-            'password' => __('domains/identity.fields.user.password'),
+            'password' => __('domains/identity/field.user.password'),
         ];
     }
 }

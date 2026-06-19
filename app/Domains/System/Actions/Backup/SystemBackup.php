@@ -16,7 +16,7 @@ class SystemBackup
     {
         $artisanResult = Artisan::call('backup:run', []);
         if ($artisanResult !== 0) {
-            throw new Exception(__('domains/system.messages.backup.backup_error'));
+            throw new Exception(__('domains/system/messages.backup.backup_error'));
         }
 
         $disk = config('backup.backup.destination.disks')[0] ?? 'local';
@@ -24,7 +24,7 @@ class SystemBackup
 
         $files = Storage::disk($disk)->allFiles($backupName);
         if (empty($files)) {
-            throw new Exception(__('domains/system.messages.backup.verification_error'));
+            throw new Exception(__('domains/system/messages.backup.verification_error'));
         }
 
         $latestFile = collect($files)->last();

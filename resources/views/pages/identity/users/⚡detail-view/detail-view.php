@@ -17,8 +17,8 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 
 new #[Layout('components.layouts.app')]
-#[LayoutData(header: 'domains/identity.seo.user_detail.title', breadcrumbs: ['ui.menu.dashboard' => 'dashboard', 'domains/identity.seo.user.title' => 'users.index', '{name}' => ''], context: 'user')]
-#[Seo(title: 'domains/identity.seo.user_detail.title', context: 'user')]
+#[LayoutData(header: 'domains/identity/seo.user_detail.title', breadcrumbs: ['ui.menu.dashboard' => 'dashboard', 'domains/identity/seo.user.title' => 'users.index', '{name}' => ''], context: 'user')]
+#[Seo(title: 'domains/identity/seo.user_detail.title', context: 'user')]
 class extends Component
 {
     use HasLayoutDataAttributes;

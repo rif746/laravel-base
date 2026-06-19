@@ -34,9 +34,9 @@ class RoleRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name' => __('domains/identity.fields.role.name'),
-            'guard_name' => __('domains/identity.fields.role.guard_name'),
-            'permissions' => __('domains/identity.fields.role.permissions'),
+            'name' => __('domains/identity/field.role.name'),
+            'guard_name' => __('domains/identity/field.role.guard_name'),
+            'permissions' => __('domains/identity/field.role.permissions'),
         ];
     }
 }

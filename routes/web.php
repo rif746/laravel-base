@@ -12,11 +12,11 @@ Route::get('/', fn () => redirect()->route('dashboard'));
 Route::middleware(['web', 'auth', 'verified', 'seo', 'layouts'])->group(function () {
     Route::view('/dashboard', 'dashboard')
         ->defaults('seo', new Seo(
-            title: 'domains/system.seo.dashboard.title',
-            description: 'domains/system.seo.dashboard.description',
-            keywords: 'domains/system.seo.dashboard.keywords'
+            title: 'seo.dashboard.title',
+            description: 'seo.dashboard.description',
+            keywords: 'seo.dashboard.keywords'
         ))->defaults('layout_data', new LayoutData(
-            header: 'domains/system.seo.dashboard.title',
+            header: 'seo.dashboard.title',
             breadcrumbs: [
                 'ui.menu.dashboard' => 'dashboard',
             ],

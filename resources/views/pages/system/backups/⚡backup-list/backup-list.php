@@ -18,8 +18,8 @@ use Livewire\Component;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 new #[Layout('components.layouts.app')]
-#[LayoutData(header: 'domains/system.seo.backup.title', breadcrumbs: ['ui.menu.dashboard' => 'dashboard', 'domains/system.seo.backup.title' => ''], context: 'user')]
-#[Seo(title: 'domains/system.seo.backup.title', description: 'domains/system.seo.backup.description', keywords: 'domains/system.seo.backup.keywords')]
+#[LayoutData(header: 'domains/system/seo.backup.title', breadcrumbs: ['ui.menu.dashboard' => 'dashboard', 'domains/system/seo.backup.title' => ''], context: 'user')]
+#[Seo(title: 'domains/system/seo.backup.title', description: 'domains/system/seo.backup.description', keywords: 'domains/system/seo.backup.keywords')]
 class extends Component
 {
     use HasLayoutDataAttributes;
@@ -37,10 +37,10 @@ class extends Component
     {
         try {
             $backup->execute();
-            $this->success(__('domains/system.messages.backup.backup_success'));
+            $this->success(__('domains/system/messages.backup.backup_success'));
         } catch (Exception $exception) {
             logger($exception->getMessage());
-            $this->error(__('domains/system.messages.backup.backup_error'));
+            $this->error(__('domains/system/messages.backup.backup_error'));
         }
     }
 
@@ -48,7 +48,7 @@ class extends Component
     {
         $file = Storage::disk($backup->disk)->exists($backup->path);
         if (! $file) {
-            $this->error(__('domains/system.messages.backup.download_error', ['path' => $backup->path]));
+            $this->error(__('domains/system/messages.backup.download_error', ['path' => $backup->path]));
         }
 
         return Storage::disk($backup->disk)->download($backup->path);
@@ -58,10 +58,10 @@ class extends Component
     {
         try {
             $restore->execute($backup);
-            $this->success(__('domains/system.messages.backup.restored_success'));
+            $this->success(__('domains/system/messages.backup.restored_success'));
         } catch (Exception $exception) {
             logger($exception->getMessage());
-            $this->error(__('domains/system.messages.backup.restored_error'));
+            $this->error(__('domains/system/messages.backup.restored_error'));
         }
     }
 

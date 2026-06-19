@@ -44,7 +44,7 @@ new class extends Component
 
         $action->execute(auth('web')->user(), $this->form);
 
-        $this->success(__('ui.crud.success.updated', ['resource' => __('domains/account.pages.user_settings.title')]));
+        $this->success(__('ui.crud.success.updated', ['resource' => __('domains/account/pages.user_settings.title')]));
         $this->redirect(request()->header('Referer') ?? route('dashboard'), navigate: true);
     }
 };

@@ -6,7 +6,7 @@
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#event-{{ $loop->index }}" aria-expanded="false" aria-controls="event-{{ $loop->index }}">
                         <div class="d-flex justify-content-between align-items-center w-100">
-                            <span>{{ __('domains/system.event.'.$audit->event) }}</span>
+                            <span>{{ __('event.'.$audit->event) }}</span>
                             <small>{{ $audit->updated_at->format('d M Y | H:i') }}</small>
                         </div>
                     </button>
@@ -17,17 +17,17 @@
                             <div class="row g-3">
                                 <div class="col-sm-12 col-md-4 fw-bold">{{ __('resources.user') }}</div>
                                 <div class="col-sm-12 col-md-8">{{ $audit->user->name }}</div>
-                                <div class="col-sm-12 col-md-4 fw-bold">{{ __('domains/system.fields.audit.ip_address') }}</div>
+                                <div class="col-sm-12 col-md-4 fw-bold">{{ __('domains/system/field.audit.ip_address') }}</div>
                                 <div class="col-sm-12 col-md-8">{{ $audit->ip_address }}</div>
-                                <div class="col-sm-12 col-md-4 fw-bold">{{ __('domains/system.fields.audit.browser') }}</div>
+                                <div class="col-sm-12 col-md-4 fw-bold">{{ __('domains/system/field.audit.browser') }}</div>
                                 <div class="col-sm-12 col-md-8">{{ $audit->user_agent }}</div>
                                 <div class="col-sm-12">
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>{{ __('domains/system.fields.audit.field') }}</th>
-                                                <th>{{ __('domains/system.fields.audit.old') }}</th>
-                                                <th>{{ __('domains/system.fields.audit.new') }}</th>
+                                                <th>{{ __('domains/system/field.audit.field') }}</th>
+                                                <th>{{ __('domains/system/field.audit.old') }}</th>
+                                                <th>{{ __('domains/system/field.audit.new') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>

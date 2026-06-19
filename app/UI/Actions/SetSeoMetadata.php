@@ -33,8 +33,8 @@ class SetSeoMetadata
         $keywords = $this->textResolver->execute(value: $rawData['keywords'], context: $viewData, contextTarget: $contextTarget);
         $image = $rawData['image'];
 
-        SEOTools::setTitle($title ?? __('domains/system.seo.default_title'));
-        SEOTools::setDescription($description ?? __('domains/system.seo.default_description'));
+        SEOTools::setTitle($title ?? __('seo.default_title'));
+        SEOTools::setDescription($description ?? __('seo.default_description'));
         SEOTools::metatags()->setCanonical($request->url());
 
         if ($keywords) {

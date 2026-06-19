@@ -9,7 +9,7 @@ enum UserStatus: string
 
     public function label(): string
     {
-        return __('domains/identity.enum.user_status.'.$this->value);
+        return __('domains/identity/enum.user_status.'.$this->value);
     }
 
     public function badgeVariant(): string

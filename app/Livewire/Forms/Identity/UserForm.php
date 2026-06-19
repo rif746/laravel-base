@@ -10,19 +10,19 @@ use Livewire\Form;
 
 class UserForm extends Form
 {
-    #[Validate(as: 'domains/identity.fields.user.email')]
+    #[Validate(as: 'domains/identity/field.user.email')]
     public ?string $email = null;
 
-    #[Validate(as: 'domains/identity.fields.user.name')]
+    #[Validate(as: 'domains/identity/field.user.name')]
     public ?string $name = null;
 
-    #[Validate(as: 'domains/identity.fields.role.name')]
+    #[Validate(as: 'domains/identity/field.role.name')]
     public ?string $role_name = null;
 
-    #[Validate(as: 'domains/identity.fields.user.password')]
+    #[Validate(as: 'domains/identity/field.user.password')]
     public ?string $password = null;
 
-    #[Validate(as: 'domains/identity.fields.user.password_confirmation')]
+    #[Validate(as: 'domains/identity/field.user.password_confirmation')]
     public ?string $password_confirmation = null;
 
     public function rules(int $userId = 0, bool $isUpdate = false): array

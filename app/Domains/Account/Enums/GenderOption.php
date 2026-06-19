@@ -9,7 +9,7 @@ enum GenderOption: string
 
     public function label(): string
     {
-        return __("domains/account.enum.gender.{$this->value}");
+        return __("domains/account/enum.gender.{$this->value}");
     }
 
     public static function fromLabel($value): self

@@ -3,11 +3,11 @@
         <div class="col-sm-12 col-md-6">
             <div class="row mx-4">
                 <div class="col-sm-12 col-md-4 fw-bold border-bottom px-4 py-2">
-                    {{ __('domains/identity.fields.role.name') }}</div>
+                    {{ __('domains/identity/field.role.name') }}</div>
                 <div class="col-sm-12 col-md-8 border-bottom px-4 py-2">{{ $this->role->name }}</div>
 
                 <div class="col-sm-12 col-md-4 fw-bold border-bottom px-4 py-2">
-                    {{ __('domains/identity.fields.role.guard_name') }}</div>
+                    {{ __('domains/identity/field.role.guard_name') }}</div>
                 <div class="col-sm-12 col-md-8 border-bottom px-4 py-2">{{ $this->role->guard_name }}</div>
             </div>
         </div>

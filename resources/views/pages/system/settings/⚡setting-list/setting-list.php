@@ -14,8 +14,8 @@ use Livewire\Component;
 use Spatie\LivewireFilepond\WithFilePond;
 
 new #[Layout('components.layouts.app')]
-#[LayoutData(header: 'domains/system.seo.settings.title', breadcrumbs: ['ui.menu.dashboard' => 'dashboard', 'domains/system.seo.settings.title' => ''], context: 'user')]
-#[Seo(title: 'domains/system.seo.settings.title', description: 'domains/system.seo.settings.description', keywords: 'domains/system.seo.settings.keywords')]
+#[LayoutData(header: 'domains/system/seo.settings.title', breadcrumbs: ['ui.menu.dashboard' => 'dashboard', 'domains/system/seo.settings.title' => ''], context: 'user')]
+#[Seo(title: 'domains/system/seo.settings.title', description: 'domains/system/seo.settings.description', keywords: 'domains/system/seo.settings.keywords')]
 class extends Component
 {
     use HasLayoutDataAttributes, HasSeoAttributes, WithFilePond, WithToast;

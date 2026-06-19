@@ -23,14 +23,14 @@ enum SystemSettingKey: string
 
     public function label(): string
     {
-        return __('domains/system.fields.settings.'.str_replace('-', '.', $this->value));
+        return __('domains/system/field.settings.'.str_replace('-', '.', $this->value));
     }
 
     public static function section(): array
     {
         return [
             [
-                __('domains/system.pages.settings.sections.web') => [
+                __('domains/system/pages.settings.sections.web') => [
                     self::WEB_NAME,
                     self::WEB_DESCRIPTION,
                     self::WEB_ADDRESS,
@@ -41,11 +41,11 @@ enum SystemSettingKey: string
                 ],
             ],
             [
-                __('domains/system.pages.settings.sections.general') => [
+                __('domains/system/pages.settings.sections.general') => [
                     self::DEFAULT_LANGUAGE,
                     self::TIMEZONE,
                 ],
-                __('domains/system.pages.settings.sections.webmaster') => [
+                __('domains/system/pages.settings.sections.webmaster') => [
                     self::GOOGLE_TAG_MANAGER_ID,
                     self::GOOGLE_WEBMASTER_ID,
                 ],

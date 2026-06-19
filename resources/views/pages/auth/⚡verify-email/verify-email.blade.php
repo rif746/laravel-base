@@ -1,12 +1,12 @@
 <div wire:poll.10s="checkVerified">
     <div class="small text-muted mb-4 text-center">
-        {{ __('domains/auth.pages.verify_email.subheader') }}
+        {{ __('domains/auth/pages.verify_email.subheader') }}
     </div>
 
     <div class="d-flex justify-content-between align-items-center mt-4">
         <form wire:submit="resendEmail">
             <x-button type="submit" theme="primary">
-                {{ __('domains/auth.fields.verify_email.submit') }}
+                {{ __('domains/auth/field.verify_email.submit') }}
             </x-button>
         </form>
 

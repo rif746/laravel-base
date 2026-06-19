@@ -115,15 +115,15 @@ class UserDataTable extends DataTable
             Column::computed('DT_RowIndex')
                 ->title('#'),
             Column::make('name')
-                ->title(__('domains/identity.fields.user.name'))
+                ->title(__('domains/identity/field.user.name'))
                 ->searchable(true),
             Column::make('email')
-                ->title(__('domains/identity.fields.user.email'))
+                ->title(__('domains/identity/field.user.email'))
                 ->searchable(true),
             Column::computed('roles[0].name')
                 ->title(__('resources.role')),
             Column::computed('status')
-                ->title(__('domains/identity.fields.user.status')),
+                ->title(__('domains/identity/field.user.status')),
             Column::computed('action')
                 ->title(__('ui.label.actions'))
                 ->exportable(false)

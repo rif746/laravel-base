@@ -2,15 +2,15 @@
 
     <div class="row">
         <div class="col-sm-12 col-md-6">
-            <x-form.input name="form.name" :disabled="$id" :label="__('domains/identity.fields.role.name')" wire:model="form.name" />
-            <x-form.select name="form.guard_name" :disabled="$id" :label="__('domains/identity.fields.role.guard_name')" wire:model="form.guard_name">
+            <x-form.input name="form.name" :disabled="$id" :label="__('domains/identity/field.role.name')" wire:model="form.name" />
+            <x-form.select name="form.guard_name" :disabled="$id" :label="__('domains/identity/field.role.guard_name')" wire:model="form.guard_name">
                 <option value="web">Web</option>
                 <option value="api">Api</option>
             </x-form.select>
         </div>
         <div class="col-sm-12 col-md-6">
             <div class="mb-3">
-                <label class="form-label">{{ __('domains/identity.fields.role.permissions') }}</label>
+                <label class="form-label">{{ __('domains/identity/field.role.permissions') }}</label>
                 <div class="row gap-1">
                     @foreach ($this->permissions->groupBy('group') as $group)
                         <div class="col-md-12">

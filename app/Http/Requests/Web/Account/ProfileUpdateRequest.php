@@ -35,8 +35,8 @@ class ProfileUpdateRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name' => __('domains/identity.fields.user.name'),
-            'email' => __('domains/identity.fields.user.email'),
+            'name' => __('domains/identity/field.user.name'),
+            'email' => __('domains/identity/field.user.email'),
         ];
     }
 }

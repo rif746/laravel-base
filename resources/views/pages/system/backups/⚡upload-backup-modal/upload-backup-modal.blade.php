@@ -1,7 +1,7 @@
-<x-modal id="backup-file-upload-modal" :title="__('domains/system.pages.backup.upload_modal_title')" form wire:submit="save" livewire>
+<x-modal id="backup-file-upload-modal" :title="__('domains/system/pages.backup.upload_modal_title')" form wire:submit="save" livewire>
     <div class="row">
         <div class="col-sm-12">
-            <x-filepond::upload wire:model="file" :label="__('domains/system.fields.backup.file')" />
+            <x-filepond::upload wire:model="file" :label="__('domains/system/field.backup.file')" />
         </div>
     </div>
     <x-slot:footer>

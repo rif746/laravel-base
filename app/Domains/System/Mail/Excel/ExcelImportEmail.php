@@ -28,7 +28,7 @@ class ExcelImportEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('domains/system.notifications.excel.import_email.subject'),
+            subject: __('domains/system/notifications.excel.import_email.subject'),
         );
     }
 
@@ -38,10 +38,10 @@ class ExcelImportEmail extends Mailable
     public function content(): Content
     {
         $message = (new MailMessage)
-            ->subject(__('domains/system.notifications.excel.import_email.subject'))
-            ->line(__('domains/system.notifications.excel.import_email.intro'))
-            ->line(__('domains/system.notifications.excel.import_email.body'))
-            ->line(__('domains/system.notifications.excel.import_email.outro'))
+            ->subject(__('domains/system/notifications.excel.import_email.subject'))
+            ->line(__('domains/system/notifications.excel.import_email.intro'))
+            ->line(__('domains/system/notifications.excel.import_email.body'))
+            ->line(__('domains/system/notifications.excel.import_email.outro'))
             ->render();
 
         return new Content(

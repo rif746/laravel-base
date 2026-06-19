@@ -7,13 +7,13 @@ use Livewire\Form;
 
 class UpdatePasswordForm extends Form
 {
-    #[Validate(as: 'domains/identity.fields.user.current_password')]
+    #[Validate(as: 'domains/identity/field.user.current_password')]
     public string $current_password = '';
 
-    #[Validate(as: 'domains/identity.fields.user.new_password')]
+    #[Validate(as: 'domains/identity/field.user.new_password')]
     public string $new_password = '';
 
-    #[Validate(as: 'domains/identity.fields.user.confirm_password')]
+    #[Validate(as: 'domains/identity/field.user.confirm_password')]
     public string $new_password_confirmation = '';
 
     public function rules(): array

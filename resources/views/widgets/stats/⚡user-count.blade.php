@@ -21,9 +21,9 @@ new class extends Component {
             ])
         </div>
         <div>
-            <h2 class="mb-3 fs-6" data-heading-tag="H2">Total Users</h2>
+            <h2 class="mb-3 fs-6" data-heading-tag="H2">{{ __('domains/identity/dashboard.user_count.title') }}</h2>
             <h3 class="fw-bold mb-0" data-heading-tag="H3">{{ $this->userCount['total_users'] }}</h3>
-            <p class="text-primary mb-0 small">{{ $this->userCount['growth_rate'] }} since last month</p>
+            <p class="text-primary mb-0 small">{{ __('domains/identity/dashboard.user_count.growth', ['rate' => $this->userCount['growth_rate']]) }}</p>
         </div>
     </div>
 </div>

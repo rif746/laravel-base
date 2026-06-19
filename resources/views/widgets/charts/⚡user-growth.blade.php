@@ -10,7 +10,7 @@ new class extends Component {
     {
         $this->dispatch('chart-user-growth-update',
             series: [[
-                'name' => 'Registration',
+                'name' => __('domains/identity/dashboard.user_growth.series_name'),
                 'data' => $this->userGrowth['series']
             ]],
             options: [
@@ -37,8 +37,8 @@ new class extends Component {
                 ])
             </div>
             <div>
-                <h2 class="fs-4">User Growth Rate</h2>
-                <p class="text-secondary mb-0 small">User growth in 2026</p>
+                <h2 class="fs-4">{{ __('domains/identity/dashboard.user_growth.title') }}</h2>
+                <p class="text-secondary mb-0 small">{{ __('domains/identity/dashboard.user_growth.subtitle', ['year' => now()->year]) }}</p>
             </div>
         </div>
         <div id="user-growth" x-chart="{

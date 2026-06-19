@@ -100,11 +100,11 @@ class RoleDataTable extends DataTable
                 ->searchable(false)
                 ->orderable(false),
             Column::make('name')
-                ->title(__('domains/identity.fields.role.name')),
+                ->title(__('domains/identity/field.role.name')),
             Column::computed('permissions_count')
-                ->title(__('domains/identity.fields.role.permission_count')),
+                ->title(__('domains/identity/field.role.permission_count')),
             Column::computed('guard_name')
-                ->title(__('domains/identity.fields.role.guard_name')),
+                ->title(__('domains/identity/field.role.guard_name')),
             Column::computed('action')
                 ->title(__('ui.label.actions'))
                 ->exportable(false)
