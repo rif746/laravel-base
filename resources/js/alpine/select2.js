@@ -19,6 +19,16 @@ export default function alpineSelect2(Alpine) {
                 isUpdating = false
             })
 
+            // Fix for allowClear: prevent dropdown from opening when clicking the 'x'
+            $el.on('select2:unselecting', function (e) {
+                $(this).data('unselecting', true);
+            }).on('select2:opening', function (e) {
+                if ($(this).data('unselecting')) {
+                    $(this).removeData('unselecting');
+                    e.preventDefault();
+                }
+            });
+
             const event = (e) => {
                 $el.val(null).trigger('change', {bubbles: true})
             }

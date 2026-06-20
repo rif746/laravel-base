@@ -59,7 +59,7 @@
                 table_name: '{{ $table_name }}',
                 id: '{{ $id }}',
                 onSuccess: () => {
-                    LaravelDataTables['{{ $table_name }}'].ajax.reload();
+                    LaravelDataTables['{{ $table_name }}'].ajax.reload(null, false);
                 }
             })">
                 @svg('tabler-trash', ['width' => 16, 'height' => 16])

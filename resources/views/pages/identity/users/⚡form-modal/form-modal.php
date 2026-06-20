@@ -47,7 +47,7 @@ new class extends Component
 
         $this->success($this->message);
         $this->dispatch('hide-user-form-modal');
-        $this->js("LaravelDataTables['user-table'].ajax.reload()");
+        $this->js("LaravelDataTables['user-table'].ajax.reload(null, false)");
     }
 
     #[Computed]

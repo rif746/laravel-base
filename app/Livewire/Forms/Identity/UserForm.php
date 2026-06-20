@@ -25,11 +25,11 @@ class UserForm extends Form
     #[Validate(as: 'domains/identity/field.user.password_confirmation')]
     public ?string $password_confirmation = null;
 
-    public function rules(int $userId = 0, bool $isUpdate = false): array
+    public function rules(string $userId = '', bool $isUpdate = false): array
     {
         $rules = [
-            'name' => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($userId)],
-            'email' => ['required', 'string', 'email', Rule::unique(User::class, 'email')->ignore($userId)],
+            'name' => ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->ignore($userId, 'ulid')],
+            'email' => ['required', 'string', 'email', Rule::unique(User::class, 'email')->ignore($userId, 'ulid')],
             'role_name' => ['required'],
             'password' => [Password::default(), 'required', 'confirmed'],
         ];

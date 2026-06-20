@@ -53,7 +53,7 @@ new class extends Component
 
         $this->success($this->message);
         $this->dispatch('hide-role-form-modal');
-        $this->js("LaravelDataTables['role-table'].ajax.reload()");
+        $this->js("LaravelDataTables['role-table'].ajax.reload(null, false)");
         $this->form->reset();
         $this->form->resetValidation();
         $this->reset('id', 'mode');

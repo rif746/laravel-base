@@ -66,8 +66,20 @@ class RoleDataTable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->orderBy(-1)
+            ->layout([
+                'topStart' => [
+                    'className' => 'col-md-auto me-auto d-flex flex-sm-row flex-column justify-content-center justify-content-md-start align-items-center align-items-md-start gap-1',
+                    'features' => ['buttons', 'pageLength']
+                ],
+                'topEnd' => [
+                    'className' => 'col-md-auto ms-auto d-flex flex-sm-row flex-column justify-content-center justify-content-md-end align-items-center align-items-md-start gap-1',
+                    'features' => ['search']
+                ],
+
+                'bottomStart' => 'info',
+                'bottomEnd' => 'paging',
+            ])
             ->parameters([
-                'dom' => config('datatables-buttons.parameters.dom'),
                 'language' => [
                     'search' => '',
                     'searchPlaceholder' => __('ui.button.lookup'),

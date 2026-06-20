@@ -68,8 +68,19 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->with(['roles'])
+        $query = $model->with(['roles'])
             ->newQuery();
+
+        if (request()->has('role') && request('role') != '') {
+            $query->whereHas('roles', fn ($query) => $query
+                ->where('name', request('role')));
+        }
+
+        if (request()->has('status') && request('status') != '') {
+            $query->where('status', request('status'));
+        }
+
+        return $query;
     }
 
     /**
@@ -80,14 +91,37 @@ class UserDataTable extends DataTable
         return $this->builder()
             ->setTableId('user-table')
             ->columns($this->getColumns())
-            ->minifiedAjax()
+            ->ajax([
+                'data' => 'function(d) {
+                    d.role = $("#role-filter").val()
+                    d.status = $("#status-filter").val()
+                }'
+            ])
             ->orderBy(-1)
+            ->layout([
+                'topStart' => [
+                    'className' => 'col-md-auto me-auto d-flex flex-sm-row flex-column justify-content-center justify-content-md-start align-items-center align-items-md-start gap-1',
+                    'features' => ['buttons', 'pageLength']
+                ],
+                'topEnd' => [
+                    'className' => 'col-md-auto ms-auto d-flex flex-sm-row flex-column justify-content-center justify-content-md-end align-items-center align-items-md-start gap-1',
+                    'features' => ['status-filter', 'role-filter', 'search']
+                ],
+
+                'bottomStart' => 'info',
+                'bottomEnd' => 'paging',
+            ])
             ->parameters([
-                'dom' => config('datatables-buttons.parameters.dom'),
                 'language' => [
                     'search' => '',
                     'searchPlaceholder' => __('ui.button.lookup'),
                 ],
+                'fixedColumns' => [
+                    'start' => 2,
+                ],
+                'scrollX' => true,
+                'scrollCollapse' => true,
+                'responsive' => true,
             ])
             ->buttons([
                 Button::make('add')

@@ -1,8 +1,9 @@
 @props([
-    'label' => '',
+    'label' => null,
     'name' => '',
     'feedback' => null,
     'options' => [],
+    'noLabel' => false,
 ])
 
 @php
@@ -10,7 +11,9 @@
 @endphp
 
 <div @if($attributes->has('x-select2')) wire:ignore @endif class="mb-3" @if ($attributes->has('x-show')) x-show="{{ $attributes->get('x-show') }}" x-cloak @endif>
-    <label for="{{ $name }}" class="form-label fw-bold">{{ $label }}</label>
+    @if(!$noLabel)
+        <label for="{{ $name }}" class="form-label fw-bold">{{ $label }}</label>
+    @endif
     <select
         {{ $attributes->merge([
             'class' => 'form-select' . ($errors->has($name) ? ' is-invalid' : ''),
@@ -24,7 +27,7 @@
                 <option value="{{ $key }}">{{ $value }}</option>
             @endforeach
         @else
-            {{ $slot }}
+            {{ $slot ?? '' }}
         @endif
     </select>
     @if ($feedback)

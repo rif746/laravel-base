@@ -15,7 +15,6 @@
     font-size: $font-size-base;
     border: 1px solid $border-color;
     border-radius: 0.5rem !important;
-    min-height: calc(#{$input-btn-padding-y} * 2 + #{$font-size-base} * 1.5 + 2px);
     background-color: #fff;
     transition: border-color 0.15s, box-shadow 0.15s;
 
@@ -24,17 +23,42 @@
     }
   }
 
-  // Single select rendered value
+    // Single select rendered value
   .select2-selection--single {
     .select2-selection__rendered {
       color: $gray-800;
-      line-height: calc(#{$input-btn-padding-y} * 2 + #{$font-size-base} * 1.5);
       padding-left: 0.75rem;
       padding-right: 2rem;
+      width: 90%;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+      display: block !important;
+
+      // Increase padding right when clear button is present so text truncates before it
+      &:has(.select2-selection__clear) {
+        padding-right: .3rem !important;
+      }
     }
 
     .select2-selection__placeholder {
       color: $gray-400;
+    }
+
+    .select2-selection__clear {
+      position: absolute;
+      right: .3rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      cursor: pointer;
+      color: $gray-500;
+      background: transparent;
+      padding: 0.25rem;
+
+      &:hover {
+        color: $danger;
+      }
     }
 
     .select2-selection__arrow {
