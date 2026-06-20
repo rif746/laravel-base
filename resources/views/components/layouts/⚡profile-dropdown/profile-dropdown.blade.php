@@ -25,7 +25,7 @@
                 </x-slot:label>
             </x-link>
             <hr class="my-0 border-dashed" />
-            @can('system-setting manage')
+            @can('system-setting.manage')
                 <x-link class="dropdown-item" :href="route('system-setting.index')">
                     <x-slot:label>
                         <x-tabler-settings width="16" />
@@ -33,7 +33,7 @@
                     </x-slot:label>
                 </x-link>
             @endcan
-            @can('system-backup manage')
+            @can('system-backup.manage')
                 <x-link class="dropdown-item" :href="route('system-backup.index')">
                     <x-slot:label>
                         <x-tabler-restore width="16" />

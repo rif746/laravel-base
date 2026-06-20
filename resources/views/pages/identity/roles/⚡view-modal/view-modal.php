@@ -12,7 +12,7 @@ new class extends Component
     use WithModal;
 
     #[Locked]
-    public ?int $id = null;
+    public ?string $id = null;
 
     #[Locked]
     public string $mode = 'view';

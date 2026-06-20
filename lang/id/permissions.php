@@ -9,16 +9,18 @@ return [
     ],
     'user' => [
         'group-name' => 'Manajemen Pengguna',
-        'index' => 'Memungkinkan pengguna untuk melihat dan mencari daftar semua akun pengguna yang terdaftar di sistem.',
+        'viewAny' => 'Memungkinkan pengguna untuk melihat dan mencari daftar semua akun pengguna yang terdaftar di sistem.',
+        'view' => 'Memungkinkan pengguna untuk melihat informasi rinci dari akun pengguna.',
         'create' => 'Memberikan akses untuk mendaftarkan dan menambah akun pengguna baru ke sistem.',
-        'edit' => 'Memungkinkan modifikasi data profil, status, dan informasi rinci lainnya untuk akun pengguna yang ada.',
+        'update' => 'Memungkinkan modifikasi data profil, status, dan informasi rinci lainnya untuk akun pengguna yang ada.',
         'delete' => 'Memberikan wewenang untuk menghapus atau menonaktifkan akun pengguna secara permanen dari sistem.',
     ],
     'role' => [
         'group-name' => 'Peran & Izin',
-        'index' => 'Melihat dan mengelola daftar tingkat peran dan hak akses yang tersedia di dalam aplikasi.',
+        'viewAny' => 'Memungkinkan pengguna untuk melihat dan mencari daftar semua peran yang tersedia di dalam aplikasi.',
+        'view' => 'Memungkinkan pengguna untuk melihat informasi rinci dari peran.',
         'create' => 'Memberikan kemampuan untuk merancang dan membuat tingkat peran baru dengan izin akses tertentu.',
-        'edit' => 'Memungkinkan modifikasi nama peran dan penyesuaian kembali daftar izin untuk peran yang ada.',
+        'update' => 'Memungkinkan modifikasi nama peran dan penyesuaian kembali daftar izin untuk peran yang ada.',
         'delete' => 'Memberikan wewenang untuk menghapus tingkat peran yang tidak lagi diperlukan oleh sistem.',
     ],
     'system-setting' => [

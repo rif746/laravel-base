@@ -17,6 +17,7 @@ return [
         'view' => 'View :resource',
         'upload' => 'Upload :resource',
         'restore' => 'Restore :resource',
+        'import' => 'Import :resource',
     ],
     'greetings' => [
         'morning' => 'Good morning, :name',

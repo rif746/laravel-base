@@ -9,16 +9,18 @@ return [
     ],
     'user' => [
         'group-name' => 'User Management',
-        'index' => 'Allows users to view and search the list of all user accounts registered in the system.',
+        'viewAny' => 'Allows users to view and search the list of all user accounts registered in the system.',
+        'view' => 'Allows users to view the profile and details of a specific user account.',
         'create' => 'Grants access to register and add new user accounts to the system.',
-        'edit' => 'Allows modification of profile data, status, and other detailed information for existing user accounts.',
+        'update' => 'Allows modification of profile data, status, and other detailed information for existing user accounts.',
         'delete' => 'Provides authority to permanently remove or deactivate user accounts from the system.',
     ],
     'role' => [
         'group-name' => 'Role & Permission',
-        'index' => 'View and manage the list of role levels and access rights available within the application.',
+        'viewAny' => 'Allows users to view and search the list of all role levels available within the application.',
+        'view' => 'Allows users to view the details and assigned permissions of a specific role.',
         'create' => 'Provides the ability to design and create new role levels with specific access permissions.',
-        'edit' => 'Allows for role name modification and readjustment of the permission list for existing roles.',
+        'update' => 'Allows for role name modification and readjustment of the permission list for existing roles.',
         'delete' => 'Provides authority to remove role levels that are no longer required by the system.',
     ],
     'system-setting' => [

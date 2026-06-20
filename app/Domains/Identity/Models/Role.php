@@ -5,6 +5,7 @@ namespace App\Domains\Identity\Models;
 use App\Domains\Identity\Policies\RolePolicy;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Contracts\Role as RoleContract;
 use Spatie\Permission\Models\Role as SpatieRole;
@@ -14,4 +15,10 @@ use Spatie\Permission\Models\Role as SpatieRole;
 class Role extends SpatieRole implements Auditable, RoleContract
 {
     use \OwenIt\Auditing\Auditable;
+    use HasUlids;
+
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
+    }
 }

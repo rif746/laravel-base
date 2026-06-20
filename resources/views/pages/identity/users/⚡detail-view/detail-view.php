@@ -26,9 +26,9 @@ class extends Component
     use WithToast;
 
     #[Locked]
-    public ?int $id = null;
+    public ?string $id = null;
 
-    public function mount(int $user_id): void
+    public function mount(string $user_id): void
     {
         $this->id = $user_id;
     }
@@ -37,7 +37,9 @@ class extends Component
     #[Computed]
     public function user(): ?User
     {
-        return $this->id ? User::with('profile')->findOrFail($this->id) : new User;
+        return $this->id ? User::with('profile')
+            ->where('ulid', $this->id)
+            ->first() : new User;
     }
 
     #[On('send-password-reset')]

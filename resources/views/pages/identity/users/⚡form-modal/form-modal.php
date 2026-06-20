@@ -18,7 +18,7 @@ new class extends Component
     use WithToast;
 
     #[Locked]
-    public ?int $id = null;
+    public ?string $id = null;
 
     #[Locked]
     public string $mode = 'create';
@@ -53,7 +53,7 @@ new class extends Component
     #[Computed]
     public function user(): ?User
     {
-        return $this->id ? User::findOrFail($this->id) : null;
+        return $this->id ? User::where('ulid', $this->id)->first() : null;
     }
 
     public function show(int|string $id): void

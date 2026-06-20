@@ -15,7 +15,7 @@
         </button>
     @endif
     @if (!empty($view))
-        @if (isset($view['permission']) && auth('web')->user()->hasPermissionTo($view['permission']))
+        @if (isset($view['permission']) && $view['permission'])
             @if (isset($view['modal']))
                 <button class="btn btn-sm btn-info" data-id="{{ $id }}" data-bs-toggle="modal"
                     data-bs-target="#{{ $view['modal'] }}" data-bs-toggle="tooltip" title="{{ trans('ui.button.view') }}">
@@ -27,11 +27,11 @@
                     @svg('tabler-eye', ['width' => 16, 'height' => 16])
                 </a>
             @endif
-        @endcan
+        @endif
     @endif
 
     @if (!empty($edit))
-        @if (isset($edit['permission']) && auth('web')->user()->hasPermissionTo($edit['permission']))
+        @if (isset($edit['permission']) && $edit['permission'])
             @if (isset($edit['modal']))
                 <button class="btn btn-sm btn-warning" data-id="{{ $id }}" data-bs-toggle="modal"
                     data-bs-target="#{{ $edit['modal'] }}" data-bs-toggle="tooltip"
@@ -44,11 +44,11 @@
                     @svg('tabler-pencil', ['width' => 16, 'height' => 16])
                 </a>
             @endif
-        @endcan
+        @endif
     @endif
 
     @if (!empty($delete))
-        @if (isset($delete['permission']) && auth('web')->user()->hasPermissionTo($delete['permission']))
+        @if (isset($delete['permission']) && $delete['permission'])
             <button class="btn btn-sm btn-danger"
                 x-on:click="$ask.livewire('delete-data', {
                 title: '{{ trans('ui.button.delete') }}',
@@ -64,6 +64,6 @@
             })">
                 @svg('tabler-trash', ['width' => 16, 'height' => 16])
             </button>
-        @endcan
+        @endif
     @endif
 </div>

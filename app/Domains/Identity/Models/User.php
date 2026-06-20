@@ -12,6 +12,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -31,6 +32,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
 
     use HasFile;
     use HasRoles;
+    use HasUlids;
     use Notifiable;
     use \OwenIt\Auditing\Auditable;
 
@@ -62,6 +64,11 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     public function sendEmailVerificationNotification(): void
     {
         $this->notify(new VerifyEmailNotification);
+    }
+
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
     }
 
     public function getRoleNameAttribute()

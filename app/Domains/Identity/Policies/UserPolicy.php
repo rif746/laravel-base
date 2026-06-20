@@ -2,6 +2,7 @@
 
 namespace App\Domains\Identity\Policies;
 
+use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Models\User;
 
 class UserPolicy
@@ -11,7 +12,7 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('user index');
+        return $user->hasPermissionTo('user.viewAny');
     }
 
     /**
@@ -19,7 +20,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $user->hasPermissionTo('user index');
+        return $user->hasPermissionTo('user.view');
     }
 
     /**
@@ -27,7 +28,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('user create');
+        return $user->hasPermissionTo('user.create');
     }
 
     /**
@@ -35,7 +36,9 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->hasPermissionTo('user edit');
+        if($model->hasRole(RoleType::SYSTEM_ADMIN)) return false;
+
+        return $user->hasPermissionTo('user.update');
     }
 
     /**
@@ -43,6 +46,8 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return $user->hasPermissionTo('user delete');
+        if($model->hasRole(RoleType::SYSTEM_ADMIN)) return false;
+
+        return $user->hasPermissionTo('user.delete');
     }
 }

@@ -12,16 +12,12 @@ window.Alpine = Alpine;
 window.Livewire = Livewire;
 
 // 2. Wrap plugin registration inside the initialization event listener
-document.addEventListener('alpine:init', () => {
-    Alpine.plugin(bs);
-    Alpine.plugin(alpineAxios);
-    Alpine.plugin(alpineAsk);
-    Alpine.plugin(alpineSelect2);
-    Alpine.plugin(alpineQuill);
-    Alpine.plugin(AlpineChart);
-});
-
-Livewire.pl
+Alpine.plugin(bs);
+Alpine.plugin(alpineAxios);
+Alpine.plugin(alpineAsk);
+Alpine.plugin(alpineSelect2);
+Alpine.plugin(alpineQuill);
+Alpine.plugin(AlpineChart);
 
 // 3. Boot Livewire
 Livewire.start();

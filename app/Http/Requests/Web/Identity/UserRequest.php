@@ -14,7 +14,7 @@ class UserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('user create') || Gate::allows('user update');
+        return Gate::allows('user.create') || Gate::allows('user.update');
     }
 
     /**

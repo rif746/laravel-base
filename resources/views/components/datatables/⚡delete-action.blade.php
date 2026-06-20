@@ -14,14 +14,17 @@ new class extends Component {
     #[Locked]
     public string $action = '';
 
+    #[Locked]
+    public string $keyName = 'id';
+
     #[On('delete-data')]
     public function delete(int|string $id): void
     {
         try {
             if ($this->action === '') {
-                app($this->model)->destroy($id);
+                app($this->model)->where($this->keyName, $id)->delete();
             } else {
-                $model = app($this->model)->find($id);
+                $model = app($this->model)->where($this->keyName, $id)->first();
                 app($this->action)->execute($model);
             }
             $this->dispatch('delete-data-completed');

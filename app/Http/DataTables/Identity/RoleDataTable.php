@@ -2,6 +2,7 @@
 
 namespace App\Http\DataTables\Identity;
 
+use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Models\Role;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -26,20 +27,20 @@ class RoleDataTable extends DataTable
                     'log' => true,
                     'view' => [
                         'modal' => 'role-view-modal',
-                        'permission' => 'role index',
+                        'permission' => auth()->user()->can('view', $role),
                     ],
                     'edit' => [
                         'modal' => 'role-form-modal',
-                        'permission' => 'role edit',
+                        'permission' => $role->name == RoleType::SYSTEM_ADMIN->value ? false : auth()->user()->can('update', $role),
                     ],
                     'delete' => [
                         'url' => null,
-                        'permission' => 'role delete',
+                        'permission' => $role->name == RoleType::SYSTEM_ADMIN->value ? false : auth()->user()->can('delete', $role),
                         'message' => __('ui.confirmation.delete', ['resource' => __('resources.role')]),
                         'success_message' => __('ui.crud.success.deleted', ['resource' => __('resources.role')]),
                     ],
                     'table_name' => 'role-table',
-                    'id' => $role->id,
+                    'id' => $role->ulid,
                 ])
             )
             ->addIndexColumn();
@@ -76,12 +77,6 @@ class RoleDataTable extends DataTable
                 Button::make('add')
                     ->action('$("#role-form-modal").modal("show");')
                     ->text(svg('tabler-plus', ['width' => 16, 'height' => 16])->toHtml())
-                    ->addClass('btn-sm'),
-                Button::make('excel')
-                    ->text(svg('tabler-file-excel', ['width' => 16, 'height' => 16])->toHtml())
-                    ->addClass('btn-sm'),
-                Button::make('pdf')
-                    ->text(svg('tabler-file-type-pdf', ['width' => 16, 'height' => 16])->toHtml())
                     ->addClass('btn-sm'),
                 Button::make('reload')
                     ->text(svg('tabler-reload', ['width' => 16, 'height' => 16])->toHtml())

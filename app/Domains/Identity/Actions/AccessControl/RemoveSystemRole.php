@@ -5,6 +5,7 @@ namespace App\Domains\Identity\Actions\AccessControl;
 use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Models\Role;
 use Exception;
+use function in_array;
 
 class RemoveSystemRole
 {
@@ -13,7 +14,7 @@ class RemoveSystemRole
      */
     public function execute(Role $role): void
     {
-        if ($role->name === RoleType::ADMIN->value) {
+        if (in_array($role->name, [RoleType::ADMIN->value, RoleType::SYSTEM_ADMIN->value])) {
             throw new Exception('Can\'t remove system role.');
         }
 

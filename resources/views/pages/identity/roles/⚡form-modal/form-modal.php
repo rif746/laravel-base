@@ -20,7 +20,7 @@ new class extends Component
     use WithToast;
 
     #[Locked]
-    public ?int $id = null;
+    public ?string $id = null;
 
     #[Locked]
     public string $mode = 'create';

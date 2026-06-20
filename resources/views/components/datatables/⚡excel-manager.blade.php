@@ -30,7 +30,7 @@ new class extends Component {
     #[Validate]
     public ?TemporaryUploadedFile $file = null;
 
-    protected string $mode = 'upload';
+    protected string $mode = 'import';
 
     protected function rules(): array
     {

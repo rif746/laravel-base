@@ -17,6 +17,7 @@ return [
         'view' => 'Lihat :resource',
         'upload' => 'Unggah :resource',
         'restore' => 'Pulihkan :resource',
+        'import' => 'Impor :resource',
     ],
     'greetings' => [
         'morning' => 'Selamat pagi, :name',

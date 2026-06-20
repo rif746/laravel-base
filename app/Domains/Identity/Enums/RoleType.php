@@ -13,90 +13,33 @@ enum RoleType: string
         return [
             // Dashboard
             [
-                'name' => 'dashboard index',
+                'name' => 'dashboard.index',
                 'description' => 'permissions.dashboard.index',
                 'group' => 'dashboard',
                 'guard_name' => 'web',
                 'roles' => [self::SYSTEM_ADMIN, self::ADMIN, self::USER],
             ],
             [
-                'name' => 'dashboard admin',
+                'name' => 'dashboard.admin',
                 'description' => 'permissions.dashboard.admin',
                 'group' => 'dashboard',
                 'guard_name' => 'web',
                 'roles' => [self::SYSTEM_ADMIN, self::ADMIN],
             ],
             [
-                'name' => 'dashboard user',
+                'name' => 'dashboard.user',
                 'description' => 'permissions.dashboard.user',
                 'group' => 'dashboard',
                 'guard_name' => 'web',
                 'roles' => [self::USER],
             ],
 
-            // User
-            [
-                'name' => 'user index',
-                'description' => 'permissions.user.index',
-                'group' => 'user',
-                'guard_name' => 'web',
-                'roles' => [self::SYSTEM_ADMIN, self::ADMIN],
-            ],
-            [
-                'name' => 'user create',
-                'description' => 'permissions.user.create',
-                'group' => 'user',
-                'guard_name' => 'web',
-                'roles' => [self::SYSTEM_ADMIN, self::ADMIN],
-            ],
-            [
-                'name' => 'user edit',
-                'description' => 'permissions.user.edit',
-                'group' => 'user',
-                'guard_name' => 'web',
-                'roles' => [self::SYSTEM_ADMIN, self::ADMIN],
-            ],
-            [
-                'name' => 'user delete',
-                'description' => 'permissions.user.delete',
-                'group' => 'user',
-                'guard_name' => 'web',
-                'roles' => [self::SYSTEM_ADMIN, self::ADMIN],
-            ],
-
-            // Role
-            [
-                'name' => 'role index',
-                'description' => 'permissions.role.index',
-                'group' => 'role',
-                'guard_name' => 'web',
-                'roles' => [self::SYSTEM_ADMIN, self::ADMIN],
-            ],
-            [
-                'name' => 'role create',
-                'description' => 'permissions.role.create',
-                'group' => 'role',
-                'guard_name' => 'web',
-                'roles' => [self::SYSTEM_ADMIN, self::ADMIN],
-            ],
-            [
-                'name' => 'role edit',
-                'description' => 'permissions.role.edit',
-                'group' => 'role',
-                'guard_name' => 'web',
-                'roles' => [self::SYSTEM_ADMIN, self::ADMIN],
-            ],
-            [
-                'name' => 'role delete',
-                'description' => 'permissions.role.delete',
-                'group' => 'role',
-                'guard_name' => 'web',
-                'roles' => [self::SYSTEM_ADMIN, self::ADMIN],
-            ],
+            ...self::generatePolicy('role', [self::SYSTEM_ADMIN, self::ADMIN]),
+            ...self::generatePolicy('user', [self::SYSTEM_ADMIN, self::ADMIN]),
 
             // System Setting
             [
-                'name' => 'system-setting manage',
+                'name' => 'system-setting.manage',
                 'description' => 'permissions.system-setting.manage',
                 'group' => 'system-setting',
                 'guard_name' => 'web',
@@ -105,12 +48,28 @@ enum RoleType: string
 
             // System Backup
             [
-                'name' => 'system-backup manage',
+                'name' => 'system-backup.manage',
                 'description' => 'permissions.system-backup.manage',
                 'group' => 'system-backup',
                 'guard_name' => 'web',
                 'roles' => [self::SYSTEM_ADMIN, self::ADMIN],
             ],
         ];
+    }
+
+    private static function generatePolicy(string $modelName, array $roles = []): array
+    {
+        $policy = ['viewAny', 'view', 'create', 'update', 'delete'];
+        $permissions = [];
+        foreach ($policy as $policyName) {
+            $permissions[] = [
+                'name' => "{$modelName}.{$policyName}",
+                'description' => "permissions.{$modelName}.{$policyName}",
+                'group' => $modelName,
+                'guard_name' => 'web',
+                'roles' => $roles,
+            ];
+        }
+        return $permissions;
     }
 }

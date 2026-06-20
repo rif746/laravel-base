@@ -15,7 +15,7 @@ beforeEach(function () {
 });
 
 test('CreateSystemRole action creates role and syncs permissions', function () {
-    $permissions = ['user index', 'user create'];
+    $permissions = ['user.viewAny', 'user.create'];
 
     $dto = new CreateRoleDTO(
         name: 'Manager',
@@ -30,26 +30,26 @@ test('CreateSystemRole action creates role and syncs permissions', function () {
 
     $role = Role::findByName('Manager', 'web');
     expect($role)->not->toBeNull();
-    expect($role->hasPermissionTo('user index'))->toBeTrue();
-    expect($role->hasPermissionTo('user create'))->toBeTrue();
-    expect($role->hasPermissionTo('user edit'))->toBeFalse();
+    expect($role->hasPermissionTo('user.viewAny'))->toBeTrue();
+    expect($role->hasPermissionTo('user.create'))->toBeTrue();
+    expect($role->hasPermissionTo('user.update'))->toBeFalse();
 });
 
 test('UpdateSystemRole action syncs new permissions on role', function () {
     $role = Role::create(['name' => 'Editor', 'guard_name' => 'web']);
-    $role->syncPermissions(['user index']);
+    $role->syncPermissions(['user.viewAny']);
 
     $dto = new UpdateRoleDTO(
-        permissions: ['user create', 'user edit']
+        permissions: ['user.create', 'user.update']
     );
 
     $action = app(UpdateSystemRole::class);
     $result = $action->execute($role, $dto);
 
     expect($result)->toBeTrue();
-    expect($role->hasPermissionTo('user create'))->toBeTrue();
-    expect($role->hasPermissionTo('user edit'))->toBeTrue();
-    expect($role->hasPermissionTo('user index'))->toBeFalse();
+    expect($role->hasPermissionTo('user.create'))->toBeTrue();
+    expect($role->hasPermissionTo('user.update'))->toBeTrue();
+    expect($role->hasPermissionTo('user.viewAny'))->toBeFalse();
 });
 
 test('RemoveSystemRole action throws exception when deleting Admin role', function () {

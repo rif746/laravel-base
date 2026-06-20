@@ -4,6 +4,7 @@ namespace App\Http\DataTables\Identity;
 
 use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Exports\UserExport;
+use App\Domains\Identity\Models\Role;
 use App\Domains\Identity\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Blade;
@@ -14,6 +15,7 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
 use function __;
+use function collect;
 
 class UserDataTable extends DataTable
 {
@@ -38,21 +40,21 @@ class UserDataTable extends DataTable
                 fn ($user) => view('components.datatables.action-button', [
                     'log' => true,
                     'view' => [
-                        'url' => route('users.view', ['user_id' => $user->id]),
-                        'permission' => 'user index',
+                        'url' => route('users.view', ['user_id' => $user->ulid]),
+                        'permission' => auth()->user()->can('view', $user),
                     ],
                     'edit' => [
                         'modal' => 'user-form-modal',
-                        'permission' => 'user edit',
+                        'permission' => auth()->user()->can('update', $user),
                     ],
                     'delete' => [
                         'url' => null,
                         'message' => __('ui.confirmation.delete', ['resource' => __('resources.user')]),
                         'success_message' => __('ui.crud.success.deleted', ['resource' => __('resources.user')]),
-                        'permission' => 'user delete',
+                        'permission' => auth()->user()->can('delete', $user),
                     ],
                     'table_name' => 'user-table',
-                    'id' => $user->id,
+                    'id' => $user->ulid,
                 ])
             )
             ->rawColumns(['action', 'status'])
@@ -98,6 +100,7 @@ class UserDataTable extends DataTable
                     ->action("Livewire.dispatch('export-excel')"),
                 Button::make('excel')
                     ->text(svg('tabler-table-import', ['width' => 16, 'height' => 16])->toHtml())
+                    ->titleAttr('Import Excel')
                     ->addClass('btn-sm')
                     ->action("$('#excel-import-modal').modal('show')"),
                 Button::make('reload')

@@ -1,5 +1,3 @@
-import "../plugin/sweetalert2.js";
-
 export default function alpineAsk(Alpine) {
     Alpine.magic('ask', () => {
         return {
@@ -8,69 +6,77 @@ export default function alpineAsk(Alpine) {
                     title,
                     text: textMessage,
                     icon: 'warning',
+                    showConfirmButton: true,
                     showCancelButton: true,
                     confirmButtonText: confirmText,
                     cancelButtonText: cancelText,
                     showLoaderOnConfirm: true,
                     preConfirm: async () => {
-                        return new Promise((resolve, reject) => {
+                        return new Promise((resolve) => {
                             const completeEvent = eventName + '-completed';
-                            const failureEvent = eventName + '-failed'; // 👈 Optional error listener hook
+                            const failureEvent = eventName + '-failed';
+
+                            let unsubscribeSuccess;
+                            let unsubscribeFailure;
+
+                            // Centralized event unbinding utility
+                            function cleanup() {
+                                if (typeof unsubscribeSuccess === 'function') unsubscribeSuccess();
+                                if (typeof unsubscribeFailure === 'function') unsubscribeFailure();
+                            }
+
+                            // Emergency Request Timeout Safety Boundary
+                            const timeoutId = setTimeout(() => {
+                                cleanup();
+                                window.Swal.showValidationMessage('Server timeout while waiting for completion event.');
+                                resolve(false); // Stops loader, keeps modal open
+                            }, 10000);
 
                             // 1. Success Event Handler Loop
-                            const successListener = Livewire.on(completeEvent, () => {
+                            unsubscribeSuccess = window.Livewire.on(completeEvent, () => {
+                                clearTimeout(timeoutId);
+                                cleanup();
                                 try {
                                     onSuccess();
-                                    cleanup();
-                                    resolve(true); // Tells SweetAlert to close successfully
+                                    resolve(true); // Closes SweetAlert
                                 } catch (e) {
-                                    cleanup();
-                                    reject(new Error(`Success callback failed: ${e.message}`));
+                                    window.Swal.showValidationMessage(`Success callback error: ${e.message}`);
+                                    resolve(false);
                                 }
                             });
 
-                            // 2. Failure Event Handler Loop (If your backend dispatches a failure state explicitly)
-                            const failureListener = Livewire.on(failureEvent, (eventPayload) => {
+                            // 2. Failure Event Handler Loop
+                            unsubscribeFailure = window.Livewire.on(failureEvent, (eventPayload) => {
+                                clearTimeout(timeoutId);
                                 cleanup();
-                                // Extract custom error messages dispatched straight from your backend model actions
-                                const message = eventPayload?.message || eventPayload?.[0]?.message || 'Backend execution failure';
-                                Swal.showValidationMessage(message);
 
-                                resolve(false); // 💡 Returning false stops the loader and keeps the modal open for a retry!
+                                // Livewire v3 passes event data wrapped in an object or array
+                                const payloadData = eventPayload?.detail || eventPayload;
+                                const message = payloadData?.message || (Array.isArray(payloadData) ? payloadData[0]?.message : null) || 'Backend execution failure';
+
+                                window.Swal.showValidationMessage(message);
+                                resolve(false); // Stops loader, lets user retry
                             });
 
-                            // 3. Centralized event unbinding utility
-                            function cleanup() {
-                                if (typeof successListener === 'function') successListener();
-                                if (typeof failureListener === 'function') failureListener();
-                            }
-
-                            // 4. Emergency Request Timeout Safety Boundary
-                            const timeoutId = setTimeout(() => {
-                                cleanup();
-                                Swal.showValidationMessage('Server timeout while waiting for completion event.');
-                                resolve(false); // Stops the loader and allows them to try clicking confirm again
-                            }, 10000);
-
-                            // Override cleanup to clear the running timeout instance if things complete on time
-                            const originalCleanup = cleanup;
-                            cleanup = () => {
-                                clearTimeout(timeoutId);
-                                originalCleanup();
-                            };
-
-                            // 5. Fire off the request payload execution hook directly to Livewire
+                            // 3. Fire off the request payload execution hook directly to Livewire
                             try {
-                                Livewire.dispatch(eventName, {id: id});
+                                window.Livewire.dispatch(eventName, { id: id });
                             } catch (dispatchError) {
+                                clearTimeout(timeoutId);
                                 cleanup();
-                                reject(dispatchError);
+                                window.Swal.showValidationMessage(`Dispatch failed: ${dispatchError.message}`);
+                                resolve(false);
                             }
-                        })
+                        });
                     }
                 }).then(result => {
-                    if (result.isConfirmed && successMessage) {
-                        toast(successMessage, 'success');
+                    if (result && result.isConfirmed && successMessage) {
+                        // Safe check for global toast function
+                        if (typeof toast === 'function') {
+                            toast(successMessage, 'success');
+                        } else if (window.toast === 'function') {
+                            window.toast(successMessage, 'success');
+                        }
                     }
                 });
             },
@@ -79,6 +85,7 @@ export default function alpineAsk(Alpine) {
                     title,
                     text: textMessage,
                     icon: 'warning',
+                    showConfirmButton: true,
                     showCancelButton: true,
                     confirmButtonText: confirmText,
                     cancelButtonText: cancelText,
@@ -90,13 +97,15 @@ export default function alpineAsk(Alpine) {
                         } catch (error) {
                             console.error(error);
                             const errorMsg = error?.message || 'Execution processing failed.';
-                            Swal.showValidationMessage(errorMsg);
+                            window.Swal.showValidationMessage(errorMsg);
                             return false;
                         }
                     }
                 }).then(result => {
-                    if (result.isConfirmed && successMessage) {
-                        toast(successMessage, 'success');
+                    if (result && result.isConfirmed && successMessage) {
+                        if (typeof toast === 'function') {
+                            toast(successMessage, 'success');
+                        }
                     }
                 });
             }

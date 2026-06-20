@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Identity;
 
+use App\Domains\Identity\Enums\UserStatus;
 use App\Domains\Identity\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -32,6 +33,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'status' => UserStatus::ACTIVE,
             'password' => static::$password ??= 'password',
             'remember_token' => Str::random(10),
         ];

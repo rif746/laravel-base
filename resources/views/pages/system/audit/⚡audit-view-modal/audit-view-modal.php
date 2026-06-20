@@ -23,7 +23,11 @@ new class extends Component
     #[Locked]
     public string $mode = 'view';
 
+    #[Locked]
+    public string $keyName = 'id';
+
     protected string $resourceName = 'audit';
+
 
     public function show(int|string $id): void
     {
@@ -36,7 +40,7 @@ new class extends Component
         if (is_null($this->model_id)) {
             return new Collection;
         }
-        $model = app($this->model)->where('id', $this->model_id)->first();
+        $model = app($this->model)->where($this->keyName, $this->model_id)->first();
 
         return app(GetModelAuditLog::class)->get($model);
     }

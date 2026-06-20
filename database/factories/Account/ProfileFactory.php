@@ -11,8 +11,8 @@ class ProfileFactory extends Factory
     {
         return [
             'gender' => [GenderOption::MALE->value, GenderOption::FEMALE->value][rand(0, 1)],
-            'date_of_birth' => $this->faker->dateTime('2010'),
-            'phone_number' => $this->faker->e164PhoneNumber(),
+            'date_of_birth' => $this->faker->date(max: '2004-01-01'),
+            'phone_number' => $this->faker->randomNumber(9),
         ];
     }
 }
