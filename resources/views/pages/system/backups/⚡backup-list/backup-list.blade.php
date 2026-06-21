@@ -32,7 +32,7 @@
                                 'width' => 16,
                                 'height' => 16,
                             ]"
-                                x-on:click="$swal.livewire('delete-data', {
+                                x-on:click="$ask.livewire('delete-data', {
                                     title: '{{ trans('ui.button.delete') }}',
                                     textMessage: '{{ trans('domains/system/pages.backup.confirmation.delete') }}',
                                     confirmText: '{{ trans('ui.button.yes') }}',

@@ -74,7 +74,7 @@
                     {{ __('domains/account/field.profile.date_of_birth') }}
                 </div>
                 <div class="col-sm-12 col-md-8 px-2 py-1">
-                    {{ $this->user->profile?->date_of_birth }}
+                    {{ $this->user->profile?->date_of_birth->format('d/m/Y') }}
                 </div>
             </div>
         </x-card>

@@ -27,8 +27,7 @@ class HandlePreferredTimezone
             $timezone = $userSetting[UserSettingKey::TIMEZONE->value];
         }
 
-        config(['app.timezone' => $timezone]);
-        date_default_timezone_set($timezone);
+        config(['app.display_timezone' => $timezone]);
 
         return $next($request);
     }

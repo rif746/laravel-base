@@ -7,7 +7,7 @@
                             data-bs-target="#event-{{ $loop->index }}" aria-expanded="false" aria-controls="event-{{ $loop->index }}">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <span>{{ __('event.'.$audit->event) }}</span>
-                            <small>{{ $audit->updated_at->format('d M Y | H:i') }}</small>
+                            <small>{{ $audit->updated_at->toUserTz()->format('d M Y | H:i') }}</small>
                         </div>
                     </button>
                 </h2>

@@ -58,7 +58,7 @@ new class extends Component {
             dataLabels: {
                 formatter(val, opts) {
                     const name = opts.w.globals.labels[opts.seriesIndex];
-                    return [name, val.toFixed(1)];
+                    return [name, val.toFixed(1)+'%'];
                 },
             },
             legend: {
