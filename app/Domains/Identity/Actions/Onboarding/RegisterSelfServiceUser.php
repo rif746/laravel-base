@@ -2,13 +2,18 @@
 
 namespace App\Domains\Identity\Actions\Onboarding;
 
+use App\Domains\Identity\Actions\AccessControl\UpdateUserRole;
 use App\Domains\Identity\DTOs\Onboarding\RegisterSelfServiceUserDTO;
+use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Events\Onboarding\UserWasRegistered;
 use App\Domains\Identity\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\DB;
 
 class RegisterSelfServiceUser
 {
+    public function __construct(protected UpdateUserRole $updateUserRole) {}
+
     /**
      * Create a new user via self-service registration and dispatch all events.
      *
@@ -23,11 +28,16 @@ class RegisterSelfServiceUser
      */
     public function execute(RegisterSelfServiceUserDTO $dto): User
     {
-        $user = User::create([
-            'name' => $dto->name,
-            'email' => $dto->email,
-            'password' => $dto->password,
-        ]);
+        $user = DB::transaction(function () use ($dto) {
+            $user = User::create([
+                'name' => $dto->name,
+                'email' => $dto->email,
+                'password' => $dto->password,
+            ]);
+            $this->updateUserRole->execute($user, [RoleType::USER]);
+
+            return $user;
+        });
 
         // Framework event: triggers SendEmailVerificationNotification listener.
         event(new Registered($user));
