@@ -5,6 +5,13 @@
     <meta charset="UTF-8"/>
     {!! SEO::generate() !!}
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{ asset_static($favicon ?? 'images/logo.svg') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset_static($favicon ?? 'images/logo.svg') }}" type="image/x-icon">
+
+    @webmasterMeta
+    @gtmHead
+
     @livewireStyles
     @stack('styles')
     @vite(['resources/js/plugin/jquery.js', 'resources/js/bootstrap.js', 'resources/js/plugin/sweetalert2.js'])
@@ -13,6 +20,7 @@
 </head>
 
 <body>
+@gtmBody
 
 <div class="d-flex align-items-center justify-content-center min-vh-100 container">
     <div class="card" style="max-width:420px; width:100%;">

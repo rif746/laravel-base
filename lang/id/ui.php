@@ -41,6 +41,7 @@ return [
         'upload' => 'Unggah',
         'edit' => 'Ubah',
         'delete' => 'Hapus',
+        'suspend' => 'Tangguhkan',
         'view' => 'Lihat',
         'log' => 'Log',
         'yes' => 'Ya',
@@ -51,12 +52,14 @@ return [
     'confirmation' => [
         'logout' => 'Apakah Anda yakin ingin keluar?',
         'delete' => 'Apakah Anda yakin ingin menghapus :resource ini? Tindakan ini tidak dapat dibatalkan.',
+        'suspend' => 'Apakah Anda yakin ingin menangguhkan :resource ini?',
     ],
     'crud' => [
         'success' => [
             'created' => ':resource telah berhasil dibuat.',
             'updated' => ':resource telah berhasil diperbarui.',
             'deleted' => ':resource telah dihapus.',
+            'suspended' => ':resource telah ditangguhkan.',
             'uploaded' => ':resource telah berhasil diunggah.',
         ],
         'error' => [

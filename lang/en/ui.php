@@ -41,6 +41,7 @@ return [
         'upload' => 'Upload',
         'edit' => 'Edit',
         'delete' => 'Delete',
+        'suspend' => 'Suspend',
         'view' => 'View',
         'log' => 'Log',
         'yes' => 'Yes',
@@ -51,12 +52,14 @@ return [
     'confirmation' => [
         'logout' => 'Are you sure you want to logout?',
         'delete' => 'Are you sure you want to delete this :resource? This action cannot be undone.',
+        'suspend' => 'Are you sure you want to suspend this :resource?',
     ],
     'crud' => [
         'success' => [
             'created' => ':resource has been created successfully.',
             'updated' => ':resource has been updated successfully.',
             'deleted' => ':resource has been removed.',
+            'suspended' => ':resource has been suspended.',
             'uploaded' => ':resource has been uploaded successfully.',
         ],
         'error' => [

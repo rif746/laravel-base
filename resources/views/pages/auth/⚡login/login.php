@@ -44,7 +44,7 @@ class extends Component
         if(!$user->status->isActive()) {
             Auth::logout();
             throw ValidationException::withMessages([
-                'form.email' => trans('auth.not_activated'),
+                'form.email' => trans('auth.inactive'),
             ]);
         }
 

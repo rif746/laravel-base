@@ -7,7 +7,7 @@
     <livewire:pages::system.audit.audit-view-modal key-name="ulid" :model="\App\Domains\Identity\Models\User::class"
                                                    translation="domains/identity/field.user." />
     <livewire:datatables.delete-action key-name="ulid" :model="\App\Domains\Identity\Models\User::class"
-                                       :action="\App\Domains\Identity\Actions\Governance\SuspendUser::class" />
+                                       :action="\App\Domains\Identity\Actions\Governance\RemoveUser::class" />
     <livewire:datatables.excel-manager :export-class="\App\Domains\Identity\Exports\UserExport::class"
                                        :import-class="\App\Http\Ingestion\Excel\Identity\UserImport::class"
                                        resource-name="user"  />
@@ -22,7 +22,7 @@
                         let container = document.createElement('div');
                         container.style = 'width: 200px;';
                         container.innerHTML = `<x-form.select id="role-filter"
-                                no-label class="form-select form-select-sm" x-select2="{allowClear: true, placeholder: 'Role Filter'}"
+                                no-label class="form-select-sm" x-select2="{allowClear: true, placeholder: 'Role Filter'}"
                                 :options="\App\Domains\Identity\Models\Role::pluck('name', 'name')"
                                 x-on:change="LaravelDataTables['user-table'].ajax.reload()" />`;
 

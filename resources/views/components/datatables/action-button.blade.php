@@ -51,7 +51,7 @@
         @if (isset($delete['permission']) && $delete['permission'])
             <button class="btn btn-sm btn-danger"
                 x-on:click="$ask.livewire('delete-data', {
-                title: '{{ trans('ui.button.delete') }}',
+                title: '{{ $delete['title'] }}',
                 textMessage: '{{ $delete['message'] }}',
                 confirmText: '{{ trans('ui.button.yes') }}',
                 cancelText: '{{ trans('ui.button.no') }}',

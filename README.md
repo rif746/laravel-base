@@ -51,7 +51,7 @@ app/
     │   │   ├── Onboarding/   <-- RegisterSelfServiceUser, ProvisionNewUser,
     │   │   │               <-- UpdateUser, VerifyUserEmail, ResendVerificationEmail
     │   │   ├── AccessControl/<-- CreateSystemRole, UpdateSystemRole, UpdateUserRole, RemoveSystemRole
-    │   │   ├── Governance/   <-- SuspendUser, UpdateUserStatus
+    │   │   ├── Governance/   <-- SuspendUser, PurgeUser, RemoveUser, ActivateUserStatus
     │   │   └── Passwords/    <-- ResetUserPassword, UpdatePassword, SendPasswordResetLink
     │   ├── DTOs/             <-- Capability-grouped Data Transfer Objects
     │   │   ├── Onboarding/   <-- RegisterSelfServiceUserDTO, ProvisionUserDTO, UpdateUserDTO
@@ -62,7 +62,7 @@ app/
     │   ├── Events/           <-- Past-tense truths, grouped by capability
     │   │   ├── Authentication/<-- UserLoggedIn
     │   │   ├── Onboarding/   <-- UserWasRegistered, UserWasProvisioned, UserEmailWasVerified
-    │   │   └── Governance/   <-- UserWasSuspended
+    │   │   ├── Governance/   <-- UserWasSuspended, UserWasPurged, UserWasActivated
     │   ├── Exports/
     │   ├── Integration/
     │   │   └── Mappers/      <-- DataPayloadMapper implementations
@@ -81,12 +81,12 @@ app/
     └── System/               <-- Business Concept: Cross-cutting Infrastructure
         ├── Actions/
         │   ├── Backup/
-        │   ├── Files/        <-- UploadAndAttachFile, ReplaceSingleFile
+        │   ├── Files/        <-- UploadAndAttachFile, ReplaceSingleFile, RemoveModelFile, PruneOrphanedFiles
         │   └── Settings/
         ├── Casts/            <-- Custom Eloquent casts (e.g., ByteHumanReadable)
         ├── DTOs/
         ├── Enums/
-        ├── Helpers/          <-- assets.php (system_asset() helper, autoloaded via composer.json)
+        ├── Helpers/          <-- asset.php (asset_static() helper, autoloaded via composer.json)
         ├── Models/           <-- File, SystemSettings, Backup
         ├── Policies/
         ├── Providers/        <-- SystemServiceProvider (Singleton registration, View Composers)
@@ -246,7 +246,7 @@ You are an autonomous Senior Laravel Architect specializing in Pragmatic Domain-
 * Excel ingestion (Import) classes live in the **Gateway layer** at `app/Http/Ingestion/` — do NOT generate them with `domain:make`.
 * Queries: For complex database reads (e.g., massive filtering or reporting), create a Query class in app/Domains/{Concept}/Queries/. Queries are read-only, do not use transactions, do not mutate state, and do not dispatch events.
 
-Write modern PHP 8.2+ code with strict typing. Ensure all PSR-4 namespaces perfectly match the directory structure.
+Write modern PHP 8.4+ code with strict typing. Ensure all PSR-4 namespaces perfectly match the directory structure.
 
 ```
 
@@ -276,6 +276,10 @@ php artisan domain:make {type} {domain} {name} [options]
 * `--factory`: Generates an associated database factory (Models only).
 * `--migration`: Generates a database migration file (Models only).
 * `--model=`: Associates the export class with an Eloquent model (Exports only).
+
+### Customizing Generators (Stubs)
+
+All `domain:make` templates are stored as `.stub` files in `app/Console/stubs/domain-make/`. You can freely edit these stubs to customize the default boilerplate for your project's specific needs (e.g., changing the default methods in a Repository or adjusting the strict typing in a DTO).
 
 ---
 
@@ -318,7 +322,7 @@ class User extends Model
 
 Because Laravel's `Illuminate\Http\UploadedFile` is already a strictly-typed object, we **do not** wrap files in DTOs. The Gateway passes the raw file and the target `relation_name` directly into the central System Actions.
 
-* **`UploadAndAttachFile`**: The base action. It stores the physical file to the disk and creates the polymorphic database record. It also handles server-side image compression (via Intervention Image) based on mime-types.
+* **`UploadAndAttachFile`**: The base action. It stores the physical file to the disk and creates the polymorphic database record.
 * **`ReplaceSingleFile`**: Used for 1-to-1 replacements (like changing an avatar). It safely deletes the old file before delegating the new upload back to the base action.
 
 **Gateway Example:**
@@ -328,7 +332,7 @@ $action->execute(
     targetModel: auth()->user()->profile,
     relationName: 'avatar', // Matches the relation method name exactly
     uploadedFile: $request->file('photo'),
-    disks: 'local',
+    disk: 'local',
     directory: 'avatars'
 );
 
@@ -336,7 +340,7 @@ $action->execute(
 
 ### System Asset Helper
 
-To avoid polluting Laravel's global namespace with a junk `app/helpers.php` file, we maintain a strictly domain-bound helper file at `app/Domains/System/Helpers/assets.php`. It is autoloaded via `composer.json` and provides the `system_asset()` function to elegantly resolve public and private files in our Blade views.
+To avoid polluting Laravel's global namespace with a junk `app/helpers.php` file, we maintain a strictly domain-bound helper file at `app/Domains/System/Helpers/asset.php`. It is autoloaded via `composer.json` and provides the `asset_static()` function to elegantly resolve public and private files in our Blade views.
 
 ---
 

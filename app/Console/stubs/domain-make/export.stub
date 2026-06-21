@@ -1,0 +1,80 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Builder;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+{{ modelImport }}
+class {{ class }} implements FromQuery, WithHeadings, WithMapping, WithStyles, WithColumnFormatting
+{
+    use Exportable;
+
+    // Accept UI filters directly into the Export class
+    public function __construct(
+        private array $filters = []
+    ) {}
+
+    /**
+     * We use FromQuery instead of FromCollection to allow chunking.
+     */
+    public function query(): Builder
+    {
+{{ queryBody }}
+    }
+
+
+    public function headings(): array
+    {
+        return [
+            'ID',
+            'Created At',
+            'Amount', // Example column for currency
+        ];
+    }
+
+    /**
+     * @param mixed $row
+     */
+    public function map($row): array
+    {
+        return [
+            $row->id,
+            // To format as a true Excel date, pass a native PHP DateTime object or an Excel timestamp
+            // \PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel($row->created_at),
+            $row->created_at?->format('Y-m-d H:i'),
+            // $row->amount,
+        ];
+    }
+
+    /**
+     * Apply Excel formatting to specific columns (Dates, Currency, Percentages).
+     */
+    public function columnFormats(): array
+    {
+        return [
+            // Example: Format Column B as a true Date
+            // 'B' => NumberFormat::FORMAT_DATE_YYYYMMDD,
+
+            // Example: Format Column C as Currency
+            // 'C' => NumberFormat::FORMAT_CURRENCY_USD_SIMPLE,
+        ];
+    }
+
+    /**
+     * Apply visual styling to specific rows or columns.
+     */
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            // Make the first row (the headings) bold
+            1 => ['font' => ['bold' => true]],
+        ];
+    }
+}

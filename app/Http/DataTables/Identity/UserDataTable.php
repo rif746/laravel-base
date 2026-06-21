@@ -49,8 +49,15 @@ class UserDataTable extends DataTable
                     ],
                     'delete' => [
                         'url' => null,
-                        'message' => __('ui.confirmation.delete', ['resource' => __('resources.user')]),
-                        'success_message' => __('ui.crud.success.deleted', ['resource' => __('resources.user')]),
+                        'title' => $user->status->isActive()
+                            ? __('ui.button.suspend')
+                            : __('ui.button.delete'),
+                        'message' => $user->status->isActive()
+                            ? __('ui.confirmation.suspend', ['resource' => __('resources.user')])
+                            : __('ui.confirmation.delete', ['resource' => __('resources.user')]),
+                        'success_message' => $user->status->isActive()
+                            ? __('ui.crud.success.suspended', ['resource' => __('resources.user')])
+                            : __('ui.crud.success.deleted', ['resource' => __('resources.user')]),
                         'permission' => auth()->user()->can('delete', $user),
                     ],
                     'table_name' => 'user-table',
@@ -134,7 +141,7 @@ class UserDataTable extends DataTable
                     ->action("Livewire.dispatch('export-excel')"),
                 Button::make('excel')
                     ->text(svg('tabler-table-import', ['width' => 16, 'height' => 16])->toHtml())
-                    ->titleAttr('Import Excel')
+                    ->titleAttr(__('ui.title.import', ['resource' => 'Excel']))
                     ->addClass('btn-sm')
                     ->action("$('#excel-import-modal').modal('show')"),
                 Button::make('reload')

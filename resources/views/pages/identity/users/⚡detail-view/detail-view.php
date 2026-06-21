@@ -2,6 +2,8 @@
 
 use App\Attributes\LayoutData;
 use App\Attributes\Seo;
+use App\Domains\Identity\Actions\Governance\ActivateUserStatus;
+use App\Domains\Identity\Actions\Governance\SuspendUser;
 use App\Domains\Identity\Actions\Governance\UpdateUserStatus;
 use App\Domains\Identity\Actions\Passwords\SendPasswordResetLink;
 use App\Domains\Identity\DTOs\Passwords\ForgotPasswordDTO;
@@ -57,11 +59,14 @@ class extends Component
     }
 
     #[On('toggle-user-status')]
-    public function toggleStatus(UpdateUserStatus $updateUserStatus): void
+    public function toggleStatus(SuspendUser $suspendUser, ActivateUserStatus $activateUserStatus): void
     {
         try {
-            $status = $this->user->status->isActive() ? UserStatus::INACTIVE : UserStatus::ACTIVE;
-            $updateUserStatus->execute(user: $this->user, status: $status);
+            if($this->user->status->isActive()) {
+                $suspendUser->execute($this->user);
+            } else {
+                $activateUserStatus->execute($this->user);
+            }
 
             $this->dispatch('toggle-user-status-completed');
         } catch (Exception $e) {

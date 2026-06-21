@@ -1,0 +1,31 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Model;
+use App\Domains\System\Support\Integration\DataPayloadMapper;
+
+class {{ class }} implements DataPayloadMapper
+{
+    public function __construct()
+    {
+        // Inject required Domain and Cross-Domain Actions via constructor composition
+    }
+
+    public function getLookupKey(): string
+    {
+        // Return the unique string key used to identify existing records (e.g., 'email')
+        return 'id';
+    }
+
+    public function transform(array $rawData): array
+    {
+        // Normalize incoming data array formats into an internal domain-safe layout
+        return $rawData;
+    }
+
+    public function updateOrCreateDomainState(array $payload, ?Model $existingModel = null): void
+    {
+        // Allocate mapped payloads into strict DTOs and fire internal/external Domain Actions
+    }
+}

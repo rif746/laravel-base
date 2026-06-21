@@ -3,10 +3,15 @@
 namespace App\Domains\System\Actions\Files;
 
 use App\Domains\System\Models\File;
+use App\Domains\System\Queries\GetSystemSettings;
 use Illuminate\Support\Facades\Storage;
 
 class PruneOrphanedFiles
 {
+    public function __construct(protected GetSystemSettings $settingQuery)
+    {
+    }
+
     public function execute(string $disk = 'public', string $directory = '/'): array
     {
         $stats = ['db_orphans_removed' => 0, 'disk_orphans_removed' => 0];
@@ -29,8 +34,18 @@ class PruneOrphanedFiles
         // Get all file paths currently tracked in the database
         $trackedFiles = File::pluck('path')->toArray();
 
+        $settingFiles = collect(\App\Domains\System\Enums\SystemSettingKey::cases())
+            ->filter(fn ($key) => $key->inputType() === \App\UI\Enums\InputType::FILE)
+            ->map(fn ($key) => $this->settingQuery->get($key))
+            ->filter()
+            ->toArray();
+
+        $trackedFiles = array_merge($trackedFiles, $settingFiles);
+        $trackedFiles[] = 'images/logo.svg';
+
         // Compare the two arrays to find files on disk that the DB knows nothing about
         $strandedFiles = array_diff($physicalFiles, $trackedFiles);
+        $strandedFiles = array_filter($strandedFiles, fn ($file) => basename($file) !== '.gitignore');
 
         if (! empty($strandedFiles)) {
             Storage::disk($disk)->delete($strandedFiles);

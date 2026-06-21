@@ -2,11 +2,13 @@
 
 namespace App\Domains\System\Providers;
 
+use App\Domains\Identity\Events\Governance\UserWasPurged;
 use App\Domains\System\Enums\SystemSettingKey;
 use App\Domains\System\Events\ExportCompleted;
 use App\Domains\System\Events\ImportCompleted;
 use App\Domains\System\Listeners\Excel\SendExportReportEmail;
 use App\Domains\System\Listeners\Excel\SendImportReportEmail;
+use App\Domains\System\Listeners\Files\RemoveUserFiles;
 use App\Domains\System\Queries\GetSystemSettings;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
@@ -44,5 +46,6 @@ class SystemServiceProvider extends ServiceProvider
 
         Event::listen(ExportCompleted::class, SendExportReportEmail::class);
         Event::listen(ImportCompleted::class, SendImportReportEmail::class);
+        Event::listen(UserWasPurged::class, RemoveUserFiles::class);
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[Signature('system:prune-files {--directory=avatars} {--disk=public}')]
+#[Signature('system:prune-files {--directory=/} {--disk=public}')]
 #[Description('Command description')]
 class CleanOrphanedFiles extends Command
 {

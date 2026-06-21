@@ -31,11 +31,16 @@ class RoleDataTable extends DataTable
                     ],
                     'edit' => [
                         'modal' => 'role-form-modal',
-                        'permission' => $role->name == RoleType::SYSTEM_ADMIN->value ? false : auth()->user()->can('update', $role),
+                        'permission' => $role->name == RoleType::SYSTEM_ADMIN->value
+                            ? false
+                            : auth()->user()->can('update', $role),
                     ],
                     'delete' => [
                         'url' => null,
-                        'permission' => $role->name == RoleType::SYSTEM_ADMIN->value ? false : auth()->user()->can('delete', $role),
+                        'title' => __('ui.button.delete'),
+                        'permission' => $role->name == RoleType::SYSTEM_ADMIN->value
+                            ? false
+                            : auth()->user()->can('delete', $role),
                         'message' => __('ui.confirmation.delete', ['resource' => __('resources.role')]),
                         'success_message' => __('ui.crud.success.deleted', ['resource' => __('resources.role')]),
                     ],

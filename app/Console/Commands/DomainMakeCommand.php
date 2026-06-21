@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class DomainMakeCommand extends Command
 {
     protected $signature = 'domain:make
-        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, query, provider, export, mapper, scope}
+        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, query, provider, export, mapper, scope, mailable}
         {domain : Domain name, e.g. Identity, Account, System}
         {name   : Class name, supports sub-paths e.g. Backup/DeleteBackup}
         {--factory   : Also generate a factory (model only)}
@@ -35,6 +35,7 @@ class DomainMakeCommand extends Command
         'export' => 'Exports',
         // Integration layer — files live under Integration/<subDir>/
         'mapper' => 'Integration/Mappers',
+        'mailable' => 'Mail',
     ];
 
     public function __construct(protected Filesystem $files)
@@ -103,401 +104,51 @@ class DomainMakeCommand extends Command
 
     protected function buildStub(string $type, string $namespace, string $name, string $domain): string
     {
-        return match ($type) {
-            'model' => $this->modelStub($namespace, $name, $domain),
-            'action' => $this->actionStub($namespace, $name),
-            'dto' => $this->dtoStub($namespace, $name),
-            'enum' => $this->enumStub($namespace, $name),
-            'trait' => $this->traitStub($namespace, $name),
-            'event' => $this->eventStub($namespace, $name),
-            'listener' => $this->listenerStub($namespace, $name),
-            'notification' => $this->notificationStub($namespace, $name),
-            'policy' => $this->policyStub($namespace, $name),
-            'scope' => $this->scopeStub($namespace, $name),
-            'query' => $this->queryStub($namespace, $name),
-            'provider' => $this->providerStub($namespace, $name),
-            'export' => $this->exportStub($namespace, $name, $domain),
-            'mapper' => $this->mapperStub($namespace, $name, $domain),
-            default => '',
-        };
-    }
+        $stubPath = app_path("Console/stubs/domain-make/{$type}.stub");
 
-    protected function modelStub(string $namespace, string $name, string $domain): string
-    {
-        $factoryImport = $this->option('factory')
-            ? "\nuse Database\\Factories\\{$domain}\\{$name}Factory;\nuse Illuminate\\Database\\Eloquent\\Factories\\Factory;"
-            : '';
-        $factoryMethod = $this->option('factory')
-            ? "\n    protected static function newFactory(): Factory\n    {\n        return {$name}Factory::new();\n    }"
-            : '';
-
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-{$factoryImport}
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class {$name} extends Model
-{
-    use HasFactory;
-{$factoryMethod}
-}
-PHP;
-    }
-
-    protected function actionStub(string $namespace, string $name): string
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-class {$name}
-{
-    public function execute(): void
-    {
-        //
-    }
-}
-PHP;
-    }
-
-    protected function dtoStub(string $namespace, string $name): string
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-readonly class {$name}
-{
-    public function __construct(
-        //
-    ) {}
-}
-PHP;
-    }
-
-    protected function enumStub(string $namespace, string $name): string
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-enum {$name}: string
-{
-    //
-}
-PHP;
-    }
-
-    private function traitStub(string $namespace, string $name): string
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-trait {$name}
-{
-    //
-}
-PHP;
-    }
-
-    protected function eventStub(string $namespace, string $name): string
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
-
-class {$name}
-{
-
-    use Dispatchable, SerializesModels;
-    public function __construct(
-        //
-    ) {}
-}
-PHP;
-    }
-
-    protected function listenerStub(string $namespace, string $name): string
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-class {$name}
-{
-    public function handle(object \$event): void
-    {
-        //
-    }
-}
-PHP;
-    }
-
-    protected function notificationStub(string $namespace, string $name): string
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
-
-class {$name} extends Notification
-{
-    use Queueable;
-
-    public function via(object \$notifiable): array
-    {
-        return ['mail'];
-    }
-
-    public function toMail(object \$notifiable): MailMessage
-    {
-        return (new MailMessage)->line('');
-    }
-
-    public function toArray(object \$notifiable): array
-    {
-        return [];
-    }
-}
-PHP;
-    }
-
-    protected function policyStub(string $namespace, string $name): string
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-use App\Domains\Identity\Models\User;
-
-class {$name}
-{
-    public function viewAny(User \$user): bool
-    {
-        return false;
-    }
-
-    public function view(User \$user, mixed \$model): bool
-    {
-        return false;
-    }
-
-    public function create(User \$user): bool
-    {
-        return false;
-    }
-
-    public function update(User \$user, mixed \$model): bool
-    {
-        return false;
-    }
-
-    public function delete(User \$user, mixed \$model): bool
-    {
-        return false;
-    }
-}
-PHP;
-    }
-
-    protected function scopeStub(string $namespace, string $name): string
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Scope;
-
-class {$name} implements Scope
-{
-    public function apply(Builder \$builder, Model \$model): void
-    {
-        //
-    }
-}
-PHP;
-    }
-
-    protected function queryStub(string $namespace, string $name): string
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-use Illuminate\Database\Eloquent\Collection;
-
-class {$name}
-{
-    public function fetch(): Collection
-    {
-        return new Collection();
-    }
-}
-PHP;
-    }
-
-    private function providerStub(string $namespace, string $name): string
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-use Illuminate\Support\ServiceProvider;
-
-class {$name} extends ServiceProvider
-{
-    public function register(): void
-    {
-        //
-    }
-
-    public function boot(): void
-    {
-        //
-    }
-}
-PHP;
-    }
-
-    protected function exportStub(string $namespace, string $name, string $domain): string
-    {
-        $modelOption = $this->option('model');
-        $modelImport = '';
-        $modelClass = 'YourModel';
-
-        if ($modelOption) {
-            $modelData = $this->resolveModel($modelOption, $domain);
-            $modelImport = "use {$modelData['full']};\n";
-            $modelClass = $modelData['class'];
+        if (!$this->files->exists($stubPath)) {
+            $this->components->error("Stub file not found: [{$stubPath}]");
+            return '';
         }
 
-        $body = <<<'PHP'
-    use Exportable;
+        $stub = $this->files->get($stubPath);
 
-    // Accept UI filters directly into the Export class
-    public function __construct(
-        private array $filters = []
-    ) {}
+        $replacements = [
+            '{{ namespace }}' => $namespace,
+            '{{ class }}' => $name,
+        ];
 
-    /**
-     * We use FromQuery instead of FromCollection to allow chunking.
-     */
-    public function query(): Builder
-    {
-PHP;
+        if ($type === 'model') {
+            $replacements['{{ factoryImport }}'] = $this->option('factory')
+                ? "\nuse Database\\Factories\\{$domain}\\{$name}Factory;\nuse Illuminate\\Database\\Eloquent\\Factories\\Factory;"
+                : '';
+            $replacements['{{ factoryMethod }}'] = $this->option('factory')
+                ? "\n    protected static function newFactory(): Factory\n    {\n        return {$name}Factory::new();\n    }"
+                : '';
+        }
 
-        if ($modelOption) {
-            $body .= <<<PHP
+        if ($type === 'export') {
+            $modelOption = $this->option('model');
+            $modelImport = '';
+            $queryBody = "        // return YourModel::query();";
 
+            if ($modelOption) {
+                $modelData = $this->resolveModel($modelOption, $domain);
+                $modelImport = "use {$modelData['full']};\n";
+                $modelClass = $modelData['class'];
+                $queryBody = <<<PHP
         return {$modelClass}::query()
             // ->with('profile') // CRITICAL: Eager load any relations used in map()
             // ->when(isset(\$this->filters['status']), fn(Builder \$q) => \$q->where('status', \$this->filters['status']))
             ;
-    }
 PHP;
-        } else {
-            $body .= <<<PHP
+            }
 
-        // return {$modelClass}::query();
-    }
-PHP;
+            $replacements['{{ modelImport }}'] = $modelImport;
+            $replacements['{{ queryBody }}'] = $queryBody;
         }
 
-        $body .= <<<PHP
-
-
-    public function headings(): array
-    {
-        return [
-            'ID',
-            'Created At',
-            'Amount', // Example column for currency
-        ];
-    }
-
-    /**
-     * @param mixed \$row
-     */
-    public function map(\$row): array
-    {
-        return [
-            \$row->id,
-            // To format as a true Excel date, pass a native PHP DateTime object or an Excel timestamp
-            // \PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel(\$row->created_at),
-            \$row->created_at?->format('Y-m-d H:i'),
-            // \$row->amount,
-        ];
-    }
-
-    /**
-     * Apply Excel formatting to specific columns (Dates, Currency, Percentages).
-     */
-    public function columnFormats(): array
-    {
-        return [
-            // Example: Format Column B as a true Date
-            // 'B' => NumberFormat::FORMAT_DATE_YYYYMMDD,
-
-            // Example: Format Column C as Currency
-            // 'C' => NumberFormat::FORMAT_CURRENCY_USD_SIMPLE,
-        ];
-    }
-
-    /**
-     * Apply visual styling to specific rows or columns.
-     */
-    public function styles(Worksheet \$sheet)
-    {
-        return [
-            // Make the first row (the headings) bold
-            1 => ['font' => ['bold' => true]],
-        ];
-    }
-PHP;
-
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-use Illuminate\Database\Eloquent\Builder;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithStyles;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-{$modelImport}
-class {$name} implements FromQuery, WithHeadings, WithMapping, WithStyles, WithColumnFormatting
-{
-{$body}
-}
-PHP;
+        return str_replace(array_keys($replacements), array_values($replacements), $stub);
     }
 
     protected function resolveModel(string $modelOption, string $domain): array
@@ -524,43 +175,6 @@ PHP;
         ];
     }
 
-    protected function mapperStub(string $namespace, string $name, string $domain): string
-    {
-        return <<<PHP
-<?php
-
-namespace {$namespace};
-
-use Illuminate\Database\Eloquent\Model;
-use App\Domains\System\Support\Integration\DataPayloadMapper;
-
-class {$name} implements DataPayloadMapper
-{
-    public function __construct()
-    {
-        // Inject required Domain and Cross-Domain Actions via constructor composition
-    }
-
-    public function getLookupKey(): string
-    {
-        // Return the unique string key used to identify existing records (e.g., 'email')
-        return 'id';
-    }
-
-    public function transform(array \$rawData): array
-    {
-        // Normalize incoming data array formats into an internal domain-safe layout
-        return \$rawData;
-    }
-
-    public function updateOrCreateDomainState(array \$payload, ?Model \$existingModel = null): void
-    {
-        // Allocate mapped payloads into strict DTOs and fire internal/external Domain Actions
-    }
-}
-PHP;
-    }
-
     protected function createFactory(string $domain, string $name, string $modelNamespace): void
     {
         $factoryNamespace = "Database\\Factories\\{$domain}";
@@ -574,28 +188,16 @@ PHP;
             return;
         }
 
-        $this->files->put($factoryPath, <<<PHP
-<?php
+        $stubPath = app_path('Console/stubs/domain-make/factory.stub');
+        $stub = $this->files->exists($stubPath) ? $this->files->get($stubPath) : '';
 
-namespace {$factoryNamespace};
-
-use {$modelNamespace}\\{$name};
-use Illuminate\Database\Eloquent\Factories\Factory;
-
-/**
- * @extends Factory<{$name}>
- */
-class {$name}Factory extends Factory
-{
-    protected \$model = {$name}::class;
-
-    public function definition(): array
-    {
-        return [];
-    }
-}
-PHP
+        $stub = str_replace(
+            ['{{ factoryNamespace }}', '{{ modelNamespace }}', '{{ class }}'],
+            [$factoryNamespace, $modelNamespace, $name],
+            $stub
         );
+
+        $this->files->put($factoryPath, $stub);
 
         $this->components->info("Factory [database/factories/{$domain}/{$name}Factory.php] created successfully.");
     }

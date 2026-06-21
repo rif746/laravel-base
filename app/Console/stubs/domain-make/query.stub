@@ -1,0 +1,13 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Collection;
+
+class {{ class }}
+{
+    public function fetch(): Collection
+    {
+        return new Collection();
+    }
+}
