@@ -5,6 +5,7 @@ namespace App\Domains\Identity\Actions\AccessControl;
 use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Models\Role;
 use Exception;
+
 use function in_array;
 
 class RemoveSystemRole

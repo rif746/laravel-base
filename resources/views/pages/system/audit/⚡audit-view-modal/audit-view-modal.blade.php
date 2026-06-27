@@ -55,7 +55,4 @@
     <x-slot:footer>
         <x-button theme="secondary" data-bs-dismiss="modal" :label="__('ui.button.cancel')" />
     </x-slot:footer>
-    @push('scripts')
-        @filepondScripts
-    @endpush
 </x-modal>

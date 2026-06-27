@@ -19,12 +19,12 @@ class GetMonthlyNewUsers
             // 1. Count users who joined this exact month and year
             ->selectRaw('SUM(CASE WHEN MONTH(created_at) = ? AND YEAR(created_at) = ? THEN 1 ELSE 0 END) as this_month', [
                 $now->month,
-                $now->year
+                $now->year,
             ])
             // 2. Count users who joined last month and year
             ->selectRaw('SUM(CASE WHEN MONTH(created_at) = ? AND YEAR(created_at) = ? THEN 1 ELSE 0 END) as last_month', [
                 $lastMonth->month,
-                $lastMonth->year
+                $lastMonth->year,
             ])
             // 3. Performance Optimization: Ignore any rows older than the start of last month
             ->where('created_at', '>=', $lastMonth->startOfMonth())
@@ -33,11 +33,11 @@ class GetMonthlyNewUsers
         $newUser = (int) $stats->this_month;
         $newUserLastMonth = (int) $stats->last_month;
 
-        if($newUserLastMonth > 0) {
-            $growthRate = ($newUser - $newUserLastMonth)/$newUserLastMonth;
+        if ($newUserLastMonth > 0) {
+            $growthRate = ($newUser - $newUserLastMonth) / $newUserLastMonth;
             $growthRate = $growthRate * 100;
             $growthRate = number_format($growthRate, 2, '.', '');
-            if($growthRate > 0) {
+            if ($growthRate > 0) {
                 $growthRate = "+{$growthRate}%";
             } else {
                 $growthRate = "{$growthRate}%";

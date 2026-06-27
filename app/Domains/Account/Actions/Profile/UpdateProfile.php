@@ -7,14 +7,14 @@ use App\Domains\Account\Models\Profile;
 
 class UpdateProfile
 {
-    public function execute(Profile $profile, UpdateProfileDTO $dto): void
+    public function execute(UpdateProfileDTO $dto): void
     {
-        $profile->updateOrCreate(
+        Profile::updateOrCreate(
             ['user_id' => $dto->userId],
             [
                 'gender' => $dto->gender,
-                'date_of_birth' => $dto->date_of_birth,
-                'phone_number' => $dto->phone_number,
+                'date_of_birth' => $dto->dateOfBirth,
+                'phone_number' => $dto->phoneNumber,
             ]
         );
     }

@@ -6,10 +6,6 @@
 ])
 
 <li>
-    <a {{ $attributes->merge(['class' => 'dropdown-item']) }} href="{{ $action }}">
-        @if($icon)
-            @svg($icon, $iconProperty)
-        @endif
-        {{ __($label) }}
-    </a>
+    <x-link {{ $attributes->merge(['class' => 'dropdown-item']) }} href="{{ $action }}" :label="$label"
+            :icon="$icon" :icon-config="$iconProperty" />
 </li>

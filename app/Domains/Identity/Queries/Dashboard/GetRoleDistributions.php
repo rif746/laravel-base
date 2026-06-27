@@ -12,8 +12,8 @@ class GetRoleDistributions
             ->withCount('users')
             ->get();
 
-        $series = $roles->map(fn($role) => $role->users_count);
-        $categories = $roles->map(fn($role) => $role->name);
+        $series = $roles->map(fn ($role) => $role->users_count);
+        $categories = $roles->map(fn ($role) => $role->name);
 
         return [
             'series' => $series,

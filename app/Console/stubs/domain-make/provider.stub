@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 
 class {{ class }} extends ServiceProvider
 {
+    public static array $listen = [];
+    
     public function register(): void
     {
         //

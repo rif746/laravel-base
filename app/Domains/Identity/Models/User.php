@@ -54,7 +54,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     protected array $auditInclude = [
         'name',
         'email',
-        'status'
+        'status',
     ];
 
     protected static function newFactory(): Factory

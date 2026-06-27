@@ -18,6 +18,18 @@ use View;
 
 class SystemServiceProvider extends ServiceProvider
 {
+    public static array $listen = [
+        ExportCompleted::class => [
+            SendExportReportEmail::class,
+        ],
+        ImportCompleted::class => [
+            SendImportReportEmail::class,
+        ],
+        UserWasPurged::class => [
+            RemoveUserFiles::class,
+        ]
+    ];
+
     public function register(): void
     {
         // Tell Laravel: "Whenever someone asks for GetSystemSettings,
@@ -41,11 +53,7 @@ class SystemServiceProvider extends ServiceProvider
             }
         });
 
-        Carbon::macro('toUserTz', fn() => $this->copy()
+        Carbon::macro('toUserTz', fn () => $this->copy()
             ->tz(config('app.display_timezone', 'UTC')));
-
-        Event::listen(ExportCompleted::class, SendExportReportEmail::class);
-        Event::listen(ImportCompleted::class, SendImportReportEmail::class);
-        Event::listen(UserWasPurged::class, RemoveUserFiles::class);
     }
 }

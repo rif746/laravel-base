@@ -2,12 +2,9 @@
 
 namespace App\Http\DataTables\Identity;
 
-use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Exports\UserExport;
-use App\Domains\Identity\Models\Role;
 use App\Domains\Identity\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Illuminate\Support\Facades\Blade;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -15,7 +12,6 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
 use function __;
-use function collect;
 
 class UserDataTable extends DataTable
 {
@@ -102,17 +98,17 @@ class UserDataTable extends DataTable
                 'data' => 'function(d) {
                     d.role = $("#role-filter").val()
                     d.status = $("#status-filter").val()
-                }'
+                }',
             ])
             ->orderBy(-1)
             ->layout([
                 'topStart' => [
                     'className' => 'col-md-auto me-auto d-flex flex-sm-row flex-column justify-content-center justify-content-md-start align-items-center align-items-md-start gap-1',
-                    'features' => ['buttons', 'pageLength']
+                    'features' => ['buttons', 'pageLength'],
                 ],
                 'topEnd' => [
                     'className' => 'col-md-auto ms-auto d-flex flex-sm-row flex-column justify-content-center justify-content-md-end align-items-center align-items-md-start gap-1',
-                    'features' => ['status-filter', 'role-filter', 'search']
+                    'features' => ['status-filter', 'role-filter', 'search'],
                 ],
 
                 'bottomStart' => 'info',

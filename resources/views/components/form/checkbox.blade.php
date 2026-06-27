@@ -11,7 +11,7 @@
             'id' => $id,
         ]) }}
         type="checkbox">
-    <label class="form-check-label small" for="{{ $id }}">{{ $label }}</label>
+    <label class="form-check-label" for="{{ $id }}">{{ $label }}</label>
     @if ($feedback)
         <span x-text="feedback?.{{ $name }}"
             x-bind:class="{ 'invalid-feedback': feedback?.{{ $name }} }"></span>

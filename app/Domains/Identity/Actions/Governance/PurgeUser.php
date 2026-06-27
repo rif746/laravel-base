@@ -9,7 +9,6 @@ use Exception;
 
 class PurgeUser
 {
-
     /**
      * @throws Exception
      */

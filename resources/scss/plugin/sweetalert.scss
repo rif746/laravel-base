@@ -16,7 +16,7 @@ $swal2-question: $secondary;
 
 // Typography & Base Styling
 $swal2-font: $font-family-base;
-$swal2-color: $gray-800;
+$swal2-color: var(--bs-body-color);
 
 // Buttons matching UI Form Controls
 $swal2-button-padding: $input-btn-padding-y (
@@ -45,7 +45,7 @@ $swal2-border-radius: 0.75rem;
 
     .swal2-html-container {
         font-size: 0.95rem;
-        color: $gray-600;
+        color: var(--bs-secondary-color);
         line-height: 1.6;
         margin: 0.5rem 1rem 0;
     }
@@ -74,9 +74,9 @@ $swal2-border-radius: 0.75rem;
             }
 
             &.swal2-cancel {
-                background-color: $gray-100 !important;
-                color: $gray-700 !important;
-                border: 1px solid $gray-200;
+                background-color: var(--bs-tertiary-bg) !important;
+                color: var(--bs-body-color) !important;
+                border: 1px solid var(--bs-border-color);
             }
 
             &.swal2-deny {

@@ -2,15 +2,15 @@
 
 namespace App\Domains\System\Actions\Files;
 
+use App\Domains\System\Enums\SystemSettingKey;
 use App\Domains\System\Models\File;
 use App\Domains\System\Queries\GetSystemSettings;
+use App\UI\Enums\InputType;
 use Illuminate\Support\Facades\Storage;
 
 class PruneOrphanedFiles
 {
-    public function __construct(protected GetSystemSettings $settingQuery)
-    {
-    }
+    public function __construct(protected GetSystemSettings $settingQuery) {}
 
     public function execute(string $disk = 'public', string $directory = '/'): array
     {
@@ -34,8 +34,8 @@ class PruneOrphanedFiles
         // Get all file paths currently tracked in the database
         $trackedFiles = File::pluck('path')->toArray();
 
-        $settingFiles = collect(\App\Domains\System\Enums\SystemSettingKey::cases())
-            ->filter(fn ($key) => $key->inputType() === \App\UI\Enums\InputType::FILE)
+        $settingFiles = collect(SystemSettingKey::cases())
+            ->filter(fn ($key) => $key->inputType() === InputType::FILE)
             ->map(fn ($key) => $this->settingQuery->get($key))
             ->filter()
             ->toArray();

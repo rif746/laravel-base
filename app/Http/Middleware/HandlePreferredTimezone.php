@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Domains\Account\Enums\UserSettingKey;
+use App\Domains\Identity\Enums\UserSettingKey;
 use App\Domains\System\Enums\SystemSettingKey;
 use App\Domains\System\Queries\GetSystemSettings;
 use Closure;

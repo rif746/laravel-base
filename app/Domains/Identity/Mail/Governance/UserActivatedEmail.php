@@ -5,6 +5,7 @@ namespace App\Domains\Identity\Mail\Governance;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -42,6 +43,7 @@ class UserActivatedEmail extends Mailable implements ShouldQueue
             ->line(__('domains/identity/notifications.governance.user_activated.body'))
             ->line(__('domains/identity/notifications.governance.user_activated.outro'))
             ->render();
+
         return new Content(
             htmlString: $message,
         );
@@ -50,7 +52,7 @@ class UserActivatedEmail extends Mailable implements ShouldQueue
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {

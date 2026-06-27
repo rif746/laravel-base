@@ -10,9 +10,9 @@
     $name = $attributes->has('wire:model') ? $attributes->get('wire:model') : $name;
 @endphp
 
-<div @if($attributes->has('x-select2')) wire:ignore @endif class="mb-3" @if ($attributes->has('x-show')) x-show="{{ $attributes->get('x-show') }}" x-cloak @endif>
+<div @if($attributes->has('x-select2')) wire:ignore @endif class="form-group" @if ($attributes->has('x-show')) x-show="{{ $attributes->get('x-show') }}" x-cloak @endif>
     @if(!$noLabel)
-        <label for="{{ $name }}" class="form-label fw-bold">{{ $label }}</label>
+        <label for="{{ $name }}">{{ $label }}</label>
     @endif
     <select
         {{ $attributes->merge([

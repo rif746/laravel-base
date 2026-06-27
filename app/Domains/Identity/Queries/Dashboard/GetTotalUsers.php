@@ -6,7 +6,6 @@ use App\Domains\Identity\Models\User;
 
 class GetTotalUsers
 {
-
     /**
      * @return array{total_users: int, growth_rate: string}
      */
@@ -22,15 +21,15 @@ class GetTotalUsers
             // 2. Count users who joined last month and year
             ->selectRaw('SUM(CASE WHEN MONTH(created_at) = ? AND YEAR(created_at) = ? THEN 1 ELSE 0 END) as last_month', [
                 $lastMonth->month,
-                $lastMonth->year
+                $lastMonth->year,
             ])
             ->first();
 
         $currentTotalUsers = $stats->total_users;
         $totalUsersMonthAgo = $stats->last_month;
 
-        if($totalUsersMonthAgo > 0) {
-            $growthRate = ($currentTotalUsers - $totalUsersMonthAgo)/$totalUsersMonthAgo;
+        if ($totalUsersMonthAgo > 0) {
+            $growthRate = ($currentTotalUsers - $totalUsersMonthAgo) / $totalUsersMonthAgo;
             $growthRate = $growthRate * 100;
             $growthRate = number_format($growthRate, 2, '.', '');
             $growthRate = "+{$growthRate}%";

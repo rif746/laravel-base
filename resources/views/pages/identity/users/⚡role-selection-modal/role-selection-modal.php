@@ -41,7 +41,7 @@ new class extends Component
     #[Computed]
     public function user(): User
     {
-        return $this->id ? User::find($this->id) : new User();
+        return $this->id ? User::find($this->id) : new User;
     }
 
     #[Computed]

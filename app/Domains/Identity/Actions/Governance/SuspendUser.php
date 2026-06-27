@@ -22,7 +22,7 @@ class SuspendUser
             throw new Exception('You can\'t suspend an admin user.');
         }
 
-        if(!$user->status->isActive()) {
+        if (! $user->status->isActive()) {
             throw new Exception('This user was suspended.');
         }
 

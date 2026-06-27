@@ -17,6 +17,7 @@ export default defineConfig({
                 'resources/js/plugin/select2.js',
                 'resources/js/plugin/quill.js',
                 'resources/js/plugin/sweetalert2.js',
+                'resources/js/plugin/filepond.js',
             ],
             refresh: true,
         }),

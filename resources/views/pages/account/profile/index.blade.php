@@ -1,18 +1,14 @@
 <x-layouts.app>
-    <div class="row gap-2">
-        <div class="col-sm-8 mx-auto">
+    <section class="row justify-content-center">
+        <div class="col-12 col-lg-6">
             <livewire:pages::account.profile.user-info />
         </div>
-        <div class="col-sm-8 mx-auto">
-            <livewire:pages::account.profile.user-settings />
+        <div class="col-12 col-lg-6">
+                <livewire:pages::account.profile.user-settings />
         </div>
-    </div>
+    </section>
 
     <livewire:pages::account.profile.update-profile-modal />
     <livewire:pages::account.profile.update-avatar-modal />
     <livewire:pages::account.profile.update-password-modal />
-
-    @push('scripts')
-        @vite(['resources/js/plugin/quill.js'])
-    @endpush
 </x-layouts.app>

@@ -72,7 +72,7 @@ class ApplyLayoutMetadata
         View::composer([
             'components.layouts.app',
             'components.layouts.guest',
-        ], fn($view) => $view->with([
+        ], fn ($view) => $view->with([
             'breadcrumbs' => $breadcrumbs,
             'header' => $header ?? config('app.name', 'Antigravity App'),
         ]));

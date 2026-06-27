@@ -14,8 +14,8 @@ use Spatie\Permission\Models\Role as SpatieRole;
 #[UsePolicy(RolePolicy::class)]
 class Role extends SpatieRole implements Auditable, RoleContract
 {
-    use \OwenIt\Auditing\Auditable;
     use HasUlids;
+    use \OwenIt\Auditing\Auditable;
 
     public function uniqueIds(): array
     {

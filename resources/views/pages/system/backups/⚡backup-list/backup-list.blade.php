@@ -14,7 +14,7 @@
         </x-slot:actions>
         <div class="list-group">
             @forelse($this->backups_data as $backup)
-                <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <x-link href="#" class="list-group-item list-group-item-action" aria-current="true">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">{{ $backup->file_name }}</h5>
                         <div class="btn-group btn-group-sm">
@@ -46,14 +46,14 @@
                         </div>
                     </div>
                     <p class="mb-1">{{ $backup->type }} (<small>{{ $backup->size }}</small>)</p>
-                </a>
+                </x-link>
             @empty
 
-                <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <x-link href="#" class="list-group-item list-group-item-action" aria-current="true">
                     <div class="d-flex w-100 justify-content-center">
                         <p class="mb-1">{{ trans('domains/system/pages.backup.empty_state') }}</p>
                     </div>
-                </a>
+                </x-link>
             @endforelse
         </div>
     </x-card>

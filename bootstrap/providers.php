@@ -1,15 +1,10 @@
 <?php
 
-use App\Domains\Identity\Providers\IdentityServiceProvider;
-use App\Domains\System\Providers\SystemServiceProvider;
-use App\Providers\AppServiceProvider;
-use App\Providers\UiServiceProvider;
-use OwenIt\Auditing\AuditingServiceProvider;
-
 return [
-    AppServiceProvider::class,
-    IdentityServiceProvider::class,
-    SystemServiceProvider::class,
-    UiServiceProvider::class,
-    AuditingServiceProvider::class,
+    App\Providers\AppServiceProvider::class,
+    App\Providers\UiServiceProvider::class,
+    App\Providers\EventServiceProvider::class,
+    OwenIt\Auditing\AuditingServiceProvider::class,
+    App\Domains\Identity\Providers\IdentityServiceProvider::class,
+    App\Domains\System\Providers\SystemServiceProvider::class,
 ];

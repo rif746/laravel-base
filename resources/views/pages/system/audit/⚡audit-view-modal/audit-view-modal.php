@@ -28,7 +28,6 @@ new class extends Component
 
     protected string $resourceName = 'audit';
 
-
     public function show(int|string $id): void
     {
         $this->model_id = $id;

@@ -22,10 +22,8 @@
                     @svg('tabler-eye', ['width' => 16, 'height' => 16])
                 </button>
             @else
-                <a href="{{ $view['url'] ?? 'javascript:void(0)' }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip"
-                    title="{{ trans('ui.button.view') }}">
-                    @svg('tabler-eye', ['width' => 16, 'height' => 16])
-                </a>
+                <x-link href="{{ $view['url'] ?? 'javascript:void(0)' }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip"
+                    title="{{ trans('ui.button.view') }}" icon="tabler-eye" :icon-config="['width' => 16, 'height' => 16]" />
             @endif
         @endif
     @endif
@@ -39,10 +37,9 @@
                     @svg('tabler-pencil', ['width' => 16, 'height' => 16])
                 </button>
             @else
-                <a href="{{ $edit['url'] ?? 'javascript:void(0)' }}" class="btn btn-sm btn-warning"
-                    data-bs-toggle="tooltip" title="{{ trans('ui.button.edit') }}">
-                    @svg('tabler-pencil', ['width' => 16, 'height' => 16])
-                </a>
+                <x-link href="{{ $edit['url'] ?? 'javascript:void(0)' }}" class="btn btn-sm btn-warning"
+                    data-bs-toggle="tooltip" title="{{ trans('ui.button.edit') }}" icon="tabler-pencil"
+                        :icon-config="['width' => 16, 'height' => 16]" />
             @endif
         @endif
     @endif

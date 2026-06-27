@@ -36,7 +36,9 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        if($model->hasRole(RoleType::SYSTEM_ADMIN)) return false;
+        if ($model->hasRole(RoleType::SYSTEM_ADMIN)) {
+            return false;
+        }
 
         return $user->hasPermissionTo('user.update');
     }
@@ -46,7 +48,9 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        if($model->hasRole(RoleType::SYSTEM_ADMIN)) return false;
+        if ($model->hasRole(RoleType::SYSTEM_ADMIN)) {
+            return false;
+        }
 
         return $user->hasPermissionTo('user.delete');
     }

@@ -9,8 +9,8 @@
     $name = $attributes->has('wire:model') ? $attributes->get('wire:model') : $name;
 @endphp
 
-<div class="mb-3" @if ($attributes->has('x-show')) x-show="{{ $attributes->get('x-show') }}" x-cloak @endif>
-    <label for="{{ $name }}" class="form-label fw-bold">{{ $label }}</label>
+<div class="form-group" @if ($attributes->has('x-show')) x-show="{{ $attributes->get('x-show') }}" x-cloak @endif>
+    <label for="{{ $name }}">{{ $label }}</label>
     <textarea
         {{ $attributes->merge([
             'class' => 'form-control' . ($errors->has($name) ? ' is-invalid' : ''),

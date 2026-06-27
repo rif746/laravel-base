@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Account\Enums;
+namespace App\Domains\Identity\Enums;
 
 use Illuminate\Validation\Rule;
 

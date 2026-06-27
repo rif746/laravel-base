@@ -106,8 +106,9 @@ class DomainMakeCommand extends Command
     {
         $stubPath = app_path("Console/stubs/domain-make/{$type}.stub");
 
-        if (!$this->files->exists($stubPath)) {
+        if (! $this->files->exists($stubPath)) {
             $this->components->error("Stub file not found: [{$stubPath}]");
+
             return '';
         }
 
@@ -130,7 +131,7 @@ class DomainMakeCommand extends Command
         if ($type === 'export') {
             $modelOption = $this->option('model');
             $modelImport = '';
-            $queryBody = "        // return YourModel::query();";
+            $queryBody = '        // return YourModel::query();';
 
             if ($modelOption) {
                 $modelData = $this->resolveModel($modelOption, $domain);

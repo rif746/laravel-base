@@ -70,6 +70,7 @@ enum RoleType: string
                 'roles' => $roles,
             ];
         }
+
         return $permissions;
     }
 }

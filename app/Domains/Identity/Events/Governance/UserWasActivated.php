@@ -7,8 +7,8 @@ use Illuminate\Queue\SerializesModels;
 
 class UserWasActivated
 {
-
     use Dispatchable, SerializesModels;
+
     public function __construct(
         public string $email
     ) {}

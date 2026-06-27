@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\Http;
 
 class ResolveIpTimezone
 {
-    public function __construct(protected GetSystemSettings $getSystemSettings)
-    {
-    }
+    public function __construct(protected GetSystemSettings $getSystemSettings) {}
 
     public function execute(string $ip): string
     {

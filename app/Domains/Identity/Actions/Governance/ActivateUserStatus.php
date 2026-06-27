@@ -9,16 +9,14 @@ use Exception;
 
 class ActivateUserStatus
 {
-    public function __construct(protected UpdateUserStatus $updateUserStatus)
-    {
-    }
+    public function __construct(protected UpdateUserStatus $updateUserStatus) {}
 
     /**
      * @throws Exception
      */
     public function execute(User $user): void
     {
-        if($user->status->isActive()) {
+        if ($user->status->isActive()) {
             throw new Exception('This user was activated.');
         }
 

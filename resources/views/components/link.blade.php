@@ -1,5 +1,5 @@
 @props([
-    'href' => '',
+    'href' => 'javascript:void(0)',
     'label' => '',
     'theme' => null,
     'icon' => null,
@@ -12,9 +12,9 @@
     {{ $attributes->merge([
         'class' => $theme ? 'link-' . $theme : '',
         'href' => $href,
-        'wire:navigate' => true,
+        'wire:navigate' => !in_array($href, ['#', 'javascript:void(0)', null]),
     ]) }}>
-    @if ($icon)
+    @if ($icon && !str_contains($icon, 'svg'))
         <span>@svg($icon, $iconConfig)</span>
     @endif
     @if (is_string($label))

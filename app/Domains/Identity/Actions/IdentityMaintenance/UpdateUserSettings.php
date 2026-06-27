@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domains\Account\Actions\Profile;
+namespace App\Domains\Identity\Actions\IdentityMaintenance;
 
-use App\Domains\Account\Enums\UserSettingKey;
+use App\Domains\Identity\Enums\UserSettingKey;
 use App\Domains\Identity\Models\User;
 
 class UpdateUserSettings

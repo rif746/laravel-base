@@ -1,7 +1,7 @@
 <?php
 
-use App\Domains\Account\Actions\Profile\UpdateUserSettings;
-use App\Domains\Account\Enums\UserSettingKey;
+use App\Domains\Identity\Actions\IdentityMaintenance\UpdateUserSettings;
+use App\Domains\Identity\Enums\UserSettingKey;
 use App\Livewire\Concerns\WithToast;
 use Livewire\Component;
 

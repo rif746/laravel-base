@@ -43,6 +43,7 @@ class UserSuspendedEmail extends Mailable implements ShouldQueue
             ->line(__('domains/identity/notifications.governance.user_suspended.body'))
             ->line(__('domains/identity/notifications.governance.user_suspended.outro'))
             ->render();
+
         return new Content(
             htmlString: $message,
         );

@@ -2,7 +2,6 @@
 
 use App\Domains\Account\Actions\Profile\UpdateProfile;
 use App\Domains\Account\DTOs\Profile\UpdateProfileDTO;
-use App\Domains\Account\Models\Profile;
 use App\Domains\Identity\Actions\IdentityMaintenance\UpdateUserIdentity;
 use App\Domains\Identity\DTOs\IdentityMaintenance\UpdateUserIdentityDTO;
 use App\Domains\Identity\Models\User;
@@ -50,17 +49,16 @@ new class extends Component
     {
         $this->form->validate($this->form->rules($this->id));
 
-        $profile = $this->user?->profile ?: new Profile(['user_id' => $this->id]);
         $updateUser->execute($this->user, new UpdateUserIdentityDTO(
             name: $this->form->name,
             email: $this->form->email,
         ));
 
-        $updateProfile->execute($profile, new UpdateProfileDTO(
+        $updateProfile->execute(new UpdateProfileDTO(
             userId: $this->id,
             gender: $this->form->gender,
-            date_of_birth: $this->form->date_of_birth,
-            phone_number: $this->form->phone_number,
+            dateOfBirth: $this->form->date_of_birth,
+            phoneNumber: $this->form->phone_number,
         ));
 
         $this->success($this->message);

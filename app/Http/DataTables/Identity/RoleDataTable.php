@@ -74,11 +74,11 @@ class RoleDataTable extends DataTable
             ->layout([
                 'topStart' => [
                     'className' => 'col-md-auto me-auto d-flex flex-sm-row flex-column justify-content-center justify-content-md-start align-items-center align-items-md-start gap-1',
-                    'features' => ['buttons', 'pageLength']
+                    'features' => ['buttons', 'pageLength'],
                 ],
                 'topEnd' => [
                     'className' => 'col-md-auto ms-auto d-flex flex-sm-row flex-column justify-content-center justify-content-md-end align-items-center align-items-md-start gap-1',
-                    'features' => ['search']
+                    'features' => ['search'],
                 ],
 
                 'bottomStart' => 'info',

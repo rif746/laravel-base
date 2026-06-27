@@ -4,10 +4,8 @@ use App\Attributes\LayoutData;
 use App\Attributes\Seo;
 use App\Domains\Identity\Actions\Governance\ActivateUserStatus;
 use App\Domains\Identity\Actions\Governance\SuspendUser;
-use App\Domains\Identity\Actions\Governance\UpdateUserStatus;
 use App\Domains\Identity\Actions\Passwords\SendPasswordResetLink;
 use App\Domains\Identity\DTOs\Passwords\ForgotPasswordDTO;
-use App\Domains\Identity\Enums\UserStatus;
 use App\Domains\Identity\Models\User;
 use App\Livewire\Concerns\HasLayoutDataAttributes;
 use App\Livewire\Concerns\HasSeoAttributes;
@@ -62,7 +60,7 @@ class extends Component
     public function toggleStatus(SuspendUser $suspendUser, ActivateUserStatus $activateUserStatus): void
     {
         try {
-            if($this->user->status->isActive()) {
+            if ($this->user->status->isActive()) {
                 $suspendUser->execute($this->user);
             } else {
                 $activateUserStatus->execute($this->user);

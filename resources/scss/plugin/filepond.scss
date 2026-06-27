@@ -8,20 +8,25 @@
 
   // Drop panel
   .filepond--panel-root {
-    background-color: $gray-50;
+    background-color: var(--bs-secondary-bg);
     border: 2px dashed $gray-300;
     border-radius: 0.75rem;
     transition: border-color 0.2s, background-color 0.2s;
   }
 
+  // Remove the dashed line (border) when a file is uploaded
+  &:has(.filepond--item) .filepond--panel-root {
+    border-color: transparent;
+  }
+
   // Drop label
   .filepond--drop-label {
-    color: $gray-500;
+    color: var(--bs-tertiary-color);
     font-size: $font-size-sm;
 
     label {
       cursor: pointer;
-      color: $gray-500;
+      color: var(--bs-tertiary-color);
 
       strong {
         color: $primary;
@@ -44,27 +49,33 @@
 
   // File item panel & info
   .filepond--item-panel {
-    background-color: $gray-100;
+    background-color: var(--bs-tertiary-bg);
     border-radius: 0.5rem;
+
+    // Remove the thin lines at the top and bottom of the item panel
+    .filepond--panel-top:after,
+    .filepond--panel-bottom:before {
+      display: none !important;
+    }
   }
 
   .filepond--file-info {
     .filepond--file-info-main {
       font-size: $font-size-sm;
       font-weight: 500;
-      color: $gray-800;
+      color: var(--bs-body-color);
     }
 
     .filepond--file-info-sub {
       font-size: $font-xs;
-      color: $gray-500;
+      color: var(--bs-tertiary-color);
     }
   }
 
   // File action buttons
   .filepond--file-action-button {
     background: rgba($gray-800, 0.08);
-    color: $gray-700;
+    color: var(--bs-body-color);
     cursor: pointer;
     transition: background 0.2s;
 
@@ -87,12 +98,12 @@
   .filepond--file-status {
     .filepond--file-status-main {
       font-size: $font-size-sm;
-      color: $gray-700;
+      color: var(--bs-body-color);
     }
 
     .filepond--file-status-sub {
       font-size: $font-xs;
-      color: $gray-400;
+      color: var(--bs-secondary-color);
     }
   }
 

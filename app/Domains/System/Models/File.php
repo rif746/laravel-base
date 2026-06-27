@@ -12,13 +12,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Storage;
 
-#[Fillable(['fileable_id', 'fileable_type', 'relation_name', 'name', 'path', 'size', 'disk', 'mime_type'])]
+#[Fillable([
+    'fileable_id',
+    'fileable_type',
+    'relation_name',
+    'name',
+    'path',
+    'size',
+    'disk',
+    'mime_type',
+    'options',
+    'uploader_id'
+])]
 class File extends Model
 {
     use HasFactory;
 
     protected $casts = [
         'size' => ByteHumanReadable::class,
+        'options' => 'array',
     ];
 
     protected static function newFactory(): Factory

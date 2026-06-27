@@ -2,15 +2,12 @@
 
 namespace App\Domains\Identity\Integration\Mappers;
 
-use App\Domains\Account\Actions\Profile\UpdateProfile;
-use App\Domains\Account\DTOs\Profile\UpdateProfileDTO;
-use App\Domains\Account\Enums\GenderOption;
-use App\Domains\Account\Models\Profile;
 use App\Domains\Identity\Actions\IdentityMaintenance\UpdateUserIdentity;
 use App\Domains\Identity\Actions\Onboarding\ProvisionNewUser;
 use App\Domains\Identity\DTOs\IdentityMaintenance\UpdateUserIdentityDTO;
 use App\Domains\Identity\DTOs\Onboarding\ProvisionUserDTO;
 use App\Domains\Identity\Enums\RoleType;
+use App\Domains\Identity\Events\Integration\UserImportWasProcessed;
 use App\Domains\Identity\Models\User;
 use App\Domains\System\Support\Integration\DataPayloadMapper;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +19,6 @@ class UserDataMapper implements DataPayloadMapper
     public function __construct(
         protected ProvisionNewUser $provisionNewUser,
         protected UpdateUserIdentity $updateUser,
-        protected UpdateProfile $updateProfile
     ) {}
 
     /**
@@ -75,14 +71,12 @@ class UserDataMapper implements DataPayloadMapper
         }
 
         // Handle cross-domain profile write details
-        $this->updateProfile->execute(
-            $user->profile ?? new Profile(['user_id' => $user->id]),
-            new UpdateProfileDTO(
-                userId: $user->id,
-                gender: GenderOption::fromLabel($payload['gender']),
-                date_of_birth: $payload['date_of_birth'],
-                phone_number: $payload['phone_number']
-            )
+        UserImportWasProcessed::dispatch(
+            userId: $user->id,
+            email: $payload['email'],
+            gender: $payload['gender'],
+            dateOfBirth: $payload['date_of_birth'],
+            phoneNumber: $payload['phone_number']
         );
     }
 }

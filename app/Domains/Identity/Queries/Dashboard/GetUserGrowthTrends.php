@@ -2,7 +2,6 @@
 
 namespace App\Domains\Identity\Queries\Dashboard;
 
-
 use App\Domains\Identity\Models\User;
 use Illuminate\Support\Carbon;
 

@@ -94,7 +94,7 @@ new class extends Component {
                 <x-button theme="secondary" data-bs-dismiss="modal" :label="__('ui.button.cancel')"/>
             </x-slot:footer>
             @push('scripts')
-                @filepondScripts
+                @vite(['resources/js/plugin/filepond.js'])
             @endpush
         </x-modal>
     @endif
