@@ -12,6 +12,11 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
+use Database\Seeders\RoleSeeder;
+
+beforeEach(function () {
+    $this->seed(RoleSeeder::class);
+});
 
 test('RegisterUser action registers a user, fires events, and stores in database', function () {
     Event::fake();

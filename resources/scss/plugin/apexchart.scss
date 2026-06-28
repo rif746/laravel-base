@@ -9,24 +9,24 @@
   .apexcharts-tooltip {
     font-family: $font-family-base;
     font-size: $font-size-base;
-    border: 1px solid var(--bs-border-color);
+    border: 1px solid $border-color;
     border-radius: 0.5rem;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    background: var(--bs-body-bg);
-    color: var(--bs-body-color);
+    box-shadow: 0 4px 16px rgba($black, 0.15);
+    background: $white;
+    color: $gray-800;
 
     &.apexcharts-theme-light {
-      border: 1px solid var(--bs-border-color);
-      background: var(--bs-body-bg);
+      border: 1px solid $border-color;
+      background: $white;
     }
 
     .apexcharts-tooltip-title {
       font-family: $font-family-base;
       font-size: $font-size-sm;
       font-weight: 600;
-      background: var(--bs-secondary-bg);
+      background: $gray-100;
       border-bottom: 1px solid $border-color;
-      color: var(--bs-body-color);
+      color: $gray-800;
       padding: 0.375rem 0.75rem;
     }
 
@@ -52,7 +52,7 @@
   .apexcharts-legend-text {
     font-family: $font-family-base !important;
     font-size: $font-size-sm !important;
-    color: var(--bs-secondary-color) !important;
+    color: $gray-600 !important;
   }
 
   // X & Y axis labels
@@ -79,9 +79,9 @@
     .apexcharts-menu {
       font-family: $font-family-base;
       font-size: $font-size-sm;
-      border: 1px solid var(--bs-border-color);
+      border: 1px solid $border-color;
       border-radius: 0.5rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 12px rgba($black, 0.15);
     }
 
     .apexcharts-menu-item:hover {

@@ -4,6 +4,7 @@ namespace App\Domains\Identity\Models;
 
 use App\Domains\Account\Models\Profile;
 use App\Domains\Identity\Enums\UserStatus;
+use App\Domains\Identity\Notifications\ResetPasswordNotification;
 use App\Domains\Identity\Notifications\VerifyEmailNotification;
 use App\Domains\Identity\Policies\UserPolicy;
 use App\Domains\System\Traits\Model\HasFile;
@@ -60,6 +61,12 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     protected static function newFactory(): Factory
     {
         return UserFactory::new();
+    }
+
+    public function sendPasswordResetNotification($token): void
+    {
+        // This overrides the default CanResetPassword trait method
+        $this->notify(new ResetPasswordNotification($token));
     }
 
     public function sendEmailVerificationNotification(): void

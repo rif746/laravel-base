@@ -19,11 +19,11 @@ if (! function_exists('asset_static')) {
         }
 
         if (Storage::disk('local')->exists($path)) {
-            return Storage::temporaryUrl($path, $time, $options);
+            return url(Storage::temporaryUrl($path, $time, $options));
         }
 
         if (Storage::disk('public')->exists($path)) {
-            return Storage::url($path);
+            return url(Storage::url($path));
         }
 
         return false;

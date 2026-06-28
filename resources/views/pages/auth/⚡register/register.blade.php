@@ -1,5 +1,5 @@
 <div>
-    <form class="needs-validation mt-3" wire:submit="register" novalidate>
+    <form class="needs-validation mt-3 d-flex flex-column gap-3" wire:submit="register" novalidate>
 
         <x-form.input name="form.name" :label="__('domains/auth/field.register.name')" wire:model.blur="form.name" type="text" :placeholder="__('domains/auth/field.register.name')" required
             autofocus autocomplete="name" />

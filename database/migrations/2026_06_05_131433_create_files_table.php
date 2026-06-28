@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('mime_type');
             $table->string('relation_name');
             $table->string('disk');
+            $table->json('options')->nullable();
+            $table->unsignedBigInteger('uploader_id');
             $table->morphs('fileable');
             $table->timestamps();
         });

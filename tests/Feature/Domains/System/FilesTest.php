@@ -4,6 +4,7 @@ use App\Domains\Identity\Models\User;
 use App\Domains\System\Actions\Files\PruneOrphanedFiles;
 use App\Domains\System\Actions\Files\ReplaceSingleFile;
 use App\Domains\System\Actions\Files\UploadAndAttachFile;
+use App\Domains\System\DTOs\FileDTO;
 use App\Domains\System\Models\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -16,11 +17,16 @@ test('UploadAndAttachFile action uploads a file and attaches it polymorphically'
 
     $action = app(UploadAndAttachFile::class);
     $file = $action->execute(
-        targetModel: $user,
-        relationName: 'avatar',
-        uploadedFile: $uploadedFile,
-        disk: 'private',
-        directory: 'avatars'
+        $uploadedFile,
+        new FileDTO(
+            modelType: $user->getMorphClass(),
+            modelId: $user->id,
+            relationName: 'avatar',
+            disk: 'private',
+            directory: 'avatars',
+            options: [],
+            uploaderId: $user->id,
+        ),
     );
 
     expect($file)->toBeInstanceOf(File::class);
@@ -41,14 +47,36 @@ test('ReplaceSingleFile action replaces old file physically and in database', fu
 
     // 1. Upload first file
     $file1 = UploadedFile::fake()->image('first.jpg');
-    $res1 = $action->execute($user, 'avatar', $file1, 'private', 'avatars');
+    $res1 = $action->execute(
+    $file1,
+    new FileDTO(
+        modelType: $user->getMorphClass(),
+        modelId: $user->id,
+        relationName: 'avatar',
+        disk: 'private',
+        directory: 'avatars',
+        options: [],
+        uploaderId: $user->id,
+    ),
+);
 
     $path1 = $res1->path;
     Storage::disk('private')->assertExists($path1);
 
     // 2. Upload second file (replace)
     $file2 = UploadedFile::fake()->image('second.jpg');
-    $res2 = $action->execute($user, 'avatar', $file2, 'private', 'avatars');
+    $res2 = $action->execute(
+    $file2,
+    new FileDTO(
+        modelType: $user->getMorphClass(),
+        modelId: $user->id,
+        relationName: 'avatar',
+        disk: 'private',
+        directory: 'avatars',
+        options: [],
+        uploaderId: $user->id,
+    ),
+);
 
     $path2 = $res2->path;
     Storage::disk('private')->assertMissing($path1);
@@ -76,6 +104,7 @@ test('PruneOrphanedFiles action cleans up database orphans and stranded physical
         'disk' => 'public',
         'size' => $validFile->getSize(),
         'mime_type' => $validFile->getMimeType(),
+        'uploader_id' => $user->id,
     ]);
 
     // 2. Create a database record orphan (no parent model user)
@@ -91,6 +120,7 @@ test('PruneOrphanedFiles action cleans up database orphans and stranded physical
         'disk' => 'public',
         'size' => $dbOrphanFile->getSize(),
         'mime_type' => $dbOrphanFile->getMimeType(),
+        'uploader_id' => $user->id,
     ]);
 
     // 3. Create a stranded physical file on disk (no database record)

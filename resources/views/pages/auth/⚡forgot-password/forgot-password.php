@@ -27,7 +27,9 @@ class extends Component
         ));
 
         if ($status === Password::RESET_LINK_SENT) {
-            $this->success(__('Password reset link has been sent to your email'));
+            $this->success(__('domains/auth/messages.reset_link_sent'));
+        } else {
+            $this->warning(__('domains/auth/messages.reset_link_failed'));
         }
     }
 };

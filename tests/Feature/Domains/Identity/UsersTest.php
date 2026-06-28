@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Identity\Actions\Governance\RemoveUser;
 use App\Domains\Identity\Actions\Governance\SuspendUser;
 use App\Domains\Identity\Actions\Governance\UpdateUserStatus;
 use App\Domains\Identity\Actions\IdentityMaintenance\UpdateUserIdentity;
@@ -62,15 +63,15 @@ test('SuspendUser action sets active user to inactive and dispatches event', fun
     expect($user->refresh()->status)->toBe(UserStatus::INACTIVE);
 
     Event::assertDispatched(UserWasSuspended::class, function ($event) use ($user) {
-        return $event->user->id === $user->id;
+        return $event->email === $user->email;
     });
 });
 
-test('SuspendUser action deletes inactive user from database', function () {
+test('RemoveUser action deletes inactive user from database', function () {
     $user = User::factory()->create(['status' => UserStatus::INACTIVE]);
     $user->assignRole(RoleType::USER->value);
 
-    $action = app(SuspendUser::class);
+    $action = app(RemoveUser::class);
     $action->execute($user);
 
     $this->assertDatabaseMissing('users', [

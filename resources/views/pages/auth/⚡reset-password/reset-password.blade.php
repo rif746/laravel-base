@@ -1,5 +1,5 @@
 <div>
-    <form wire:submit="resetPassword" class="needs-validation mt-3" novalidate>
+    <form wire:submit="resetPassword" class="needs-validation mt-3 d-flex flex-column gap-3" novalidate>
         <x-form.input name="form.email" wire:model="form.email" :label="__('domains/auth/field.reset_password.email')" type="email" placeholder="name@example.com"
             required autofocus autocomplete="username" />
 

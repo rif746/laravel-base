@@ -1,144 +1,58 @@
 @import "../variables";
-@import "filepond/dist/filepond.min.css";
+@import "../../../vendor/spatie/livewire-filepond/resources/dist/filepond.css";
 
-// FilePond Theme Overrides
 .filepond--root {
-  font-family: $font-family-base;
-  font-size: $font-size-base;
+    max-width: 460px;
+    width: 100%;
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 2px dashed $primary;
+    background: $light;
+    box-shadow: 0 8px 24px rgba(#000, 0.08);
+    transition: all 0.2s ease-in-out;
 
-  // Drop panel
-  .filepond--panel-root {
-    background-color: var(--bs-secondary-bg);
-    border: 2px dashed $gray-300;
-    border-radius: 0.75rem;
-    transition: border-color 0.2s, background-color 0.2s;
-  }
-
-  // Remove the dashed line (border) when a file is uploaded
-  &:has(.filepond--item) .filepond--panel-root {
-    border-color: transparent;
-  }
-
-  // Drop label
-  .filepond--drop-label {
-    color: var(--bs-tertiary-color);
-    font-size: $font-size-sm;
-
-    label {
-      cursor: pointer;
-      color: var(--bs-tertiary-color);
-
-      strong {
-        color: $primary;
-        font-weight: 500;
-      }
+    &:hover {
+        border-color: mix(#000, $primary, 20%);
+        box-shadow: 0 10px 28px rgba(#000, 0.12);
     }
-  }
 
-  // Hover / drag-over state
-  &[data-hopper-state='drag-over'] {
     .filepond--panel-root {
-      border-color: $primary;
-      background-color: rgba($primary, 0.04);
+        background-color: rgba($primary, 0.05) !important;
+        border-radius: 1rem !important;
     }
 
     .filepond--drop-label {
-      color: $primary;
-    }
-  }
-
-  // File item panel & info
-  .filepond--item-panel {
-    background-color: var(--bs-tertiary-bg);
-    border-radius: 0.5rem;
-
-    // Remove the thin lines at the top and bottom of the item panel
-    .filepond--panel-top:after,
-    .filepond--panel-bottom:before {
-      display: none !important;
-    }
-  }
-
-  .filepond--file-info {
-    .filepond--file-info-main {
-      font-size: $font-size-sm;
-      font-weight: 500;
-      color: var(--bs-body-color);
+        font-size: 1.1rem;
+        color: $secondary;
+        font-weight: 700;
+        padding: 1.4rem;
     }
 
-    .filepond--file-info-sub {
-      font-size: $font-xs;
-      color: var(--bs-tertiary-color);
-    }
-  }
+    .filepond--item {
+        border-radius: 0.75rem;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(#000, 0.06);
+        margin-bottom: 0.75rem;
+        transition: all 0.2s ease-in-out;
 
-  // File action buttons
-  .filepond--file-action-button {
-    background: rgba($gray-800, 0.08);
-    color: var(--bs-body-color);
-    cursor: pointer;
-    transition: background 0.2s;
-
-    &:hover {
-      background: rgba($primary, 0.12);
-      color: $primary;
-    }
-  }
-
-  // Progress ring / bar
-  .filepond--progress-indicator {
-    color: $primary;
-  }
-
-  .filepond--load-indicator {
-    color: $primary;
-  }
-
-  // Status bar success
-  .filepond--file-status {
-    .filepond--file-status-main {
-      font-size: $font-size-sm;
-      color: var(--bs-body-color);
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(#000, 0.1);
+        }
     }
 
-    .filepond--file-status-sub {
-      font-size: $font-xs;
-      color: var(--bs-secondary-color);
-    }
-  }
+    .filepond--file-action-button {
+        background-color: $primary !important;
+        color: #fff !important;
+        border-radius: 0.5rem !important;
+        transition: all 0.2s ease-in-out;
 
-  // Error state
-  .filepond--item[data-filepond-item-state*='error'] {
-    .filepond--item-panel {
-      background-color: rgba($danger, 0.08);
-    }
-
-    .filepond--file-info-main {
-      color: $danger;
-    }
-  }
-
-  // Upload success state
-  .filepond--item[data-filepond-item-state='processing-complete'] {
-    .filepond--item-panel {
-      background-color: rgba($success, 0.08);
+        &:hover {
+            background-color: mix(#000, $primary, 20%) !important;
+        }
     }
 
-    .filepond--file-info-main {
-      color: $success;
+    .filepond--credits {
+        display: none !important;
     }
-  }
-}
-
-// Image preview plugin
-.filepond--image-preview-overlay-idle {
-  color: rgba($gray-900, 0.5);
-}
-
-.filepond--image-preview-overlay-success {
-  color: rgba($success, 0.85);
-}
-
-.filepond--image-preview-overlay-failure {
-  color: rgba($danger, 0.85);
 }

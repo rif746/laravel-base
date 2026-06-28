@@ -3,7 +3,7 @@
         {{ __('domains/auth/pages.confirm_password.subheader') }}
     </div>
 
-    <form wire:submit="confirmPassword" class="needs-validation mt-3" novalidate>
+    <form wire:submit="confirmPassword" class="needs-validation mt-3 d-flex flex-column gap-3" novalidate>
 
         <x-form.input name="form.password" wire:model="form.password" :label="__('domains/auth/field.confirm_password.password')" type="password" :placeholder="__('domains/auth/field.confirm_password.password')"
             required autocomplete="current-password" />

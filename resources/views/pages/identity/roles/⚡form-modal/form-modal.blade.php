@@ -1,8 +1,8 @@
 <x-modal id="role-form-modal" :title="$this->title" wire:submit="save" size="modal-xl" wire:loading form livewire>
 
-    <div class="row mb-4">
+    <div class="row g-3 mb-4">
         <div class="col-12">
-            <div class="row">
+            <div class="row g-3">
                 <div class="col-12 col-md-6">
                     <x-form.input name="form.name" :disabled="$id" :label="__('domains/identity/field.role.name')" wire:model="form.name" />
                 </div>
@@ -41,7 +41,7 @@
     </div>
 
     <x-slot:footer>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <x-button type="button" theme="secondary" data-bs-dismiss="modal" :label="__('ui.button.cancel')" />
+        <x-button type="submit" theme="primary" :label="__('ui.button.save')" />
     </x-slot:footer>
 </x-modal>

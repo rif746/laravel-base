@@ -1,6 +1,11 @@
 <?php
 
+use Database\Seeders\RoleSeeder;
 use Livewire\Livewire;
+
+beforeEach(function () {
+    $this->seed(RoleSeeder::class);
+});
 
 test('registration screen can be rendered', function () {
     $response = $this->get('/register');

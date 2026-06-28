@@ -19,4 +19,10 @@ return [
         'action' => 'Verifikasi Alamat Email',
         'outro' => 'Jika Anda tidak membuat akun, tidak ada tindakan lebih lanjut yang diperlukan.',
     ],
+    'reset_password' => [
+        'subject' => 'Pemberitahuan Atur Ulang Kata Sandi',
+        'intro' => 'Anda menerima email ini karena kami menerima permintaan atur ulang kata sandi untuk akun Anda.',
+        'action' => 'Atur Ulang Kata Sandi',
+        'outro' => 'Jika Anda tidak meminta atur ulang kata sandi, tidak ada tindakan lebih lanjut yang diperlukan.',
+    ],
 ];

@@ -13,13 +13,13 @@
   .select2-selection--multiple {
     font-family: $font-family-base;
     font-size: $font-size-base;
-    border: 1px solid var(--bs-border-color);
+    border: 1px solid $border-color;
     border-radius: 0.5rem !important;
-    background-color: var(--bs-body-bg);
+    background-color: $white;
     transition: border-color 0.15s, box-shadow 0.15s;
 
     &:hover {
-      border-color: var(--bs-secondary-color);
+      border-color: $gray-600;
     }
   }
 
@@ -28,7 +28,7 @@
     height: calc(1.5em + 0.75rem + 2px);
 
     .select2-selection__rendered {
-      color: var(--bs-body-color);
+      color: $gray-800;
       padding-left: 0.75rem;
       padding-right: 2rem;
       width: 90%;
@@ -45,7 +45,7 @@
     }
 
     .select2-selection__placeholder {
-      color: var(--bs-secondary-color);
+      color: $gray-600;
     }
 
     .select2-selection__clear {
@@ -55,7 +55,7 @@
       transform: translateY(-50%);
       z-index: 10;
       cursor: pointer;
-      color: var(--bs-tertiary-color);
+      color: $gray-500;
       background: transparent;
       padding: 0;
       display: flex;
@@ -75,7 +75,7 @@
       right: 0.5rem;
 
       b {
-        border-color: var(--bs-secondary-color) transparent transparent;
+        border-color: $gray-600 transparent transparent;
         border-width: 5px 4px 0;
       }
     }
@@ -110,10 +110,10 @@
     .select2-search__field {
       font-family: $font-family-base;
       font-size: $font-size-sm;
-      color: var(--bs-body-color);
+      color: $gray-800;
 
       &::placeholder {
-        color: var(--bs-secondary-color);
+        color: $gray-600;
       }
     }
   }
@@ -173,26 +173,26 @@ select.form-select-sm + .select2-container,
 .select2-dropdown {
   font-family: $font-family-base;
   font-size: $font-size-base;
-  border: 1px solid var(--bs-border-color);
+  border: 1px solid $border-color;
   border-radius: 0.5rem !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba($black, 0.15);
   overflow: hidden;
 
   // Search field inside dropdown
   .select2-search--dropdown {
     padding: 0.5rem;
-    background: var(--bs-secondary-bg);
-    border-bottom: 1px solid var(--bs-border-color);
+    background: $gray-100;
+    border-bottom: 1px solid $border-color;
 
     .select2-search__field {
       font-family: $font-family-base;
       font-size: $font-size-sm;
-      border: 1px solid var(--bs-border-color);
+      border: 1px solid $border-color;
       border-radius: 0.375rem;
       padding: 0.375rem 0.75rem;
-      color: var(--bs-body-color);
+      color: $gray-800;
       width: 100%;
-      background-color: var(--bs-body-bg);
+      background-color: $white;
 
       &:focus {
         border-color: $primary;
@@ -214,7 +214,7 @@ select.form-select-sm + .select2-container,
     }
 
     &::-webkit-scrollbar-track {
-      background: var(--bs-secondary-bg);
+      background: $gray-100;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -225,7 +225,7 @@ select.form-select-sm + .select2-container,
 
   .select2-results__option {
     font-size: $font-size-sm;
-    color: var(--bs-body-color);
+    color: $gray-800;
     padding: 0.45rem 0.85rem;
     transition: background 0.12s;
 
@@ -244,13 +244,13 @@ select.form-select-sm + .select2-container,
 
     // Disabled
     &[aria-disabled='true'] {
-      color: var(--bs-secondary-color);
+      color: $gray-600;
       cursor: not-allowed;
     }
 
     // Option group label
     &--group {
-      color: var(--bs-tertiary-color);
+      color: $gray-500;
       font-size: $font-xs;
       font-weight: 600;
       text-transform: uppercase;
@@ -266,12 +266,12 @@ select.form-select-sm + .select2-container,
 
   .select2-selection--single,
   .select2-selection--multiple {
-    background-color: var(--bs-secondary-bg) !important;
-    border-color: var(--bs-border-color) !important;
+    background-color: $gray-100 !important;
+    border-color: $border-color !important;
     cursor: not-allowed;
 
     .select2-selection__rendered {
-      color: var(--bs-secondary-color);
+      color: $gray-600;
     }
   }
 }

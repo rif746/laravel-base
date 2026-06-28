@@ -11,6 +11,6 @@
     </x-slot:footer>
 
     @push('scripts')
-        @filepondScripts
+        @vite('resources/js/plugin/filepond.js')
     @endpush
 </x-modal>
