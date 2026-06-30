@@ -14,24 +14,13 @@ class GetMonthlyNewUsers
         $now = now();
         $lastMonth = now()->subMonth();
 
-        /** @var object{this_month: int, last_month: int} $stats */
-        $stats = User::query()
-            // 1. Count users who joined this exact month and year
-            ->selectRaw('SUM(CASE WHEN MONTH(created_at) = ? AND YEAR(created_at) = ? THEN 1 ELSE 0 END) as this_month', [
-                $now->month,
-                $now->year,
-            ])
-            // 2. Count users who joined last month and year
-            ->selectRaw('SUM(CASE WHEN MONTH(created_at) = ? AND YEAR(created_at) = ? THEN 1 ELSE 0 END) as last_month', [
-                $lastMonth->month,
-                $lastMonth->year,
-            ])
-            // 3. Performance Optimization: Ignore any rows older than the start of last month
-            ->where('created_at', '>=', $lastMonth->startOfMonth())
-            ->first();
+        $newUser = User::whereMonth('created_at', $now->month)
+            ->whereYear('created_at', $now->year)
+            ->count();
 
-        $newUser = (int) $stats->this_month;
-        $newUserLastMonth = (int) $stats->last_month;
+        $newUserLastMonth = User::whereMonth('created_at', $lastMonth->month)
+            ->whereYear('created_at', $lastMonth->year)
+            ->count();
 
         if ($newUserLastMonth > 0) {
             $growthRate = ($newUser - $newUserLastMonth) / $newUserLastMonth;

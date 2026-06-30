@@ -5,7 +5,7 @@
 [![Vite](https://img.shields.io/badge/Vite-8.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev)
 [![Pest](https://img.shields.io/badge/Pest-4.x-FF6B6B?logo=pest&logoColor=white)](https://pestphp.com)
 
-Selamat datang di repositori ini. Aplikasi ini dibangun menggunakan arsitektur **Pragmatic Domain-Driven Design (DDD)** yang ketat. Kami menyebutnya sebagai arsitektur "Antigravity" karena ia mencegah basis kode runtuh di bawah bebannya sendiri saat aplikasi berkembang pesat (scaling).
+Selamat datang di repositori ini. Aplikasi ini dibangun menggunakan arsitektur **Pragmatic Domain-Driven Design (DDD)** yang ketat. Kami menyebutnya sebagai arsitektur "Antigravity" karena ia mencegah basis kode menjadi terlalu kompleks saat aplikasi berkembang pesat (scaling).
 
 ---
 
@@ -19,7 +19,7 @@ Selamat datang di repositori ini. Aplikasi ini dibangun menggunakan arsitektur *
 
 ---
 
-## 2. Persyaratan (Requirements)
+## 2. Persyaratan
 
 - **PHP:** ^8.4
 - **Node.js:** Disarankan LTS terbaru
@@ -30,7 +30,7 @@ Selamat datang di repositori ini. Aplikasi ini dibangun menggunakan arsitektur *
 
 ## 3. Setup & Instalasi
 
-Proyek ini menyertakan skrip penyiapan terpadu di `composer.json`.
+Proyek ini menyediakan skrip setup terpadu di `composer.json`.
 
 ```bash
 # 1. Clone repositori
@@ -46,7 +46,7 @@ composer setup
 
 ## 4. Menjalankan Aplikasi
 
-Gunakan perintah pengembangan yang telah dikonfigurasi sebelumnya untuk menjalankan server, listener antrean (queue listener), log, dan Vite secara bersamaan:
+Gunakan perintah pengembangan untuk menjalankan server, listener antrean, log, dan Vite secara bersamaan:
 
 ```bash
 composer dev
@@ -104,7 +104,7 @@ Arsitektur ini memberlakukan batasan fisik yang keras antara **Delivery** (bagai
 * **The Gateway (Lapisan HTTP):** Controllers, komponen Livewire, dan Volt murni bertindak sebagai pengatur lalu lintas. Mereka menangani sesi web, cookie, pengalihan (redirect), dan validasi form.
 * **The Domain (The Vault):** Actions, DTOs, dan Models di dalam `app/Domains/` menangani aturan bisnis yang sebenarnya, mutasi database, dan pemanggilan API eksternal.
 
-> **Aturan Emas:** Domain harus tetap sepenuhnya tidak tahu menahu tentang web. Anda sama sekali tidak boleh menggunakan helper `request()`, `session()`, atau melempar eksepsi HTTP di dalam direktori `app/Domains/`.
+> **Aturan Emas:** Domain harus benar-benar terisolasi dari lapisan web. Anda tidak diperbolehkan menggunakan helper `request()`, `session()`, atau melempar eksepsi HTTP di dalam direktori `app/Domains/`.
 
 ---
 
@@ -330,6 +330,13 @@ You are an autonomous Senior Laravel Architect specializing in Pragmatic Domain-
   * `php artisan domain:make mapper Identity User` → generates `Integration/Mappers/UserDataMapper.php`
 * Excel ingestion (Import) classes live in the **Gateway layer** at `app/Http/Ingestion/Excel/` — do NOT generate them with `domain:make`.
 * Queries: For complex database reads (e.g., massive filtering or reporting), create a Query class in app/Domains/{Concept}/Queries/. Queries are read-only, do not use transactions, do not mutate state, and do not dispatch events.
+
+### 6. Testing Strategy
+* Always write tests using Pest PHP.
+* When generating new features (Actions/DTOs/Models), create corresponding tests in `tests/Feature/` or `tests/Unit/`.
+* Ensure 100% adherence to Architectural tests (check `tests/Architecture/` for existing rules).
+* When writing tests, use `Event::fake()`, `Queue::fake()`, `Notification::fake()` to isolate side effects.
+* For dependency-injected services, use `$this->mock()` to define expected behaviors.
 
 Write modern PHP 8.4+ code with strict typing. Ensure all PSR-4 namespaces perfectly match the directory structure.
 ```

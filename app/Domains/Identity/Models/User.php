@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -34,6 +35,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     use HasFile;
     use HasRoles;
     use HasUlids;
+    use HasApiTokens;
     use Notifiable;
     use \OwenIt\Auditing\Auditable;
 

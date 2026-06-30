@@ -217,7 +217,7 @@ Use Event-Driven Architecture for all side effects (emails, logging, background 
 
 This architecture uses a strict, intentional naming language. Every name must communicate **Business Intent**, not database operations.
 
-### 4.1 Domain Folders (`app/Domains/{Name}/`)
+### 10.1 Domain Folders (`app/Domains/{Name}/`)
 
 Domain names are **Business Concepts**, not technical layers. They must be a singular noun that describes a bounded context.
 
@@ -227,7 +227,7 @@ Domain names are **Business Concepts**, not technical layers. They must be a sin
 | `Account` | `Profile` | Account owns the full user account surface, not one model |
 | `System` | `Utils` / `Helpers` | System is a real bounded context for cross-cutting infrastructure |
 
-### 4.2 Capability Folders (Action / DTO / Event / Listener subdirectories)
+### 10.2 Capability Folders (Action / DTO / Event / Listener subdirectories)
 
 Subdirectories inside `Actions/`, `DTOs/`, `Events/`, and `Listeners/` must be named after **Business Capabilities**, not database nouns.
 
@@ -241,7 +241,7 @@ Subdirectories inside `Actions/`, `DTOs/`, `Events/`, and `Listeners/` must be n
 
 **Rule:** If a folder name is also a valid Eloquent Model name, it is wrong.
 
-### 4.3 Action Class Names
+### 10.3 Action Class Names
 
 Actions must be named after the **specific Business Intent** they fulfill. Use an active verb + business noun pattern.
 
@@ -255,7 +255,7 @@ Actions must be named after the **specific Business Intent** they fulfill. Use a
 
 CRUD names (`CreateCategory`, `UpdateSetting`) are only acceptable for trivial lookup tables with **no side effects**.
 
-### 4.4 DTO Class Names
+### 10.4 DTO Class Names
 
 DTOs are named after the Action they serve, with a `DTO` suffix.
 
@@ -265,7 +265,7 @@ DTOs are named after the Action they serve, with a `DTO` suffix.
 | `UpdateUser` | `UpdateUserDTO` |
 | `CreateSystemRole` | `CreateRoleDTO` |
 
-### 4.5 Event Class Names
+### 10.5 Event Class Names
 
 Events are **past-tense facts** about something that already happened in the domain. The class name must be grammatically a completed truth.
 
@@ -278,7 +278,7 @@ Events are **past-tense facts** about something that already happened in the dom
 
 **Rule:** Never suffix Events with `Event` (e.g., `UserRegisteredEvent` is wrong). The namespace `Events\` already communicates the type.
 
-### 4.6 Listener Class Names
+### 10.6 Listener Class Names
 
 Listeners describe the **active reaction** to an event using an imperative verb phrase.
 
@@ -322,15 +322,22 @@ You are an autonomous Senior Laravel Architect specializing in Pragmatic Domain-
 - **Listeners**: Imperative active-verb phrases, no `Listener` suffix (✅ `SendSignInActivityNotification` ❌ `UserLoggedInListener`).
 
 ### 5. File Generation Rules
-* NEVER use standard Laravel generators (e.g., `php artisan make:model`) for Domain classes.
-* ALWAYS use the custom `domain:make` command to create Domain files.
-* Example: `php artisan domain:make action Identity Onboarding/ProvisionNewUser`
-* Supported types: `model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `query`, `provider`, `export`, `mapper`, `scope`, `trait`, `mailable`.
-* Examples for the Integration layer:
-  * `php artisan domain:make export Identity UserExport --model=User`
-  * `php artisan domain:make mapper Identity User` → generates `Integration/Mappers/UserDataMapper.php`
-* Excel ingestion (Import) classes live in the **Gateway layer** at `app/Http/Ingestion/Excel/` — do NOT generate them with `domain:make`.
-* Queries: For complex database reads (e.g., massive filtering or reporting), create a Query class in app/Domains/{Concept}/Queries/. Queries are read-only, do not use transactions, do not mutate state, and do not dispatch events.
+- NEVER use standard Laravel generators (e.g., `php artisan make:model`) for Domain classes.
+- ALWAYS use the custom `domain:make` command to create Domain files.
+- Example: `php artisan domain:make action Identity Onboarding/ProvisionNewUser`
+- Supported types: `model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `query`, `provider`, `export`, `mapper`, `scope`, `trait`, `mailable`.
+- Examples for the Integration layer:
+  - `php artisan domain:make export Identity UserExport --model=User`
+  - `php artisan domain:make mapper Identity User` → generates `Integration/Mappers/UserDataMapper.php`
+- Excel ingestion (Import) classes live in the **Gateway layer** at `app/Http/Ingestion/Excel/` — do NOT generate them with `domain:make`.
+- Queries: For complex database reads (e.g., massive filtering or reporting), create a Query class in app/Domains/{Concept}/Queries/. Queries are read-only, do not use transactions, do not mutate state, and do not dispatch events.
+
+### 6. Testing Strategy
+- Always write tests using Pest PHP.
+- When generating new features (Actions/DTOs/Models), create corresponding tests in `tests/Feature/` or `tests/Unit/`.
+- Ensure 100% adherence to Architectural tests (check `tests/Architecture/` for existing rules).
+- When writing tests, use `Event::fake()`, `Queue::fake()`, `Notification::fake()` to isolate side effects.
+- For dependency-injected services, use `$this->mock()` to define expected behaviors.
 
 Write modern PHP 8.4+ code with strict typing. Ensure all PSR-4 namespaces perfectly match the directory structure.
 
@@ -566,13 +573,7 @@ Both Mailable classes live in the **System domain**, not the root `App\Mail\` na
 
 ## 18. Testing
 
-This project uses **Pest PHP** for testing.
-
-```bash
-composer test
-```
-
-Tests are located in the `tests/` directory and follow standard Laravel conventions (Feature and Unit).
+We use [Pest PHP](https://pestphp.com) for our test suite. Please refer to [TESTING.md](TESTING.md) for detailed instructions on running, structuring, and writing tests.
 
 ---
 

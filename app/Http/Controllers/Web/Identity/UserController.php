@@ -4,17 +4,14 @@ namespace App\Http\Controllers\Web\Identity;
 
 use App\Attributes\LayoutData;
 use App\Attributes\Seo;
-use App\Domains\Identity\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\DataTables\Identity\UserDataTable;
-use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    #[Authorize('viewAny', User::class)]
     #[LayoutData(
         header: 'domains/identity/seo.user.title',
         breadcrumbs: [

@@ -7,7 +7,7 @@ use App\Domains\Account\Enums\GenderOption;
 readonly class UpdateProfileDTO
 {
     public function __construct(
-        public int $userId,
+        public string $userId,
         public GenderOption $gender,
         public string $dateOfBirth,
         public string $phoneNumber,

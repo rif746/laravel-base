@@ -11,25 +11,15 @@ class GetTotalUsers
      */
     public function fetch(): array
     {
-        $now = now();
         $lastMonth = now()->subMonth();
 
-        /** @var object{total_users: int, last_month: int} $stats */
-        $stats = User::query()
-            // 1. Count total users
-            ->selectRaw('COUNT(id) as total_users')
-            // 2. Count users who joined last month and year
-            ->selectRaw('SUM(CASE WHEN MONTH(created_at) = ? AND YEAR(created_at) = ? THEN 1 ELSE 0 END) as last_month', [
-                $lastMonth->month,
-                $lastMonth->year,
-            ])
-            ->first();
+        $currentTotalUsers = User::count();
+        $totalUsersLastMonth = User::whereMonth('created_at', $lastMonth->month)
+            ->whereYear('created_at', $lastMonth->year)
+            ->count();
 
-        $currentTotalUsers = $stats->total_users;
-        $totalUsersMonthAgo = $stats->last_month;
-
-        if ($totalUsersMonthAgo > 0) {
-            $growthRate = ($currentTotalUsers - $totalUsersMonthAgo) / $totalUsersMonthAgo;
+        if ($totalUsersLastMonth > 0) {
+            $growthRate = ($currentTotalUsers - $totalUsersLastMonth) / $totalUsersLastMonth;
             $growthRate = $growthRate * 100;
             $growthRate = number_format($growthRate, 2, '.', '');
             $growthRate = "+{$growthRate}%";

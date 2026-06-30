@@ -4,7 +4,7 @@
     </x-card>
 
     <livewire:pages::identity.users.form-modal />
-    <livewire:pages::system.audit.audit-view-modal key-name="ulid" :model="\App\Domains\Identity\Models\User::class"
+    <livewire:pages::system.audit.audit-view-modal key-name="ulid" model="\App\Domains\Identity\Models\User::class"
                                                    translation="domains/identity/field.user." />
     <livewire:datatables.delete-action key-name="ulid" :model="\App\Domains\Identity\Models\User::class"
                                        :action="\App\Domains\Identity\Actions\Governance\RemoveUser::class" />
@@ -19,9 +19,8 @@
                     window.DataTable.feature.register('role-filter', function (settings, opts) {
                         let container = document.createElement('div');
                         container.style = 'width: 250px;';
-                        container.innerHTML = `<x-form.select id="role-filter"
-                                no-label class="form-select-sm" x-select2="{allowClear: true, placeholder: 'Role Filter'}"
-                                :options="\App\Domains\Identity\Models\Role::pluck('name', 'name')"
+                        container.innerHTML = `<x-form.select id="role-filter" no-label class="form-select-sm"
+                                x-select2="{allowClear: true, placeholder: 'Role Filter', url: '{{ route('api.v1.lookups.roles') }}'}"
                                 x-on:change="LaravelDataTables['user-table'].ajax.reload()" />`;
 
                         return container;
@@ -31,7 +30,8 @@
                         container.style = 'width: 250px;';
                         container.innerHTML = `<x-form.select id="status-filter"
                                 no-label class="form-select form-select-sm" x-select2="{allowClear: true, placeholder: 'Status Filter'}"
-                                :options="collect(\App\Domains\Identity\Enums\UserStatus::cases())->mapWithKeys(fn($stats) => [$stats->value => $stats->label()])"
+                                :options="collect(\App\Domains\Identity\Enums\UserStatus::cases())
+                                    ->mapWithKeys(fn($stats) => [$stats->value => $stats->label()])"
                                 x-on:change="LaravelDataTables['user-table'].ajax.reload()" />`;
 
                         return container;

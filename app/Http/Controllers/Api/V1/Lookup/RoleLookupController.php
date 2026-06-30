@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Lookup;
 
-use App\Domains\Identity\Models\Role;
+use App\Domains\Identity\Queries\Lookup\RoleLookup;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LookupResource;
 use Illuminate\Http\Request;
@@ -12,14 +12,14 @@ class RoleLookupController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, RoleLookup $lookup)
     {
-        $roles = Role::all(['id', 'name'])
-            ->map(fn ($model) => (object) [
-                'value' => $model->id,
-                'label' => $model->name,
+        $result = $lookup->fetch($request->input('search'))
+            ->map(fn($res) => (object) [
+                'id' => $res->name,
+                'text' => $res->name,
             ]);
 
-        return LookupResource::collection($roles);
+        return LookupResource::collection($result);
     }
 }

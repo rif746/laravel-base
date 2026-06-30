@@ -14,13 +14,11 @@ class GetUserGrowthTrends
     {
         $year = now()->year;
         $records = User::query()
-            ->selectRaw('MONTH(created_at) as month')
-            ->selectRaw('COUNT(id) as total')
+            ->selectRaw('created_at')
             ->whereYear('created_at', $year)
-            ->groupBy('month')
-            ->orderBy('month')
             ->get()
-            ->pluck('total', 'month')
+            ->groupBy(fn ($user) => $user->created_at->month)
+            ->map(fn ($group) => $group->count())
             ->toArray();
 
         $categories = [];

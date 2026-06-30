@@ -16,6 +16,7 @@
         "laravel/ai": "^0.6.4",
         "laravel/breeze": "^2.4",
         "laravel/framework": "^13.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
         "maatwebsite/excel": "4.x-dev",
         "owen-it/laravel-auditing": "^14.0",

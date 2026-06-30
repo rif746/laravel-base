@@ -15,8 +15,8 @@ class LookupResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'value' => $this->value,
-            'label' => $this->label,
+            'id' => $this->id,
+            'text' => $this->text,
         ];
     }
 }

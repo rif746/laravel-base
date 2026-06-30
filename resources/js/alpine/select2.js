@@ -4,6 +4,29 @@ export default function alpineSelect2(Alpine) {
         let config = evaluate(expression);
 
         if((window.jQuery||window.jquery||window.$) && (typeof window.$.fn.select2 !== 'undefined')) {
+            let select2Default = {
+                placeholder: config.placeholder || 'Select an option',
+                ajax: config.url ? {
+                    url: config.url,
+                    dataType: 'json',
+                    delay: 250,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data: function (params) {
+                        return {
+                            search: params.terms
+                        }
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.data || data
+                        }
+                    }
+                } : undefined
+            }
+
+            config = Object.assign(config, select2Default)
             let $el = $(el).select2(config)
 
             const modelName = el.getAttribute('wire:model') ||
