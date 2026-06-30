@@ -1,12 +1,103 @@
 # Antigravity Architecture: Laravel Modular Monolith
 
-Welcome to the repository. This application is built using a strict **Pragmatic Domain-Driven Design (DDD)** architecture. We refer to this as the "Antigravity" architecture because it prevents the codebase from collapsing under its own weight as it scales.
+[![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?logo=php&logoColor=white)](https://www.php.net)
+[![Vite](https://img.shields.io/badge/Vite-8.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev)
+[![Pest](https://img.shields.io/badge/Pest-4.x-FF6B6B?logo=pest&logoColor=white)](https://pestphp.com)
 
-This document serves as the ultimate source of truth for human developers and AI coding agents working on this codebase.
+Welcome to the repository. This application is built using a strict **Pragmatic Domain-Driven Design (DDD)** architecture. We refer to this as the "Antigravity" architecture because it prevents the codebase from collapsing under its own weight as it scales.
 
 ---
 
-## 1. The Core Philosophy
+## 1. Technical Stack
+
+- **Backend:** PHP 8.4+ & Laravel 13.0
+- **Frontend:** Vite, AlpineJS, Livewire, Tailwind CSS
+- **Database:** SQLite (default), MySQL, or PostgreSQL
+- **Testing:** Pest PHP
+- **Package Managers:** Composer (PHP), NPM (JS)
+
+---
+
+## 2. Requirements
+
+- **PHP:** ^8.4
+- **Node.js:** Latest LTS recommended
+- **Composer:** ^2.0
+- **Extensions:** `ext-zip`, `ext-pdo_sqlite` (if using SQLite)
+
+---
+
+## 3. Setup & Installation
+
+The project includes a unified setup script in `composer.json`.
+
+```bash
+# 1. Clone the repository
+git clone <repo-url>
+cd laravel-base
+
+# 2. Run the automated setup
+# This installs PHP/JS deps, creates .env, generates key, and runs migrations
+composer setup
+```
+
+---
+
+## 4. Running the Application
+
+Use the pre-configured development command which runs the server, queue listener, logs, and Vite concurrently:
+
+```bash
+composer dev
+```
+
+The application will be available at `http://localhost:8000`.
+
+---
+
+## 5. Scripts & Commands
+
+Available via Composer:
+- `composer setup`: Initial project bootstrap.
+- `composer dev`: Start development environment (Server + Queue + Logs + Vite).
+- `composer test`: Run the test suite.
+- `php artisan domain:make`: Custom generator for the DDD architecture (see Section 12).
+
+Available via NPM:
+- `npm run dev`: Start Vite dev server.
+- `npm run build`: Build assets for production.
+
+---
+
+## 6. Project Structure
+
+```text
+.
+├── app/
+│   ├── Attributes/       <-- PHP 8 Attributes (SEO, Layout)
+│   ├── Domains/          <-- Core Business Logic (The Vault)
+│   ├── Http/             <-- Web/API Gateway (Controllers, Requests, DataTables)
+│   ├── Livewire/         <-- Livewire Components & Forms
+│   ├── Providers/        <-- Service Providers
+│   └── UI/               <-- UI-specific logic (Actions, Enums)
+├── bootstrap/            <-- App bootstrap logic
+├── config/               <-- Laravel configuration files
+├── database/             <-- Migrations, factories, and seeders
+├── public/               <-- Web server entry point (index.php) and static assets
+├── resources/
+│   ├── lang/             <-- Localization files
+│   ├── views/            <-- Blade templates & Livewire components
+│   └── css/js/           <-- Frontend source assets
+├── routes/               <-- Web, API, and Console routes
+├── tests/                <-- Pest test suite
+├── storage/              <-- Logs, file uploads, and cache
+└── vite.config.js        <-- Vite configuration
+```
+
+---
+
+## 7. The Core Philosophy
 
 This architecture enforces a hard, physical boundary between **Delivery** (how the user interacts with the app) and **Business Logic** (what the app actually does).
 
@@ -17,15 +108,16 @@ This architecture enforces a hard, physical boundary between **Delivery** (how t
 
 ---
 
-## 2. Directory Structure
+## 8. Directory Structure
 
 The application is divided by **Business Concepts**, not technical features.
 
 ```text
 app/
-├── Attributes/               <-- PHP 8 Attributes (e.g., #[Seo])
+├── Attributes/               <-- PHP 8 Attributes (e.g., #[Seo], #[LayoutData])
 ├── Console/
-│   └── Commands/             <-- Custom Artisan commands (DomainMakeCommand, CleanOrphanedFiles)
+│   ├── Commands/             <-- Custom Artisan commands (DomainMakeCommand, CleanOrphanedFiles)
+│   └── stubs/                <-- Custom code generation stubs
 ├── Http/                     <-- The Gateway (HTTP Layer)
 │   ├── Controllers/
 │   │   ├── Api/
@@ -33,74 +125,67 @@ app/
 │   │   └── Web/
 │   │       ├── Auth/         <-- Authentication controllers
 │   │       ├── Identity/     <-- User & role management controllers
-│   │       └── System/       <-- System settings controllers
-│   ├── Middleware/           <-- HandlePreferredLanguage, HandlePreferredTimezone, HandleSeoSetting, etc.
+│   │       └── Account/      <-- Profile management controllers
+│   ├── DataTables/           <-- Livewire DataTable configurations
+│   ├── Ingestion/            <-- Excel Import/Ingestion classes
+│   ├── Middleware/           <-- HandlePreferredLanguage, HandleSeoSetting, etc.
 │   ├── Requests/
 │   │   ├── Api/              <-- API form requests
 │   │   └── Web/              <-- Web form requests
 │   └── Resources/            <-- API resources (LookupResource, SuccessResource, etc.)
 ├── Livewire/
-│   └── Concerns/             <-- Shared Livewire traits (WithModal, WithToast, HasSeoAttributes)
-├── Providers/                <-- AppServiceProvider
+│   ├── Concerns/             <-- Shared Livewire traits (WithModal, WithToast)
+│   └── Forms/                <-- Livewire Form Objects
+├── Providers/                <-- AppServiceProvider, EventServiceProvider, UiServiceProvider
 ├── UI/
-│   ├── Actions/              <-- UI-layer actions (non-domain mutations)
-│   └── Enums/
+│   ├── Actions/              <-- UI-layer actions (SetSeoMetadata, ApplyLayoutMetadata)
+│   ├── Enums/                <-- UI-specific enums (FileType, InputType)
+│   └── Support/              <-- UI helper classes (LayoutState, StyledExport)
 └── Domains/
     ├── Identity/             <-- Business Concept: Authentication & Users
     │   ├── Actions/          <-- Capability-grouped mutations
-    │   │   ├── Onboarding/   <-- RegisterSelfServiceUser, ProvisionNewUser,
-    │   │   │               <-- UpdateUser, VerifyUserEmail, ResendVerificationEmail
-    │   │   ├── AccessControl/<-- CreateSystemRole, UpdateSystemRole, UpdateUserRole, RemoveSystemRole
-    │   │   ├── Governance/   <-- SuspendUser, PurgeUser, RemoveUser, ActivateUserStatus
-    │   │   └── Passwords/    <-- ResetUserPassword, UpdatePassword, SendPasswordResetLink
     │   ├── DTOs/             <-- Capability-grouped Data Transfer Objects
-    │   │   ├── Onboarding/   <-- RegisterSelfServiceUserDTO, ProvisionUserDTO, UpdateUserDTO
-    │   │   ├── AccessControl/<-- CreateRoleDTO, UpdateRoleDTO
-    │   │   └── Passwords/    <-- ForgotPasswordDTO, ResetPasswordDTO, UpdatePasswordDTO
-    │   ├── DataTables/
     │   ├── Enums/
-    │   ├── Events/           <-- Past-tense truths, grouped by capability
-    │   │   ├── Authentication/<-- UserLoggedIn
-    │   │   ├── Onboarding/   <-- UserWasRegistered, UserWasProvisioned, UserEmailWasVerified
-    │   │   ├── Governance/   <-- UserWasSuspended, UserWasPurged, UserWasActivated
+    │   ├── Events/           <-- Past-tense truths
     │   ├── Exports/
-    │   ├── Integration/
-    │   │   └── Mappers/      <-- DataPayloadMapper implementations
-    │   ├── Listeners/        <-- Active-verb handlers, grouped by capability
-    │   │   └── Authentication/<-- SendSignInActivityNotification
+    │   ├── Integration/      <-- External system mappers
+    │   ├── Listeners/        <-- Active-verb handlers
     │   ├── Models/           <-- User, Role, Permission
     │   ├── Notifications/
     │   ├── Policies/
-    │   └── Queries/          <-- Complex Reads (reserved for future use)
+    │   ├── Providers/
+    │   ├── Queries/          <-- Complex Reads
+    │   └── Scopes/           <-- Eloquent Global Scopes
     ├── Account/              <-- Business Concept: Profiles & Billing
     │   ├── Actions/
-    │   │   └── Profile/
     │   ├── DTOs/
     │   ├── Enums/
-    │   └── Models/
+    │   ├── Listeners/
+    │   ├── Models/
+    │   └── Providers/
     └── System/               <-- Business Concept: Cross-cutting Infrastructure
         ├── Actions/
-        │   ├── Backup/
-        │   ├── Files/        <-- UploadAndAttachFile, ReplaceSingleFile, RemoveModelFile, PruneOrphanedFiles
-        │   └── Settings/
-        ├── Casts/            <-- Custom Eloquent casts (e.g., ByteHumanReadable)
+        ├── Casts/            <-- Custom Eloquent casts
         ├── DTOs/
         ├── Enums/
-        ├── Helpers/          <-- asset.php (asset_static() helper, autoloaded via composer.json)
+        ├── Events/
+        ├── Helpers/          <-- Domain-specific helpers (asset.php)
+        ├── Jobs/             <-- Domain-specific background jobs
+        ├── Listeners/
+        ├── Mail/             <-- Domain-specific mailables
         ├── Models/           <-- File, SystemSettings, Backup
         ├── Policies/
-        ├── Providers/        <-- SystemServiceProvider (Singleton registration, View Composers)
+        ├── Providers/        <-- SystemServiceProvider
         ├── Queries/          <-- GetSystemSettings, GetModelAuditLog
         ├── Support/
-        │   └── ValueObjects/
-        └── Traits/
-            └── Model/        <-- HasFile trait
+        ├── Traits/           <-- Domain-specific traits (HasFile)
+        └── ...
 
 ```
 
 ---
 
-## 3. The Rules of Engagement
+## 9. The Rules of Engagement
 
 ### DTOs (Data Transfer Objects)
 
@@ -128,7 +213,7 @@ Use Event-Driven Architecture for all side effects (emails, logging, background 
 
 ---
 
-## 4. Naming Conventions
+## 10. Naming Conventions
 
 This architecture uses a strict, intentional naming language. Every name must communicate **Business Intent**, not database operations.
 
@@ -206,7 +291,7 @@ Listeners describe the **active reaction** to an event using an imperative verb 
 
 ---
 
-## 5. AI Agent Prompt (System Instructions)
+## 11. AI Agent Prompt (System Instructions)
 
 **For Developers:** Copy and paste the block below into your AI agent's chat or system instructions before asking it to write or refactor code in this repository.
 
@@ -214,7 +299,7 @@ Listeners describe the **active reaction** to an event using an imperative verb 
 You are an autonomous Senior Laravel Architect specializing in Pragmatic Domain-Driven Design (DDD) and Event-Driven Architecture. You must strictly obey the "Antigravity" rules of this repository.
 
 ### 1. The HTTP Gateway (Delivery Layer)
-- Lives in `app/Http/Controllers/` or `resources/views/` (Volt/Livewire).
+- Lives in `app/Http/Controllers/`, `app/Http/DataTables/`, or `app/Livewire/`.
 - Responsibilities: HTTP validation, rate limiting, session management (`Auth::login`, `session()->regenerate()`), and redirects.
 - HARD RESTRICTION: The Gateway MUST NEVER call `Model::create()`, `Model::update()`, or `Hash::make()`. It must map validated data into a DTO and pass it to a Domain Action.
 
@@ -240,10 +325,11 @@ You are an autonomous Senior Laravel Architect specializing in Pragmatic Domain-
 * NEVER use standard Laravel generators (e.g., `php artisan make:model`) for Domain classes.
 * ALWAYS use the custom `domain:make` command to create Domain files.
 * Example: `php artisan domain:make action Identity Onboarding/ProvisionNewUser`
+* Supported types: `model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `query`, `provider`, `export`, `mapper`, `scope`, `trait`, `mailable`.
 * Examples for the Integration layer:
   * `php artisan domain:make export Identity UserExport --model=User`
   * `php artisan domain:make mapper Identity User` → generates `Integration/Mappers/UserDataMapper.php`
-* Excel ingestion (Import) classes live in the **Gateway layer** at `app/Http/Ingestion/` — do NOT generate them with `domain:make`.
+* Excel ingestion (Import) classes live in the **Gateway layer** at `app/Http/Ingestion/Excel/` — do NOT generate them with `domain:make`.
 * Queries: For complex database reads (e.g., massive filtering or reporting), create a Query class in app/Domains/{Concept}/Queries/. Queries are read-only, do not use transactions, do not mutate state, and do not dispatch events.
 
 Write modern PHP 8.4+ code with strict typing. Ensure all PSR-4 namespaces perfectly match the directory structure.
@@ -252,7 +338,7 @@ Write modern PHP 8.4+ code with strict typing. Ensure all PSR-4 namespaces perfe
 
 ---
 
-## 6. Development Tools & Generators
+## 12. Development Tools & Generators
 
 To maintain the strict folder structure of the Antigravity architecture, **do not use standard `make:` commands (like `make:model`) for Domain files.** Use the custom `domain:make` command to generate classes in the correct `app/Domains/` namespaces.
 
@@ -267,7 +353,7 @@ php artisan domain:make {type} {domain} {name} [options]
 
 **Arguments:**
 
-* `type`: The file type to generate (`model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `trait`, `query`, `provider`, `export`, `mapper`).
+* `type`: The file type to generate. Supported: `model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `scope`, `trait`, `query`, `provider`, `export`, `mapper`, `mailable`.
 * `domain`: The target Domain folder (e.g., `Identity`, `Account`, `System`).
 * `name`: The class name. Supports sub-directory grouping (e.g., `Management/ProvisionNewUser`).
 
@@ -283,7 +369,7 @@ All `domain:make` templates are stored as `.stub` files in `app/Console/stubs/do
 
 ---
 
-## 7. Universal File Management (The System Domain)
+## 13. Universal File Management (The System Domain)
 
 File handling (uploads, attachments, image cropping, and deletions) is a universally shared capability. To prevent every domain from writing its own file storage logic, all physical files are managed by a centralized engine within the **`System`** domain.
 
@@ -318,9 +404,9 @@ class User extends Model
 
 ```
 
-### File Actions (No DTOs Required)
+### File Actions (Metadata via DTO)
 
-Because Laravel's `Illuminate\Http\UploadedFile` is already a strictly-typed object, we **do not** wrap files in DTOs. The Gateway passes the raw file and the target `relation_name` directly into the central System Actions.
+Because Laravel's `Illuminate\Http\UploadedFile` is a complex object, we pass it alongside a strictly-typed `FileDTO` that contains the metadata (target model, disk, and relation name). This ensures the Gateway remains clean while the Domain receives all necessary context.
 
 * **`UploadAndAttachFile`**: The base action. It stores the physical file to the disk and creates the polymorphic database record.
 * **`ReplaceSingleFile`**: Used for 1-to-1 replacements (like changing an avatar). It safely deletes the old file before delegating the new upload back to the base action.
@@ -329,11 +415,16 @@ Because Laravel's `Illuminate\Http\UploadedFile` is already a strictly-typed obj
 
 ```php
 $action->execute(
-    targetModel: auth()->user()->profile,
-    relationName: 'avatar', // Matches the relation method name exactly
-    uploadedFile: $request->file('photo'),
-    disk: 'local',
-    directory: 'avatars'
+    newFile: $request->file('photo'),
+    dto: new FileDTO(
+        modelType: $user->getMorphClass(),
+        modelId: $user->id,
+        relationName: 'avatar',
+        disk: 'local',
+        directory: 'avatars',
+        options: [],
+        uploaderId: auth()->id(),
+    )
 );
 
 ```
@@ -344,7 +435,7 @@ To avoid polluting Laravel's global namespace with a junk `app/helpers.php` file
 
 ---
 
-## 8. Global Settings & Application State
+## 14. Global Settings & Application State
 
 Settings that dictate the runtime state of the application (Timezones, Localization, SEO tags) are managed by the `System` domain to ensure high performance and context awareness.
 
@@ -354,7 +445,7 @@ Settings that dictate the runtime state of the application (Timezones, Localizat
 
 ---
 
-## 9. Audit Logging & Tracking
+## 15. Audit Logging & Tracking
 
 All critical database mutations are tracked to maintain a compliant historical ledger.
 
@@ -363,7 +454,7 @@ All critical database mutations are tracked to maintain a compliant historical l
 
 ---
 
-## 10. Dynamic UIs & Livewire Interoperability
+## 16. Dynamic UIs & Livewire Interoperability
 
 When building data-driven interfaces (like dynamic settings forms), we utilize the **Renderable Enum** pattern combined with Laravel's native dynamic components.
 
@@ -373,7 +464,7 @@ When building data-driven interfaces (like dynamic settings forms), we utilize t
 
 ---
 
-## 11. Excel Import & Export
+## 17. Excel Import & Export
 
 The Laravel component `resources/views/components/datatables/⚡excel-manager.blade.php` (registered as `<livewire:datatables.excel-manager>`) provides a reusable, queue-backed mechanism for importing and exporting Excel files in any DataTable page. It is a **unified single-file Laravel component** — PHP class logic and Blade template co-exist in the same file, following the `⚡` naming convention used across all Laravel components in this project.
 
@@ -395,7 +486,7 @@ The component relies on three collaborating layers:
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `importClass` | `string` | Fully-qualified class name of the Gateway Ingestion class (e.g., `App\Http\Ingestion\Identity\UserImport`). |
+| `importClass` | `string` | Fully-qualified class name of the Gateway Ingestion class (e.g., `App\Http\Ingestion\Excel\Identity\UserImport`). |
 | `exportClass` | `string` | Fully-qualified class name of the domain Export (e.g., `App\Domains\Identity\Exports\UserExport`). |
 | `resourceName` | `string` | A slug used to name the stored import file and the timestamped export file (e.g., `user`). |
 
@@ -406,7 +497,7 @@ Embed the component in any DataTable page view. All props must be provided as fu
 ```blade
 <livewire:datatables.excel-manager
     :export-class="\App\Domains\Identity\Exports\UserExport::class"
-    :import-class="\App\Http\Ingestion\Identity\UserImport::class"
+    :import-class="\App\Http\Ingestion\Excel\Identity\UserImport::class"
     resource-name="user"
 />
 ```
@@ -437,7 +528,7 @@ php artisan domain:make mapper Identity User
 
 Domain Export classes must implement `FromQuery & WithHeadings & WithMapping & WithColumnFormatting`. The `StyledExport` decorator will apply all visual styling automatically at queue time — do **not** implement `WithStyles` directly on domain Exports.
 
-> **Gateway Layer:** Excel Ingestion (Import) classes live in `app/Http/Ingestion/` and are **not** generated by `domain:make`. Create them manually or with `make:class` as standard PHP classes implementing `ToCollection`, `WithHeadingRow`, and `WithChunkReading`.
+> **Gateway Layer:** Excel Ingestion (Import) classes live in `app/Http/Ingestion/Excel/` and are **not** generated by `domain:make`. Create them manually or with `make:class` as standard PHP classes implementing `ToCollection`, `WithHeadingRow`, and `WithChunkReading`.
 
 ### The Notification Pipeline
 
@@ -458,6 +549,7 @@ The import notification is sent by the domain Import class itself upon completio
 Both Mailable classes live in the **System domain**, not the root `App\Mail\` namespace:
 
 * **`App\Domains\System\Mail\ExcelImportEmail`** — Sent when a queued import finishes. Uses `domains/system.notifications.excel.import_email.*` translations.
+* **`App\Domains\Identity\Mail\Registration\WelcomeEmail`** — Example of a domain-specific mailable.
 * **`App\Domains\System\Mail\ExcelExportEmail`** — Sent when a queued export is ready, with the file attached from the `local` disk. Uses `domains/system.notifications.excel.export_email.*` translations.
 
 ### Translation Keys
@@ -469,5 +561,38 @@ Both Mailable classes live in the **System domain**, not the root `App\Mail\` na
 | `lang/{locale}/ui.php` | `ui.excel.export.success` | Toast shown after export is queued. |
 | `lang/{locale}/domains/system.php` | `notifications.excel.import_email.*` | Email body for the import completion notification. |
 | `lang/{locale}/domains/system.php` | `notifications.excel.export_email.*` | Email body for the export ready notification. |
+
+---
+
+## 18. Testing
+
+This project uses **Pest PHP** for testing.
+
+```bash
+composer test
+```
+
+Tests are located in the `tests/` directory and follow standard Laravel conventions (Feature and Unit).
+
+---
+
+## 19. Environment Variables
+
+Key variables used in `.env`:
+
+- `APP_NAME`: Name of the application.
+- `APP_ENV`: Application environment (`local`, `production`, etc.).
+- `APP_KEY`: Application encryption key.
+- `DB_CONNECTION`: Database driver (`sqlite`, `mysql`, `pgsql`).
+- `QUEUE_CONNECTION`: Queue driver (default: `database`).
+- `MAIL_MAILER`: Mail driver (default: `log`).
+
+See `.env.example` for the full list of available options.
+
+---
+
+## 20. License
+
+This project is licensed under the **MIT License**.
 
 

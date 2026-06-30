@@ -1,12 +1,103 @@
 # Arsitektur Antigravity: Laravel Modular Monolith
 
-Selamat datang di repositori ini. Aplikasi ini dibangun menggunakan arsitektur **Pragmatic Domain-Driven Design (DDD)** yang ketat. Kami menyebutnya sebagai arsitektur "Antigravity" karena ia mencegah basis kode runtuh di bawah bebannya sendiri saat aplikasi berkembang pesat (scaling).
+[![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?logo=php&logoColor=white)](https://www.php.net)
+[![Vite](https://img.shields.io/badge/Vite-8.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev)
+[![Pest](https://img.shields.io/badge/Pest-4.x-FF6B6B?logo=pest&logoColor=white)](https://pestphp.com)
 
-Dokumen ini berfungsi sebagai sumber kebenaran utama (source of truth) untuk pengembang manusia maupun agen AI yang bekerja pada basis kode ini.
+Selamat datang di repositori ini. Aplikasi ini dibangun menggunakan arsitektur **Pragmatic Domain-Driven Design (DDD)** yang ketat. Kami menyebutnya sebagai arsitektur "Antigravity" karena ia mencegah basis kode runtuh di bawah bebannya sendiri saat aplikasi berkembang pesat (scaling).
 
 ---
 
-## 1. Filosofi Inti
+## 1. Stack Teknis
+
+- **Backend:** PHP 8.4+ & Laravel 13.0
+- **Frontend:** Vite, AlpineJS, Livewire, Tailwind CSS
+- **Database:** SQLite (default), MySQL, atau PostgreSQL
+- **Testing:** Pest PHP
+- **Package Managers:** Composer (PHP), NPM (JS)
+
+---
+
+## 2. Persyaratan (Requirements)
+
+- **PHP:** ^8.4
+- **Node.js:** Disarankan LTS terbaru
+- **Composer:** ^2.0
+- **Ekstensi:** `ext-zip`, `ext-pdo_sqlite` (jika menggunakan SQLite)
+
+---
+
+## 3. Setup & Instalasi
+
+Proyek ini menyertakan skrip penyiapan terpadu di `composer.json`.
+
+```bash
+# 1. Clone repositori
+git clone <repo-url>
+cd laravel-base
+
+# 2. Jalankan setup otomatis
+# Ini akan menginstal dependensi PHP/JS, membuat file .env, generate key, dan menjalankan migrasi
+composer setup
+```
+
+---
+
+## 4. Menjalankan Aplikasi
+
+Gunakan perintah pengembangan yang telah dikonfigurasi sebelumnya untuk menjalankan server, listener antrean (queue listener), log, dan Vite secara bersamaan:
+
+```bash
+composer dev
+```
+
+Aplikasi akan tersedia di `http://localhost:8000`.
+
+---
+
+## 5. Skrip & Perintah
+
+Tersedia via Composer:
+- `composer setup`: Bootstrap awal proyek.
+- `composer dev`: Memulai lingkungan pengembangan (Server + Queue + Logs + Vite).
+- `composer test`: Menjalankan suite pengujian (test suite).
+- `php artisan domain:make`: Generator kustom untuk arsitektur DDD (lihat Bagian 12).
+
+Tersedia via NPM:
+- `npm run dev`: Memulai dev server Vite.
+- `npm run build`: Build aset untuk produksi.
+
+---
+
+## 6. Struktur Proyek
+
+```text
+.
+├── app/
+│   ├── Attributes/       <-- Atribut PHP 8 (SEO, Layout)
+│   ├── Domains/          <-- Logika Bisnis Inti (The Vault)
+│   ├── Http/             <-- Gateway Web/API (Controllers, Requests, DataTables)
+│   ├── Livewire/         <-- Komponen & Form Livewire
+│   ├── Providers/        <-- Service Providers
+│   └── UI/               <-- Logika spesifik UI (Actions, Enums)
+├── bootstrap/            <-- Logika bootstrap aplikasi
+├── config/               <-- File konfigurasi Laravel
+├── database/             <-- Migrasi, factory, dan seeder
+├── public/               <-- Entry point server web (index.php) dan aset statis
+├── resources/
+│   ├── lang/             <-- File lokalisasi
+│   ├── views/            <-- Template Blade & komponen Livewire
+│   └── css/js/           <-- Aset sumber frontend
+├── routes/               <-- Rute Web, API, dan Konsol
+├── tests/                <-- Pest test suite
+├── storage/              <-- Log, unggahan file, dan cache
+└── vite.config.js        <-- Konfigurasi Vite
+```
+
+---
+
+## 7. Filosofi Inti
 
 Arsitektur ini memberlakukan batasan fisik yang keras antara **Delivery** (bagaimana pengguna berinteraksi dengan aplikasi) dan **Business Logic** (apa yang sebenarnya dilakukan aplikasi).
 
@@ -17,15 +108,16 @@ Arsitektur ini memberlakukan batasan fisik yang keras antara **Delivery** (bagai
 
 ---
 
-## 2. Struktur Direktori
+## 8. Struktur Direktori
 
 Aplikasi ini dibagi berdasarkan **Konsep Bisnis**, bukan fitur teknis.
 
 ```text
 app/
-├── Attributes/               <-- Atribut PHP 8 (misal, #[Seo])
+├── Attributes/               <-- Atribut PHP 8 (misal, #[Seo], #[LayoutData])
 ├── Console/
-│   └── Commands/             <-- Perintah Artisan kustom (DomainMakeCommand, CleanOrphanedFiles)
+│   ├── Commands/             <-- Perintah Artisan kustom (DomainMakeCommand, CleanOrphanedFiles)
+│   └── stubs/                <-- Stub pembuatan kode kustom
 ├── Http/                     <-- The Gateway (Lapisan HTTP)
 │   ├── Controllers/
 │   │   ├── Api/
@@ -33,73 +125,66 @@ app/
 │   │   └── Web/
 │   │       ├── Auth/         <-- Kontroler autentikasi
 │   │       ├── Identity/     <-- Kontroler manajemen pengguna & peran
-│   │       └── System/       <-- Kontroler pengaturan sistem
-│   ├── Middleware/           <-- HandlePreferredLanguage, HandlePreferredTimezone, HandleSeoSetting, dll.
+│   │       └── Account/      <-- Kontroler manajemen profil
+│   ├── DataTables/           <-- Konfigurasi DataTable Livewire
+│   ├── Ingestion/            <-- Kelas Impor/Ingesti Excel
+│   ├── Middleware/           <-- HandlePreferredLanguage, HandleSeoSetting, dll.
 │   ├── Requests/
 │   │   ├── Api/              <-- Form request untuk API
 │   │   └── Web/              <-- Form request untuk Web
 │   └── Resources/            <-- Resource API (LookupResource, SuccessResource, dll.)
 ├── Livewire/
-│   └── Concerns/             <-- Trait Livewire yang digunakan bersama (WithModal, WithToast, HasSeoAttributes)
-├── Providers/                <-- AppServiceProvider
+│   ├── Concerns/             <-- Trait Livewire yang digunakan bersama (WithModal, WithToast)
+│   └── Forms/                <-- Objek Form Livewire
+├── Providers/                <-- AppServiceProvider, EventServiceProvider, UiServiceProvider
 ├── UI/
-│   ├── Actions/              <-- Actions di lapisan UI (mutasi non-domain)
-│   └── Enums/
+│   ├── Actions/              <-- Actions di lapisan UI (SetSeoMetadata, ApplyLayoutMetadata)
+│   ├── Enums/                <-- Enum spesifik UI (FileType, InputType)
+│   └── Support/              <-- Kelas pembantu UI (LayoutState, StyledExport)
 └── Domains/
     ├── Identity/             <-- Konsep Bisnis: Autentikasi & Pengguna
     │   ├── Actions/          <-- Mutasi yang dikelompokkan berdasarkan kapabilitas
-    │   │   ├── Onboarding/   <-- RegisterSelfServiceUser, ProvisionNewUser,
-    │   │   │               <-- UpdateUser, VerifyUserEmail, ResendVerificationEmail
-    │   │   ├── AccessControl/<-- CreateSystemRole, UpdateSystemRole, UpdateUserRole, RemoveSystemRole
-    │   │   ├── Governance/   <-- SuspendUser, PurgeUser, RemoveUser, ActivateUserStatus
-    │   │   └── Passwords/    <-- ResetUserPassword, UpdatePassword, SendPasswordResetLink
-    │   ├── DTOs/             <-- DTO yang dikelompokkan berdasarkan kapabilitas
-    │   │   ├── Onboarding/   <-- RegisterSelfServiceUserDTO, ProvisionUserDTO, UpdateUserDTO
-    │   │   ├── AccessControl/<-- CreateRoleDTO, UpdateRoleDTO
-    │   │   └── Passwords/    <-- ForgotPasswordDTO, ResetPasswordDTO, UpdatePasswordDTO
-    │   ├── DataTables/
+    │   ├── DTOs/             <-- Data Transfer Objects yang dikelompokkan berdasarkan kapabilitas
     │   ├── Enums/
-    │   ├── Events/           <-- Fakta masa lalu, dikelompokkan berdasarkan kapabilitas
-    │   │   ├── Authentication/<-- UserLoggedIn
-    │   │   ├── Onboarding/   <-- UserWasRegistered, UserWasProvisioned, UserEmailWasVerified
-    │   │   ├── Governance/   <-- UserWasSuspended, UserWasPurged, UserWasActivated
+    │   ├── Events/           <-- Fakta masa lalu
     │   ├── Exports/
-    │   ├── Integration/
-    │   │   └── Mappers/      <-- Implementasi DataPayloadMapper
-    │   ├── Listeners/        <-- Handler kata kerja aktif, dikelompokkan berdasarkan kapabilitas
-    │   │   └── Authentication/<-- SendSignInActivityNotification
+    │   ├── Integration/      <-- Mapper sistem eksternal
+    │   ├── Listeners/        <-- Handler kata kerja aktif
     │   ├── Models/           <-- User, Role, Permission
     │   ├── Notifications/
     │   ├── Policies/
-    │   └── Queries/          <-- Query bacaan kompleks (disiapkan untuk penggunaan masa depan)
+    │   ├── Providers/
+    │   ├── Queries/          <-- Bacaan Kompleks
+    │   └── Scopes/           <-- Global Scopes Eloquent
     ├── Account/              <-- Konsep Bisnis: Profil & Tagihan
     │   ├── Actions/
-    │   │   └── Profile/
     │   ├── DTOs/
     │   ├── Enums/
-    │   └── Models/
+    │   ├── Listeners/
+    │   ├── Models/
+    │   └── Providers/
     └── System/               <-- Konsep Bisnis: Infrastruktur Lintas Domain
         ├── Actions/
-        │   ├── Backup/
-        │   ├── Files/        <-- UploadAndAttachFile, ReplaceSingleFile, RemoveModelFile, PruneOrphanedFiles
-        │   └── Settings/
-        ├── Casts/            <-- Casts Eloquent kustom (misal, ByteHumanReadable)
+        ├── Casts/            <-- Casts Eloquent kustom
         ├── DTOs/
         ├── Enums/
-        ├── Helpers/          <-- asset.php (helper asset_static(), di-autoload via composer.json)
+        ├── Events/
+        ├── Helpers/          <-- Helper spesifik domain (asset.php)
+        ├── Jobs/             <-- Background job spesifik domain
+        ├── Listeners/
+        ├── Mail/             <-- Mailable spesifik domain
         ├── Models/           <-- File, SystemSettings, Backup
         ├── Policies/
-        ├── Providers/        <-- SystemServiceProvider (Registrasi Singleton, View Composers)
+        ├── Providers/        <-- SystemServiceProvider
         ├── Queries/          <-- GetSystemSettings, GetModelAuditLog
         ├── Support/
-        │   └── ValueObjects/
-        └── Traits/
-            └── Model/        <-- Trait HasFile
+        ├── Traits/           <-- Trait spesifik domain (HasFile)
+        └── ...
 ```
 
 ---
 
-## 3. Aturan Pelaksanaan (Rules of Engagement)
+## 9. Aturan Pelaksanaan (Rules of Engagement)
 
 ### DTOs (Data Transfer Objects)
 
@@ -127,11 +212,11 @@ Gunakan Arsitektur Event-Driven untuk semua efek samping (side effects) seperti 
 
 ---
 
-## 4. Konvensi Penamaan
+## 10. Konvensi Penamaan
 
 Arsitektur ini menggunakan bahasa penamaan yang ketat dan disengaja. Setiap nama harus mengomunikasikan **Niat Bisnis (Business Intent)**, bukan operasi database.
 
-### 4.1 Folder Domain (`app/Domains/{Name}/`)
+### 10.1 Folder Domain (`app/Domains/{Name}/`)
 
 Nama domain adalah **Konsep Bisnis**, bukan lapisan teknis. Harus berupa kata benda tunggal yang mendeskripsikan *bounded context*.
 
@@ -141,9 +226,9 @@ Nama domain adalah **Konsep Bisnis**, bukan lapisan teknis. Harus berupa kata be
 | `Account` | `Profile` | Account memiliki seluruh permukaan akun pengguna, bukan hanya satu model. |
 | `System` | `Utils` / `Helpers` | System adalah konteks bisnis nyata untuk infrastruktur lintas-potong (cross-cutting). |
 
-### 4.2 Folder Kapabilitas (Subdirektori Action / DTO / Event / Listener)
+### 10.2 Folder Kapabilitas (Subdirektori Action / DTO / Event / Listener)
 
-Subdirektori di dalam `Actions/`, `DTOs/`, `Events/`, dan `Listeners/` harus dinamai berdasarkan **Kapabilitas Bisnis**, bukan kata benda database.
+Subdirektori di dalam `Actions/`, `DTOs/`, `Events/`, and `Listeners/` harus dinamai berdasarkan **Kapabilitas Bisnis**, bukan kata benda database.
 
 | ✅ Benar | ❌ Salah | Alasan |
 |---|---|---|
@@ -155,7 +240,7 @@ Subdirektori di dalam `Actions/`, `DTOs/`, `Events/`, dan `Listeners/` harus din
 
 **Aturan:** Jika nama folder juga merupakan nama Model Eloquent yang valid, maka penamaan tersebut salah.
 
-### 4.3 Nama Kelas Action
+### 10.3 Nama Kelas Action
 
 Actions harus dinamai berdasarkan **Niat Bisnis yang spesifik** yang mereka penuhi. Gunakan pola kata kerja aktif + kata benda bisnis.
 
@@ -169,7 +254,7 @@ Actions harus dinamai berdasarkan **Niat Bisnis yang spesifik** yang mereka penu
 
 Nama-nama CRUD (`CreateCategory`, `UpdateSetting`) hanya dapat diterima untuk tabel pencarian sepele (lookup tables) yang **tidak memiliki efek samping**.
 
-### 4.4 Nama Kelas DTO
+### 10.4 Nama Kelas DTO
 
 DTO dinamai berdasarkan Action yang mereka layani, dengan akhiran `DTO`.
 
@@ -179,7 +264,7 @@ DTO dinamai berdasarkan Action yang mereka layani, dengan akhiran `DTO`.
 | `UpdateUser` | `UpdateUserDTO` |
 | `CreateSystemRole` | `CreateRoleDTO` |
 
-### 4.5 Nama Kelas Event
+### 10.5 Nama Kelas Event
 
 Events adalah **fakta masa lalu (past-tense)** mengenai sesuatu yang telah terjadi dalam domain. Nama kelas harus secara gramatikal menyatakan kebenaran yang sudah selesai.
 
@@ -192,7 +277,7 @@ Events adalah **fakta masa lalu (past-tense)** mengenai sesuatu yang telah terja
 
 **Aturan:** Jangan pernah mengakhiri Events dengan `Event` (misal, `UserRegisteredEvent` itu salah). Namespace `Events\` sudah mengomunikasikan jenisnya.
 
-### 4.6 Nama Kelas Listener
+### 10.6 Nama Kelas Listener
 
 Listeners mendeskripsikan **reaksi aktif** terhadap sebuah event menggunakan frasa kata kerja imperatif.
 
@@ -205,7 +290,7 @@ Listeners mendeskripsikan **reaksi aktif** terhadap sebuah event menggunakan fra
 
 ---
 
-## 5. Prompt Agen AI (Instruksi Sistem)
+## 11. Prompt Agen AI (Instruksi Sistem)
 
 **Untuk Pengembang:** Salin dan tempel blok di bawah ini ke obrolan agen AI Anda atau instruksi sistem sebelum memintanya untuk menulis atau merefaktor kode di repositori ini.
 
@@ -213,7 +298,7 @@ Listeners mendeskripsikan **reaksi aktif** terhadap sebuah event menggunakan fra
 You are an autonomous Senior Laravel Architect specializing in Pragmatic Domain-Driven Design (DDD) and Event-Driven Architecture. You must strictly obey the "Antigravity" rules of this repository.
 
 ### 1. The HTTP Gateway (Delivery Layer)
-- Lives in `app/Http/Controllers/` or `resources/views/` (Volt/Livewire).
+- Lives in `app/Http/Controllers/`, `app/Http/DataTables/`, or `app/Livewire/`.
 - Responsibilities: HTTP validation, rate limiting, session management (`Auth::login`, `session()->regenerate()`), and redirects.
 - HARD RESTRICTION: The Gateway MUST NEVER call `Model::create()`, `Model::update()`, or `Hash::make()`. It must map validated data into a DTO and pass it to a Domain Action.
 
@@ -239,10 +324,11 @@ You are an autonomous Senior Laravel Architect specializing in Pragmatic Domain-
 * NEVER use standard Laravel generators (e.g., `php artisan make:model`) for Domain classes.
 * ALWAYS use the custom `domain:make` command to create Domain files.
 * Example: `php artisan domain:make action Identity Onboarding/ProvisionNewUser`
+* Supported types: `model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `query`, `provider`, `export`, `mapper`, `scope`, `trait`, `mailable`.
 * Examples for the Integration layer:
   * `php artisan domain:make export Identity UserExport --model=User`
   * `php artisan domain:make mapper Identity User` → generates `Integration/Mappers/UserDataMapper.php`
-* Excel ingestion (Import) classes live in the **Gateway layer** at `app/Http/Ingestion/` — do NOT generate them with `domain:make`.
+* Excel ingestion (Import) classes live in the **Gateway layer** at `app/Http/Ingestion/Excel/` — do NOT generate them with `domain:make`.
 * Queries: For complex database reads (e.g., massive filtering or reporting), create a Query class in app/Domains/{Concept}/Queries/. Queries are read-only, do not use transactions, do not mutate state, and do not dispatch events.
 
 Write modern PHP 8.4+ code with strict typing. Ensure all PSR-4 namespaces perfectly match the directory structure.
@@ -250,7 +336,7 @@ Write modern PHP 8.4+ code with strict typing. Ensure all PSR-4 namespaces perfe
 
 ---
 
-## 6. Alat Pengembangan & Generator
+## 12. Alat Pengembangan & Generator
 
 Untuk mempertahankan struktur folder yang ketat dari arsitektur Antigravity, **jangan gunakan perintah `make:` standar (seperti `make:model`) untuk file Domain.** Gunakan perintah kustom `domain:make` untuk menghasilkan kelas di namespace `app/Domains/` yang benar.
 
@@ -260,11 +346,12 @@ Untuk mempertahankan struktur folder yang ketat dari arsitektur Antigravity, **j
 
 ```bash
 php artisan domain:make {type} {domain} {name} [options]
+
 ```
 
 **Argumen:**
 
-* `type`: Jenis file yang akan dibuat (`model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `trait`, `query`, `provider`, `export`, `mapper`).
+* `type`: Jenis file yang akan dibuat. Didukung: `model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `scope`, `trait`, `query`, `provider`, `export`, `mapper`, `mailable`.
 * `domain`: Folder Domain target (misal, `Identity`, `Account`, `System`).
 * `name`: Nama kelas. Mendukung pengelompokan sub-direktori (misal, `Management/ProvisionNewUser`).
 
@@ -280,7 +367,7 @@ Semua template `domain:make` disimpan sebagai file `.stub` di `app/Console/stubs
 
 ---
 
-## 7. Manajemen File Universal (Domain System)
+## 13. Manajemen File Universal (Domain System)
 
 Penanganan file (unggahan, lampiran, pemangkasan gambar, dan penghapusan) adalah kemampuan yang dibagikan secara universal. Untuk mencegah setiap domain menulis logika penyimpanan filenya sendiri, semua file fisik dikelola oleh mesin terpusat di dalam domain **`System`**.
 
@@ -291,7 +378,7 @@ Kami tidak menambahkan path file secara langsung ke tabel bisnis (misalnya, tida
 * File dilampirkan secara **polimorfik** ke entitas apa pun di dalam aplikasi.
 * Tabel `files` menyertakan kolom string `relation_name` bertipe ketat (misalnya, `'avatar'`) untuk mencegah terjadinya tabrakan antar jenis file yang dilampirkan ke model yang sama.
 
-### Trait Konsumen (The Consumer Trait)
+### Trait Konsumen
 
 Ketika Domain Model (seperti `User` atau `Invoice`) perlu menerima lampiran file, model tersebut akan menarik trait `HasFile`. Trait ini menyediakan pembuat relasi terisolasi.
 
@@ -312,11 +399,12 @@ class User extends Model
         return $this->singleFile('avatar'); 
     }
 }
+
 ```
 
-### Actions File (Tanpa DTO)
+### File Action (Metadata via DTO)
 
-Karena objek `Illuminate\Http\UploadedFile` milik Laravel sudah merupakan objek dengan tipe yang sangat ketat, kami **tidak** membungkus file di dalam DTO. Gateway melewatkan file mentah dan target `relation_name` secara langsung ke System Actions pusat.
+Karena objek `Illuminate\Http\UploadedFile` milik Laravel merupakan objek yang kompleks, kami melewatkannya bersama dengan `FileDTO` yang diketik secara ketat (strictly-typed) yang berisi metadata (model target, disk, dan nama relasi). Ini memastikan Gateway tetap bersih sementara Domain menerima semua konteks yang diperlukan.
 
 * **`UploadAndAttachFile`**: Action dasar. Ini menyimpan file fisik ke disk dan membuat rekaman database polimorfik.
 * **`ReplaceSingleFile`**: Digunakan untuk penggantian 1-ke-1 (seperti mengganti avatar). Ia menghapus file lama secara aman sebelum mendelegasikan unggahan baru kembali ke Action dasar.
@@ -325,12 +413,18 @@ Karena objek `Illuminate\Http\UploadedFile` milik Laravel sudah merupakan objek 
 
 ```php
 $action->execute(
-    targetModel: auth()->user()->profile,
-    relationName: 'avatar', // Cocok dengan nama metode relasi secara tepat
-    uploadedFile: $request->file('photo'),
-    disk: 'local',
-    directory: 'avatars'
+    newFile: $request->file('photo'),
+    dto: new FileDTO(
+        modelType: $user->getMorphClass(),
+        modelId: $user->id,
+        relationName: 'avatar',
+        disk: 'local',
+        directory: 'avatars',
+        options: [],
+        uploaderId: auth()->id(),
+    )
 );
+
 ```
 
 ### Helper Asset Sistem
@@ -339,7 +433,7 @@ Untuk menghindari polusi namespace global Laravel dengan file `app/helpers.php` 
 
 ---
 
-## 8. Pengaturan Global & State Aplikasi
+## 14. Pengaturan Global & State Aplikasi
 
 Pengaturan yang mendikte *state* (status) *runtime* aplikasi (Zona Waktu, Lokalisasi, Tag SEO) dikelola oleh domain `System` untuk memastikan performa tinggi dan kesadaran konteks.
 
@@ -349,7 +443,7 @@ Pengaturan yang mendikte *state* (status) *runtime* aplikasi (Zona Waktu, Lokali
 
 ---
 
-## 9. Pencatatan Audit (Audit Logging) & Pelacakan
+## 15. Pencatatan Audit (Audit Logging) & Pelacakan
 
 Semua mutasi database yang penting dilacak untuk mempertahankan buku besar (ledger) historis yang patuh (compliant).
 
@@ -358,7 +452,7 @@ Semua mutasi database yang penting dilacak untuk mempertahankan buku besar (ledg
 
 ---
 
-## 10. UI Dinamis & Interoperabilitas Livewire
+## 16. UI Dinamis & Interoperabilitas Livewire
 
 Saat membangun antarmuka berbasis data (seperti formulir pengaturan dinamis), kami memanfaatkan pola **Renderable Enum** dikombinasikan dengan komponen dinamis bawaan Laravel.
 
@@ -368,7 +462,7 @@ Saat membangun antarmuka berbasis data (seperti formulir pengaturan dinamis), ka
 
 ---
 
-## 11. Ekspor & Impor Excel
+## 17. Ekspor & Impor Excel
 
 Komponen Laravel `resources/views/components/datatables/⚡excel-manager.blade.php` (didaftarkan sebagai `<livewire:datatables.excel-manager>`) menyediakan mekanisme berbasis *queue* (antrean) yang dapat digunakan kembali untuk mengimpor dan mengekspor file Excel pada halaman DataTable apa pun. Ini adalah **komponen Laravel file tunggal terpadu** — logika kelas PHP dan templat Blade berdampingan pada file yang sama, mengikuti konvensi penamaan `⚡` yang digunakan di seluruh komponen Laravel dalam proyek ini.
 
@@ -390,7 +484,7 @@ Komponen ini bergantung pada tiga lapisan yang berkolaborasi:
 
 | Prop | Tipe | Deskripsi |
 | --- | --- | --- |
-| `importClass` | `string` | Nama kelas kualifikasi penuh (fully-qualified) dari Gateway Ingestion class (contoh, `App\Http\Ingestion\Identity\UserImport`). |
+| `importClass` | `string` | Nama kelas kualifikasi penuh (fully-qualified) dari Gateway Ingestion class (contoh, `App\Http\Ingestion\Excel\Identity\UserImport`). |
 | `exportClass` | `string` | Nama kelas kualifikasi penuh dari domain Export (contoh, `App\Domains\Identity\Exports\UserExport`). |
 | `resourceName` | `string` | Sebuah kata (slug) yang digunakan untuk menamai file impor yang disimpan serta nama file ekspor yang bertanda waktu (contoh, `user`). |
 
@@ -401,7 +495,7 @@ Sematkan komponen di dalam halaman DataTable (Blade view) mana pun. Semua props 
 ```blade
 <livewire:datatables.excel-manager
     :export-class="\App\Domains\Identity\Exports\UserExport::class"
-    :import-class="\App\Http\Ingestion\Identity\UserImport::class"
+    :import-class="\App\Http\Ingestion\Excel\Identity\UserImport::class"
     resource-name="user"
 />
 ```
@@ -432,7 +526,7 @@ php artisan domain:make mapper Identity User
 
 Kelas Export Domain wajib mengimplementasikan `FromQuery & WithHeadings & WithMapping & WithColumnFormatting`. Dekorator `StyledExport` akan menerapkan semua format visual secara otomatis saat diproses antrean — **jangan** mengimplementasikan `WithStyles` secara langsung di kelas Export domain.
 
-> **Lapisan Gateway:** Kelas Excel Ingestion (Import) berada di dalam `app/Http/Ingestion/` dan **tidak** dihasilkan oleh generator `domain:make`. Buatlah secara manual atau gunakan `make:class` sebagai kelas PHP standar yang mengimplementasikan `ToCollection`, `WithHeadingRow`, dan `WithChunkReading`.
+> **Lapisan Gateway:** Kelas Excel Ingestion (Import) berada di dalam `app/Http/Ingestion/Excel/` dan **tidak** dihasilkan oleh generator `domain:make`. Buatlah secara manual atau gunakan `make:class` sebagai kelas PHP standar yang mengimplementasikan `ToCollection`, `WithHeadingRow`, dan `WithChunkReading`.
 
 ### Pipeline Pemberitahuan
 
@@ -453,6 +547,7 @@ Pemberitahuan impor akan dikirim langsung oleh kelas Import domain itu sendiri s
 Kedua kelas Mailable berada pada **domain System**, bukan di namespace utama `App\Mail\`:
 
 * **`App\Domains\System\Mail\ExcelImportEmail`** — Dikirim saat unggahan *queued import* telah selesai. Menggunakan terjemahan dari `domains/system.notifications.excel.import_email.*`.
+* **`App\Domains\Identity\Mail\Registration\WelcomeEmail`** — Contoh mailable spesifik domain.
 * **`App\Domains\System\Mail\ExcelExportEmail`** — Dikirim saat *queued export* siap, dilampirkan menggunakan file dari disk `local`. Menggunakan terjemahan dari `domains/system.notifications.excel.export_email.*`.
 
 ### Kunci Terjemahan (Translation Keys)
@@ -464,3 +559,36 @@ Kedua kelas Mailable berada pada **domain System**, bukan di namespace utama `Ap
 | `lang/{locale}/ui.php` | `ui.excel.export.success` | Pesan Toast muncul setelah ekspor masuk antrean. |
 | `lang/{locale}/domains/system.php` | `notifications.excel.import_email.*` | Isi (body) email untuk pemberitahuan selesai impor. |
 | `lang/{locale}/domains/system.php` | `notifications.excel.export_email.*` | Isi (body) email untuk pemberitahuan ekspor sudah siap. |
+
+---
+
+## 18. Testing
+
+Proyek ini menggunakan **Pest PHP** untuk pengujian.
+
+```bash
+composer test
+```
+
+Tes terletak di direktori `tests/` dan mengikuti konvensi standar Laravel (Feature dan Unit).
+
+---
+
+## 19. Variabel Lingkungan (Environment Variables)
+
+Variabel utama yang digunakan di `.env`:
+
+- `APP_NAME`: Nama aplikasi.
+- `APP_ENV`: Lingkungan aplikasi (`local`, `production`, dll.).
+- `APP_KEY`: Kunci enkripsi aplikasi.
+- `DB_CONNECTION`: Driver database (`sqlite`, `mysql`, `pgsql`).
+- `QUEUE_CONNECTION`: Driver antrean (default: `database`).
+- `MAIL_MAILER`: Driver email (default: `log`).
+
+Lihat `.env.example` untuk daftar lengkap opsi yang tersedia.
+
+---
+
+## 20. Lisensi
+
+Proyek ini dilisensikan di bawah **Lisensi MIT**.
