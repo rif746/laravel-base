@@ -55,10 +55,15 @@ new class extends Component
 
     public function save(UpdateUserRole $updateUserRole): void
     {
-        $this->validate();
-        $updateUserRole->execute($this->user, [$this->role]);
-        $this->dispatch('hide-role-selection-modal');
-        $this->dispatch('refresh-user-data');
+        try {
+            $this->validate();
+            $updateUserRole->execute($this->user, [$this->role]);
+            $this->dispatch('hide-role-selection-modal');
+            $this->dispatch('refresh-user-data');
+            $this->success(__('domains/identity/messages.success.user_role_updated'));
+        } catch (Exception $e) {
+            $this->warning($e->getMessage());
+        }
     }
 
     public function hide(): void

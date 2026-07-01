@@ -7,14 +7,15 @@
     "mcp": true,
     "nightwatch": false,
     "packages": [
-        "spatie/laravel-permission"
+        "spatie/laravel-permission",
+        "spatie/laravel-backup"
     ],
     "sail": false,
     "skills": [
         "ai-sdk-development",
         "laravel-best-practices",
-        "passport-development",
         "pest-testing",
+        "laravel-backup",
         "laravel-permission-development"
     ]
 }

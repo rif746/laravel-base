@@ -1,12 +1,12 @@
 <div class="d-flex gap-4 flex-column">
     <x-card>
         <x-slot:actions>
-            <x-button :label="trans('domains/system/pages.backup.backup_button')" class="btn-sm" wire:click="backup" wire:loading wire:target="backup"
+            <x-button :label="__('domains/system/pages.backup.backup_button')" class="btn-sm" wire:click="backup" wire:loading wire:target="backup"
                 theme="primary" :icon-property="[
                     'width' => 16,
                     'height' => 16,
                 ]" icon="tabler-database-export" />
-            <x-button :label="trans('domains/system/pages.backup.upload_button')" class="btn-sm" :icon-property="[
+            <x-button :label="__('domains/system/pages.backup.upload_button')" class="btn-sm" :icon-property="[
                 'width' => 16,
                 'height' => 16,
             ]" theme="info" icon="tabler-cloud-upload"
@@ -33,11 +33,11 @@
                                 'height' => 16,
                             ]"
                                 x-on:click="$ask.livewire('delete-data', {
-                                    title: '{{ trans('ui.button.delete') }}',
-                                    textMessage: '{{ trans('domains/system/pages.backup.confirmation.delete') }}',
-                                    confirmText: '{{ trans('ui.button.yes') }}',
-                                    cancelText: '{{ trans('ui.button.no') }}',
-                                    successMessage: '{{ trans('domains/system/messages.backup.delete_success') }}',
+                                    title: '{{ __('ui.button.delete') }}',
+                                    textMessage: '{{ __('domains/system/pages.backup.confirmation.delete') }}',
+                                    confirmText: '{{ __('ui.button.yes') }}',
+                                    cancelText: '{{ __('ui.button.no') }}',
+                                    successMessage: '{{ __('domains/system/messages.backup.delete_success') }}',
                                     id: '{{ $backup->id }}',
                                     onSuccess: () => {
                                         $dispatch('$refresh')
@@ -51,7 +51,7 @@
 
                 <x-link href="#" class="list-group-item list-group-item-action" aria-current="true">
                     <div class="d-flex w-100 justify-content-center">
-                        <p class="mb-1">{{ trans('domains/system/pages.backup.empty_state') }}</p>
+                        <p class="mb-1">{{ __('domains/system/pages.backup.empty_state') }}</p>
                     </div>
                 </x-link>
             @endforelse

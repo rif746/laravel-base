@@ -27,7 +27,7 @@ test('it throws exception if user already active', function () {
     $action = new ActivateUserStatus(app(UpdateUserStatus::class));
 
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('This user was activated.');
+    $this->expectExceptionMessage(__('domains/identity/messages.exceptions.user_already_active'));
 
     $action->execute($user);
 });

@@ -17,7 +17,7 @@ class ActivateUserStatus
     public function execute(User $user): void
     {
         if ($user->status->isActive()) {
-            throw new Exception('This user was activated.');
+            throw new Exception(__('domains/identity/messages.exceptions.user_already_active'));
         }
 
         $this->updateUserStatus->execute($user, UserStatus::ACTIVE);

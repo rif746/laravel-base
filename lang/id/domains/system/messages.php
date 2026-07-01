@@ -10,5 +10,6 @@ return [
         'restored_error' => 'Gagal memulihkan sistem.',
         'download_error' => 'Gagal mengunduh :path.',
         'file_not_found' => 'Berkas cadangan tidak ditemukan.',
+        'path_required' => 'Jalur diperlukan.',
     ],
 ];

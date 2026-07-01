@@ -19,11 +19,11 @@ class SuspendUser
     public function execute(User $user): void
     {
         if ($user->hasRole([RoleType::SYSTEM_ADMIN, RoleType::ADMIN])) {
-            throw new Exception('You can\'t suspend an admin user.');
+            throw new Exception(__('domains/identity/messages.exceptions.user_cannot_be_suspended'));
         }
 
         if (! $user->status->isActive()) {
-            throw new Exception('This user was suspended.');
+            throw new Exception(__('domains/identity/messages.exceptions.user_already_suspended'));
         }
 
         DB::table('sessions')

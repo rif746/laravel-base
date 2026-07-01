@@ -30,7 +30,7 @@ test('it cannot purge an admin', function () {
     $action = new PurgeUser();
 
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('You can\'t suspend an admin user.');
+    $this->expectExceptionMessage(__('domains/identity/messages.exceptions.user_cannot_be_purged'));
 
     $action->execute($user);
 });

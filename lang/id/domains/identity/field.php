@@ -2,7 +2,6 @@
 
 return [
     'user' => [
-        'label' => 'Pengguna',
         'name' => 'Nama Lengkap',
         'email' => 'Alamat Email',
         'status' => 'Status',
@@ -14,11 +13,9 @@ return [
         'unverified' => 'Belum Terverifikasi',
     ],
     'role' => [
-        'label' => 'Peran',
         'name' => 'Nama Peran',
         'permission_count' => 'Jumlah Izin',
         'guard_name' => 'Nama Guard',
-        'group' => 'Grup',
         'permissions' => 'Izin',
     ],
 ];

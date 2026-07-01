@@ -16,11 +16,11 @@ class RemoveSystemRole
     public function execute(Role $role): void
     {
         if (in_array($role->name, [RoleType::ADMIN->value, RoleType::SYSTEM_ADMIN->value])) {
-            throw new Exception('Can\'t remove system role.');
+            throw new Exception(__('domains/identity/messages.exceptions.cannot_remove_system_role'));
         }
 
         if ($role->users()->exists()) {
-            throw new Exception('This role has a users attached to it.');
+            throw new Exception(__('domains/identity/messages.exceptions.role_has_users'));
         }
     }
 }

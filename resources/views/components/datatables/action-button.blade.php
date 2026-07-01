@@ -10,7 +10,7 @@
 <div class="btn-group" role="group" aria-label="DataTableActionGroup" x-data>
     @if($log)
         <button class="btn btn-sm btn-secondary" data-id="{{ $id }}" data-bs-toggle="modal"
-                data-bs-target="#audit-view-modal" data-bs-toggle="tooltip" title="{{ trans('ui.button.log') }}">
+                data-bs-target="#audit-view-modal" data-bs-toggle="tooltip" title="{{ __('ui.button.log') }}">
             @svg('tabler-logs', ['width' => 16, 'height' => 16])
         </button>
     @endif
@@ -18,12 +18,12 @@
         @if (isset($view['permission']) && $view['permission'])
             @if (isset($view['modal']))
                 <button class="btn btn-sm btn-info" data-id="{{ $id }}" data-bs-toggle="modal"
-                    data-bs-target="#{{ $view['modal'] }}" data-bs-toggle="tooltip" title="{{ trans('ui.button.view') }}">
+                    data-bs-target="#{{ $view['modal'] }}" data-bs-toggle="tooltip" title="{{ __('ui.button.view') }}">
                     @svg('tabler-eye', ['width' => 16, 'height' => 16])
                 </button>
             @else
                 <x-link href="{{ $view['url'] ?? 'javascript:void(0)' }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip"
-                    title="{{ trans('ui.button.view') }}" icon="tabler-eye" :icon-config="['width' => 16, 'height' => 16]" />
+                    title="{{ __('ui.button.view') }}" icon="tabler-eye" :icon-config="['width' => 16, 'height' => 16]" />
             @endif
         @endif
     @endif
@@ -33,12 +33,12 @@
             @if (isset($edit['modal']))
                 <button class="btn btn-sm btn-warning" data-id="{{ $id }}" data-bs-toggle="modal"
                     data-bs-target="#{{ $edit['modal'] }}" data-bs-toggle="tooltip"
-                    title="{{ trans('ui.button.edit') }}">
+                    title="{{ __('ui.button.edit') }}">
                     @svg('tabler-pencil', ['width' => 16, 'height' => 16])
                 </button>
             @else
                 <x-link href="{{ $edit['url'] ?? 'javascript:void(0)' }}" class="btn btn-sm btn-warning"
-                    data-bs-toggle="tooltip" title="{{ trans('ui.button.edit') }}" icon="tabler-pencil"
+                    data-bs-toggle="tooltip" title="{{ __('ui.button.edit') }}" icon="tabler-pencil"
                         :icon-config="['width' => 16, 'height' => 16]" />
             @endif
         @endif
@@ -50,8 +50,8 @@
                 x-on:click="$ask.livewire('delete-data', {
                 title: '{{ $delete['title'] }}',
                 textMessage: '{{ $delete['message'] }}',
-                confirmText: '{{ trans('ui.button.yes') }}',
-                cancelText: '{{ trans('ui.button.no') }}',
+                confirmText: '{{ __('ui.button.yes') }}',
+                cancelText: '{{ __('ui.button.no') }}',
                 successMessage: '{{ $delete['success_message'] }}',
                 table_name: '{{ $table_name }}',
                 id: '{{ $id }}',

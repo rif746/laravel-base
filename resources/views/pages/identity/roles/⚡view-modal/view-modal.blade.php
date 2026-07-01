@@ -35,6 +35,6 @@
         @endforeach
     </div>
     <x-slot:footer>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('ui.button.close') }}</button>
     </x-slot:footer>
 </x-modal>

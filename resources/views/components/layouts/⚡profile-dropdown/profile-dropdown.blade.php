@@ -29,7 +29,7 @@
                 <x-link class="dropdown-item" :href="route('system-setting.index')">
                     <x-slot:label>
                         <x-tabler-settings width="16" />
-                        @lang('ui.menu.settings')
+                        {{ __('ui.menu.settings') }}
                     </x-slot:label>
                 </x-link>
             @endcan
@@ -37,7 +37,7 @@
                 <x-link class="dropdown-item" :href="route('system-backup.index')">
                     <x-slot:label>
                         <x-tabler-restore width="16" />
-                        @lang('ui.menu.system_backup')
+                        {{ __('ui.menu.system_backup') }}
                     </x-slot:label>
                 </x-link>
             @endcan
@@ -52,7 +52,7 @@
                     }
                 })">
                 <x-tabler-logout width="16" />
-                @lang('ui.button.logout')
+                {{ __('ui.button.logout') }}
             </a>
         </div>
     </div>

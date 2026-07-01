@@ -45,7 +45,7 @@ test('it cannot suspend an admin', function () {
     $action = new SuspendUser(app(UpdateUserStatus::class));
 
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('You can\'t suspend an admin user.');
+    $this->expectExceptionMessage(__('domains/identity/messages.exceptions.user_cannot_be_suspended'));
 
     $action->execute($user);
 });
@@ -55,7 +55,7 @@ test('it throws exception if user already suspended', function () {
     $action = new SuspendUser(app(UpdateUserStatus::class));
 
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('This user was suspended.');
+    $this->expectExceptionMessage(__('domains/identity/messages.exceptions.user_already_suspended'));
 
     $action->execute($user);
 });

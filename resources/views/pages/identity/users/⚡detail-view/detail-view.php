@@ -51,6 +51,7 @@ class extends Component
             ));
 
             $this->dispatch('send-password-reset-completed');
+            $this->success(__('domains/identity/messages.success.password_reset_link_sent'));
         } catch (Exception $e) {
             $this->dispatch('send-password-reset-failed', message: $e->getMessage());
         }
@@ -67,6 +68,7 @@ class extends Component
             }
 
             $this->dispatch('toggle-user-status-completed');
+            $this->success(__('domains/identity/messages.success.user_status_updated'));
         } catch (Exception $e) {
             $this->dispatch('toggle-user-status-failed', message: $e->getMessage());
         }

@@ -11,7 +11,7 @@ if (! function_exists('asset_static')) {
     function asset_static(string $path, $time = null, $options = []): bool|string
     {
         if ($path === '') {
-            throw new Exception('Path is required.');
+            throw new Exception(__('domains/system/messages.backup.path_required'));
         }
 
         if ($time === null) {

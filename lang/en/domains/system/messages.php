@@ -10,5 +10,6 @@ return [
         'restored_error' => 'Failed to restore the system.',
         'download_error' => 'Failed to download :path.',
         'file_not_found' => 'Backup file not found.',
+        'path_required' => 'Path is required.',
     ],
 ];
