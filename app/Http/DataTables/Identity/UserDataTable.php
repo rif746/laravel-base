@@ -103,12 +103,27 @@ class UserDataTable extends DataTable
             ->orderBy(-1)
             ->layout([
                 'topStart' => [
-                    'className' => 'col-md-auto me-auto d-flex flex-sm-row flex-column justify-content-center justify-content-md-start align-items-center align-items-md-start gap-1',
+                    'rowClass' => 'row gap-1',
+                    'className' => 'd-flex flex-sm-row flex-column justify-content-center justify-content-md-start align-items-center align-items-md-start gap-1 m-0',
                     'features' => ['buttons', 'pageLength'],
                 ],
                 'topEnd' => [
-                    'className' => 'col-md-auto ms-auto d-flex flex-sm-row flex-column justify-content-center justify-content-md-end align-items-center align-items-md-start gap-1',
-                    'features' => ['status-filter', 'role-filter', 'search'],
+                    'className' => 'd-flex flex-sm-row flex-column justify-content-center justify-content-md-end align-items-center align-items-md-start gap-1 m-0',
+                    'features' => [
+                        [
+                            'custom-features' => [
+                                'targetId' => 'template-role-filter',
+                                'style' => 'width: 200px;'
+                            ]
+                        ],
+                        [
+                            'custom-features' => [
+                                'targetId' => 'template-status-filter',
+                                'style' => 'width: 200px;'
+                            ]
+                        ],
+                        'search'
+                    ],
                 ],
 
                 'bottomStart' => 'info',

@@ -21,6 +21,24 @@ window.addEventListener('yajra:boot', (event) => {
 
             try {
                 window.LaravelDataTables = window.LaravelDataTables || {};
+                window.DataTable.feature.register('custom-features', function (settings, opts) {
+                    let container = document.createElement('div');
+
+                    // Fallback styles if none are provided dynamically
+                    container.style = opts.style || 'width: 250px;';
+
+                    // Look for a targeting template element or fallback to inline html string
+                    if (opts.targetId) {
+                        const template = document.getElementById(opts.targetId);
+                        if (template) {
+                            container.innerHTML = template.innerHTML;
+                        }
+                    } else if (opts.html) {
+                        container.innerHTML = opts.html;
+                    }
+
+                    return container;
+                });
                 window.LaravelDataTables[id] = $el.DataTable(config);
             } catch (e) {
                 console.error(`Failed to boot DataTable [${id}]:`, e);
