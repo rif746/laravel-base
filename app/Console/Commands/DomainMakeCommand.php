@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class DomainMakeCommand extends Command
 {
     protected $signature = 'domain:make
-        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, query, provider, export, mapper, scope, mailable}
+        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, query, provider, relationship-provider, export, mapper, scope, mailable}
         {domain : Domain name, e.g. Identity, Account, System}
         {name   : Class name, supports sub-paths e.g. Backup/DeleteBackup}
         {--factory   : Also generate a factory (model only)}
@@ -20,22 +20,24 @@ class DomainMakeCommand extends Command
 
     /** @var array<string, string> type → subdirectory */
     protected array $types = [
-        'model' => 'Models',
-        'action' => 'Actions',
-        'dto' => 'DTOs',
-        'enum' => 'Enums',
-        'event' => 'Events',
-        'listener' => 'Listeners',
-        'notification' => 'Notifications',
-        'policy' => 'Policies',
-        'scope' => 'Scopes',
-        'trait' => 'Traits',
-        'query' => 'Queries',
-        'provider' => 'Providers',
-        'export' => 'Exports',
+        'model'                 => 'Models',
+        'action'                => 'Actions',
+        'dto'                   => 'DTOs',
+        'enum'                  => 'Enums',
+        'event'                 => 'Events',
+        'listener'              => 'Listeners',
+        'notification'          => 'Notifications',
+        'policy'                => 'Policies',
+        'scope'                 => 'Scopes',
+        'trait'                 => 'Traits',
+        'query'                 => 'Queries',
+        'provider'              => 'Providers',
+        'relationship-provider' => 'Providers',
+        'view-provider' => 'Providers',
+        'export'                => 'Exports',
         // Integration layer — files live under Integration/<subDir>/
-        'mapper' => 'Integration/Mappers',
-        'mailable' => 'Mail',
+        'mapper'                => 'Integration/Mappers',
+        'mailable'              => 'Mail',
     ];
 
     public function __construct(protected Filesystem $files)

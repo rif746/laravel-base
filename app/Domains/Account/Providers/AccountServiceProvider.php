@@ -4,19 +4,26 @@ namespace App\Domains\Account\Providers;
 
 use App\Domains\Account\Listeners\SyncImportedUserProfile;
 use App\Domains\Identity\Events\Integration\UserImportWasProcessed;
-use Illuminate\Support\Facades\Event;
+use App\Domains\System\Traits\Provider\RegistersDomainEvents;
 use Illuminate\Support\ServiceProvider;
 
 class AccountServiceProvider extends ServiceProvider
 {
-    public static array $listen = [
+    use RegistersDomainEvents;
+
+    protected array $listen = [
         UserImportWasProcessed::class => [
             SyncImportedUserProfile::class,
-        ]
+        ],
     ];
+
+    public function register(): void
+    {
+        $this->app->register(RelationshipServiceProvider::class);
+    }
 
     public function boot(): void
     {
-        //
+        $this->registerEvents();
     }
 }

@@ -1,0 +1,23 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Domains\System\Traits\Provider\RegistersDomainEvents;
+use Illuminate\Support\ServiceProvider;
+
+class {{ class }} extends ServiceProvider
+{
+    use RegistersDomainEvents;
+
+    protected array $listen = [];
+
+    public function register(): void
+    {
+        $this->app->register(RelationshipServiceProvider::class);
+    }
+
+    public function boot(): void
+    {
+        $this->registerEvents();
+    }
+}

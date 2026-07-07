@@ -10,15 +10,17 @@ use App\Domains\System\Listeners\Excel\SendExportReportEmail;
 use App\Domains\System\Listeners\Excel\SendImportReportEmail;
 use App\Domains\System\Listeners\Files\RemoveUserFiles;
 use App\Domains\System\Queries\GetSystemSettings;
+use App\Domains\System\Traits\Provider\RegistersDomainEvents;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use OwenIt\Auditing\Models\Audit;
 use View;
 
 class SystemServiceProvider extends ServiceProvider
 {
-    public static array $listen = [
+    use RegistersDomainEvents;
+
+    protected array $listen = [
         ExportCompleted::class => [
             SendExportReportEmail::class,
         ],
@@ -27,11 +29,13 @@ class SystemServiceProvider extends ServiceProvider
         ],
         UserWasPurged::class => [
             RemoveUserFiles::class,
-        ]
+        ],
     ];
 
     public function register(): void
     {
+        $this->app->register(RelationshipServiceProvider::class);
+
         // Tell Laravel: "Whenever someone asks for GetSystemSettings,
         // give them the exact same object instance for the entire request."
         $this->app->singleton(GetSystemSettings::class, function ($app) {
@@ -39,19 +43,9 @@ class SystemServiceProvider extends ServiceProvider
         });
     }
 
-    /** @noinspection PhpInconsistentReturnPointsInspection */
-    public function boot(GetSystemSettings $getSystemSettings): void
+    public function boot(): void
     {
-        View::composer(['components.layouts.*'], function ($view) use ($getSystemSettings) {
-            $view->with('logo', $getSystemSettings->get(SystemSettingKey::WEB_LOGO));
-            $view->with('favicon', $getSystemSettings->get(SystemSettingKey::WEB_FAVICON));
-        });
-
-        Audit::creating(function (Audit $model) {
-            if (empty($model->old_values) && empty($model->new_values)) {
-                return false;
-            }
-        });
+        $this->registerEvents();
 
         Carbon::macro('toUserTz', fn () => $this->copy()
             ->tz(config('app.display_timezone', 'UTC')));

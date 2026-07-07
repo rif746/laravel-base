@@ -1,0 +1,35 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
+
+class {{ class }} extends ServiceProvider
+{
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        /**
+         * Register a view composer for presentation glue.
+         *
+         * This binds data to specific layout assets (e.g., sidebar) using
+         * a decoupled query pattern, keeping the domain's root provider pristine.
+         */
+        View::composer('components.layouts.sidebar', function ($view) {
+            // Instantiate the internal domain model query dynamically or via DI container
+            // $query = $this->app->make(GetSidebarNavigationItems::class);
+            // $view->with('navigationItems', $query->execute());
+
+            $view->with('navigationItems', [
+                [
+                    'label' => 'Dashboard',
+                    'route' => '{domain}.dashboard',
+                    'icon' => 'home',
+                ],
+            ]);
+        });
+    }
+}

@@ -63,6 +63,7 @@ Tersedia via Composer:
 - `composer dev`: Memulai lingkungan pengembangan (Server + Queue + Logs + Vite).
 - `composer test`: Menjalankan suite pengujian (test suite).
 - `php artisan domain:make`: Generator kustom untuk arsitektur DDD (lihat Bagian 12).
+- `php artisan domain:new`: Membuat scaffold domain baru lengkap dengan ServiceProvider dan RelationshipServiceProvider (lihat Bagian 12).
 
 Tersedia via NPM:
 - `npm run dev`: Memulai dev server Vite.
@@ -367,6 +368,33 @@ php artisan domain:make {type} {domain} {name} [options]
 * `--factory`: Menghasilkan factory database terkait (Hanya Models).
 * `--migration`: Menghasilkan file migrasi database (Hanya Models).
 * `--model=`: Mengaitkan kelas ekspor dengan model Eloquent (Hanya Exports).
+
+### Perintah `domain:new`
+
+Perintah ini akan membuat struktur domain baru dengan langsung menyediakan `ServiceProvider` utama (sudah dilengkapi trait `RegistersDomainEvents`) dan `RelationshipServiceProvider` pendamping (khusus untuk mapping `Model::resolveRelationUsing()`), serta mendaftarkan provider utama tersebut ke `bootstrap/providers.php` secara otomatis.
+
+**Signature:**
+
+```bash
+php artisan domain:new {domain}
+```
+
+### Tujuan & Penggunaan Domain Providers
+
+Untuk menjaga agar logika bisnis tetap terpisah (decoupled) dari lapisan presentasi (UI glue) dan relasi antar-domain, setiap modul domain menggunakan hierarki Service Provider bertingkat:
+
+1. **`{Domain}ServiceProvider`**: Titik masuk utama untuk domain tersebut. Menggunakan trait `RegistersDomainEvents` untuk melakukan mapping event lokal dari properti `$listen`. Provider ini juga bertanggung jawab mendaftarkan provider internal di bawah ini.
+2. **`RelationshipServiceProvider`**: Dikhususkan untuk menangani relasi lintas-domain secara dinamis menggunakan `Model::resolveRelationUsing()`. Dengan memuat relasi dinamis di sini, Anda menghindari ketergantungan compile-time yang keras antar domain.
+3. **`ViewServiceProvider`** (UI glue opsional): Digunakan untuk melakukan *binding* data ke komponen antarmuka pengguna tanpa mencemari logika domain utama. Buat file ini melalui generator jika diperlukan:
+   ```bash
+   php artisan domain:make view-provider {domain} ViewServiceProvider
+   ```
+   Di dalam method `boot()`, Anda dapat mendaftarkan view composer kustom:
+   ```php
+   View::composer('components.layouts.sidebar', function ($view) {
+       $view->with('navigationItems', [ ... ]);
+   });
+   ```
 
 ### Menyesuaikan Generator (Stubs)
 

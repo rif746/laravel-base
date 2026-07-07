@@ -90,9 +90,4 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     {
         return $this->hasSingleFile('avatar');
     }
-
-    public function profile(): HasOne
-    {
-        return $this->hasOne(Profile::class);
-    }
 }

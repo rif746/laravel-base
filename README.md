@@ -63,6 +63,7 @@ Available via Composer:
 - `composer dev`: Start development environment (Server + Queue + Logs + Vite).
 - `composer test`: Run the test suite.
 - `php artisan domain:make`: Custom generator for the DDD architecture (see Section 12).
+- `php artisan domain:new`: Scaffold a new domain with a ServiceProvider and RelationshipServiceProvider (see Section 12).
 
 Available via NPM:
 - `npm run dev`: Start Vite dev server.
@@ -369,6 +370,33 @@ php artisan domain:make {type} {domain} {name} [options]
 * `--factory`: Generates an associated database factory (Models only).
 * `--migration`: Generates a database migration file (Models only).
 * `--model=`: Associates the export class with an Eloquent model (Exports only).
+
+### The `domain:new` Command
+
+This scaffolds a brand-new domain structure by establishing its main `ServiceProvider` (pre-wired with the `RegistersDomainEvents` trait) and its companion `RelationshipServiceProvider` (intended solely for `Model::resolveRelationUsing()` mapping), registering the main provider within `bootstrap/providers.php` automatically.
+
+**Signature:**
+
+```bash
+php artisan domain:new {domain}
+```
+
+### Purpose & Usage of Domain Providers
+
+To keep business logic decoupled from presentation layer gluing and cross-domain relational imports, domain modules utilize a tiered Service Provider hierarchy:
+
+1. **`{Domain}ServiceProvider`**: The entry point for the domain. It uses the `RegistersDomainEvents` trait to scan its local `$listen` array and wire up domain events. It also acts as the bootstrapper that registers the internal providers below.
+2. **`RelationshipServiceProvider`**: Dedicated exclusively to cross-domain relationships using Laravel's `Model::resolveRelationUsing()`. For example, binding a polymorphic relation between models of different domains. Since it is loaded automatically by the root provider, it avoids compile-time dependencies between domains.
+3. **`ViewServiceProvider`** (Optional presentation glue): Used to map UI components to data without polluting the root domain logic. Created via `domain:make` as needed:
+   ```bash
+   php artisan domain:make view-provider {domain} ViewServiceProvider
+   ```
+   Inside its `boot()` method, map your custom view composers:
+   ```php
+   View::composer('components.layouts.sidebar', function ($view) {
+       $view->with('navigationItems', [ ... ]);
+   });
+   ```
 
 ### Customizing Generators (Stubs)
 
