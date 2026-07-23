@@ -3,8 +3,8 @@
 return [
     'input_type' => [
         'number' => 'Number',
-        'input' => 'Text Line',
-        'textarea' => 'Text Area',
+        'text_line' => 'Text Line',
+        'text_area' => 'Text Area',
         'select' => 'Select',
         'file' => 'File',
         'checkbox' => 'Checkbox',

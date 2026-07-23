@@ -3,8 +3,8 @@
 return [
     'input_type' => [
         'number' => 'Angka',
-        'input' => 'Baris Teks',
-        'textarea' => 'Area Teks',
+        'text_line' => 'Baris Teks',
+        'text_area' => 'Area Teks',
         'select' => 'Pilih',
         'file' => 'Berkas',
         'checkbox' => 'Kotak Centang',

@@ -25,6 +25,6 @@ trait HasPredicateMethod
             throw new BadMethodCallException("Method {$method} does not exist on ".self::class);
         }
 
-        return true;
+        throw new BadMethodCallException("Method {$method} does not exist on ".self::class);
     }
 }

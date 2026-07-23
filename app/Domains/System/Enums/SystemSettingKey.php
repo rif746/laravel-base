@@ -72,6 +72,11 @@ enum SystemSettingKey: string implements HasLabel, HasSchema
         };
     }
 
+    public function default(): mixed
+    {
+        return $this->schema()->default;
+    }
+
     public function inputAttributes(): array
     {
         return array_merge($this->schema()->attributes, [

@@ -20,8 +20,8 @@ enum InputType: string implements HasLabel
     use InteractsWithLabels;
 
     case NUMBER = 'number';
-    case TEXTLINE = 'text-line';
-    case TEXTAREA = 'text-area';
+    case TEXTLINE = 'text_line';
+    case TEXTAREA = 'text_area';
     case SELECT = 'select';
     case FILE = 'file';
     case CHECKBOX = 'checkbox';

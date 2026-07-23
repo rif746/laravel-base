@@ -35,7 +35,7 @@ class PruneOrphanedFiles
         $trackedFiles = File::pluck('path')->toArray();
 
         $settingFiles = collect(SystemSettingKey::cases())
-            ->filter(fn ($key) => $key->inputType() === InputType::FILE)
+            ->filter(fn ($key) => $key->schema()->type === InputType::FILE)
             ->map(fn ($key) => $this->settingQuery->get($key))
             ->filter()
             ->toArray();
