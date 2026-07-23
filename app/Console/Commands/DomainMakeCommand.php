@@ -14,30 +14,32 @@ class DomainMakeCommand extends Command
         {name   : Class name, supports sub-paths e.g. Backup/DeleteBackup}
         {--factory   : Also generate a factory (model only)}
         {--migration : Also generate a migration (model only)}
+        {--policy    : Also generate a policy (model only)}
+        {--all       : Generate a factory, migration, and policy (model only)}
         {--model=    : Associate the export with a model}';
 
     protected $description = 'Generate a file directly into the domain structure (app/Domains/)';
 
     /** @var array<string, string> type → subdirectory */
     protected array $types = [
-        'model'                 => 'Models',
-        'action'                => 'Actions',
-        'dto'                   => 'DTOs',
-        'enum'                  => 'Enums',
-        'event'                 => 'Events',
-        'listener'              => 'Listeners',
-        'notification'          => 'Notifications',
-        'policy'                => 'Policies',
-        'scope'                 => 'Scopes',
-        'trait'                 => 'Traits',
-        'query'                 => 'Queries',
-        'provider'              => 'Providers',
+        'model' => 'Models',
+        'action' => 'Actions',
+        'dto' => 'DTOs',
+        'enum' => 'Enums',
+        'event' => 'Events',
+        'listener' => 'Listeners',
+        'notification' => 'Notifications',
+        'policy' => 'Policies',
+        'scope' => 'Scopes',
+        'trait' => 'Traits',
+        'query' => 'Queries',
+        'provider' => 'Providers',
         'relationship-provider' => 'Providers',
         'view-provider' => 'Providers',
-        'export'                => 'Exports',
-        // Integration layer — files live under Integration/<subDir>/
-        'mapper'                => 'Integration/Mappers',
-        'mailable'              => 'Mail',
+        'export' => 'Exports',
+        'integration' => 'Integration',
+        'mapper' => 'Integration/Mappers',
+        'mailable' => 'Mail',
     ];
 
     public function __construct(protected Filesystem $files)
@@ -49,7 +51,7 @@ class DomainMakeCommand extends Command
     {
         $type = strtolower($this->argument('type'));
         $domain = ucfirst($this->argument('domain'));
-        $name = $this->argument('name'); // may contain sub-path, e.g. Backup/DeleteBackup
+        $name = $this->argument('name');
 
         if (! isset($this->types[$type])) {
             $this->components->error("Unknown type [{$type}]. Supported: ".implode(', ', array_keys($this->types)));
@@ -57,24 +59,19 @@ class DomainMakeCommand extends Command
             return self::FAILURE;
         }
 
-        $subDir = $this->types[$type];
         $className = class_basename(str_replace('/', '\\', $name));
         $subPath = str_contains($name, '/') ? dirname($name) : null;
 
-        // ── Integration / Mapper special handling ─────────────────────────────
-        // Automatically append the 'DataMapper' suffix when the developer omits it,
-        // keeping the class name consistent with the DataPayloadMapper contract.
         if ($type === 'mapper' && ! str_ends_with($className, 'DataMapper')) {
             $className .= 'DataMapper';
         }
 
-        // The $subDir for 'mapper' already encodes the full Integration/Mappers
-        // nested path, so we must not double-nest an additional subPath beneath it.
-        // Extra sub-path segments are intentionally ignored for the mapper type.
-        $relativeDir = ($type === 'mapper')
-            ? "Domains/{$domain}/{$subDir}"
-            : "Domains/{$domain}/{$subDir}".($subPath ? "/{$subPath}" : '');
-        // ─────────────────────────────────────────────────────────────────────
+        $subDir = $this->types[$type];
+        $relativeDir = "Domains/{$domain}/{$subDir}";
+
+        if ($type !== 'mapper' && $subPath) {
+            $relativeDir .= "/{$subPath}";
+        }
 
         $namespace = 'App\\'.str_replace('/', '\\', $relativeDir);
         $path = app_path("{$relativeDir}/{$className}.php");
@@ -90,16 +87,31 @@ class DomainMakeCommand extends Command
 
         $this->components->info("File [{$path}] created successfully.");
 
-        if ($type === 'model' && $this->option('factory')) {
+        if ($type === 'model') {
+            $this->handleModelExtra($domain, $className, $namespace);
+        }
+
+        return self::SUCCESS;
+    }
+
+    protected function handleModelExtra(string $domain, string $className, string $namespace): void
+    {
+        if ($this->option('factory') || $this->option('all')) {
             $this->createFactory($domain, $className, $namespace);
         }
 
-        if ($type === 'model' && $this->option('migration')) {
+        if ($this->option('migration') || $this->option('all')) {
             $table = Str::snake(Str::pluralStudly($className));
             $this->call('make:migration', ['name' => "create_{$table}_table"]);
         }
 
-        return self::SUCCESS;
+        if ($this->option('policy') || $this->option('all')) {
+            $this->call('domain:make', [
+                'type' => 'policy',
+                'domain' => $domain,
+                'name' => "{$className}Policy",
+            ]);
+        }
     }
 
     // ─── Stubs ────────────────────────────────────────────────────────────────
@@ -119,39 +131,54 @@ class DomainMakeCommand extends Command
         $replacements = [
             '{{ namespace }}' => $namespace,
             '{{ class }}' => $name,
+            '{{ factory }}' => '',
         ];
 
-        if ($type === 'model') {
-            $replacements['{{ factoryImport }}'] = $this->option('factory')
-                ? "\nuse Database\\Factories\\{$domain}\\{$name}Factory;\nuse Illuminate\\Database\\Eloquent\\Factories\\Factory;"
-                : '';
-            $replacements['{{ factoryMethod }}'] = $this->option('factory')
-                ? "\n    protected static function newFactory(): Factory\n    {\n        return {$name}Factory::new();\n    }"
-                : '';
-        }
+        $replacements = match ($type) {
+            'model' => array_merge($replacements, $this->getModelReplacements($domain, $name)),
+            'export' => array_merge($replacements, $this->getExportReplacements($domain)),
+            default => $replacements,
+        };
 
-        if ($type === 'export') {
-            $modelOption = $this->option('model');
-            $modelImport = '';
-            $queryBody = '        // return YourModel::query();';
+        return str_replace(array_keys($replacements), array_values($replacements), $stub);
+    }
 
-            if ($modelOption) {
-                $modelData = $this->resolveModel($modelOption, $domain);
-                $modelImport = "use {$modelData['full']};\n";
-                $modelClass = $modelData['class'];
-                $queryBody = <<<PHP
+    protected function getModelReplacements(string $domain, string $name): array
+    {
+        $hasFactory = $this->option('factory') || $this->option('all');
+
+        return [
+            '{{ factoryImport }}' => $hasFactory
+                ? "\nuse Database\\Factories\\{$domain}\\{$name}Factory;"
+                : '',
+            '{{ factory }}' => $hasFactory
+                ? "#[UseFactory({$name}Factory::class)]"
+                : '',
+        ];
+    }
+
+    protected function getExportReplacements(string $domain): array
+    {
+        $modelOption = $this->option('model');
+        $modelImport = '';
+        $queryBody = '        // return YourModel::query();';
+
+        if ($modelOption) {
+            $modelData = $this->resolveModel($modelOption, $domain);
+            $modelImport = "use {$modelData['full']};\n";
+            $modelClass = $modelData['class'];
+            $queryBody = <<<PHP
         return {$modelClass}::query()
             // ->with('profile') // CRITICAL: Eager load any relations used in map()
             // ->when(isset(\$this->filters['status']), fn(Builder \$q) => \$q->where('status', \$this->filters['status']))
             ;
 PHP;
-            }
-
-            $replacements['{{ modelImport }}'] = $modelImport;
-            $replacements['{{ queryBody }}'] = $queryBody;
         }
 
-        return str_replace(array_keys($replacements), array_values($replacements), $stub);
+        return [
+            '{{ modelImport }}' => $modelImport,
+            '{{ queryBody }}' => $queryBody,
+        ];
     }
 
     protected function resolveModel(string $modelOption, string $domain): array
@@ -180,10 +207,7 @@ PHP;
 
     protected function createFactory(string $domain, string $name, string $modelNamespace): void
     {
-        $factoryNamespace = "Database\\Factories\\{$domain}";
         $factoryPath = database_path("factories/{$domain}/{$name}Factory.php");
-
-        $this->files->ensureDirectoryExists(dirname($factoryPath));
 
         if ($this->files->exists($factoryPath)) {
             $this->components->warn("Factory already exists: [{$factoryPath}]");
@@ -196,10 +220,11 @@ PHP;
 
         $stub = str_replace(
             ['{{ factoryNamespace }}', '{{ modelNamespace }}', '{{ class }}'],
-            [$factoryNamespace, $modelNamespace, $name],
+            ["Database\\Factories\\{$domain}", $modelNamespace, $name],
             $stub
         );
 
+        $this->files->ensureDirectoryExists(dirname($factoryPath));
         $this->files->put($factoryPath, $stub);
 
         $this->components->info("Factory [database/factories/{$domain}/{$name}Factory.php] created successfully.");

@@ -34,7 +34,7 @@
         </template>
         <template x-if="{{ $loading }}">
             <div class="spinner-border spinner-border-sm" role="status">
-                <span class="visually-hidden">{{ __('ui.loading') }}</span>
+                <span class="visually-hidden">{{ __('ui/common.loading') }}</span>
             </div>
         </template>
     @elseif ($attributes->has('wire:loading'))
@@ -49,7 +49,7 @@
         </div>
         <div wire:loading @if ($attributes->has('wire:target')) wire:target="{{ $attributes->get('wire:target') }}" @endif>
             <div class="spinner-border spinner-border-sm" role="status">
-                <span class="visually-hidden">{{ __('ui.loading') }}</span>
+                <span class="visually-hidden">{{ __('ui/common.loading') }}</span>
             </div>
         </div>
     @else

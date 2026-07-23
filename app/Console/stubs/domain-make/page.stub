@@ -1,0 +1,5 @@
+<x-layouts.app>
+    <x-card>
+        {{-- Page Content --}}
+    </x-card>
+</x-layouts.app>

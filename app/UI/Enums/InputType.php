@@ -2,11 +2,26 @@
 
 namespace App\UI\Enums;
 
-enum InputType: string
+use App\Domains\System\Traits\Enum\HasPredicateMethod;
+use App\UI\Enums\Concerns\InteractsWithLabels;
+use App\UI\Enums\Contracts\HasLabel;
+
+/**
+ * @method bool isNumber()
+ * @method bool isTextLine()
+ * @method bool isTextArea()
+ * @method bool isSelect()
+ * @method bool isFile()
+ * @method bool isCheckbox()
+ */
+enum InputType: string implements HasLabel
 {
+    use HasPredicateMethod;
+    use InteractsWithLabels;
+
     case NUMBER = 'number';
-    case TEXTLINE = 'input';
-    case TEXTAREA = 'textarea';
+    case TEXTLINE = 'text-line';
+    case TEXTAREA = 'text-area';
     case SELECT = 'select';
     case FILE = 'file';
     case CHECKBOX = 'checkbox';

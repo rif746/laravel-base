@@ -4,10 +4,10 @@ use App\Domains\System\Actions\Files\ReplaceSingleFile;
 use App\Domains\System\Actions\Files\UploadAndAttachFile;
 use App\Domains\System\DTOs\FileDTO;
 use App\Domains\System\Models\File;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(TestCase::class, RefreshDatabase::class);
 

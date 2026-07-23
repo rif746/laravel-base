@@ -3,7 +3,6 @@
 namespace App\Domains\System\Providers;
 
 use App\Domains\Identity\Events\Governance\UserWasPurged;
-use App\Domains\System\Enums\SystemSettingKey;
 use App\Domains\System\Events\ExportCompleted;
 use App\Domains\System\Events\ImportCompleted;
 use App\Domains\System\Listeners\Excel\SendExportReportEmail;
@@ -13,8 +12,6 @@ use App\Domains\System\Queries\GetSystemSettings;
 use App\Domains\System\Traits\Provider\RegistersDomainEvents;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\ServiceProvider;
-use OwenIt\Auditing\Models\Audit;
-use View;
 
 class SystemServiceProvider extends ServiceProvider
 {

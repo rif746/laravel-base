@@ -18,7 +18,7 @@ abstract class ApiRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            'message' => trans('ui.crud.error.validation_failed'),
+            'message' => trans('ui/crud.error.validation_failed'),
             'errors' => $validator->errors(),
         ], 422));
     }

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Cache;
 uses(RefreshDatabase::class);
 
 test('it updates string setting', function () {
-    $action = new UpdateSettings();
+    $action = new UpdateSettings;
     $dto = new SystemSetingDTO(SystemSettingKey::WEB_NAME, 'New Name');
 
     $action->execute($dto);
@@ -24,7 +24,7 @@ test('it updates existing setting', function () {
         'value' => 'Old Name',
     ]);
 
-    $action = new UpdateSettings();
+    $action = new UpdateSettings;
     $dto = new SystemSetingDTO(SystemSettingKey::WEB_NAME, 'New Name');
 
     $action->execute($dto);
@@ -35,7 +35,7 @@ test('it updates existing setting', function () {
 test('it clears cache after update', function () {
     Cache::shouldReceive('forget')->once()->with('system_settings');
 
-    $action = new UpdateSettings();
+    $action = new UpdateSettings;
     $dto = new SystemSetingDTO(SystemSettingKey::WEB_NAME, 'New Name');
 
     $action->execute($dto);

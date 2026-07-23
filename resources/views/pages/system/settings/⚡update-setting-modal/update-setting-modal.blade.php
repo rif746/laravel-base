@@ -3,15 +3,15 @@
     <div class="row">
         <div class="col-sm-12" wire:key="{{ $settingKey }}">
             @if($this->settingEnum)
-                <x-dynamic-component :component="$this->settingEnum?->inputType()->component()"
+                <x-dynamic-component :component="$this->settingEnum?->schema()->type->component()"
                                      :attributes="new Illuminate\View\ComponentAttributeBag($this->settingEnum?->inputAttributes())"
                                      wire:model="settingValue"/>
             @endif
         </div>
     </div>
     <x-slot:footer>
-        <x-button theme="success" type="submit" :label="__('ui.button.update')"/>
-        <x-button theme="secondary" data-bs-dismiss="modal" :label="__('ui.button.cancel')"/>
+        <x-button theme="success" type="submit" :label="__('ui/button.update')"/>
+        <x-button theme="secondary" data-bs-dismiss="modal" :label="__('ui/button.cancel')"/>
     </x-slot:footer>
     @push('scripts')
         @filepondScripts

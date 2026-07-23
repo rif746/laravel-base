@@ -11,8 +11,10 @@ use Tests\TestCase;
 uses(TestCase::class);
 
 test('it returns correct morph relation for single file', function () {
-    $model = new class extends Model {
+    $model = new class extends Model
+    {
         use HasFile;
+
         protected $table = 'test_models';
     };
 
@@ -20,8 +22,10 @@ test('it returns correct morph relation for single file', function () {
 });
 
 test('it returns correct morph relation for multi file', function () {
-    $model = new class extends Model {
+    $model = new class extends Model
+    {
         use HasFile;
+
         protected $table = 'test_models';
     };
 

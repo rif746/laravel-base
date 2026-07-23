@@ -24,11 +24,11 @@ test('it executes generic import pipeline', function () {
     $pipeline->shouldReceive('execute')
         ->once()
         ->with(
-            Mockery::on(fn($r) => $r === $rows),
+            Mockery::on(fn ($r) => $r === $rows),
             Mockery::type(UserDataMapper::class),
             User::class
         );
 
-    $import = new UserImport();
+    $import = new UserImport;
     $import->collection($rows);
 });

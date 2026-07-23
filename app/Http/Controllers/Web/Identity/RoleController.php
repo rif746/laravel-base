@@ -15,7 +15,7 @@ class RoleController extends Controller
     #[LayoutData(
         header: 'domains/identity/seo.role.title',
         breadcrumbs: [
-            'ui.menu.dashboard' => 'dashboard',
+            'ui/menu.dashboard' => 'dashboard',
             'domains/identity/seo.role.title' => '',
         ],
     )]

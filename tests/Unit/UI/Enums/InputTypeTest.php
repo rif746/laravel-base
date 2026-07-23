@@ -3,7 +3,6 @@
 namespace Tests\Unit\UI\Enums;
 
 use App\UI\Enums\InputType;
-use Tests\TestCase;
 
 test('it returns correct component for each input type', function () {
     expect(InputType::TEXTAREA->component())->toBe('form.textarea')

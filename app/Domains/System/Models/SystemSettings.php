@@ -18,11 +18,11 @@ class SystemSettings extends Model
      */
     public function getTranslatedValueAttribute(): ?string
     {
-        $key = SystemSettingKey::tryFrom($this->attributes['key']);
-        if ($key->inputType() == InputType::FILE && isset($this->attributes['value'])) {
+        $key = SystemSettingKey::tryFrom($this->attributes['key'])->schema();
+        if ($key->type->isFile() && isset($this->attributes['value'])) {
             return asset_static($this->attributes['value']);
-        } elseif ($key->inputType() == InputType::SELECT) {
-            return $key->options()[$this->attributes['value']];
+        } elseif ($key->type->isSelect()) {
+            return $key->options[$this->attributes['value']];
         }
 
         return $this->attributes['value'];

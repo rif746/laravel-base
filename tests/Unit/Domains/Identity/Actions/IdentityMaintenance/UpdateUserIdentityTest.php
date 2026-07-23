@@ -7,8 +7,9 @@ use App\Domains\Identity\Models\User;
 use App\Domains\Identity\Notifications\VerifyEmailNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('it can update user identity without changing email', function () {
     Notification::fake();

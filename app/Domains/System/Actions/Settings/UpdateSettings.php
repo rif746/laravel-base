@@ -12,7 +12,7 @@ class UpdateSettings
     {
         $value = $dto->value;
 
-        if ($dto->key->isImage()) {
+        if ($dto->key->schema()->type->isFile()) {
             $currentSettings = SystemSettings::where('key', $dto->key->value)->value('value');
 
             if ($currentSettings) {

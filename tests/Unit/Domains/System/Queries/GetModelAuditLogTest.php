@@ -16,9 +16,9 @@ test('it returns audit logs for a model', function () {
     $audits->shouldReceive('with')->once()->with('user')->andReturnSelf();
     $audits->shouldReceive('latest')->once()->andReturnSelf();
     $audits->shouldReceive('limit')->once()->with(5)->andReturnSelf();
-    $audits->shouldReceive('get')->once()->andReturn(new Collection());
+    $audits->shouldReceive('get')->once()->andReturn(new Collection);
 
-    $query = new GetModelAuditLog();
+    $query = new GetModelAuditLog;
     $result = $query->get($model);
 
     expect($result)->toBeInstanceOf(Collection::class);

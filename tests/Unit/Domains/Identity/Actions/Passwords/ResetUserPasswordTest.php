@@ -9,8 +9,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('it can reset user password', function () {
     Event::fake();
@@ -29,7 +30,7 @@ test('it can reset user password', function () {
         password_confirmation: 'new_password',
     );
 
-    $action = new ResetUserPassword();
+    $action = new ResetUserPassword;
     $status = $action->execute($dto);
 
     expect($status)->toBe(Password::PASSWORD_RESET)
@@ -52,7 +53,7 @@ test('it fails to reset password with invalid token', function () {
         password_confirmation: 'new_password',
     );
 
-    $action = new ResetUserPassword();
+    $action = new ResetUserPassword;
     $status = $action->execute($dto);
 
     expect($status)->toBe(Password::INVALID_TOKEN)

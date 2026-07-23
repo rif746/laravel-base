@@ -8,9 +8,10 @@ use Tests\TestCase;
 uses(TestCase::class);
 
 test('it resolves dynamic text placeholders', function () {
-    $action = new ResolveDynamicText();
+    $action = new ResolveDynamicText;
 
-    $component = new class {
+    $component = new class
+    {
         public $user = ['name' => 'John'];
     };
 

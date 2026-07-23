@@ -25,7 +25,7 @@ test('it can suspend a user', function () {
         'ip_address' => '127.0.0.1',
         'user_agent' => 'test',
         'payload' => 'test',
-        'last_activity' => time()
+        'last_activity' => time(),
     ]);
 
     $action = new SuspendUser(app(UpdateUserStatus::class));

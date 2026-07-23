@@ -15,7 +15,7 @@ class RoleLookupController extends Controller
     public function __invoke(Request $request, RoleLookup $lookup)
     {
         $result = $lookup->fetch($request->input('search'))
-            ->map(fn($res) => (object) [
+            ->map(fn ($res) => (object) [
                 'id' => $res->name,
                 'text' => $res->name,
             ]);

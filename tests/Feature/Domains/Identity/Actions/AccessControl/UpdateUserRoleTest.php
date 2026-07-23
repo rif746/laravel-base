@@ -15,7 +15,7 @@ test('it can sync user roles', function () {
 
     $user->assignRole($role1);
 
-    $action = new UpdateUserRole();
+    $action = new UpdateUserRole;
 
     // Execute
     $action->execute($user, ['Role 2']);

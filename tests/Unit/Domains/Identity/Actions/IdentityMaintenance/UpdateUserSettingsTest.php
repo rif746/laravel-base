@@ -4,8 +4,9 @@ use App\Domains\Identity\Actions\IdentityMaintenance\UpdateUserSettings;
 use App\Domains\Identity\Enums\UserSettingKey;
 use App\Domains\Identity\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('it can update user settings', function () {
     $user = User::factory()->create([
@@ -19,7 +20,7 @@ test('it can update user settings', function () {
         UserSettingKey::LANGUAGE->value => 'en',
     ];
 
-    $action = new UpdateUserSettings();
+    $action = new UpdateUserSettings;
     $action->execute($user, $newSettings);
 
     $updatedUser = $user->fresh();
@@ -35,7 +36,7 @@ test('it ignores invalid settings keys', function () {
         UserSettingKey::NOTIFICATION->value => 1,
     ];
 
-    $action = new UpdateUserSettings();
+    $action = new UpdateUserSettings;
     $action->execute($user, $newSettings);
 
     $updatedUser = $user->fresh();

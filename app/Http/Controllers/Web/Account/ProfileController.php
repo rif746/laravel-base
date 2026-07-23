@@ -20,7 +20,7 @@ class ProfileController extends Controller
     #[LayoutData(
         header: 'domains/account/seo.profile.title',
         breadcrumbs: [
-            'ui.menu.dashboard' => 'dashboard',
+            'ui/menu.dashboard' => 'dashboard',
             'domains/account/seo.profile.title' => '',
         ],
     )]

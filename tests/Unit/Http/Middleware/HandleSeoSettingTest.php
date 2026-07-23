@@ -19,7 +19,7 @@ test('it sets seo settings in config', function () {
 
     $middleware = new HandleSeoSetting($getSystemSettings);
     $request = Request::create('/', 'GET');
-    $next = fn($req) => new Response();
+    $next = fn ($req) => new Response;
 
     $middleware->handle($request, $next);
 

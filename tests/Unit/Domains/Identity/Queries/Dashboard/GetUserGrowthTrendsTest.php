@@ -4,8 +4,9 @@ use App\Domains\Identity\Models\User;
 use App\Domains\Identity\Queries\Dashboard\GetUserGrowthTrends;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('it can fetch user growth trends', function () {
     Carbon::setTestNow('2024-05-15');
@@ -20,7 +21,7 @@ test('it can fetch user growth trends', function () {
     // May
     User::factory()->create(['created_at' => '2024-05-01']);
 
-    $query = new GetUserGrowthTrends();
+    $query = new GetUserGrowthTrends;
     $results = $query->fetch();
 
     expect($results['categories'])->toHaveCount(12)

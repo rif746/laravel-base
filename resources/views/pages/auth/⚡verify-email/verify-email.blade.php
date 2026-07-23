@@ -12,7 +12,7 @@
 
         <form wire:submit="logout">
             <x-button type="submit" theme="danger">
-                {{ __('ui.button.logout') }}
+                {{ __('ui/button.logout') }}
             </x-button>
         </form>
     </div>

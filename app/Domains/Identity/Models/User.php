@@ -2,7 +2,6 @@
 
 namespace App\Domains\Identity\Models;
 
-use App\Domains\Account\Models\Profile;
 use App\Domains\Identity\Enums\UserStatus;
 use App\Domains\Identity\Notifications\ResetPasswordNotification;
 use App\Domains\Identity\Notifications\VerifyEmailNotification;
@@ -12,11 +11,10 @@ use Database\Factories\Identity\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -27,15 +25,14 @@ use Spatie\Permission\Traits\HasRoles;
 #[Fillable(['name', 'email', 'password', 'status', 'settings'])]
 #[Hidden(['password', 'remember_token'])]
 #[UsePolicy(UserPolicy::class)]
+#[UseFactory(UserFactory::class)]
 class User extends Authenticatable implements Auditable, MustVerifyEmail
 {
-    /** @use HasFactory<UserFactory> */
+    use HasApiTokens;
     use HasFactory;
-
     use HasFile;
     use HasRoles;
     use HasUlids;
-    use HasApiTokens;
     use Notifiable;
     use \OwenIt\Auditing\Auditable;
 
@@ -59,11 +56,6 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         'email',
         'status',
     ];
-
-    protected static function newFactory(): Factory
-    {
-        return UserFactory::new();
-    }
 
     public function sendPasswordResetNotification($token): void
     {

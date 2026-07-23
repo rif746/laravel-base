@@ -17,6 +17,9 @@
     @if ($icon && !str_contains($icon, 'svg'))
         <span>@svg($icon, $iconConfig)</span>
     @endif
+    @isset($slot)
+        {{ $slot }}
+    @endisset
     @if (is_string($label))
         <span>{{ $label }}</span>
     @else

@@ -9,8 +9,8 @@
     </x-form.select>
 
     <x-slot:footer>
-        <x-button type="button" theme="secondary" :label="__('ui.button.cancel')" data-bs-dismiss="modal" />
-        <x-button type="submit" theme="primary" :label="__('ui.button.save')" />
+        <x-button type="button" theme="secondary" :label="__('ui/button.cancel')" data-bs-dismiss="modal" />
+        <x-button type="submit" theme="primary" :label="__('ui/button.save')" />
     </x-slot:footer>
 
     @push('scripts')

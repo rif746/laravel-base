@@ -36,7 +36,7 @@ class SystemRestoreTest extends TestCase
 
         // Create a fake zip file
         $zipPath = storage_path('temp-backup.zip');
-        $zip = new ZipArchive();
+        $zip = new ZipArchive;
         $zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
         $zip->addFromString('db-dumps/mysql-'.config('database.connections.mysql.database').'.sql', 'SQL CONTENT');
         $zip->addEmptyDir('storage');
@@ -66,7 +66,7 @@ class SystemRestoreTest extends TestCase
         // But Storage::fake('test-disk') usually sets the root to a temp dir.
         // Let's check the path.
         $actualPath = Storage::disk('test-disk')->path('backups/backup.zip');
-        if (!file_exists(dirname($actualPath))) {
+        if (! file_exists(dirname($actualPath))) {
             mkdir(dirname($actualPath), 0755, true);
         }
         copy($zipPath, $actualPath);

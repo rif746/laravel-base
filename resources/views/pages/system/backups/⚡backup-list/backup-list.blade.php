@@ -33,10 +33,10 @@
                                 'height' => 16,
                             ]"
                                 x-on:click="$ask.livewire('delete-data', {
-                                    title: '{{ __('ui.button.delete') }}',
+                                    title: '{{ __('ui/button.delete') }}',
                                     textMessage: '{{ __('domains/system/pages.backup.confirmation.delete') }}',
-                                    confirmText: '{{ __('ui.button.yes') }}',
-                                    cancelText: '{{ __('ui.button.no') }}',
+                                    confirmText: '{{ __('ui/button.yes') }}',
+                                    cancelText: '{{ __('ui/button.no') }}',
                                     successMessage: '{{ __('domains/system/messages.backup.delete_success') }}',
                                     id: '{{ $backup->id }}',
                                     onSuccess: () => {

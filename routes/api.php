@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\V1\Lookup\PermissionLookupController;
 use App\Http\Controllers\Api\V1\Lookup\RoleLookupController;
 use Illuminate\Support\Facades\Route;
 

@@ -54,7 +54,7 @@
                                 <div class="spinner-border text-primary mb-2 border-4"
                                     style="width: 3rem; height: 3rem;" role="status">
                                 </div>
-                                <p class="text-dark fw-bold mb-0">{{ __('ui.loading') }}...</p>
+                                <p class="text-dark fw-bold mb-0">{{ __('ui/common.loading') }}...</p>
                             </div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                                 <div class="spinner-border text-primary mb-2 border-4"
                                     style="width: 3rem; height: 3rem;" role="status">
                                 </div>
-                                <p class="text-dark fw-bold mb-0">{{ __('ui.loading') }}...</p>
+                                <p class="text-dark fw-bold mb-0">{{ __('ui/common.loading') }}...</p>
                             </div>
                         </div>
                     </div>

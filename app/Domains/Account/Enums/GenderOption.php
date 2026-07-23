@@ -2,15 +2,21 @@
 
 namespace App\Domains\Account\Enums;
 
-enum GenderOption: string
+use App\Domains\System\Traits\Enum\HasPredicateMethod;
+use App\UI\Enums\Concerns\InteractsWithLabels;
+use App\UI\Enums\Contracts\HasLabel;
+
+/*
+ * @method bool isMale()
+ * @method bool isFemale()
+ */
+enum GenderOption: string implements HasLabel
 {
+    use HasPredicateMethod;
+    use InteractsWithLabels;
+
     case MALE = 'male';
     case FEMALE = 'female';
-
-    public function label(): string
-    {
-        return __("domains/account/enum.gender.{$this->value}");
-    }
 
     public static function fromLabel($value): self
     {

@@ -4,8 +4,9 @@ use App\Domains\Identity\Models\User;
 use App\Domains\Identity\Queries\Dashboard\GetMonthlyNewUsers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('it can fetch monthly new users and growth rate', function () {
     Carbon::setTestNow('2024-05-15');
@@ -16,7 +17,7 @@ test('it can fetch monthly new users and growth rate', function () {
     // This month (May)
     User::factory()->count(3)->create(['created_at' => '2024-05-01']);
 
-    $query = new GetMonthlyNewUsers();
+    $query = new GetMonthlyNewUsers;
     $results = $query->fetch();
 
     expect($results['new_users'])->toBe(3)
@@ -28,7 +29,7 @@ test('it returns 100% growth when no users joined last month', function () {
 
     User::factory()->count(3)->create(['created_at' => '2024-05-01']);
 
-    $query = new GetMonthlyNewUsers();
+    $query = new GetMonthlyNewUsers;
     $results = $query->fetch();
 
     expect($results['new_users'])->toBe(3)

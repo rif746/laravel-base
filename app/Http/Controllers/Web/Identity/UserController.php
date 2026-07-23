@@ -15,7 +15,7 @@ class UserController extends Controller
     #[LayoutData(
         header: 'domains/identity/seo.user.title',
         breadcrumbs: [
-            'ui.menu.dashboard' => 'dashboard',
+            'ui/menu.dashboard' => 'dashboard',
             'domains/identity/seo.user.title' => '',
         ],
     )]

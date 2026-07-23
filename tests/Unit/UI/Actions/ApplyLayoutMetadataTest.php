@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\UI\Actions;
 
-use App\UI\Actions\ResolveDynamicText;
-use App\UI\Actions\ApplyLayoutMetadata;
 use App\Attributes\LayoutData;
+use App\UI\Actions\ApplyLayoutMetadata;
+use App\UI\Actions\ResolveDynamicText;
 use Illuminate\Support\Facades\View;
 use Mockery;
 use Tests\TestCase;
@@ -19,7 +19,7 @@ test('it applies layout metadata', function () {
     $attributeInstance = new LayoutData(breadcrumbs: ['Home' => 'home.index'], header: 'Dashboard');
     $dataContext = [];
 
-    $textResolver->shouldReceive('execute')->andReturnUsing(fn($v) => $v);
+    $textResolver->shouldReceive('execute')->andReturnUsing(fn ($v) => $v);
 
     View::shouldReceive('composer')->once();
 

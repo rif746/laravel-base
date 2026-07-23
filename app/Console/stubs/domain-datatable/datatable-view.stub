@@ -1,0 +1,18 @@
+<x-layouts.app>
+    <x-card>
+        {{ $dataTable->table() }}
+    </x-card>
+
+    <livewire:pages::system.audit.audit-view-modal key-name="ulid" model="\{{ modelFull }}::class"
+                                                   translation="domains/{{ domainLower }}/field.{{ modelVariable }}."/>
+    <livewire:datatables.delete-action key-name="ulid" :model="\{{ modelFull }}::class"
+                                       :action="\App\Domains\{{ domain }}\Actions\Governance\Remove{{ model }}::class"/>
+    <livewire:datatables.excel-manager :export-class="\App\Domains\{{ domain }}\Exports\{{ model }}Export::class"
+                                       :import-class="\App\Http\Ingestion\Excel\{{ domain }}\{{ model }}Import::class"
+                                       resource-name="{{ modelVariable }}"/>
+
+    @push('page-scripts')
+        @vite(['resources/js/plugin/datatables.js', 'resources/js/plugin/select2.js'])
+        {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+    @endpush
+</x-layouts.app>

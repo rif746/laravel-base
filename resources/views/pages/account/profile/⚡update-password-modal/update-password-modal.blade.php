@@ -10,7 +10,7 @@
     </div>
 
     <x-slot:footer>
-        <x-button type="button" data-bs-dismiss="modal" :label="__('ui.button.close')" />
-        <x-button type="submit" theme="primary" :label="__('ui.button.save')" />
+        <x-button type="button" data-bs-dismiss="modal" :label="__('ui/button.close')" />
+        <x-button type="submit" theme="primary" :label="__('ui/button.save')" />
     </x-slot:footer>
 </x-modal>

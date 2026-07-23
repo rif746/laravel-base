@@ -10,7 +10,7 @@ uses(RefreshDatabase::class);
 
 test('it throws exception when removing a protected system role', function () {
     $role = Role::create(['name' => RoleType::SYSTEM_ADMIN->value, 'guard_name' => 'web']);
-    $action = new RemoveSystemRole();
+    $action = new RemoveSystemRole;
 
     $this->expectException(Exception::class);
     $this->expectExceptionMessage('Can\'t remove system role.');
@@ -23,7 +23,7 @@ test('it throws exception when role has attached users', function () {
     $user = User::factory()->create();
     $user->assignRole($role->name);
 
-    $action = new RemoveSystemRole();
+    $action = new RemoveSystemRole;
 
     $this->expectException(Exception::class);
     $this->expectExceptionMessage('This role has a users attached to it.');
@@ -33,7 +33,7 @@ test('it throws exception when role has attached users', function () {
 
 test('it does not throw exception for removable role', function () {
     $role = Role::create(['name' => 'Custom Role', 'guard_name' => 'web']);
-    $action = new RemoveSystemRole();
+    $action = new RemoveSystemRole;
 
     $action->execute($role);
 

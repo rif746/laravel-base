@@ -31,7 +31,7 @@ class SyncBackupCatalogTest extends TestCase
             'type' => 'full',
         ]);
 
-        $action = new SyncBackupCatalog();
+        $action = new SyncBackupCatalog;
         $action->execute();
 
         $this->assertDatabaseHas('backups', ['file_name' => 'test-backup backup1.zip']);

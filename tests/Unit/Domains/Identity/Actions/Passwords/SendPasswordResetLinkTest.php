@@ -6,8 +6,9 @@ use App\Domains\Identity\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('it can send password reset link', function () {
     Notification::fake();
@@ -20,7 +21,7 @@ test('it can send password reset link', function () {
         email: 'test@example.com',
     );
 
-    $action = new SendPasswordResetLink();
+    $action = new SendPasswordResetLink;
     $status = $action->execute($dto);
 
     expect($status)->toBe(Password::RESET_LINK_SENT);
@@ -31,7 +32,7 @@ test('it returns user not found if email does not exist', function () {
         email: 'nonexistent@example.com',
     );
 
-    $action = new SendPasswordResetLink();
+    $action = new SendPasswordResetLink;
     $status = $action->execute($dto);
 
     expect($status)->toBe(Password::INVALID_USER);

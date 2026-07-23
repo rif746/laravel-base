@@ -3,9 +3,12 @@
 namespace {{ namespace }};
 
 use App\Domains\Identity\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class {{ class }}
 {
+    use HandlesAuthorization;
+
     public function viewAny(User $user): bool
     {
         return false;

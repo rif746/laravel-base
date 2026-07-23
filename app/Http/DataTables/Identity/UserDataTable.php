@@ -29,7 +29,7 @@ class UserDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->editColumn('status', fn ($model) => view('components.badge', [
                 'label' => $model->status->label(),
-                'variant' => $model->status->badgeVariant(),
+                'variant' => $model->status->variant(),
             ]))
             ->addColumn(
                 'action',
@@ -46,14 +46,14 @@ class UserDataTable extends DataTable
                     'delete' => [
                         'url' => null,
                         'title' => $user->status->isActive()
-                            ? __('ui.button.suspend')
-                            : __('ui.button.delete'),
+                            ? __('ui/button.suspend')
+                            : __('ui/button.delete'),
                         'message' => $user->status->isActive()
-                            ? __('ui.confirmation.suspend', ['resource' => __('resources.user')])
-                            : __('ui.confirmation.delete', ['resource' => __('resources.user')]),
+                            ? __('ui/confirmation.suspend', ['resource' => __('resources.user')])
+                            : __('ui/confirmation.delete', ['resource' => __('resources.user')]),
                         'success_message' => $user->status->isActive()
-                            ? __('ui.crud.success.suspended', ['resource' => __('resources.user')])
-                            : __('ui.crud.success.deleted', ['resource' => __('resources.user')]),
+                            ? __('ui/crud.success.suspended', ['resource' => __('resources.user')])
+                            : __('ui/crud.success.deleted', ['resource' => __('resources.user')]),
                         'permission' => auth()->user()->can('delete', $user),
                     ],
                     'table_name' => 'user-table',
@@ -113,16 +113,16 @@ class UserDataTable extends DataTable
                         [
                             'custom-features' => [
                                 'targetId' => 'template-role-filter',
-                                'style' => 'width: 200px;'
-                            ]
+                                'style' => 'width: 200px;',
+                            ],
                         ],
                         [
                             'custom-features' => [
                                 'targetId' => 'template-status-filter',
-                                'style' => 'width: 200px;'
-                            ]
+                                'style' => 'width: 200px;',
+                            ],
                         ],
-                        'search'
+                        'search',
                     ],
                 ],
 
@@ -132,7 +132,7 @@ class UserDataTable extends DataTable
             ->parameters([
                 'language' => [
                     'search' => '',
-                    'searchPlaceholder' => __('ui.button.lookup'),
+                    'searchPlaceholder' => __('ui/button.lookup'),
                 ],
                 'fixedColumns' => [
                     'start' => 2,
@@ -152,7 +152,7 @@ class UserDataTable extends DataTable
                     ->action("Livewire.dispatch('export-excel')"),
                 Button::make('excel')
                     ->text(svg('tabler-table-import', ['width' => 16, 'height' => 16])->toHtml())
-                    ->titleAttr(__('ui.title.import', ['resource' => 'Excel']))
+                    ->titleAttr(__('ui/title.import', ['resource' => 'Excel']))
                     ->addClass('btn-sm')
                     ->action("$('#excel-import-modal').modal('show')"),
                 Button::make('reload')
@@ -180,7 +180,7 @@ class UserDataTable extends DataTable
             Column::computed('status')
                 ->title(__('domains/identity/field.user.status')),
             Column::computed('action')
-                ->title(__('ui.label.actions'))
+                ->title(__('ui/label.actions'))
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)

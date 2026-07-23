@@ -4,7 +4,7 @@ return [
     'success' => [
         'password_reset_link_sent' => 'Password reset link has been sent.',
         'user_role_updated' => 'User role has been updated.',
-        'user_status_updated' => 'User status has been updated.'
+        'user_status_updated' => 'User status has been updated.',
     ],
     'exceptions' => [
         'failed_to_send_password_reset_link' => 'Failed to send password reset link.',

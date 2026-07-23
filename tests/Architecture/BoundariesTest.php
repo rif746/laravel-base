@@ -8,5 +8,5 @@ arch('system domain isolation')
     ->ignoring([
         'App\Domains\System\Listeners',
         'App\Domains\System\Policies',
-        'App\Domains\System\Providers\SystemServiceProvider'
+        'App\Domains\System\Providers\SystemServiceProvider',
     ]);

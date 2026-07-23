@@ -1,9 +1,8 @@
 <?php
 
-use App\Domains\Identity\Models\User;
 use App\Domains\Identity\Enums\RoleType;
+use App\Domains\Identity\Models\User;
 use Database\Seeders\RoleSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 test('role index page can be rendered', function () {
     $this->seed(RoleSeeder::class);

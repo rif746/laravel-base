@@ -2,8 +2,12 @@
 
 namespace App\UI\Enums;
 
-enum FileType: string
+use App\UI\Enums\Concerns\InteractsWithLabels;
+use App\UI\Enums\Contracts\HasLabel;
+
+enum FileType: string implements HasLabel
 {
+    use InteractsWithLabels;
     case DOCUMENT = 'document';
     case IMAGE = 'image';
     case AUDIO = 'audio';

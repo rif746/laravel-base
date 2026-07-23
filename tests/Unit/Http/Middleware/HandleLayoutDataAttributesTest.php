@@ -41,12 +41,12 @@ test('it calls apply layout metadata when attribute exists', function () {
         ->andReturn(['layout_data' => $layoutData]);
 
     $request = Request::create('/', 'GET');
-    $request->setRouteResolver(fn() => $route);
+    $request->setRouteResolver(fn () => $route);
 
     $applyLayout->shouldReceive('execute')
         ->with($layoutData, ['layout_data' => $layoutData]);
 
-    $next = fn($req) => new Response();
+    $next = fn ($req) => new Response;
 
     $response = $middleware->handle($request, $next);
     expect($response)->toBeInstanceOf(Response::class);

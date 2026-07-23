@@ -5,8 +5,8 @@
         </div>
     </div>
     <x-slot:footer>
-        <x-button theme="success" type="submit" :label="__('ui.button.upload')" />
-        <x-button theme="secondary" data-bs-dismiss="modal" :label="__('ui.button.cancel')" />
+        <x-button theme="success" type="submit" :label="__('ui/button.upload')" />
+        <x-button theme="secondary" data-bs-dismiss="modal" :label="__('ui/button.cancel')" />
     </x-slot:footer>
     @push('scripts')
         @filepondScripts

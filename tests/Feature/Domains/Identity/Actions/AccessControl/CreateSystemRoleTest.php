@@ -19,7 +19,7 @@ test('it can create a system role with permissions', function () {
         permissions: ['test.permission.1', 'test.permission.2']
     );
 
-    $action = new CreateSystemRole();
+    $action = new CreateSystemRole;
 
     // Execute
     $result = $action->execute($dto);
@@ -28,7 +28,7 @@ test('it can create a system role with permissions', function () {
     expect($result)->toBeTrue();
     $this->assertDatabaseHas('roles', [
         'name' => 'New Role',
-        'guard_name' => 'web'
+        'guard_name' => 'web',
     ]);
 
     $role = Role::where('name', 'New Role')->first();

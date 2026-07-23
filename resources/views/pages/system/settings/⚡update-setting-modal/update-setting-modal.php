@@ -33,7 +33,7 @@ new class extends Component
     public function rules(): array
     {
         return [
-            'settingValue' => $this->settingEnum->validation(),
+            'settingValue' => $this->settingEnum->schema()->rules,
         ];
     }
 
@@ -42,7 +42,7 @@ new class extends Component
         $this->settingKey = $id;
         $setting = SystemSettings::where('key', $id)
             ->first();
-        if ($this->settingEnum->inputType() == InputType::SELECT) {
+        if ($this->settingEnum->schema()->type->isFile()) {
             $this->settingValue = $setting->value;
         } else {
             $this->settingValue = $setting?->translated_value ?? '-';
@@ -64,7 +64,7 @@ new class extends Component
             value: $this->settingValue,
         ));
 
-        $this->success(__('ui.crud.success.updated', ['resource' => $this->settingEnum->label()]));
+        $this->success(__('ui/crud.success.updated', ['resource' => $this->settingEnum->label()]));
         $this->dispatch('hide-update-setting-modal');
         $this->dispatch('setting-updated');
     }

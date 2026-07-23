@@ -27,7 +27,7 @@ test('it uploads and attaches a file', function () {
     // We expect File::create to be called. Since File is a model, we can mock it or use a database transaction if we had RefreshDatabase
     // Let's use a simple mock for File if possible or just use the database
 
-    $action = new UploadAndAttachFile();
+    $action = new UploadAndAttachFile;
     $result = $action->execute($file, $dto);
 
     expect($result)->toBeInstanceOf(File::class)

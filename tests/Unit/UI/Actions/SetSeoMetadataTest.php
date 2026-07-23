@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\UI\Actions;
 
+use App\Attributes\Seo;
 use App\UI\Actions\ResolveDynamicText;
 use App\UI\Actions\SetSeoMetadata;
-use App\Attributes\Seo;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Http\Request;
 use Mockery;
@@ -21,7 +21,7 @@ test('it applies seo metadata', function () {
     $viewData = ['id' => 1];
     $request = Request::create('/', 'GET');
 
-    $textResolver->shouldReceive('execute')->times(3)->andReturnUsing(fn($value) => $value);
+    $textResolver->shouldReceive('execute')->times(3)->andReturnUsing(fn ($value) => $value);
 
     $metatagsMock = Mockery::mock();
     $metatagsMock->shouldReceive('setCanonical')->once();

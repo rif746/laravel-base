@@ -20,7 +20,7 @@ test('it sets default timezone from system settings', function () {
 
     $middleware = new HandlePreferredTimezone($getSystemSettings);
     $request = Request::create('/', 'GET');
-    $next = fn($req) => new Response();
+    $next = fn ($req) => new Response;
 
     $middleware->handle($request, $next);
 
@@ -33,13 +33,13 @@ test('it uses user preference if set', function () {
 
     $user = Mockery::mock(User::class);
     $user->shouldReceive('getAttribute')->with('settings')->andReturn(collect([
-        UserSettingKey::TIMEZONE->value => 'Asia/Jakarta'
+        UserSettingKey::TIMEZONE->value => 'Asia/Jakarta',
     ]));
 
     $middleware = new HandlePreferredTimezone($getSystemSettings);
     $request = Request::create('/', 'GET');
-    $request->setUserResolver(fn() => $user);
-    $next = fn($req) => new Response();
+    $request->setUserResolver(fn () => $user);
+    $next = fn ($req) => new Response;
 
     $middleware->handle($request, $next);
 

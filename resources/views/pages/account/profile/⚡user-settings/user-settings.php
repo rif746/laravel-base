@@ -21,13 +21,13 @@ new class extends Component
             return [
                 'key' => $key->value,
                 'label' => $key->label(),
-                'type' => $key->type(),
-                'options' => $key->options(),
+                'type' => $key->schema()->type,
+                'options' => $key->schema()->options,
             ];
         })->toArray();
 
         foreach (UserSettingKey::cases() as $key) {
-            $this->form[$key->value] = $userSettings->get($key->value, $key->default());
+            $this->form[$key->value] = $userSettings->get($key->value, $key->schema()->default);
         }
     }
 
@@ -43,6 +43,6 @@ new class extends Component
         $this->validate($rules);
 
         $action->execute(auth('web')->user(), $this->form);
-        $this->success(__('ui.crud.success.updated', ['resource' => __('domains/account/pages.user_settings.title')]));
+        $this->success(__('ui/crud.success.updated', ['resource' => __('domains/account/pages.user_settings.title')]));
     }
 };

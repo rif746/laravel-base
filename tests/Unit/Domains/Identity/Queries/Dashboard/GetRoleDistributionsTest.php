@@ -4,8 +4,9 @@ use App\Domains\Identity\Models\Role;
 use App\Domains\Identity\Models\User;
 use App\Domains\Identity\Queries\Dashboard\GetRoleDistributions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('it can fetch role distributions', function () {
     $admin = Role::create(['name' => 'admin', 'guard_name' => 'web']);
@@ -20,7 +21,7 @@ test('it can fetch role distributions', function () {
     $user3 = User::factory()->create();
     $user3->assignRole($editor);
 
-    $query = new GetRoleDistributions();
+    $query = new GetRoleDistributions;
     $results = $query->fetch();
 
     expect($results['categories'])->toContain('admin', 'editor')

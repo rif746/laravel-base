@@ -4,7 +4,7 @@
         <x-tabler-bell width="20" />
         <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger ms-n2 top-0 mt-2">
             {{ $this->notifications->filter(fn($value, $key) => !$value->read_at)->count() }}
-            <span class="visually-hidden">{{ __('ui.notification.unread') }}</span>
+            <span class="visually-hidden">{{ __('ui/notification.unread') }}</span>
         </span>
     </a>
     <div class="dropdown-menu dropdown-menu-end dropdown-menu-md p-0">
@@ -32,7 +32,7 @@
                 <li class="border-bottom p-3">
                     <div class="d-flex gap-3">
                         <div class="flex-grow-1 small">
-                            <p class="mb-0">{{ __('ui.notification.empty') }}</p>
+                            <p class="mb-0">{{ __('ui/notification.empty') }}</p>
                         </div>
                     </div>
                 </li>
@@ -40,7 +40,7 @@
             @if ($this->notifications->filter(fn($value, $key) => !$value->read_at)->count() > 1)
                 <li class="px-4 py-3 text-center">
                     <x-button wire:click="readAll" theme="primary"
-                        class="w-full">{{ __('ui.notification.read_all') }}</x-button>
+                        class="w-full">{{ __('ui/notification.read_all') }}</x-button>
                 </li>
             @endif
         </ul>

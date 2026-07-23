@@ -22,7 +22,7 @@ use Storage;
     'disk',
     'mime_type',
     'options',
-    'uploader_id'
+    'uploader_id',
 ])]
 class File extends Model
 {

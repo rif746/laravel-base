@@ -20,7 +20,7 @@ test('it sets language from system settings', function () {
 
     $middleware = new HandlePreferredLanguage($getSystemSettings);
     $request = Request::create('/', 'GET');
-    $next = fn($req) => new Response();
+    $next = fn ($req) => new Response;
 
     $middleware->handle($request, $next);
 
@@ -34,7 +34,7 @@ test('it uses session locale if set', function () {
 
     $middleware = new HandlePreferredLanguage($getSystemSettings);
     $request = Request::create('/', 'GET');
-    $next = fn($req) => new Response();
+    $next = fn ($req) => new Response;
 
     $middleware->handle($request, $next);
 
@@ -47,13 +47,13 @@ test('it uses user preference if set', function () {
 
     $user = Mockery::mock(User::class);
     $user->shouldReceive('getAttribute')->with('settings')->andReturn(collect([
-        UserSettingKey::LANGUAGE->value => 'id'
+        UserSettingKey::LANGUAGE->value => 'id',
     ]));
 
     $middleware = new HandlePreferredLanguage($getSystemSettings);
     $request = Request::create('/', 'GET');
-    $request->setUserResolver(fn() => $user);
-    $next = fn($req) => new Response();
+    $request->setUserResolver(fn () => $user);
+    $next = fn ($req) => new Response;
 
     $middleware->handle($request, $next);
 

@@ -32,7 +32,7 @@ class SystemBackupTest extends TestCase
 
         Storage::disk('test-disk')->put('test-backup/test-file.zip', 'content');
 
-        $action = new SystemBackup();
+        $action = new SystemBackup;
         $backup = $action->execute();
 
         $this->assertInstanceOf(Backup::class, $backup);

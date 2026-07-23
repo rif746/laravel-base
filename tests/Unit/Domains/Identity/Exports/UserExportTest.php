@@ -27,7 +27,7 @@ class UserExportTest extends TestCase
         ]);
         $user->profile()->save($profile);
 
-        $export = new UserExport();
+        $export = new UserExport;
         $mapped = $export->map($user);
 
         $this->assertEquals('=ROW()-1', $mapped[0]);

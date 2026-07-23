@@ -3,7 +3,7 @@
 use App\Domains\System\Support\ValueObjects\ByteUsage;
 
 test('it throws exception for negative bytes', function () {
-    expect(fn() => new ByteUsage(-1))->toThrow(InvalidArgumentException::class, 'Bytes cannot be negative.');
+    expect(fn () => new ByteUsage(-1))->toThrow(InvalidArgumentException::class, 'Bytes cannot be negative.');
 });
 
 test('it formats 0 bytes correctly', function () {

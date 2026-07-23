@@ -3,14 +3,14 @@
 use App\Domains\Identity\Actions\AccessControl\UpdateUserRole;
 use App\Domains\Identity\Actions\Onboarding\ProvisionNewUser;
 use App\Domains\Identity\DTOs\Onboarding\ProvisionUserDTO;
-use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Events\Onboarding\UserWasProvisioned;
 use App\Domains\Identity\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Mockery\MockInterface;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('it can provision new user', function () {
     Event::fake();

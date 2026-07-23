@@ -5,8 +5,9 @@ use App\Domains\Identity\DTOs\Passwords\UpdatePasswordDTO;
 use App\Domains\Identity\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('it can update user password', function () {
     $user = User::factory()->create([
@@ -17,7 +18,7 @@ test('it can update user password', function () {
         new_password: 'new_password',
     );
 
-    $action = new UpdatePassword();
+    $action = new UpdatePassword;
     $action->execute($user, $dto);
 
     expect(Hash::check('new_password', $user->fresh()->password))->toBeTrue()

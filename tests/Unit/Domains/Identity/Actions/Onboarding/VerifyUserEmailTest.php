@@ -6,15 +6,16 @@ use App\Domains\Identity\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('it can verify user email', function () {
     Event::fake();
 
     $user = User::factory()->unverified()->create();
 
-    $action = new VerifyUserEmail();
+    $action = new VerifyUserEmail;
     $result = $action->execute($user);
 
     expect($result)->toBeTrue()
@@ -31,7 +32,7 @@ test('it returns false if email is already verified', function () {
         'email_verified_at' => now(),
     ]);
 
-    $action = new VerifyUserEmail();
+    $action = new VerifyUserEmail;
     $result = $action->execute($user);
 
     expect($result)->toBeFalse();

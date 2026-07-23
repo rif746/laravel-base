@@ -9,7 +9,6 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Mockery;
-use Tests\TestCase;
 
 test('it delegates to the domain export', function () {
     $domainExport = Mockery::mock(FromQuery::class, WithHeadings::class, WithMapping::class, WithColumnFormatting::class);

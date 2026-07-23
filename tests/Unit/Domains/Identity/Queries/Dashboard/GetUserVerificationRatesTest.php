@@ -3,8 +3,9 @@
 use App\Domains\Identity\Models\User;
 use App\Domains\Identity\Queries\Dashboard\GetUserVerificationRates;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('it can fetch user verification rates', function () {
     // Create 3 verified users
@@ -17,7 +18,7 @@ test('it can fetch user verification rates', function () {
         'email_verified_at' => null,
     ]);
 
-    $query = new GetUserVerificationRates();
+    $query = new GetUserVerificationRates;
     $results = $query->fetch();
 
     expect($results)->toBe([
@@ -28,7 +29,7 @@ test('it can fetch user verification rates', function () {
 });
 
 test('it returns zero rates when no users exist', function () {
-    $query = new GetUserVerificationRates();
+    $query = new GetUserVerificationRates;
     $results = $query->fetch();
 
     expect($results)->toBe([

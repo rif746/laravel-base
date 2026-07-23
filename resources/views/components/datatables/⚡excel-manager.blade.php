@@ -51,7 +51,7 @@ new class extends Component {
         Excel::queueImport($importInstance, $filePath)->chain([
             new NotifyImportComplete(recipientEmail: $recipentEmail)
         ]);
-        $this->success(__('ui.excel.import.success'));
+        $this->success(__('ui/excel.import.success'));
         $this->dispatch('hide-excel-import-modal');
     }
 
@@ -72,7 +72,7 @@ new class extends Component {
             )
         ]);
 
-        $this->success(__('ui.excel.export.success'));
+        $this->success(__('ui/excel.export.success'));
     }
 
     public function hide(): void
@@ -88,10 +88,10 @@ new class extends Component {
 <div>
     @if($importClass)
         <x-modal id="excel-import-modal" size="modal-lg" :title="$this->title" form wire:submit="import" livewire>
-            <x-filepond::upload :label="__('ui.excel.import.file_label')" wire:model="file"/>
+            <x-filepond::upload :label="__('ui/excel.import.file_label')" wire:model="file"/>
             <x-slot:footer>
-                <x-button theme="primary" type="submit" :label="__('ui.button.upload')"/>
-                <x-button theme="secondary" data-bs-dismiss="modal" :label="__('ui.button.cancel')"/>
+                <x-button theme="primary" type="submit" :label="__('ui/button.upload')"/>
+                <x-button theme="secondary" data-bs-dismiss="modal" :label="__('ui/button.cancel')"/>
             </x-slot:footer>
             @push('scripts')
                 @vite(['resources/js/plugin/filepond.js'])

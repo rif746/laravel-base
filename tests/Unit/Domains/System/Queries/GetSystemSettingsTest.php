@@ -14,7 +14,7 @@ beforeEach(function () {
 });
 
 test('it returns default value when setting does not exist in database', function () {
-    $query = new GetSystemSettings();
+    $query = new GetSystemSettings;
     $value = $query->get(SystemSettingKey::DEFAULT_LANGUAGE);
 
     expect($value)->toBe(SystemSettingKey::DEFAULT_LANGUAGE->default());
@@ -26,7 +26,7 @@ test('it returns value from database when it exists', function () {
         'value' => 'Custom Web Name',
     ]);
 
-    $query = new GetSystemSettings();
+    $query = new GetSystemSettings;
     $value = $query->get(SystemSettingKey::WEB_NAME);
 
     expect($value)->toBe('Custom Web Name');
@@ -38,7 +38,7 @@ test('it caches settings', function () {
         'value' => 'Cached Name',
     ]);
 
-    $query = new GetSystemSettings();
+    $query = new GetSystemSettings;
 
     // First call, should fetch from DB
     expect($query->get(SystemSettingKey::WEB_NAME))->toBe('Cached Name');
@@ -62,7 +62,7 @@ test('it caches settings', function () {
 });
 
 test('it flushes memory correctly', function () {
-    $query = new GetSystemSettings();
+    $query = new GetSystemSettings;
 
     // Fill memory
     $query->fetch();

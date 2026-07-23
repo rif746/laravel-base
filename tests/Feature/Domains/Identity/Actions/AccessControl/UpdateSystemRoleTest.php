@@ -20,7 +20,7 @@ test('it can update a system role permissions', function () {
         permissions: ['test.permission.2']
     );
 
-    $action = new UpdateSystemRole();
+    $action = new UpdateSystemRole;
 
     // Execute
     $result = $action->execute($role, $dto);

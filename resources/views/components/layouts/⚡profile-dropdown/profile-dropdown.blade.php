@@ -29,7 +29,7 @@
                 <x-link class="dropdown-item" :href="route('system-setting.index')">
                     <x-slot:label>
                         <x-tabler-settings width="16" />
-                        {{ __('ui.menu.settings') }}
+                        {{ __('ui/menu.settings') }}
                     </x-slot:label>
                 </x-link>
             @endcan
@@ -37,22 +37,22 @@
                 <x-link class="dropdown-item" :href="route('system-backup.index')">
                     <x-slot:label>
                         <x-tabler-restore width="16" />
-                        {{ __('ui.menu.system_backup') }}
+                        {{ __('ui/menu.system_backup') }}
                     </x-slot:label>
                 </x-link>
             @endcan
             <hr class="my-0 border-dashed" />
             <a class="dropdown-item text-danger" href="javascript:void(0)"
                 x-on:click="$ask.ajax({
-                    textMessage: '{{ __('ui.confirmation.logout') }}',
-                    confirmText: '{{ __('ui.button.yes') }}',
-                    cancelText: '{{ __('ui.button.no') }}',
+                    textMessage: '{{ __('ui/confirmation.logout') }}',
+                    confirmText: '{{ __('ui/button.yes') }}',
+                    cancelText: '{{ __('ui/button.no') }}',
                     onSuccess: () => {
                         return $wire.logout()
                     }
                 })">
                 <x-tabler-logout width="16" />
-                {{ __('ui.button.logout') }}
+                {{ __('ui/button.logout') }}
             </a>
         </div>
     </div>

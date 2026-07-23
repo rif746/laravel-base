@@ -46,7 +46,7 @@ test('it removes all files associated with a model', function () {
         'uploader_id' => 'u1',
     ]);
 
-    $action = new RemoveModelFile();
+    $action = new RemoveModelFile;
     $action->execute('User', '1');
 
     expect(File::where('fileable_type', 'User')->where('fileable_id', '1')->count())->toBe(0)

@@ -1,0 +1,33 @@
+<?php
+
+use App\Livewire\Concerns\WithModal;
+use App\Livewire\Concerns\WithToast;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
+
+new class extends Component
+{
+    use WithModal;
+    use WithToast;
+
+    #[Locked]
+    public ?string $id = null;
+
+    #[Locked]
+    public string $mode = 'create';
+
+    protected string $resourceName = '{{ modelVariable }}';
+
+    public function show(int|string $id): void
+    {
+        $this->id = $id;
+        $this->mode = 'update';
+        // $this->form->fill($this->model->only(['name']));
+    }
+
+    public function hide(): void
+    {
+        // $this->form->reset();
+        $this->reset('id', 'mode');
+    }
+};

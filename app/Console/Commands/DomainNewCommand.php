@@ -26,7 +26,7 @@ class DomainNewCommand extends Command
         if ($this->files->isDirectory($providerDir) && count($this->files->files($providerDir)) > 0) {
             $this->components->error(
                 "Domain [{$domain}] already has providers. ".
-                "Use [domain:make provider] to add individual providers."
+                'Use [domain:make provider] to add individual providers.'
             );
 
             return self::FAILURE;

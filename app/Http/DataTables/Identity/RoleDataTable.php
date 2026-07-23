@@ -37,12 +37,12 @@ class RoleDataTable extends DataTable
                     ],
                     'delete' => [
                         'url' => null,
-                        'title' => __('ui.button.delete'),
+                        'title' => __('ui/button.delete'),
                         'permission' => $role->name == RoleType::SYSTEM_ADMIN->value
                             ? false
                             : auth()->user()->can('delete', $role),
-                        'message' => __('ui.confirmation.delete', ['resource' => __('resources.role')]),
-                        'success_message' => __('ui.crud.success.deleted', ['resource' => __('resources.role')]),
+                        'message' => __('ui/confirmation.delete', ['resource' => __('resources.role')]),
+                        'success_message' => __('ui/crud.success.deleted', ['resource' => __('resources.role')]),
                     ],
                     'table_name' => 'role-table',
                     'id' => $role->ulid,
@@ -87,7 +87,7 @@ class RoleDataTable extends DataTable
             ->parameters([
                 'language' => [
                     'search' => '',
-                    'searchPlaceholder' => __('ui.button.lookup'),
+                    'searchPlaceholder' => __('ui/button.lookup'),
                 ],
             ])
             ->buttons([
@@ -118,7 +118,7 @@ class RoleDataTable extends DataTable
             Column::computed('guard_name')
                 ->title(__('domains/identity/field.role.guard_name')),
             Column::computed('action')
-                ->title(__('ui.label.actions'))
+                ->title(__('ui/label.actions'))
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)

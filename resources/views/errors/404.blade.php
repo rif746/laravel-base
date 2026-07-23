@@ -2,12 +2,12 @@
     <div class="container-tight py-4">
         <div class="empty">
             <div class="empty-header">404</div>
-            <p class="empty-title">{{ __('ui.errors.oops') }}</p>
+            <p class="empty-title">{{ __('ui/errors.oops') }}</p>
             <p class="empty-subtitle text-secondary">
-                {{ __('ui.errors.404') }}
+                {{ __('ui/errors.404') }}
             </p>
             <div class="empty-action">
-                <x-link href="{{ route('dashboard') }}" class="btn btn-primary" :label="__('ui.errors.take_me_home')"
+                <x-link href="{{ route('dashboard') }}" class="btn btn-primary" :label="__('ui/errors.take_me_home')"
                         icon="tabler-arrow-left" :icon-config="['width' => 24, 'height' => 24]" />
             </div>
         </div>

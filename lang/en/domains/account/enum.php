@@ -3,11 +3,11 @@
 use App\Domains\Account\Enums\GenderOption;
 
 return [
-    'gender' => [
+    'gender_option' => [
         GenderOption::MALE->value => 'Male',
         GenderOption::FEMALE->value => 'Female',
     ],
-    'user_settings' => [
+    'user_setting_key' => [
         'notification' => 'Notification',
         'language' => 'Language',
         'timezone' => 'Timezone',

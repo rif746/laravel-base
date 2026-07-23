@@ -48,11 +48,11 @@
             </div>
         @empty
             <div class="accordion-item d-flex justify-content-center align-items-center p-4">
-                {{ __('ui.label.no_data') }}
+                {{ __('ui/label.no_data') }}
             </div>
         @endforelse
     </div>
     <x-slot:footer>
-        <x-button theme="secondary" data-bs-dismiss="modal" :label="__('ui.button.cancel')" />
+        <x-button theme="secondary" data-bs-dismiss="modal" :label="__('ui/button.cancel')" />
     </x-slot:footer>
 </x-modal>

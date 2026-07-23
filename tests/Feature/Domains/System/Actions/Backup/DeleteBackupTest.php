@@ -26,7 +26,7 @@ class DeleteBackupTest extends TestCase
 
         Storage::disk('test-disk')->put('test-backup/backup.zip', 'content');
 
-        $action = new DeleteBackup();
+        $action = new DeleteBackup;
         $action->execute($backup);
 
         Storage::disk('test-disk')->assertMissing('test-backup/backup.zip');

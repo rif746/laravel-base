@@ -1,17 +1,24 @@
 <?php
 
+use App\Domains\Account\Providers\AccountServiceProvider;
+use App\Domains\Identity\Providers\IdentityServiceProvider;
+use App\Domains\System\Providers\SystemServiceProvider;
+use App\Providers\AppServiceProvider;
+use App\Providers\UiServiceProvider;
+use OwenIt\Auditing\AuditingServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\UiServiceProvider::class,
-    OwenIt\Auditing\AuditingServiceProvider::class,
+    AppServiceProvider::class,
+    UiServiceProvider::class,
+    AuditingServiceProvider::class,
 
     // Domain: Account
-    App\Domains\Account\Providers\AccountServiceProvider::class,
+    AccountServiceProvider::class,
 
     // Domain: Identity
-    App\Domains\Identity\Providers\IdentityServiceProvider::class,
+    IdentityServiceProvider::class,
 
     // Domain: System
-    App\Domains\System\Providers\SystemServiceProvider::class,
+    SystemServiceProvider::class,
 
 ];

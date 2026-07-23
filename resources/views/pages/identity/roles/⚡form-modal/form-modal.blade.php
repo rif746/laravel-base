@@ -41,7 +41,7 @@
     </div>
 
     <x-slot:footer>
-        <x-button type="button" theme="secondary" data-bs-dismiss="modal" :label="__('ui.button.cancel')" />
-        <x-button type="submit" theme="primary" :label="__('ui.button.save')" />
+        <x-button type="button" theme="secondary" data-bs-dismiss="modal" :label="__('ui/button.cancel')" />
+        <x-button type="submit" theme="primary" :label="__('ui/button.save')" />
     </x-slot:footer>
 </x-modal>

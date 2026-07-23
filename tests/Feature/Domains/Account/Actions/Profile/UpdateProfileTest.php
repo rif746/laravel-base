@@ -18,7 +18,7 @@ test('it creates profile if it does not exist', function () {
         phoneNumber: '1234567890'
     );
 
-    $action = new UpdateProfile();
+    $action = new UpdateProfile;
     $action->execute($dto);
 
     expect(Profile::where('user_id', $user->id)->exists())->toBeTrue()
@@ -31,7 +31,7 @@ test('it updates profile if it exists', function () {
         'user_id' => $user->id,
         'gender' => GenderOption::MALE,
         'date_of_birth' => '1990-01-01',
-        'phone_number' => '1234567890'
+        'phone_number' => '1234567890',
     ]);
 
     $dto = new UpdateProfileDTO(
@@ -41,7 +41,7 @@ test('it updates profile if it exists', function () {
         phoneNumber: '0987654321'
     );
 
-    $action = new UpdateProfile();
+    $action = new UpdateProfile;
     $action->execute($dto);
 
     $profile = Profile::where('user_id', $user->id)->first();

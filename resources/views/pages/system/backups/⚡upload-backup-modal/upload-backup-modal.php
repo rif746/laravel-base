@@ -21,7 +21,7 @@ new class extends Component
     {
         $this->validate();
         $uploadBackupFile->execute($this->file);
-        $this->success(__('ui.crud.success.uploaded', ['resource' => __('resources.backup_file')]));
+        $this->success(__('ui/crud.success.uploaded', ['resource' => __('resources.backup_file')]));
         $this->dispatch('hide-backup-file-upload-modal');
         $this->dispatch('reload-backup-data');
     }

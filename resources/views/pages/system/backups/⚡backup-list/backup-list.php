@@ -18,7 +18,7 @@ use Livewire\Component;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 new #[Layout('components.layouts.app')]
-#[LayoutData(header: 'domains/system/seo.backup.title', breadcrumbs: ['ui.menu.dashboard' => 'dashboard', 'domains/system/seo.backup.title' => ''], context: 'user')]
+#[LayoutData(header: 'domains/system/seo.backup.title', breadcrumbs: ['ui/menu.dashboard' => 'dashboard', 'domains/system/seo.backup.title' => ''], context: 'user')]
 #[Seo(title: 'domains/system/seo.backup.title', description: 'domains/system/seo.backup.description', keywords: 'domains/system/seo.backup.keywords')]
 class extends Component
 {

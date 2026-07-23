@@ -14,7 +14,7 @@ test('it can purge a user', function () {
     Event::fake();
 
     $user = User::factory()->create();
-    $action = new PurgeUser();
+    $action = new PurgeUser;
 
     $action->execute($user);
 
@@ -27,7 +27,7 @@ test('it cannot purge an admin', function () {
     $user = User::factory()->create();
     $user->assignRole(RoleType::ADMIN->value);
 
-    $action = new PurgeUser();
+    $action = new PurgeUser;
 
     $this->expectException(Exception::class);
     $this->expectExceptionMessage(__('domains/identity/messages.exceptions.user_cannot_be_purged'));

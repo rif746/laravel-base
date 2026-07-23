@@ -15,7 +15,7 @@
                                                 @svg('tabler-edit', ['width' => 16, 'height' => 16])
                                             </button>
                                         </x-slot:action>
-                                        @if($field->inputType() == InputType::FILE)
+                                        @if($field->schema()->type->isFile())
                                             <img class="card-img mt-1 border"
                                                  src="{{ $this->settingsValue[$field->value] }}" alt="">
                                         @else

@@ -1,10 +1,9 @@
 <?php
 
+use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Enums\UserStatus;
 use App\Domains\Identity\Models\User;
-use App\Domains\Identity\Enums\RoleType;
 use Database\Seeders\RoleSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 test('user index page can be rendered', function () {
     $this->seed(RoleSeeder::class);
@@ -50,7 +49,7 @@ test('user datatable can be filtered by role', function () {
         ->withHeaders(['X-Requested-With' => 'XMLHttpRequest'])
         ->getJson(route('users.index', [
             'draw' => 1,
-            'role' => RoleType::ADMIN->value
+            'role' => RoleType::ADMIN->value,
         ]));
 
     $response->assertStatus(200)
@@ -62,19 +61,19 @@ test('user datatable can be filtered by status', function () {
     $this->seed(RoleSeeder::class);
     $activeUser = User::factory()->create([
         'name' => 'Active User',
-        'status' => UserStatus::ACTIVE
+        'status' => UserStatus::ACTIVE,
     ]);
     $activeUser->assignRole(RoleType::SYSTEM_ADMIN->value);
     $inactiveUser = User::factory()->create([
         'name' => 'Inactive User',
-        'status' => UserStatus::INACTIVE
+        'status' => UserStatus::INACTIVE,
     ]);
 
     $response = $this->actingAs($activeUser)
         ->withHeaders(['X-Requested-With' => 'XMLHttpRequest'])
         ->getJson(route('users.index', [
             'draw' => 1,
-            'status' => UserStatus::ACTIVE->value
+            'status' => UserStatus::ACTIVE->value,
         ]));
 
     $response->assertStatus(200)

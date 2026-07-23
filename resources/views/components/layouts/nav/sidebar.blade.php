@@ -13,11 +13,11 @@
     </div>
     <ul class="nav flex-column">
         <x-layouts.nav.sidebar.nav-link :route="route('dashboard')" icon="tabler-home"
-                                        :text="__('ui.menu.dashboard')" permission="dashboard.index" />
+                                        :text="__('ui/menu.dashboard')" permission="dashboard.index" />
         <x-layouts.nav.sidebar.nav-link :route="route('roles.index')" icon="tabler-shield"
-                                        :text="__('ui.menu.roles')" permission="role.viewAny" />
+                                        :text="__('ui/menu.roles')" permission="role.viewAny" />
         <x-layouts.nav.sidebar.nav-link :route="route('users.index')" icon="tabler-user"
-                                        :text="__('ui.menu.users')" permission="user.viewAny" />
+                                        :text="__('ui/menu.users')" permission="user.viewAny" />
     </ul>
 
 </aside>

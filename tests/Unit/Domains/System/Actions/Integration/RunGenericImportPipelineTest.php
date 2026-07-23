@@ -13,8 +13,10 @@ use Tests\TestCase;
 uses(TestCase::class, RefreshDatabase::class);
 
 test('it runs import pipeline', function () {
-    $dummyModel = new class extends Model {
+    $dummyModel = new class extends Model
+    {
         protected $guarded = [];
+
         protected $table = 'dummy_models';
     };
 
@@ -31,9 +33,9 @@ test('it runs import pipeline', function () {
 
     $mapper = Mockery::mock(DataPayloadMapper::class);
     $mapper->shouldReceive('getLookupKey')->andReturn('external_id');
-    $mapper->shouldReceive('transform')->twice()->andReturnUsing(fn($row) => $row);
+    $mapper->shouldReceive('transform')->twice()->andReturnUsing(fn ($row) => $row);
     $mapper->shouldReceive('updateOrCreateDomainState')->twice();
 
-    $action = new RunGenericImportPipeline();
+    $action = new RunGenericImportPipeline;
     $action->execute($rows, $mapper, get_class($dummyModel));
 });

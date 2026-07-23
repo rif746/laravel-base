@@ -16,16 +16,16 @@
                                                   x-on:click="$ask.livewire('toggle-user-status', {
                                                       id: null,
                                                       textMessage: '{{  __('domains/identity/pages.user_detail.confirmation.toggle_status') }}',
-                                                      confirmText: '{{ __('ui.button.yes') }}',
-                                                      cancelText: '{{ __('ui.button.no') }}',
+                                                      confirmText: '{{ __('ui/button.yes') }}',
+                                                      cancelText: '{{ __('ui/button.no') }}',
                                                   })" />
                             <x-menu.dropdown.divider />
                             <x-menu.dropdown.item :label="__('domains/identity/pages.user_detail.menu.password_reset')" icon="tabler-user-password" :icon-property="['width' => 16, 'height' => 16]"
                                                   x-on:click="$ask.livewire('send-password-reset', {
                                                       id: null,
                                                       textMessage: '{{  __('domains/identity/pages.user_detail.confirmation.send_password_reset') }}',
-                                                      confirmText: '{{ __('ui.button.yes') }}',
-                                                      cancelText: '{{ __('ui.button.no') }}',
+                                                      confirmText: '{{ __('ui/button.yes') }}',
+                                                      cancelText: '{{ __('ui/button.no') }}',
                                                   })" />
                         </x-menu.dropdown.container>
                     @endif

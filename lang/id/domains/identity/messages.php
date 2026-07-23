@@ -4,7 +4,7 @@ return [
     'success' => [
         'password_reset_link_sent' => 'Tautan atur ulang kata sandi telah dikirim.',
         'user_role_updated' => 'Peran pengguna telah diperbarui.',
-        'user_status_updated' => 'Status pengguna telah diperbarui.'
+        'user_status_updated' => 'Status pengguna telah diperbarui.',
     ],
     'exceptions' => [
         'failed_to_send_password_reset_link' => 'Gagal mengirim tautan atur ulang kata sandi.',

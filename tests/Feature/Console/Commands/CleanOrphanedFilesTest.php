@@ -2,10 +2,8 @@
 
 namespace Tests\Feature\Console\Commands;
 
-use App\Console\Commands\CleanOrphanedFiles;
 use App\Domains\System\Actions\Files\PruneOrphanedFiles;
 use Mockery;
-use Tests\TestCase;
 
 test('it cleans orphaned files', function () {
     $actionMock = Mockery::mock(PruneOrphanedFiles::class);
