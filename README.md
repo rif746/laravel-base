@@ -63,7 +63,10 @@ Available via Composer:
 - `composer dev`: Start development environment (Server + Queue + Logs + Vite).
 - `composer test`: Run the test suite.
 - `php artisan domain:make`: Custom generator for the DDD architecture (see Section 12).
-- `php artisan domain:new`: Scaffold a new domain with a ServiceProvider and RelationshipServiceProvider (see Section 12).
+- `php artisan domain:new`: Scaffold a new domain (see Section 12).
+- `php artisan domain:datatable`: Generate a domain-bound DataTable and its view (see Section 12).
+- `php artisan domain:make-page`: Generate a Blade view or Livewire modal in a domain (see Section 12).
+- `php artisan system:prune-files`: Clean up orphaned database records and stranded disk files (see Section 13).
 
 Available via NPM:
 - `npm run dev`: Start Vite dev server.
@@ -137,7 +140,7 @@ app/
 ├── Livewire/
 │   ├── Concerns/             <-- Shared Livewire traits (WithModal, WithToast)
 │   └── Forms/                <-- Livewire Form Objects
-├── Providers/                <-- AppServiceProvider, EventServiceProvider, UiServiceProvider
+├── Providers/                <-- AppServiceProvider, UiServiceProvider
 ├── UI/
 │   ├── Actions/              <-- UI-layer actions (SetSeoMetadata, ApplyLayoutMetadata)
 │   ├── Enums/                <-- UI-specific enums (FileType, InputType)
@@ -356,7 +359,6 @@ To maintain the strict folder structure of the Antigravity architecture, **do no
 
 ```bash
 php artisan domain:make {type} {domain} {name} [options]
-
 ```
 
 **Arguments:**
@@ -370,6 +372,28 @@ php artisan domain:make {type} {domain} {name} [options]
 * `--factory`: Generates an associated database factory (Models only).
 * `--migration`: Generates a database migration file (Models only).
 * `--model=`: Associates the export class with an Eloquent model (Exports only).
+
+### The `domain:datatable` Command
+
+Generates a Yajra DataTable service class inside `app/Http/DataTables/{Domain}/` and a corresponding index Blade view inside `resources/views/pages/{domainLower}/{capability}/`.
+
+**Signature:**
+
+```bash
+php artisan domain:datatable {name} {domain} [--model=]
+```
+
+### The `domain:make-page` Command
+
+Generates a Blade view or a unified Livewire modal component inside `resources/views/pages/{domain}/{capability}/`.
+
+**Signature:**
+
+```bash
+php artisan domain:make-page {domain} {capability} {name} [--modal]
+```
+
+* Use `--modal` to generate a "Lightning Component" (⚡) which includes both a PHP class and a Blade view in the same directory.
 
 ### The `domain:new` Command
 
@@ -385,9 +409,9 @@ php artisan domain:new {domain}
 
 To keep business logic decoupled from presentation layer gluing and cross-domain relational imports, domain modules utilize a tiered Service Provider hierarchy:
 
-1. **`{Domain}ServiceProvider`**: The entry point for the domain. It uses the `RegistersDomainEvents` trait to scan its local `$listen` array and wire up domain events. It also acts as the bootstrapper that registers the internal providers below.
+1. **`{Domain}ServiceProvider`**: The entry point for the domain. It uses the `RegistersDomainEvents` trait to scan its local `$listen` array and wire up domain events. It also acts as the bootstrapper that registers the internal providers below (like `RelationshipServiceProvider` and `ViewServiceProvider`).
 2. **`RelationshipServiceProvider`**: Dedicated exclusively to cross-domain relationships using Laravel's `Model::resolveRelationUsing()`. For example, binding a polymorphic relation between models of different domains. Since it is loaded automatically by the root provider, it avoids compile-time dependencies between domains.
-3. **`ViewServiceProvider`** (Optional presentation glue): Used to map UI components to data without polluting the root domain logic. Created via `domain:make` as needed:
+3. **`ViewServiceProvider`**: Used to map UI components to data (View Composers) without polluting the root domain logic. It is registered by default in the domain's main ServiceProvider. Create it via `domain:make` if it doesn't exist:
    ```bash
    php artisan domain:make view-provider {domain} ViewServiceProvider
    ```
@@ -468,15 +492,23 @@ $action->execute(
 
 To avoid polluting Laravel's global namespace with a junk `app/helpers.php` file, we maintain a strictly domain-bound helper file at `app/Domains/System/Helpers/asset.php`. It is autoloaded via `composer.json` and provides the `asset_static()` function to elegantly resolve public and private files in our Blade views.
 
+### File Reconciliation (Pruning)
+
+Over time, the database might contain records for files that no longer exist on disk, or the disk might contain files that are no longer referenced in the database. Use the prune command to reconcile these:
+
+```bash
+php artisan system:prune-files --disk=public --directory=uploads
+```
+
 ---
 
 ## 14. Global Settings & Application State
 
 Settings that dictate the runtime state of the application (Timezones, Localization, SEO tags) are managed by the `System` domain to ensure high performance and context awareness.
 
-* **Memoization & Singletons:** The `GetSystemSettings` query is registered as a Singleton in the `SystemServiceProvider`. It fetches data from the database/cache *once* and stores it in local PHP memory for the duration of the request.
+* **Memoization & Singletons:** The `GetSystemSettings` query is registered as a Singleton in the `SystemServiceProvider`. It fetches data from the database/cache *once* (using the cache key defined in `SystemSettings::$cacheName`) and stores it in local PHP memory for the duration of the request.
 * **Contextual Middlewares:** We use dedicated middlewares (`HandlePreferredLanguage`, `HandlePreferredTimezone`) to dynamically check the authenticated user's preferences, falling back to the global settings if no preference exists.
-* **View Composers:** Global layout variables (like Logos and Web Names) are injected globally via View Composers in the Service Provider, preventing repetitive `@inject` directives.
+* **View Composers:** Global layout variables (like Logos and Web Names) are injected globally via View Composers in the `ViewServiceProvider` (registered by the `SystemServiceProvider`), preventing repetitive `@inject` directives.
 
 ---
 

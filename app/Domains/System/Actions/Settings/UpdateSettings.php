@@ -33,6 +33,6 @@ class UpdateSettings
             ['value' => $value],
         );
 
-        cache()->forget('system_settings');
+        cache()->forget(SystemSettings::$cacheName);
     }
 }

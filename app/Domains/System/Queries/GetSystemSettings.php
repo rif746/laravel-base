@@ -21,7 +21,7 @@ class GetSystemSettings
             return $this->settings;
         }
 
-        $this->settings = Cache::rememberForever('system_settings', function () {
+        $this->settings = Cache::rememberForever(SystemSettings::$cacheName, function () {
             $settings = SystemSettings::pluck('value', 'key')->toArray();
             $finalSettings = [];
             foreach (SystemSettingKey::cases() as $key) {

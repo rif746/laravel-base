@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 #[WithoutTimestamps]
 class SystemSettings extends Model
 {
+    public static string $cacheName = 'system-settings';
     /**
      * @throws Exception
      */

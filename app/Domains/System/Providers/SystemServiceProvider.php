@@ -32,6 +32,7 @@ class SystemServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RelationshipServiceProvider::class);
+        $this->app->register(ViewServiceProvider::class);
 
         // Tell Laravel: "Whenever someone asks for GetSystemSettings,
         // give them the exact same object instance for the entire request."
