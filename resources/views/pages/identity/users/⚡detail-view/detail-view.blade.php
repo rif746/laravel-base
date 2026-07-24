@@ -4,7 +4,7 @@
         <x-card title="{{ __('domains/identity/pages.user_detail.account_info') }}">
             <x-slot:actions>
                 <div class="d-flex flex-row gap-1 align-items-center">
-                    <x-badge :label="$this->user->status->label()" :variant="$this->user->status->badgeVariant()" />
+                    <x-badge :label="$this->user->status->label()" :variant="$this->user->status->variant()" />
                     @if(!$this->user->hasRole([RoleType::SYSTEM_ADMIN, RoleType::ADMIN]))
                         <x-menu.dropdown.container class="btn-sm" icon="tabler-dots-vertical" :icon-property="[
                                                         'width' => 16,

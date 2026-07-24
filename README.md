@@ -293,9 +293,23 @@ Listeners describe the **active reaction** to an event using an imperative verb 
 
 **Rule:** Never suffix Listeners with `Listener` in the class name. The namespace `Listeners\` already communicates the type.
 
----
+### 10.7 Action Verb & Intent Guide
 
-## 11. AI Agent Prompt (System Instructions)
+To maintain consistency in naming Actions, use the following standard verb prefixes to communicate the specific lifecycle and impact of the operation.
+
+| Verb Prefix | Intent Scope | Real-World Context Example |
+| --- | --- | --- |
+| **`Initialize`** / **`Register`** | Declares the setup of an operational business track or engine. | `RegisterSelfServiceUser`, `InitializeSystemCluster` |
+| **`Draft`** | Spawns a new entity row but locks it out of live visibility as a pending draft. | `DraftSystemNotification`, `DraftIdentityAccessPolicy` |
+| **`Publish`** / **`Activate`** | Handles state transition to shift an existing record to a live production state. | `ActivateUserStatus`, `PublishAnnouncement` |
+| **`Define`** | Configures static lookups or structural reference dictionary elements. | `CreateSystemRole`, `DefineIdentityPermission` |
+| **`Adjust`** / **`Modify`** | Performs precise partial modifications or data tuning on active records. | `UpdateUserSettings`, `AdjustBackupFrequency` |
+| **`Replace`** / **`Overwrite`** | Performs a full destructive replacement of an entry's total data layout. | `ReplaceSingleFile`, `OverwriteDomainSetting` |
+| **`Synchronize`** | Forces full state matching with an authoritative external system registry. | `SyncBackupCatalog`, `SynchronizeIdentityData` |
+| **`Suspend`** / **`Pause`** | Halts access temporarily while leaving underlying structures fully intact. | `SuspendUser`, `PauseSystemJob` |
+| **`Archive`** | Executes soft-deletion, shifting records permanently to history ledgers. | `ArchiveAuditLog`, `ArchiveProcessedImport` |
+
+---
 
 **For Developers:** Copy and paste the block below into your AI agent's chat or system instructions before asking it to write or refactor code in this repository.
 
@@ -502,7 +516,61 @@ php artisan system:prune-files --disk=public --directory=uploads
 
 ---
 
-## 14. Global Settings & Application State
+## 14. Multi-Language Models (The HasTranslation Trait)
+
+For models that require content in multiple languages (e.g., Categories or Products), we use the `HasTranslation` trait. This keeps the main table clean and follows a normalized schema for localizable content.
+
+### The Translation Schema
+
+Translations are stored in a dedicated table named `{singular_table}_translations` (e.g., `category_translations`). This table must contain:
+* `locale`: The language code (e.g., `en`, `id`).
+* `{singular_table}_id`: The foreign key to the parent model.
+* The translatable columns (e.g., `name`, `description`).
+
+### Implementation
+
+1. Use the `HasTranslation` trait in your model.
+2. Define the `$translatable` array containing the names of the fields.
+
+```php
+namespace App\Domains\Catalog\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use App\Domains\System\Traits\Model\HasTranslation;
+
+class Category extends Model
+{
+    use HasTranslation;
+
+    protected array $translatable = ['name', 'description'];
+}
+```
+
+### Usage
+
+The trait automatically intercepts getters and setters to handle the current application locale.
+
+```php
+$category = Category::first();
+
+// Returns the name for the current App::getLocale()
+echo $category->name; 
+
+// Sets the name for the current locale
+$category->name = 'Electronic';
+
+// Filling multiple languages at once
+$category->fill([
+    'en' => ['name' => 'Electronic'],
+    'id' => ['name' => 'Elektronik'],
+]);
+
+$category->save(); // Automatically saves to category_translations
+```
+
+---
+
+## 15. Global Settings & Application State
 
 Settings that dictate the runtime state of the application (Timezones, Localization, SEO tags) are managed by the `System` domain to ensure high performance and context awareness.
 
@@ -512,7 +580,7 @@ Settings that dictate the runtime state of the application (Timezones, Localizat
 
 ---
 
-## 15. Audit Logging & Tracking
+## 16. Audit Logging & Tracking
 
 All critical database mutations are tracked to maintain a compliant historical ledger.
 
@@ -521,7 +589,7 @@ All critical database mutations are tracked to maintain a compliant historical l
 
 ---
 
-## 16. Dynamic UIs & Livewire Interoperability
+## 17. Dynamic UIs & Livewire Interoperability
 
 When building data-driven interfaces (like dynamic settings forms), we utilize the **Renderable Enum** pattern combined with Laravel's native dynamic components.
 
@@ -531,7 +599,7 @@ When building data-driven interfaces (like dynamic settings forms), we utilize t
 
 ---
 
-## 17. Excel Import & Export
+## 18. Excel Import & Export
 
 The Laravel component `resources/views/components/datatables/⚡excel-manager.blade.php` (registered as `<livewire:datatables.excel-manager>`) provides a reusable, queue-backed mechanism for importing and exporting Excel files in any DataTable page. It is a **unified single-file Laravel component** — PHP class logic and Blade template co-exist in the same file, following the `⚡` naming convention used across all Laravel components in this project.
 
@@ -631,13 +699,13 @@ Both Mailable classes live in the **System domain**, not the root `App\Mail\` na
 
 ---
 
-## 18. Testing
+## 19. Testing
 
 We use [Pest PHP](https://pestphp.com) for our test suite. Please refer to [TESTING.md](TESTING.md) for detailed instructions on running, structuring, and writing tests.
 
 ---
 
-## 19. Environment Variables
+## 20. Environment Variables
 
 Key variables used in `.env`:
 
@@ -652,7 +720,7 @@ See `.env.example` for the full list of available options.
 
 ---
 
-## 20. License
+## 21. License
 
 This project is licensed under the **MIT License**.
 

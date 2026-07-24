@@ -3,18 +3,15 @@
 namespace App\UI\Actions;
 
 use Illuminate\Support\Facades\Lang;
-use ReflectionClass;
-use ReflectionMethod;
-use ReflectionProperty;
 use Throwable;
 
 class ResolveDynamicText
 {
     /**
-     * Cache store to prevent duplicate reflection lookups and redundant query executions
-     * Structure: [object_hash_or_array_id => [context_key => resolved_object_or_scalar]]
+     * Cache store indexed by object hash and string path to prevent duplicate evaluation
+     * Structure: [context_hash => [path_string => resolved_scalar_string]]
      */
-    private array $resolvedContextCache = [];
+    private array $resolvedPathCache = [];
 
     public function execute(?string $value, array|object $context, ?string $contextTarget = null): ?string
     {
@@ -37,14 +34,7 @@ class ResolveDynamicText
         $bindings = [];
         if (! empty($matches[1])) {
             foreach ($matches[1] as $variableName) {
-                $targetProperty = $variableName;
-                $objectKey = $contextTarget;
-
-                $bindings[$variableName] = $this->resolveNestedValue(
-                    $objectKey ?? $variableName,
-                    $objectKey ? $targetProperty : null,
-                    $data
-                );
+                $bindings[$variableName] = $this->resolveNestedValue($data, $variableName, $contextTarget);
             }
         }
 
@@ -53,94 +43,58 @@ class ResolveDynamicText
 
     private function resolveExplicitPlaceholders(string $text, array|object $data, ?string $contextTarget): string
     {
-        preg_match_all('/\{([^}]+)\}/', $text, $matches);
+        preg_match_all('/\{([^}]+)}/', $text, $matches);
         if (empty($matches[1])) {
             return $text;
         }
 
         foreach ($matches[1] as $placeholder) {
-            if (str_contains($placeholder, '.')) {
-                [$objectName, $property] = explode('.', $placeholder, 2);
-            } else {
-                $objectName = $contextTarget ?? $placeholder;
-                $property = $contextTarget ? $placeholder : null;
-            }
-
-            $replacementValue = $this->resolveNestedValue($objectName, $property, $data);
+            $replacementValue = $this->resolveNestedValue($data, $placeholder, $contextTarget);
             $text = str_replace("{{$placeholder}}", $replacementValue, $text);
         }
 
         return $text;
     }
 
-    private function resolveNestedValue(string $objectName, ?string $property, array|object $data): string
+    private function resolveNestedValue(array|object $data, string $path, ?string $contextTarget = null): string
     {
-        // 1. Generate a unique cache signature for the current payload state
+        // 1. Generate a stable cache key representing the current base context state
         $contextKey = is_object($data) ? spl_object_hash($data) : md5(serialize($data));
+        $cachePathKey = "{$contextTarget}.{$path}";
 
-        // 2. Warm up the context cache exactly once per component/request
-        if (! isset($this->resolvedContextCache[$contextKey])) {
-            $this->resolvedContextCache[$contextKey] = is_object($data)
-                ? $this->extractInspectableObjects($data)
-                : $data;
+        // 2. Return early if this exact path combination has already been evaluated on this request
+        if (isset($this->resolvedPathCache[$contextKey][$cachePathKey])) {
+            return $this->resolvedPathCache[$contextKey][$cachePathKey];
         }
 
-        $cachedContext = $this->resolvedContextCache[$contextKey];
-        $target = null;
+        try {
+            $resolved = null;
 
-        // 3. Look up the cached target context safely without firing new database calls
-        if (isset($cachedContext[$objectName])) {
-            $target = $cachedContext[$objectName];
-        } elseif ($property === null && isset($cachedContext[$objectName]) && is_scalar($cachedContext[$objectName])) {
-            return (string) $cachedContext[$objectName];
-        }
+            // SCENARIO A: Look for the context wrapper object first (e.g. 'admissionSchedule')
+            // Using data_get directly on the base container honors custom dynamic getters/methods natively
+            $targetObject = ! empty($contextTarget) ? data_get($data, $contextTarget) : null;
 
-        if ($property === null) {
-            return $target && is_scalar($target) ? (string) $target : '';
-        }
-
-        if ($target && is_object($target) && isset($target->{$property})) {
-            return (string) $target->{$property};
-        }
-        if ($target && is_array($target) && isset($target[$property])) {
-            return (string) $target[$property];
-        }
-
-        return '';
-    }
-
-    /**
-     * Reflects and extracts object contexts ONCE, caching the output in memory.
-     */
-    private function extractInspectableObjects(object $component): array
-    {
-        $objects = [];
-        $reflection = new ReflectionClass($component);
-
-        // Scan Public Properties
-        foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $prop) {
-            $value = $prop->getValue($component);
-            $objects[$prop->getName()] = $value;
-        }
-
-        // Scan Public Methods (e.g. Livewire 4 #[Computed] properties)
-        foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-            if ($method->getNumberOfParameters() === 0 && ! $method->isStatic()) {
-                try {
-                    $name = $method->getName();
-                    // Ignore internal framework overrides and lifecycle names
-                    if (! str_starts_with($name, '__') && ! str_starts_with($name, 'get') && ! str_contains($name, 'rendering')) {
-
-                        // 💡 THIS WAS THE CULPRIT: Invoking this on every string match triggered query loops.
-                        // Now it runs exactly once per request render pass, and the model is stored in memory.
-                        $objects[$name] = $component->{$name};
-                    }
-                } catch (Throwable $e) {
-                    continue;
-                }
+            if ($targetObject !== null) {
+                // Read the relation path directly from the live object instance (triggers magic getters/relations)
+                $resolved = data_get($targetObject, $path);
             }
-        }
 
-        return $objects;
+            // SCENARIO B: Fallback to evaluating from the root container context directly
+            if ($resolved === null || $resolved === '') {
+                $resolved = data_get($data, $path);
+            }
+
+            // Normalize final output value to a string format
+            $output = is_scalar($resolved) ? (string) $resolved : '';
+
+            // Cache the final resolved string output
+            $this->resolvedPathCache[$contextKey][$cachePathKey] = $output;
+
+            return $output;
+
+        } catch (Throwable $e) {
+            // Graceful fallback if anything unexpected misfires during dynamic resolution
+            return '';
+        }
     }
 }

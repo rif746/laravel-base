@@ -292,9 +292,23 @@ Listener jelasin **reaksi aktif** terhadap suatu event pake kata kerja perintah.
 
 **Aturan:** Jangan pernah pake akhiran `Listener` di nama kelasnya. Namespace `Listeners\` udah jelasin tipenya.
 
----
+### 10.7 Panduan Kata Kerja Action & Niat Bisnis
 
-## 11. Prompt Agen AI (Instruksi Sistem)
+Untuk menjaga konsistensi dalam penamaan Action, gunakan awalan kata kerja standar berikut untuk menjelaskan siklus hidup dan dampak spesifik dari operasi tersebut.
+
+| Awalan Kata Kerja | Lingkup Niat (Intent) | Contoh Konteks Nyata |
+| --- | --- | --- |
+| **`Initialize`** / **`Register`** | Mendeklarasikan persiapan jalur bisnis operasional atau engine. | `RegisterSelfServiceUser`, `InitializeSystemCluster` |
+| **`Draft`** | Membuat baris entitas baru tetapi menguncinya agar tidak terlihat di sistem live (sebagai draf yang tertunda). | `DraftSystemNotification`, `DraftIdentityAccessPolicy` |
+| **`Publish`** / **`Activate`** | Menangani transisi status untuk mengubah record yang ada menjadi status live/produksi. | `ActivateUserStatus`, `PublishAnnouncement` |
+| **`Define`** | Mengonfigurasi data lookup statis atau elemen referensi struktural. | `CreateSystemRole`, `DefineIdentityPermission` |
+| **`Adjust`** / **`Modify`** | Melakukan modifikasi parsial yang presisi atau penyesuaian data pada record aktif. | `UpdateUserSettings`, `AdjustBackupFrequency` |
+| **`Replace`** / **`Overwrite`** | Melakukan penggantian destruktif penuh atas seluruh tata letak data suatu entitas. | `ReplaceSingleFile`, `OverwriteDomainSetting` |
+| **`Synchronize`** | Memaksa penyamaan status penuh dengan registri sistem eksternal yang otoritatif. | `SyncBackupCatalog`, `SynchronizeIdentityData` |
+| **`Suspend`** / **`Pause`** | Menghentikan akses untuk sementara sambil membiarkan struktur dasar tetap utuh. | `SuspendUser`, `PauseSystemJob` |
+| **`Archive`** | Menjalankan penghapusan lunak (soft-deletion), memindahkan record secara permanen ke ledger riwayat. | `ArchiveAuditLog`, `ArchiveProcessedImport` |
+
+---
 
 **Buat Developer:** Copy-paste blok di bawah ini ke chat agen AI kamu atau ke instruksi sistem sebelum minta AI-nya buat nulis atau ngerubah kode di repo ini.
 
@@ -500,7 +514,61 @@ php artisan system:prune-files --disk=public --directory=uploads
 
 ---
 
-## 14. Setting Global & State Aplikasi
+## 14. Model Multi-Bahasa (Trait HasTranslation)
+
+Untuk model yang butuh konten dalam beberapa bahasa (misal: Kategori atau Produk), kita pake trait `HasTranslation`. Ini bikin tabel utama tetep bersih dan ngikutin skema ternormalisasi buat konten yang bisa diterjemahin.
+
+### Skema Terjemahan
+
+Terjemahan disimpan di tabel khusus yang dinamain `{singular_table}_translations` (misal: `category_translations`). Tabel ini harus punya:
+* `locale`: Kode bahasa (misal: `en`, `id`).
+* `{singular_table}_id`: Foreign key ke model induk.
+* Kolom yang diterjemahin (misal: `name`, `description`).
+
+### Implementasi
+
+1. Pake trait `HasTranslation` di model kamu.
+2. Definisiin array `$translatable` yang isinya nama-nama field yang mau diterjemahin.
+
+```php
+namespace App\Domains\Catalog\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use App\Domains\System\Traits\Model\HasTranslation;
+
+class Category extends Model
+{
+    use HasTranslation;
+
+    protected array $translatable = ['name', 'description'];
+}
+```
+
+### Cara Pake
+
+Trait ini otomatis nanganin getter dan setter sesuai sama locale aplikasi yang lagi aktif.
+
+```php
+$category = Category::first();
+
+// Balikin nama sesuai App::getLocale() yang aktif
+echo $category->name; 
+
+// Set nama buat locale yang aktif
+$category->name = 'Electronic';
+
+// Isi beberapa bahasa sekaligus
+$category->fill([
+    'en' => ['name' => 'Electronic'],
+    'id' => ['name' => 'Elektronik'],
+]);
+
+$category->save(); // Otomatis simpen ke category_translations
+```
+
+---
+
+## 15. Setting Global & State Aplikasi
 
 Settingan yang nentuin status jalan aplikasi (Zona Waktu, Bahasa, Tag SEO) diurus sama domain `System` biar cepet dan kontekstual.
 
@@ -510,7 +578,7 @@ Settingan yang nentuin status jalan aplikasi (Zona Waktu, Bahasa, Tag SEO) diuru
 
 ---
 
-## 15. Audit Log & Pelacakan
+## 16. Audit Log & Pelacakan
 
 Semua perubahan database yang penting dicatat biar ada riwayatnya.
 
@@ -519,7 +587,7 @@ Semua perubahan database yang penting dicatat biar ada riwayatnya.
 
 ---
 
-## 16. UI Dinamis & Livewire
+## 17. UI Dinamis & Livewire
 
 Pas bikin form yang dinamis (kayak settingan), kita pake pola **Renderable Enum** bareng komponen dinamis Laravel.
 
@@ -529,7 +597,7 @@ Pas bikin form yang dinamis (kayak settingan), kita pake pola **Renderable Enum*
 
 ---
 
-## 17. Impor & Ekspor Excel
+## 18. Impor & Ekspor Excel
 
 Komponen `⚡excel-manager.blade.php` (pakenya `<livewire:datatables.excel-manager>`) nyediain fitur impor/ekspor Excel yang jalan di background (*queue*) buat halaman DataTable apa pun. Ini pake pola **single-file component** — logika PHP dan Blade-nya jadi satu di file yang sama, pake simbol `⚡` sesuai standar komponen di proyek ini.
 
@@ -629,13 +697,13 @@ Semua kelas Mailable ada di **domain System**, bukan di namespace `App\Mail\` bi
 
 ---
 
-## 18. Testing
+## 19. Testing
 
 Kita pake [Pest PHP](https://pestphp.com) buat ngetes kode. Silakan cek [TESTING.md](TESTING.md) buat instruksi lengkap soal cara jalanin, struktur, dan nulis tes.
 
 ---
 
-## 19. Variabel Environment
+## 20. Variabel Environment
 
 Variabel penting di file `.env`:
 
@@ -650,6 +718,6 @@ Cek `.env.example` buat liat daftar lengkapnya.
 
 ---
 
-## 20. Lisensi
+## 21. Lisensi
 
 Proyek ini pake **Lisensi MIT**.

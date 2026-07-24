@@ -19,7 +19,7 @@
     </template>
 
     <livewire:pages::identity.users.form-modal/>
-    <livewire:pages::system.audit.audit-view-modal key-name="ulid" model="\App\Domains\Identity\Models\User::class"
+    <livewire:pages::system.audit.audit-view-modal key-name="ulid" :model="\App\Domains\Identity\Models\User::class"
                                                    translation="domains/identity/field.user."/>
     <livewire:datatables.delete-action key-name="ulid" :model="\App\Domains\Identity\Models\User::class"
                                        :action="\App\Domains\Identity\Actions\Governance\RemoveUser::class"/>
