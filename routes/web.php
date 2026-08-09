@@ -1,7 +1,7 @@
 <?php
 
-use App\Attributes\LayoutData;
-use App\Attributes\Seo;
+use App\Attributes\Ui\LayoutData;
+use App\Attributes\Ui\Seo;
 use App\Http\Controllers\Web\Account\ProfileController;
 use App\Http\Controllers\Web\Identity\RoleController;
 use App\Http\Controllers\Web\Identity\UserController;

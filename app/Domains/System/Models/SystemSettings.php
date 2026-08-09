@@ -3,7 +3,6 @@
 namespace App\Domains\System\Models;
 
 use App\Domains\System\Enums\SystemSettingKey;
-use App\UI\Enums\InputType;
 use Exception;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
@@ -14,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 class SystemSettings extends Model
 {
     public static string $cacheName = 'system-settings';
+
     /**
      * @throws Exception
      */

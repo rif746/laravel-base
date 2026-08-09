@@ -2,14 +2,13 @@
 
 namespace Tests\Unit\Http\Middleware;
 
-use App\Attributes\LayoutData;
+use App\Attributes\Ui\LayoutData;
 use App\Http\Middleware\HandleLayoutDataAttributes;
 use App\UI\Actions\ApplyLayoutMetadata;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Routing\Route;
-use Illuminate\Routing\ViewController;
 use Mockery;
 use Tests\TestCase;
 

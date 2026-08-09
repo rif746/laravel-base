@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Concerns;
 
-use App\Attributes\LayoutData;
+use App\Attributes\Ui\LayoutData;
 use App\UI\Actions\ApplyLayoutMetadata;
 use ReflectionClass;
 

@@ -1,6 +1,6 @@
 <?php
 
-use App\Attributes\Seo;
+use App\Attributes\Ui\Seo;
 use App\Livewire\Concerns\HasSeoAttributes;
 use App\Livewire\Forms\Auth\ConfirmPasswordForm;
 use Livewire\Attributes\Layout;

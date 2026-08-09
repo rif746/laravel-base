@@ -2,7 +2,7 @@
 
 namespace App\UI\Actions;
 
-use App\Attributes\LayoutData;
+use App\Attributes\Ui\LayoutData;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 

@@ -6,7 +6,7 @@ use App\UI\Enums\Concerns\InteractsWithLabels;
 use App\UI\Enums\Contracts\HasLabel;
 use App\UI\Enums\Contracts\HasSchema;
 use App\UI\Enums\InputType;
-use App\UI\Support\Settings\SettingSchema;
+use App\UI\Support\Schema\InputSchema;
 use Illuminate\Validation\Rule;
 
 enum UserSettingKey: string implements HasLabel, HasSchema
@@ -17,7 +17,7 @@ enum UserSettingKey: string implements HasLabel, HasSchema
     case LANGUAGE = 'language';
     case TIMEZONE = 'timezone';
 
-    public function schema(): SettingSchema
+    public function schema(): InputSchema
     {
         $options = match ($this) {
             self::LANGUAGE => [
@@ -42,7 +42,7 @@ enum UserSettingKey: string implements HasLabel, HasSchema
             self::TIMEZONE => 'UTC',
         };
 
-        return SettingSchema::make(InputType::SELECT, ['required', Rule::in(array_keys($options))])
+        return InputSchema::make(InputType::SELECT, ['required', Rule::in(array_keys($options))])
             ->default($default)
             ->options($options);
     }

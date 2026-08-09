@@ -2,7 +2,7 @@
 
 namespace App\UI\Enums\Contracts;
 
-use App\UI\Support\Settings\BaseSchema;
+use App\UI\Support\Schema\BaseSchema;
 
 interface HasSchema
 {

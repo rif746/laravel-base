@@ -1,6 +1,6 @@
 <?php
 
-use App\Attributes\Seo;
+use App\Attributes\Ui\Seo;
 use App\Domains\Identity\Actions\Onboarding\ResendVerificationEmail;
 use App\Livewire\Concerns\HasSeoAttributes;
 use App\Livewire\Concerns\WithToast;

@@ -1,7 +1,7 @@
 <?php
 
-use App\Attributes\LayoutData;
-use App\Attributes\Seo;
+use App\Attributes\Ui\LayoutData;
+use App\Attributes\Ui\Seo;
 use App\Domains\System\Actions\Backup\DeleteBackup;
 use App\Domains\System\Actions\Backup\SystemBackup;
 use App\Domains\System\Actions\Backup\SystemRestore;

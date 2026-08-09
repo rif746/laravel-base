@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\UI\Actions;
 
-use App\Attributes\LayoutData;
+use App\Attributes\Ui\LayoutData;
 use App\UI\Actions\ApplyLayoutMetadata;
 use App\UI\Actions\ResolveDynamicText;
 use Illuminate\Support\Facades\View;

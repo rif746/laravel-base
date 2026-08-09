@@ -2,10 +2,12 @@
 
 namespace App\Domains\System\Traits\Model;
 
+use App\Attributes\Model\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use ReflectionClass;
 
 /**
  * @mixin Model
@@ -24,6 +26,11 @@ trait HasTranslation
     protected bool $translationsLoaded = false;
 
     /**
+     * Track the translatable attributes
+     */
+    protected array $translatableAttributes = [];
+
+    /**
      * Intercept the standard Eloquent model booting pipeline.
      */
     public static function bootHasTranslation(): void
@@ -37,6 +44,29 @@ trait HasTranslation
         static::deleted(function (self $model) {
             $model->purgeTranslations();
         });
+    }
+
+    /**
+     * This method runs automatically when a new model instance is constructed.
+     */
+    public function initializeHasTranslation(): void
+    {
+        if (isset($this->translatable)) {
+            $this->translatableAttributes[$this->getMorphClass()] = $this->translatable;
+
+            return;
+        }
+
+        $reflection = new ReflectionClass($this);
+        $attributes = $reflection->getAttributes(Translatable::class);
+
+        if (! empty($attributes)) {
+            /** @var Translatable $translatableAttribute */
+            $translatableAttribute = $attributes[0]->newInstance();
+
+            // Set the property on the active model instance
+            $this->translatableAttributes[$this->getMorphClass()] = $translatableAttribute->fields;
+        }
     }
 
     /**
@@ -127,7 +157,7 @@ trait HasTranslation
      */
     public function isTranslationAttribute(string $key): bool
     {
-        return isset($this->translatable) && in_array($key, $this->translatable);
+        return isset($this->translatableAttributes[$this->getMorphClass()]) && in_array($key, $this->translatableAttributes[$this->getMorphClass()]);
     }
 
     /**

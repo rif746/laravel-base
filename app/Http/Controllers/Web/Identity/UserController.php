@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Web\Identity;
 
-use App\Attributes\LayoutData;
-use App\Attributes\Seo;
+use App\Attributes\Ui\LayoutData;
+use App\Attributes\Ui\Seo;
 use App\Http\Controllers\Controller;
 use App\Http\DataTables\Identity\UserDataTable;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\UI\Support\Settings;
+namespace App\UI\Support\Schema;
 
 use App\UI\Enums\InputType;
 
-readonly class SettingSchema implements BaseSchema
+readonly class InputSchema implements BaseSchema
 {
     public function __construct(
         public InputType $type,

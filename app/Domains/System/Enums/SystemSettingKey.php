@@ -8,7 +8,7 @@ use App\UI\Enums\Contracts\HasLabel;
 use App\UI\Enums\Contracts\HasSchema;
 use App\UI\Enums\FileType;
 use App\UI\Enums\InputType;
-use App\UI\Support\Settings\SettingSchema;
+use App\UI\Support\Schema\InputSchema;
 
 enum SystemSettingKey: string implements HasLabel, HasSchema
 {
@@ -30,7 +30,7 @@ enum SystemSettingKey: string implements HasLabel, HasSchema
     /**
      * Centralized Schema Definitions
      */
-    public function schema(): SettingSchema
+    public function schema(): InputSchema
     {
         $imageRules = ['required', 'file', 'mimetypes:'.implode(',', FileType::IMAGE->mimeType()), 'max:1024'];
         $imageAttrs = [
@@ -43,23 +43,23 @@ enum SystemSettingKey: string implements HasLabel, HasSchema
         ];
 
         return match ($this) {
-            self::WEB_NAME => SettingSchema::make(InputType::TEXTLINE)->default('Acme Inc'),
-            self::WEB_DESCRIPTION => SettingSchema::make(InputType::TEXTAREA),
-            self::WEB_ADDRESS => SettingSchema::make(InputType::TEXTLINE)->default('123 Main St, Anytown, USA'),
-            self::WEB_PHONE => SettingSchema::make(InputType::TEXTLINE)->default('+1234567890'),
-            self::WEB_EMAIL => SettingSchema::make(InputType::TEXTLINE)->default('acme@web.io'),
+            self::WEB_NAME => InputSchema::make(InputType::TEXTLINE)->default('Acme Inc'),
+            self::WEB_DESCRIPTION => InputSchema::make(InputType::TEXTAREA),
+            self::WEB_ADDRESS => InputSchema::make(InputType::TEXTLINE)->default('123 Main St, Anytown, USA'),
+            self::WEB_PHONE => InputSchema::make(InputType::TEXTLINE)->default('+1234567890'),
+            self::WEB_EMAIL => InputSchema::make(InputType::TEXTLINE)->default('acme@web.io'),
 
             self::WEB_LOGO,
-            self::WEB_FAVICON => SettingSchema::make(InputType::FILE, $imageRules)->attributes($imageAttrs),
+            self::WEB_FAVICON => InputSchema::make(InputType::FILE, $imageRules)->attributes($imageAttrs),
 
-            self::DEFAULT_LANGUAGE => SettingSchema::make(InputType::SELECT)
+            self::DEFAULT_LANGUAGE => InputSchema::make(InputType::SELECT)
                 ->default('en')
                 ->options([
                     'en' => __('domains/system/enum.system_setting_key.options.default_language.en'),
                     'id' => __('domains/system/enum.system_setting_key.options.default_language.id'),
                 ]),
 
-            self::TIMEZONE => SettingSchema::make(InputType::SELECT)
+            self::TIMEZONE => InputSchema::make(InputType::SELECT)
                 ->default('UTC')
                 ->options([
                     'UTC' => __('domains/system/enum.system_setting_key.options.timezone.UTC'),
@@ -68,7 +68,7 @@ enum SystemSettingKey: string implements HasLabel, HasSchema
                     'Asia/Jayapura' => __('domains/system/enum.system_setting_key.options.timezone.Asia/Jayapura'),
                 ]),
 
-            default => SettingSchema::make(InputType::TEXTLINE)->rules(['nullable', 'string']),
+            default => InputSchema::make(InputType::TEXTLINE)->rules(['nullable', 'string']),
         };
     }
 
@@ -81,7 +81,7 @@ enum SystemSettingKey: string implements HasLabel, HasSchema
     {
         return array_merge($this->schema()->attributes, [
             'label' => $this->label(),
-            'options' => $this->schema()->type->isSelect() ? $this->schema()->options : ''
+            'options' => $this->schema()->type->isSelect() ? $this->schema()->options : '',
         ]);
     }
 

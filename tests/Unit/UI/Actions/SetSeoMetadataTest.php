@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\UI\Actions;
 
-use App\Attributes\Seo;
+use App\Attributes\Ui\Seo;
 use App\UI\Actions\ResolveDynamicText;
 use App\UI\Actions\SetSeoMetadata;
 use Artesaos\SEOTools\Facades\SEOTools;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Attributes\LayoutData;
+use App\Attributes\Ui\LayoutData;
 use App\UI\Actions\ApplyLayoutMetadata;
 use Closure;
 use Exception;

@@ -1,6 +1,6 @@
 <?php
 
-use App\Attributes\Seo;
+use App\Attributes\Ui\Seo;
 use App\Domains\Identity\Actions\Passwords\ResetUserPassword;
 use App\Domains\Identity\DTOs\Passwords\ResetPasswordDTO;
 use App\Livewire\Concerns\HasSeoAttributes;

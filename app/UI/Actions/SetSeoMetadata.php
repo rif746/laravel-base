@@ -2,7 +2,7 @@
 
 namespace App\UI\Actions;
 
-use App\Attributes\Seo;
+use App\Attributes\Ui\Seo;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Http\Request;
 

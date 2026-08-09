@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Attributes\Seo;
+use App\Attributes\Ui\Seo;
 use App\UI\Actions\SetSeoMetadata;
 use Closure;
 use Exception;

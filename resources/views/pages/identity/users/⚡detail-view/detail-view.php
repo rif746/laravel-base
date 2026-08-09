@@ -1,7 +1,7 @@
 <?php
 
-use App\Attributes\LayoutData;
-use App\Attributes\Seo;
+use App\Attributes\Ui\LayoutData;
+use App\Attributes\Ui\Seo;
 use App\Domains\Identity\Actions\Governance\ActivateUserStatus;
 use App\Domains\Identity\Actions\Governance\SuspendUser;
 use App\Domains\Identity\Actions\Passwords\SendPasswordResetLink;
