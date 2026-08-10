@@ -2,9 +2,9 @@
 <x-modal id="update-setting-modal" :title="$this->title" form wire:submit="save" livewire>
     <div class="row">
         <div class="col-sm-12" wire:key="{{ $settingKey }}">
-            @if($this->settingEnum)
-                <x-dynamic-component :component="$this->settingEnum?->schema()->type->component()"
-                                     :attributes="new Illuminate\View\ComponentAttributeBag($this->settingEnum?->inputAttributes())"
+            @if($this->inputField)
+                <x-dynamic-component :component="$this->inputField?->type->component()"
+                                     :attributes="new Illuminate\View\ComponentAttributeBag($this->inputField?->attributes)"
                                      wire:model="settingValue"/>
             @endif
         </div>

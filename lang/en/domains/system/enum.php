@@ -1,8 +1,13 @@
 <?php
 
+use App\Domains\System\Enums\LifecycleStatus;
 use App\Domains\System\Enums\SystemSettingKey;
 
 return [
+    'lifecycle_status' => [
+        LifecycleStatus::ACTIVE->value => 'Active',
+        LifecycleStatus::INACTIVE->value => 'Inactive',
+    ],
     'system_setting_key' => [
         SystemSettingKey::WEB_NAME->value => 'Website Name',
         SystemSettingKey::WEB_DESCRIPTION->value => 'Website Description',
@@ -15,17 +20,17 @@ return [
         SystemSettingKey::TIMEZONE->value => 'Timezone',
         SystemSettingKey::GOOGLE_TAG_MANAGER_ID->value => 'Google Tag Manager ID',
         SystemSettingKey::GOOGLE_WEBMASTER_ID->value => 'Google Webmaster ID',
-        'options' => [
-            'default_language' => [
-                'en' => 'English',
-                'id' => 'Indonesian',
-            ],
-            'timezone' => [
-                'UTC' => 'UTC',
-                'Asia/Jakarta' => 'Western Indonesia Time (Jakarta)',
-                'Asia/Makassar' => 'Central Indonesia Time (Makassar)',
-                'Asia/Jayapura' => 'Eastern Indonesia Time (Jayapura)',
-            ],
+    ],
+    'system_setting_key_options' => [
+        'default_language' => [
+            'en' => 'English',
+            'id' => 'Indonesian',
+        ],
+        'timezone' => [
+            'UTC' => 'UTC',
+            'Asia/Jakarta' => 'Western Indonesia Time (Jakarta)',
+            'Asia/Makassar' => 'Central Indonesia Time (Makassar)',
+            'Asia/Jayapura' => 'Eastern Indonesia Time (Jayapura)',
         ],
     ],
 ];

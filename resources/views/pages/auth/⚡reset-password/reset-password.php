@@ -26,12 +26,7 @@ class extends Component
     {
         $this->form->validate();
 
-        $status = $action->execute(new ResetPasswordDTO(
-            token: $this->form->token,
-            email: $this->form->email,
-            password: $this->form->password,
-            password_confirmation: $this->form->password_confirmation,
-        ));
+        $status = $action->execute($this->form->toDto());
 
         if ($status === Password::PASSWORD_RESET) {
             session()->flash('status', __('domains/auth/messages.password_reset'));

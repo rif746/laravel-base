@@ -1,11 +1,17 @@
 <?php
 
+use App\Domains\Identity\Enums\RoleType;
 use App\Domains\Identity\Enums\UserStatus;
 
 return [
     'user_status' => [
         UserStatus::ACTIVE->value => 'Aktif',
         UserStatus::INACTIVE->value => 'Nonaktif',
+    ],
+    'role_type' => [
+        RoleType::SYSTEM_ADMIN->value => 'Administrator Sistem',
+        RoleType::ADMIN->value => 'Administrator',
+        RoleType::USER->value => 'Pengguna',
     ],
     'user_setting_key' => [
         'notification' => 'Notifikasi',

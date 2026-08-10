@@ -32,17 +32,9 @@ new class extends Component
         $this->form->validate($this->form->rules($this->id ?? 0, $this->mode === 'update'));
 
         if ($this->mode === 'create') {
-            $create->execute(new ProvisionUserDTO(
-                name: $this->form->name,
-                email: $this->form->email,
-                password: $this->form->password,
-                role: $this->form->role_name,
-            ));
+            $create->execute($this->form->toDto('create'));
         } elseif ($this->mode === 'update') {
-            $update->execute($this->user, new UpdateUserIdentityDTO(
-                name: $this->form->name,
-                email: $this->form->email,
-            ));
+            $update->execute($this->user, $this->form->toDto('update'));
         }
 
         $this->success($this->message);

@@ -49,17 +49,11 @@ new class extends Component
     {
         $this->form->validate($this->form->rules($this->id));
 
-        $updateUser->execute($this->user, new UpdateUserIdentityDTO(
-            name: $this->form->name,
-            email: $this->form->email,
-        ));
+        $updateUser->execute($this->user, $this->form->toDto('update_user'));
 
-        $updateProfile->execute(new UpdateProfileDTO(
-            userId: $this->id,
-            gender: $this->form->gender,
-            dateOfBirth: $this->form->date_of_birth,
-            phoneNumber: $this->form->phone_number,
-        ));
+        $updateProfile->execute($this->form->toDto('update_profile', [
+            'userId' => (string) $this->id,
+        ]));
 
         $this->success($this->message);
         $this->dispatch('hide-update-profile-modal');

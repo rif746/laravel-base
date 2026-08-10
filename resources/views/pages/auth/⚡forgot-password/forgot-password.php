@@ -22,9 +22,7 @@ class extends Component
     {
         $this->form->validate();
 
-        $status = $action->execute(new ForgotPasswordDTO(
-            email: $this->form->email,
-        ));
+        $status = $action->execute($this->form->toDto());
 
         if ($status === Password::RESET_LINK_SENT) {
             $this->success(__('domains/auth/messages.reset_link_sent'));

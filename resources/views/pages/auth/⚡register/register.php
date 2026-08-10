@@ -22,11 +22,7 @@ class extends Component
         $this->form->validate();
 
         // The Identity Domain creates the user and fires the Registered event.
-        $user = $action->execute(new RegisterSelfServiceUserDTO(
-            name: $this->form->name,
-            email: $this->form->email,
-            password: $this->form->password,
-        ));
+        $user = $action->execute($this->form->toDto());
 
         // The Gateway owns the session — Auth::login() lives here, not in the domain.
         Auth::login($user);

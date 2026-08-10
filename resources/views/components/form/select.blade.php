@@ -4,6 +4,7 @@
     'feedback' => null,
     'options' => [],
     'noLabel' => false,
+    'disabled' => false
 ])
 
 @php

@@ -12,7 +12,7 @@ class GetSystemSettings
 
     public function get(SystemSettingKey $setting): ?string
     {
-        return $this->fetch()[$setting->value] ?? $setting->default();
+        return $this->fetch()[$setting->value] ?? $setting->getSchema()->default;
     }
 
     public function fetch(): array
@@ -25,7 +25,7 @@ class GetSystemSettings
             $settings = SystemSettings::pluck('value', 'key')->toArray();
             $finalSettings = [];
             foreach (SystemSettingKey::cases() as $key) {
-                $finalSettings[$key->value] = $settings[$key->value] ?? $key->default();
+                $finalSettings[$key->value] = $settings[$key->value] ?? $key->getSchema()->default;
             }
 
             return $finalSettings;

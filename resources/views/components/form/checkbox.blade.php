@@ -1,4 +1,4 @@
-@props(['label' => '', 'name' => '', 'feedback' => null, 'id'])
+@props(['label' => '', 'name' => '', 'feedback' => null, 'id' => null])
 
 @php
     $name = $attributes->has('wire:model') ? $attributes->get('wire:model') : $name;

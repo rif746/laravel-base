@@ -17,17 +17,20 @@ new class extends Component
     {
         $userSettings = auth('web')->user()->settings ?? collect();
 
-        $this->settings = collect(UserSettingKey::cases())->map(function ($key) {
+        $this->settings = collect(UserSettingKey::cases())->map(function (UserSettingKey $key) {
+            $field = $key->getSchema(); // Returns InputSchemaField
+
             return [
-                'key' => $key->value,
-                'label' => $key->label(),
-                'type' => $key->schema()->type,
-                'options' => $key->schema()->options,
+                'key'     => $field->key,
+                'label'   => $field->label,
+                'type'    => $field->type,
+                'options' => $field->attributes['options'] ?? [],
             ];
         })->toArray();
 
         foreach (UserSettingKey::cases() as $key) {
-            $this->form[$key->value] = $userSettings->get($key->value, $key->schema()->default);
+            $field = $key->getSchema();
+            $this->form[$field->key] = $userSettings->get($field->key, $field->default);
         }
     }
 
@@ -35,8 +38,9 @@ new class extends Component
     {
         $rules = [];
         foreach (UserSettingKey::cases() as $key) {
-            if ($key->validation()) {
-                $rules["form.{$key->value}"] = $key->validation();
+            $field = $key->getSchema();
+            if (! empty($field->rules)) {
+                $rules["form.{$field->key}"] = $field->rules;
             }
         }
 

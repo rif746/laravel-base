@@ -21,7 +21,7 @@ trait InteractWithDto
      *
      * @throws Exception
      */
-    public function toDto(string $context = 'default'): mixed
+    public function toDto(string $context = 'default', array $extraData = []): mixed
     {
         $cacheKey = static::class.':'.$context;
 
@@ -109,7 +109,7 @@ trait InteractWithDto
         // 2. Map runtime values
         $config = self::$dtoCache[$cacheKey];
         $dtoClass = $config['class'];
-        $arguments = [];
+        $arguments = $extraData;
         $translations = [];
 
         foreach ($config['mapped'] as $field => $info) {

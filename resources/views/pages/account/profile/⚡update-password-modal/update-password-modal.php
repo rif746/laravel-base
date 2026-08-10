@@ -24,9 +24,7 @@ new class extends Component
     {
         $this->form->validate();
 
-        $action->execute(auth('web')->user(), new UpdatePasswordDTO(
-            new_password: $this->form->new_password,
-        ));
+        $action->execute(auth('web')->user(), $this->form->toDto());
 
         $this->dispatch('hide-update-password-modal');
         $this->success($this->message);

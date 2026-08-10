@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['key', 'value'])]
+#[Fillable(['key', 'value', 'type'])]
 #[WithoutTimestamps]
 class SystemSettings extends Model
 {
@@ -19,11 +19,13 @@ class SystemSettings extends Model
      */
     public function getTranslatedValueAttribute(): ?string
     {
-        $key = SystemSettingKey::tryFrom($this->attributes['key'])->schema();
-        if ($key->type->isFile() && isset($this->attributes['value'])) {
+        $key = SystemSettingKey::tryFrom($this->attributes['key']);
+
+        $schema = $key->getSchema();
+        if ($schema->type->isFile() && isset($this->attributes['value'])) {
             return asset_static($this->attributes['value']);
-        } elseif ($key->type->isSelect()) {
-            return $key->options[$this->attributes['value']];
+        } elseif ($schema->type->isSelect()) {
+            return $schema->attributes['options'][$this->attributes['value']];
         }
 
         return $this->attributes['value'];

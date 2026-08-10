@@ -15,9 +15,9 @@ trait HasPredicateMethod
     {
         if (str_starts_with($method, 'is')) {
             $expectedCase = Str::substr($method, 2);
-            $expectedCase = Str::upper($expectedCase);
+            $expectedCase = Str::pascal($expectedCase);
             foreach ($this::cases() as $case) {
-                if ($case->name === $expectedCase || $case->value === Str::kebab($expectedCase)) {
+                if ($case->name === $expectedCase || Str::pascal($case->value) === $expectedCase) {
                     return $this === $case;
                 }
             }

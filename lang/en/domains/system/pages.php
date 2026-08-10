@@ -19,4 +19,10 @@ return [
             'webmaster' => 'Webmaster',
         ],
     ],
+    'api' => [
+        'sections' => [
+            'academic' => 'Academic',
+            'admission' => 'Admission',
+        ],
+    ],
 ];

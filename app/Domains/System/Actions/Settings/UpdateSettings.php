@@ -11,8 +11,9 @@ class UpdateSettings
     public function execute(SystemSetingDTO $dto): void
     {
         $value = $dto->value;
+        $schema = $dto->key->getSchema();
 
-        if ($dto->key->schema()->type->isFile()) {
+        if ($schema->type->isFile()) {
             $currentSettings = SystemSettings::where('key', $dto->key->value)->value('value');
 
             if ($currentSettings) {

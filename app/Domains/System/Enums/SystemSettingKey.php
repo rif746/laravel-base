@@ -8,7 +8,8 @@ use App\UI\Enums\Contracts\HasLabel;
 use App\UI\Enums\Contracts\HasSchema;
 use App\UI\Enums\FileType;
 use App\UI\Enums\InputType;
-use App\UI\Support\Schema\InputSchema;
+use App\UI\Support\Schemas\InputSchema;
+use App\UI\Support\Schemas\InputSchemaField;
 
 enum SystemSettingKey: string implements HasLabel, HasSchema
 {
@@ -43,46 +44,62 @@ enum SystemSettingKey: string implements HasLabel, HasSchema
         ];
 
         return match ($this) {
-            self::WEB_NAME => InputSchema::make(InputType::TEXTLINE)->default('Acme Inc'),
-            self::WEB_DESCRIPTION => InputSchema::make(InputType::TEXTAREA),
-            self::WEB_ADDRESS => InputSchema::make(InputType::TEXTLINE)->default('123 Main St, Anytown, USA'),
-            self::WEB_PHONE => InputSchema::make(InputType::TEXTLINE)->default('+1234567890'),
-            self::WEB_EMAIL => InputSchema::make(InputType::TEXTLINE)->default('acme@web.io'),
+            self::WEB_NAME => InputSchema::make()
+                ->type(InputType::TEXTLINE)
+                ->label($this->label())
+                ->default('Acme Inc'),
+
+            self::WEB_DESCRIPTION => InputSchema::make()
+                ->label($this->label())
+                ->type(InputType::TEXTAREA),
+
+            self::WEB_ADDRESS => InputSchema::make()
+                ->type(InputType::TEXTLINE)
+                ->label($this->label())
+                ->default('123 Main St, Anytown, USA'),
+
+            self::WEB_PHONE => InputSchema::make()
+                ->type(InputType::TEXTLINE)
+                ->label($this->label())
+                ->default('+1234567890'),
+
+            self::WEB_EMAIL => InputSchema::make()
+                ->type(InputType::TEXTLINE)
+                ->label($this->label())
+                ->default('acme@web.io'),
 
             self::WEB_LOGO,
-            self::WEB_FAVICON => InputSchema::make(InputType::FILE, $imageRules)->attributes($imageAttrs),
+            self::WEB_FAVICON => InputSchema::make()
+                ->type(InputType::FILE)
+                ->label($this->label())
+                ->rules($imageRules)
+                ->attributes($imageAttrs),
 
-            self::DEFAULT_LANGUAGE => InputSchema::make(InputType::SELECT)
+            self::DEFAULT_LANGUAGE => InputSchema::make()
+                ->type(InputType::SELECT)
                 ->default('en')
+                ->label($this->label())
                 ->options([
-                    'en' => __('domains/system/enum.system_setting_key.options.default_language.en'),
-                    'id' => __('domains/system/enum.system_setting_key.options.default_language.id'),
+                    'en' => __('domains/system/enum.system_setting_key_options.default_language.en'),
+                    'id' => __('domains/system/enum.system_setting_key_options.default_language.id'),
                 ]),
 
-            self::TIMEZONE => InputSchema::make(InputType::SELECT)
+            self::TIMEZONE => InputSchema::make()
+                ->type(InputType::SELECT)
                 ->default('UTC')
+                ->label($this->label())
                 ->options([
-                    'UTC' => __('domains/system/enum.system_setting_key.options.timezone.UTC'),
-                    'Asia/Jakarta' => __('domains/system/enum.system_setting_key.options.timezone.Asia/Jakarta'),
-                    'Asia/Makassar' => __('domains/system/enum.system_setting_key.options.timezone.Asia/Makassar'),
-                    'Asia/Jayapura' => __('domains/system/enum.system_setting_key.options.timezone.Asia/Jayapura'),
+                    'UTC' => __('domains/system/enum.system_setting_key_options.timezone.UTC'),
+                    'Asia/Jakarta' => __('domains/system/enum.system_setting_key_options.timezone.Asia/Jakarta'),
+                    'Asia/Makassar' => __('domains/system/enum.system_setting_key_options.timezone.Asia/Makassar'),
+                    'Asia/Jayapura' => __('domains/system/enum.system_setting_key_options.timezone.Asia/Jayapura'),
                 ]),
 
-            default => InputSchema::make(InputType::TEXTLINE)->rules(['nullable', 'string']),
+            default => InputSchema::make()
+                ->label($this->label())
+                ->type(InputType::TEXTLINE)
+                ->rules(['nullable', 'string']),
         };
-    }
-
-    public function default(): mixed
-    {
-        return $this->schema()->default;
-    }
-
-    public function inputAttributes(): array
-    {
-        return array_merge($this->schema()->attributes, [
-            'label' => $this->label(),
-            'options' => $this->schema()->type->isSelect() ? $this->schema()->options : '',
-        ]);
     }
 
     public static function section(): array
@@ -99,5 +116,15 @@ enum SystemSettingKey: string implements HasLabel, HasSchema
                 __('domains/system/pages.settings.sections.webmaster') => [self::GOOGLE_TAG_MANAGER_ID, self::GOOGLE_WEBMASTER_ID],
             ],
         ];
+    }
+
+    public function getSchema(): InputSchemaField
+    {
+        return $this->schema()->getSchema();
+    }
+
+    public function getValidation(): array
+    {
+        return $this->schema()->getSchema()->rules;
     }
 }

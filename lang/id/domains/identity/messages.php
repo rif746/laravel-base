@@ -12,7 +12,7 @@ return [
         'failed_to_update_user_status' => 'Gagal memperbarui status pengguna.',
         'user_already_active' => 'Pengguna ini sudah aktif.',
         'user_already_suspended' => 'Pengguna ini sudah dinonaktifkan.',
-        'user_already_in_status' => 'Pengguna sudah dalam status :status.',
+        'user_already_status' => 'Pengguna sudah dalam status ini.',
         'user_cannot_be_edited' => 'Pengguna ini tidak dapat diubah.',
         'user_cannot_be_purged' => 'Anda tidak dapat menghapus admin.',
         'user_cannot_be_suspended' => 'Anda tidak dapat menonaktifkan admin.',

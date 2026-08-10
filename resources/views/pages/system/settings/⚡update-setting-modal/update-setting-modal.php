@@ -7,6 +7,7 @@ use App\Domains\System\Models\SystemSettings;
 use App\Livewire\Concerns\WithModal;
 use App\Livewire\Concerns\WithToast;
 use App\UI\Enums\InputType;
+use App\UI\Support\Schemas\InputSchemaField;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
@@ -20,7 +21,7 @@ new class extends Component
     use WithToast;
 
     #[Locked]
-    public string $settingKey = '';
+    public ?SystemSettingKey $settingKey = null;
 
     #[Validate]
     public mixed $settingValue = null;
@@ -33,16 +34,16 @@ new class extends Component
     public function rules(): array
     {
         return [
-            'settingValue' => $this->settingEnum->schema()->rules,
+            'settingValue' => $this->settingKey->getValidation(),
         ];
     }
 
     public function show(int|string $id): void
     {
-        $this->settingKey = $id;
+        $this->settingKey = SystemSettingKey::tryFrom($id);
         $setting = SystemSettings::where('key', $id)
             ->first();
-        if ($this->settingEnum->schema()->type->isFile()) {
+        if ($this->inputField->type->isFile()) {
             $this->settingValue = $setting->value;
         } else {
             $this->settingValue = $setting?->translated_value ?? '-';
@@ -50,9 +51,9 @@ new class extends Component
     }
 
     #[Computed]
-    public function settingEnum(): ?SystemSettingKey
+    public function inputField(): ?InputSchemaField
     {
-        return SystemSettingKey::tryFrom($this->settingKey);
+        return $this->settingKey?->getSchema();
     }
 
     public function save(UpdateSettings $action): void
@@ -60,11 +61,11 @@ new class extends Component
         $this->validate();
 
         $action->execute(new SystemSetingDTO(
-            key: $this->settingEnum,
+            key: $this->settingKey,
             value: $this->settingValue,
         ));
 
-        $this->success(__('ui/crud.success.updated', ['resource' => $this->settingEnum->label()]));
+        $this->success(__('ui/crud.success.updated', ['resource' => $this->settingKey->label()]));
         $this->dispatch('hide-update-setting-modal');
         $this->dispatch('setting-updated');
     }

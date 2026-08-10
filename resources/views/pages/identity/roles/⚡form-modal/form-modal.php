@@ -40,15 +40,9 @@ new class extends Component
         $this->form->validate();
 
         if ($this->mode === 'create') {
-            $create->execute(new CreateRoleDTO(
-                name: $this->form->name,
-                guard_name: $this->form->guard_name,
-                permissions: $this->form->selected_permissions
-            ));
+            $create->execute($this->form->toDto('create'));
         } elseif ($this->mode === 'update') {
-            $update->execute(Role::findById($this->id), new UpdateRoleDTO(
-                permissions: $this->form->selected_permissions,
-            ));
+            $update->execute(Role::findById($this->id), $this->form->toDto('update'));
         }
 
         $this->success($this->message);

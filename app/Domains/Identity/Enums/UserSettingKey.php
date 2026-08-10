@@ -6,7 +6,8 @@ use App\UI\Enums\Concerns\InteractsWithLabels;
 use App\UI\Enums\Contracts\HasLabel;
 use App\UI\Enums\Contracts\HasSchema;
 use App\UI\Enums\InputType;
-use App\UI\Support\Schema\InputSchema;
+use App\UI\Support\Schemas\InputSchema;
+use App\UI\Support\Schemas\InputSchemaField;
 use Illuminate\Validation\Rule;
 
 enum UserSettingKey: string implements HasLabel, HasSchema
@@ -42,8 +43,20 @@ enum UserSettingKey: string implements HasLabel, HasSchema
             self::TIMEZONE => 'UTC',
         };
 
-        return InputSchema::make(InputType::SELECT, ['required', Rule::in(array_keys($options))])
+        return InputSchema::make()
+            ->type(InputType::SELECT)
+            ->rules(['required', Rule::in(array_keys($options))])
             ->default($default)
             ->options($options);
+    }
+
+    public function getSchema(): InputSchemaField
+    {
+        return $this->schema()->getSchema();
+    }
+
+    public function default(): mixed
+    {
+        return $this->getSchema()->default;
     }
 }
