@@ -21,8 +21,7 @@ test('it can fetch role distributions', function () {
     $user3 = User::factory()->create();
     $user3->assignRole($editor);
 
-    $query = new GetRoleDistributions;
-    $results = $query->fetch();
+    $results = GetRoleDistributions::fetch();
 
     expect($results['categories'])->toContain('admin', 'editor')
         ->and($results['series'])->toContain(1, 2);

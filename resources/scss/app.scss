@@ -6,6 +6,9 @@
 // Override Bootstrap variables here
 @import "./variables";
 
+// Color and sizing CSS variables
+@import "./colors";
+
 // Import Bootstrap
 @import "bootstrap/scss/bootstrap";
 

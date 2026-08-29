@@ -12,25 +12,25 @@ test('it has correct labels', function () {
 });
 
 test('it has correct defaults', function () {
-    expect(UserSettingKey::NOTIFICATION->schema()->default)->toBe(0)
-        ->and(UserSettingKey::LANGUAGE->schema()->default)->toBe('en')
-        ->and(UserSettingKey::TIMEZONE->schema()->default)->toBe('UTC');
+    expect(UserSettingKey::NOTIFICATION->getSchema()->default)->toBe(0)
+        ->and(UserSettingKey::LANGUAGE->getSchema()->default)->toBe('en')
+        ->and(UserSettingKey::TIMEZONE->getSchema()->default)->toBe('UTC');
 });
 
 test('it has correct types', function () {
-    expect(UserSettingKey::NOTIFICATION->schema()->type->value)->toBe('select')
-        ->and(UserSettingKey::LANGUAGE->schema()->type->value)->toBe('select')
-        ->and(UserSettingKey::TIMEZONE->schema()->type->value)->toBe('select');
+    expect(UserSettingKey::NOTIFICATION->getSchema()->type->value)->toBe('select')
+        ->and(UserSettingKey::LANGUAGE->getSchema()->type->value)->toBe('select')
+        ->and(UserSettingKey::TIMEZONE->getSchema()->type->value)->toBe('select');
 });
 
 test('it has correct options', function () {
-    expect(UserSettingKey::LANGUAGE->schema()->options)->toHaveKeys(['en', 'id'])
-        ->and(UserSettingKey::TIMEZONE->schema()->options)->toHaveKey('UTC')
-        ->and(UserSettingKey::NOTIFICATION->schema()->options)->toHaveKeys([1, 0]);
+    expect(UserSettingKey::LANGUAGE->getSchema()->attributes['options'])->toHaveKeys(['en', 'id'])
+        ->and(UserSettingKey::TIMEZONE->getSchema()->attributes['options'])->toHaveKey('UTC')
+        ->and(UserSettingKey::NOTIFICATION->getSchema()->attributes['options'])->toHaveKeys([1, 0]);
 });
 
 test('it returns correct validation rules', function () {
-    expect(UserSettingKey::LANGUAGE->schema()->rules)->toContain('required');
+    expect(UserSettingKey::LANGUAGE->getSchema()->rules)->toContain('required');
 });
 
 test('it can apply effects', function () {

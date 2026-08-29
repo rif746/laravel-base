@@ -27,9 +27,9 @@
         <div class="card-body p-5">
             <div class="mb-3 text-center">
                 <a href="{{ url('/') }}" class="d-inline-block mb-4">
-                    <img src="{{ asset_static('images/logo.svg') }}" alt="" width="36">
+                    <img src="@logoPath" alt="" width="36">
                 </a>
-                <h1 class="card-title h5 mb-5">{{ __($title ?? 'Laravel') }}</h1>
+                <h1 class="card-title h5 mb-5">{{ __($title ?? config('seotools.meta.defaults.title')) }}</h1>
 
             </div>
 

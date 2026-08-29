@@ -7,18 +7,23 @@ use App\Domains\Identity\Models\User;
 use App\Domains\System\Enums\SystemSettingKey;
 use App\Domains\System\Queries\GetSystemSettings;
 use App\Http\Middleware\HandlePreferredLanguage;
+use App\Domains\System\Models\SystemSettings;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Mockery;
 use Tests\TestCase;
 
-uses(TestCase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('it sets language from system settings', function () {
-    $getSystemSettings = Mockery::mock(GetSystemSettings::class);
-    $getSystemSettings->shouldReceive('get')->with(SystemSettingKey::DEFAULT_LANGUAGE)->andReturn('en');
+    SystemSettings::create([
+        'key' => SystemSettingKey::DEFAULT_LANGUAGE->value,
+        'value' => 'en',
+    ]);
+    GetSystemSettings::flushMemory();
 
-    $middleware = new HandlePreferredLanguage($getSystemSettings);
+    $middleware = new HandlePreferredLanguage();
     $request = Request::create('/', 'GET');
     $next = fn ($req) => new Response;
 
@@ -29,10 +34,8 @@ test('it sets language from system settings', function () {
 
 test('it uses session locale if set', function () {
     session()->put('locale', 'id');
-    $getSystemSettings = Mockery::mock(GetSystemSettings::class);
-    // Should not call getSystemSettings because session has locale
 
-    $middleware = new HandlePreferredLanguage($getSystemSettings);
+    $middleware = new HandlePreferredLanguage();
     $request = Request::create('/', 'GET');
     $next = fn ($req) => new Response;
 
@@ -42,15 +45,18 @@ test('it uses session locale if set', function () {
 });
 
 test('it uses user preference if set', function () {
-    $getSystemSettings = Mockery::mock(GetSystemSettings::class);
-    $getSystemSettings->shouldReceive('get')->with(SystemSettingKey::DEFAULT_LANGUAGE)->andReturn('en');
+    SystemSettings::create([
+        'key' => SystemSettingKey::DEFAULT_LANGUAGE->value,
+        'value' => 'en',
+    ]);
+    GetSystemSettings::flushMemory();
 
     $user = Mockery::mock(User::class);
     $user->shouldReceive('getAttribute')->with('settings')->andReturn(collect([
         UserSettingKey::LANGUAGE->value => 'id',
     ]));
 
-    $middleware = new HandlePreferredLanguage($getSystemSettings);
+    $middleware = new HandlePreferredLanguage();
     $request = Request::create('/', 'GET');
     $request->setUserResolver(fn () => $user);
     $next = fn ($req) => new Response;

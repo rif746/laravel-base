@@ -8,7 +8,7 @@ new class extends Component {
     #[Computed]
     public function userCount()
     {
-        return app(GetTotalUsers::class)->fetch();
+        return GetTotalUsers::fetch();
     }
 };
 ?>

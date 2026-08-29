@@ -45,6 +45,8 @@ enum UserSettingKey: string implements HasLabel, HasSchema
 
         return InputSchema::make()
             ->type(InputType::SELECT)
+            ->key($this->value)
+            ->label($this->label())
             ->rules(['required', Rule::in(array_keys($options))])
             ->default($default)
             ->options($options);

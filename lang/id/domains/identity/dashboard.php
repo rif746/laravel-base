@@ -11,15 +11,15 @@ return [
     ],
     'user_verification_rate' => [
         'title' => 'Tingkat Verifikasi',
-        'detail' => ':verified terverifikasi / :unverified Belum Terverifikasi',
+        'detail' => ':verified Terverifikasi / :unverified Belum Terverifikasi',
     ],
     'user_growth' => [
-        'title' => 'Pertumbuhan',
-        'subtitle' => 'Tren bulanan pendaftaran pengguna baru di tahun :year',
-        'series_name' => 'Registrasi',
+        'title' => 'Pertumbuhan Pengguna',
+        'subtitle' => 'Tren bulanan pendaftaran pengguna baru pada tahun :year',
+        'series_name' => 'Pendaftaran',
     ],
     'role_distribution' => [
         'title' => 'Peran',
-        'subtitle' => 'Rincian pengguna yang ditugaskan untuk setiap peran',
+        'subtitle' => 'Rincian pengguna yang ditetapkan untuk setiap peran',
     ],
 ];

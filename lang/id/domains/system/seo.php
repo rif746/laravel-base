@@ -8,7 +8,7 @@ return [
     ],
     'backup' => [
         'title' => 'Cadangan Sistem',
-        'description' => 'Cadangkan dan pulihkan basis data dan aset.',
-        'keywords' => 'cadangkan, pulihkan, basis data, aset',
+        'description' => 'Cadangkan dan pulihkan basis data serta aset.',
+        'keywords' => 'cadangan, pemulihan, basis data, aset',
     ],
 ];

@@ -17,8 +17,7 @@ test('it can fetch monthly new users and growth rate', function () {
     // This month (May)
     User::factory()->count(3)->create(['created_at' => '2024-05-01']);
 
-    $query = new GetMonthlyNewUsers;
-    $results = $query->fetch();
+    $results = GetMonthlyNewUsers::fetch();
 
     expect($results['new_users'])->toBe(3)
         ->and($results['growth_rate'])->toBe('+50.00%'); // (3-2)/2 * 100 = 50
@@ -29,8 +28,7 @@ test('it returns 100% growth when no users joined last month', function () {
 
     User::factory()->count(3)->create(['created_at' => '2024-05-01']);
 
-    $query = new GetMonthlyNewUsers;
-    $results = $query->fetch();
+    $results = GetMonthlyNewUsers::fetch();
 
     expect($results['new_users'])->toBe(3)
         ->and($results['growth_rate'])->toBe('+100%');

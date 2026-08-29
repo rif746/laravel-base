@@ -47,6 +47,6 @@ new class extends Component
         $this->validate($rules);
 
         $action->execute(auth('web')->user(), $this->form);
-        $this->success(__('ui/crud.success.updated', ['resource' => __('domains/account/pages.user_settings.title')]));
+        $this->success(__('ui/crud.success.updated', ['resource' => __('domains/account/sections.account.user_settings.title')]));
     }
 };

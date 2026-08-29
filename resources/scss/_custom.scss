@@ -1,7 +1,7 @@
 .overlay {
 	position: fixed;
 	inset: 0;
-	background: rgba(0, 0, 0, .45);
+	background: rgba(var(--bs-black-rgb), .45);
 	backdrop-filter: blur(1px);
 	display: none;
 	z-index: 1030;
@@ -13,9 +13,9 @@
 
 .sidebar {
 	width: 240px;
-	background: $white;
+	background: var(--bs-body-bg);
 	transition: width .3s, left .3s;
-	border-right: 1px solid $gray-200;
+	border-right: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
 	height: 100vh;
 	position: fixed;
 	top: 0;
@@ -24,25 +24,25 @@
 	z-index: 1030;
 
 	.nav-link {
-		color: $gray-800;
+		color: var(--bs-body-color);
 		padding: 8px 10px;
 		display: flex;
 		align-items: center;
-		font-size: 14px;
-		font-weight: 400;
+		font-size: var(--bs-body-font-size);
+		font-weight: var(--bs-body-font-weight);
 		gap: 12px;
 		white-space: nowrap;
 		margin: 1px 12px;
-		border-radius: 8px;
+		border-radius: var(--bs-border-radius-lg);
 
 		&:hover {
-			color: $primary;
-			background-color: rgba($primary, 0.095);
+			color: var(--bs-primary);
+			background-color: rgba(var(--bs-primary-rgb), 0.095);
 		}
 
 		&.active {
-			color: $primary;
-			background-color: rgba($primary, 0.095);
+			color: var(--bs-primary);
+			background-color: rgba(var(--bs-primary-rgb), 0.095);
 		}
 
 		.ti {
@@ -60,13 +60,13 @@
 		left: 0;
 		height: 60px;
 		width: 100%;
-		background: $white;
+		background: var(--bs-body-bg);
 		display: flex;
 		align-items: center;
 		gap: 10px;
 		padding-left: 17px;
-		color: $gray-800;
-		border-bottom: 1px solid $gray-200;
+		color: var(--bs-body-color);
+		border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
 	}
 }
 
@@ -91,6 +91,8 @@
 .topbar {
 	height: 60px;
 	margin-left: 240px;
+	background: var(--bs-body-bg);
+	border-color: var(--bs-border-color) !important;
 	// transition: margin-left .3s;
 }
 

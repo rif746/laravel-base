@@ -17,7 +17,7 @@ class SystemSettingSeeder extends Seeder
         foreach ($settings as $setting) {
             SystemSettings::create([
                 'key' => $setting->value,
-                'value' => $setting->default(),
+                'value' => $setting->getSchema()->default,
             ]);
         }
     }

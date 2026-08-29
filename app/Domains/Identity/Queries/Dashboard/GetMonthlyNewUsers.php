@@ -9,7 +9,7 @@ class GetMonthlyNewUsers
     /**
      * @return array{total_users: int, growth_rate: string}
      */
-    public function fetch(): array
+    public static function fetch(): array
     {
         $now = now();
         $lastMonth = now()->subMonth();

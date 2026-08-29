@@ -13,10 +13,6 @@ uses(TestCase::class, RefreshDatabase::class);
 test('it cleans up database and disk orphans', function () {
     Storage::fake('public');
 
-    // Setup GetSystemSettings mock
-    $settingQuery = Mockery::mock(GetSystemSettings::class);
-    $settingQuery->shouldReceive('get')->andReturnNull();
-
     // 1. Create a DB orphan: A record in 'files' table that references nothing
     File::create([
         'fileable_type' => User::class,
@@ -48,7 +44,7 @@ test('it cleans up database and disk orphans', function () {
     ]);
     Storage::disk('public')->put('avatars/valid.txt', 'content');
 
-    $action = new PruneOrphanedFiles($settingQuery);
+    $action = new PruneOrphanedFiles();
     $stats = $action->execute('public', '/');
 
     // Assertions

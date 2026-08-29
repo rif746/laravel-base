@@ -33,9 +33,10 @@ test('it runs import pipeline', function () {
 
     $mapper = Mockery::mock(DataPayloadMapper::class);
     $mapper->shouldReceive('getLookupKey')->andReturn('external_id');
+    $mapper->shouldReceive('getModelClass')->andReturn(get_class($dummyModel));
     $mapper->shouldReceive('transform')->twice()->andReturnUsing(fn ($row) => $row);
     $mapper->shouldReceive('updateOrCreateDomainState')->twice();
 
     $action = new RunGenericImportPipeline;
-    $action->execute($rows, $mapper, get_class($dummyModel));
+    $action->execute($rows, $mapper);
 });

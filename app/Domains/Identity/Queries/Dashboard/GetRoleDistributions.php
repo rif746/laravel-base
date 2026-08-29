@@ -6,7 +6,7 @@ use App\Domains\Identity\Models\Role;
 
 class GetRoleDistributions
 {
-    public function fetch(): array
+    public static function fetch(): array
     {
         $roles = Role::select('name')
             ->withCount('users')

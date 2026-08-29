@@ -21,8 +21,7 @@ test('it can fetch user growth trends', function () {
     // May
     User::factory()->create(['created_at' => '2024-05-01']);
 
-    $query = new GetUserGrowthTrends;
-    $results = $query->fetch();
+    $results = GetUserGrowthTrends::fetch();
 
     expect($results['categories'])->toHaveCount(12)
         ->and($results['categories'][0])->toBe('January')

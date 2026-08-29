@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
+use OwenIt\Auditing\Models\Audit;
 
 new class extends Component
 {
@@ -39,9 +40,20 @@ new class extends Component
         if (is_null($this->model_id)) {
             return new Collection;
         }
-        $model = app($this->model)->where($this->keyName, $this->model_id)->first();
+        return app(GetModelAuditLog::class)->get($this->modelData);
+    }
 
-        return app(GetModelAuditLog::class)->get($model);
+    #[Computed]
+    public function modelData()
+    {
+        return app($this->model)->where($this->keyName, $this->model_id)->first();
+    }
+
+    public function restore(Audit $audit)
+    {
+        $model = $this->modelData;
+        $model->transitionTo($audit, true);
+        $model->save();
     }
 
     public function hide(): void

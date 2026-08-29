@@ -1,4 +1,4 @@
-<nav id="topbar" class="navbar border-bottom fixed-top topbar bg-white px-3">
+<nav id="topbar" class="navbar border-bottom fixed-top topbar px-3">
     <button id="toggleBtn" class="d-none d-lg-inline-flex btn btn-light btn-icon btn-sm">
         <x-tabler-menu-2 width="16" />
     </button>
@@ -24,5 +24,4 @@
             </li>
         </ul>
     </div>
-
 </nav>

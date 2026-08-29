@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class {{ class }}
 {
-    public function fetch(): Collection
+    public static function fetch(): Collection
     {
         return new Collection();
     }

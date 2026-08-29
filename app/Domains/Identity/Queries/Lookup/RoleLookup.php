@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class RoleLookup
 {
-    public function fetch(?string $search): Collection
+    public static function fetch(?string $search): Collection
     {
         return Role::query()
             ->select('name')

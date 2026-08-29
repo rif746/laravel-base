@@ -10,7 +10,7 @@ class GetUserGrowthTrends
     /**
      * @return array{categories: array<string>, series: array<int>}
      */
-    public function fetch(): array
+    public static function fetch(): array
     {
         $year = now()->year;
         $records = User::query()

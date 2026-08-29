@@ -15,13 +15,13 @@ new class extends Component
     #[On('profile-updated')]
     public function refreshProfile(): void
     {
-        app(GetAuthenticatedUserContext::class)->refresh();
+        GetAuthenticatedUserContext::refresh();
     }
 
     #[Computed]
     public function user(): ?User
     {
-        return app(GetAuthenticatedUserContext::class)->fetch();
+        return GetAuthenticatedUserContext::fetch();
     }
 
     public function resendVerificationEmail(ResendVerificationEmail $action): void

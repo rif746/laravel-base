@@ -23,11 +23,11 @@
                                     'width' => 16,
                                     'height' => 16,
                                 ]" wire:loading wire:target="download({{ $backup->id }})" />
-                            <x-button icon="tabler-restore" wire:click="restore({{ $backup->id }})" theme="warning"
+                            <x-button icon="tabler-restore" x-on:click="$js.restore" data-id="{{ $backup->id }}" theme="warning"
                                 :icon-property="[
                                     'width' => 16,
                                     'height' => 16,
-                                ]" wire:loading wire:target="restore({{ $backup->id }})" />
+                                ]" />
                             <x-button icon="tabler-trash" theme="danger" :icon-property="[
                                 'width' => 16,
                                 'height' => 16,
@@ -57,5 +57,23 @@
             @endforelse
         </div>
     </x-card>
+
+    @script
+    <script>
+        $js.restore = (e) => {
+            const id = e.target.dataset.id
+            Swal.fire({
+                title: '{{ __('ui/title.restore', ['resource' => __('resources.backup')]) }}',
+                text: '{{ __('ui/confirmation.restore', ['resource' => __('resources.backup')]) }}',
+                showLoaderOnConfirm: true,
+                showConfirmButton: true,
+                showCancelButton: true,
+                preConfirm: () => {
+                    return $wire.restore(id)
+                }
+            })
+        }
+    </script>
+    @endscript
     <livewire:pages::system.backups.upload-backup-modal />
 </div>

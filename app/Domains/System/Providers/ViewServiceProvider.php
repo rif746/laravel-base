@@ -12,7 +12,7 @@ class ViewServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(GetSystemSettings $getSystemSettings): void
+    public function boot(): void
     {
         /**
          * Register a view composer for presentation glue.
@@ -20,9 +20,9 @@ class ViewServiceProvider extends ServiceProvider
          * This binds data to specific layout assets (e.g., sidebar) using
          * a decoupled query pattern, keeping the domain's root provider pristine.
          */
-        View::composer(['components.layouts.*'], function ($view) use ($getSystemSettings) {
-            $view->with('logo', $getSystemSettings->get(SystemSettingKey::WEB_LOGO));
-            $view->with('favicon', $getSystemSettings->get(SystemSettingKey::WEB_FAVICON));
+        View::composer(['components.layouts.*'], function ($view) {
+            $view->with('logo', GetSystemSettings::get(SystemSettingKey::WEB_LOGO));
+            $view->with('favicon', GetSystemSettings::get(SystemSettingKey::WEB_FAVICON));
         });
     }
 }

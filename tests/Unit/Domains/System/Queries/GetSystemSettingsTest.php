@@ -11,13 +11,13 @@ uses(TestCase::class, RefreshDatabase::class);
 
 beforeEach(function () {
     Cache::flush();
+    GetSystemSettings::flushMemory();
 });
 
 test('it returns default value when setting does not exist in database', function () {
-    $query = new GetSystemSettings;
-    $value = $query->get(SystemSettingKey::DEFAULT_LANGUAGE);
+    $value = GetSystemSettings::get(SystemSettingKey::WEB_NAME);
 
-    expect($value)->toBe(SystemSettingKey::DEFAULT_LANGUAGE->default());
+    expect($value)->toBe('Acme Inc');
 });
 
 test('it returns value from database when it exists', function () {
@@ -25,9 +25,10 @@ test('it returns value from database when it exists', function () {
         'key' => SystemSettingKey::WEB_NAME->value,
         'value' => 'Custom Web Name',
     ]);
+    GetSystemSettings::flushMemory();
+    Cache::flush();
 
-    $query = new GetSystemSettings;
-    $value = $query->get(SystemSettingKey::WEB_NAME);
+    $value = GetSystemSettings::get(SystemSettingKey::WEB_NAME);
 
     expect($value)->toBe('Custom Web Name');
 });
@@ -37,43 +38,41 @@ test('it caches settings', function () {
         'key' => SystemSettingKey::WEB_NAME->value,
         'value' => 'Cached Name',
     ]);
-
-    $query = new GetSystemSettings;
+    GetSystemSettings::flushMemory();
+    Cache::flush();
 
     // First call, should fetch from DB
-    expect($query->get(SystemSettingKey::WEB_NAME))->toBe('Cached Name');
+    expect(GetSystemSettings::get(SystemSettingKey::WEB_NAME))->toBe('Cached Name');
 
     // Update DB directly
     SystemSettings::where('key', SystemSettingKey::WEB_NAME->value)->update(['value' => 'Updated Name']);
 
-    // Call again, should still return cached value
-    expect($query->get(SystemSettingKey::WEB_NAME))->toBe('Cached Name');
+    // Call again, should still return cached value (in memory)
+    expect(GetSystemSettings::get(SystemSettingKey::WEB_NAME))->toBe('Cached Name');
 
     // Flush memory, should still be cached in Laravel Cache
-    $query->flushMemory();
-    expect($query->get(SystemSettingKey::WEB_NAME))->toBe('Cached Name');
+    GetSystemSettings::flushMemory();
+    expect(GetSystemSettings::get(SystemSettingKey::WEB_NAME))->toBe('Cached Name');
 
     // Clear Cache
     Cache::flush();
-    $query->flushMemory();
+    GetSystemSettings::flushMemory();
 
     // Should now fetch updated value
-    expect($query->get(SystemSettingKey::WEB_NAME))->toBe('Updated Name');
+    expect(GetSystemSettings::get(SystemSettingKey::WEB_NAME))->toBe('Updated Name');
 });
 
 test('it flushes memory correctly', function () {
-    $query = new GetSystemSettings;
-
     // Fill memory
-    $query->fetch();
+    GetSystemSettings::fetch();
 
-    $reflection = new ReflectionClass($query);
+    $reflection = new ReflectionClass(GetSystemSettings::class);
     $property = $reflection->getProperty('settings');
     $property->setAccessible(true);
 
-    expect($property->getValue($query))->not->toBeNull();
+    expect($property->getValue())->not->toBeNull();
 
-    $query->flushMemory();
+    GetSystemSettings::flushMemory();
 
-    expect($property->getValue($query))->toBeNull();
+    expect($property->getValue())->toBeNull();
 });

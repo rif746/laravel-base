@@ -1,0 +1,192 @@
+@import "./variables";
+
+:root,
+[data-bs-theme="light"] {
+  // Grayscale colors
+  --bs-gray-50: #{$gray-50};
+  --bs-gray-100: #{$gray-100};
+  --bs-gray-200: #{$gray-200};
+  --bs-gray-300: #{$gray-300};
+  --bs-gray-400: #{$gray-400};
+  --bs-gray-500: #{$gray-500};
+  --bs-gray-600: #{$gray-600};
+  --bs-gray-700: #{$gray-700};
+  --bs-gray-800: #{$gray-800};
+  --bs-gray-900: #{$gray-900};
+  --bs-gray-950: #{$gray-950};
+  --bs-gray: #{$gray-600};
+  --bs-gray-dark: #{$gray-800};
+
+  // Base colors
+  --bs-white: #{$white};
+  --bs-black: #{$black};
+  --bs-orange: #{$orange};
+  --bs-red: #{$red};
+  --bs-green: #{$green};
+  --bs-cyan: #{$cyan};
+  --bs-yellow: #{$yellow};
+
+  // Theme colors
+  --bs-primary: #{$primary};
+  --bs-secondary: #{$secondary};
+  --bs-success: #{$success};
+  --bs-info: #{$info};
+  --bs-warning: #{$warning};
+  --bs-danger: #{$danger};
+  --bs-light: #{$light};
+  --bs-dark: #{$gray-900};
+
+  // RGB colors (for opacity/rgba support)
+  --bs-primary-rgb: #{red($primary)}, #{green($primary)}, #{blue($primary)};
+  --bs-secondary-rgb: #{red($secondary)}, #{green($secondary)}, #{blue($secondary)};
+  --bs-success-rgb: #{red($success)}, #{green($success)}, #{blue($success)};
+  --bs-info-rgb: #{red($info)}, #{green($info)}, #{blue($info)};
+  --bs-warning-rgb: #{red($warning)}, #{green($warning)}, #{blue($warning)};
+  --bs-danger-rgb: #{red($danger)}, #{green($danger)}, #{blue($danger)};
+  --bs-light-rgb: #{red($light)}, #{green($light)}, #{blue($light)};
+  --bs-dark-rgb: #{red($gray-900)}, #{green($gray-900)}, #{blue($gray-900)};
+  --bs-white-rgb: #{red($white)}, #{green($white)}, #{blue($white)};
+  --bs-black-rgb: #{red($black)}, #{green($black)}, #{blue($black)};
+  --bs-gray-50-rgb: #{red($gray-50)}, #{green($gray-50)}, #{blue($gray-50)};
+  --bs-gray-100-rgb: #{red($gray-100)}, #{green($gray-100)}, #{blue($gray-100)};
+  --bs-gray-200-rgb: #{red($gray-200)}, #{green($gray-200)}, #{blue($gray-200)};
+  --bs-gray-300-rgb: #{red($gray-300)}, #{green($gray-300)}, #{blue($gray-300)};
+  --bs-gray-400-rgb: #{red($gray-400)}, #{green($gray-400)}, #{blue($gray-400)};
+  --bs-gray-500-rgb: #{red($gray-500)}, #{green($gray-500)}, #{blue($gray-500)};
+  --bs-gray-600-rgb: #{red($gray-600)}, #{green($gray-600)}, #{blue($gray-600)};
+  --bs-gray-700-rgb: #{red($gray-700)}, #{green($gray-700)}, #{blue($gray-700)};
+  --bs-gray-800-rgb: #{red($gray-800)}, #{green($gray-800)}, #{blue($gray-800)};
+  --bs-gray-900-rgb: #{red($gray-900)}, #{green($gray-900)}, #{blue($gray-900)};
+  --bs-gray-950-rgb: #{red($gray-950)}, #{green($gray-950)}, #{blue($gray-950)};
+
+  // Body & Background Styles
+  --bs-body-color: #{$gray-800};
+  --bs-body-color-rgb: #{red($gray-800)}, #{green($gray-800)}, #{blue($gray-800)};
+  --bs-body-bg: #{$white};
+  --bs-body-bg-rgb: #{red($white)}, #{green($white)}, #{blue($white)};
+  --bs-secondary-color: #{$gray-600};
+  --bs-secondary-bg: #{$gray-100};
+  --bs-tertiary-color: #{$gray-500};
+  --bs-tertiary-bg: #{$gray-50};
+
+  // Borders & Radius
+  --bs-border-width: 1px;
+  --bs-border-style: solid;
+  --bs-border-color: #{$border-color};
+  --bs-border-color-translucent: #{$border-color-translucent};
+  --bs-border-radius: 0.375rem;
+  --bs-border-radius-sm: 0.25rem;
+  --bs-border-radius-lg: 0.5rem;
+  --bs-border-radius-xl: 1rem;
+  --bs-border-radius-xxl: 1.5rem;
+  --bs-border-radius-pill: 50rem;
+
+  // Box Shadows
+  --bs-box-shadow: 0 0.5rem 1rem rgba(var(--bs-black-rgb), 0.15);
+  --bs-box-shadow-sm: 0 0.125rem 0.25rem rgba(var(--bs-black-rgb), 0.075);
+  --bs-box-shadow-lg: 0 1rem 3rem rgba(var(--bs-black-rgb), 0.175);
+  --bs-box-shadow-inset: inset 0 1px 2px rgba(var(--bs-black-rgb), 0.075);
+
+  // Form Controls & Focus
+  --bs-focus-ring-color: rgba(var(--bs-primary-rgb), 0.25);
+  --bs-form-control-bg: var(--bs-body-bg);
+  --bs-form-control-disabled-bg: var(--bs-secondary-bg);
+
+  // Link colors
+  --bs-link-color: #{$link-color};
+  --bs-link-hover-color: #{$link-hover-color};
+
+  // Typography & Font sizing
+  --bs-font-sans-serif: #{$font-family-base};
+  --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --bs-body-font-family: #{$font-family-base};
+  --bs-body-font-size: #{$font-size-base};
+  --bs-body-font-weight: 400;
+  --bs-body-line-height: 1.5;
+  --bs-font-size-base: #{$font-size-base};
+  --bs-font-size-sm: #{$font-size-sm};
+  --bs-font-size-lg: #{$font-size-lg};
+  --bs-font-xs: #{$font-xs};
+  --bs-h1-font-size: #{$h1-font-size};
+  --bs-h2-font-size: #{$h2-font-size};
+  --bs-h3-font-size: #{$h3-font-size};
+  --bs-h4-font-size: #{$h4-font-size};
+  --bs-h5-font-size: #{$h5-font-size};
+  --bs-h6-font-size: #{$h6-font-size};
+  --bs-headings-font-weight: #{$headings-font-weight};
+  --bs-table-th-font-weight: #{$table-th-font-weight};
+
+  // Spacing & Padding
+  --bs-spacer: #{$spacer};
+  --bs-input-btn-padding-y: #{$input-btn-padding-y};
+  --bs-input-btn-padding-x: #{$input-btn-padding-x};
+  --bs-grid-gutter-width: #{$grid-gutter-width};
+
+  // Icon sizing & colors
+  --bs-icon-color: #{$icon-color};
+  --bs-icon-size-xxs: #{$icon-size-xxs};
+  --bs-icon-size-xs: #{$icon-size-xs};
+  --bs-icon-size-sm: #{$icon-size-sm};
+  --bs-icon-size-md: #{$icon-size-md};
+  --bs-icon-size-lg: #{$icon-size-lg};
+  --bs-icon-size-xl: #{$icon-size-xl};
+  --bs-icon-size-xxl: #{$icon-size-xxl};
+  --bs-icon-size-xxxl: #{$icon-size-xxxl};
+
+  // Avatar sizing
+  --bs-avatar-size-xs: #{$avatar-size-xs};
+  --bs-avatar-size-sm: #{$avatar-size-sm};
+  --bs-avatar-size-md: #{$avatar-size-md};
+  --bs-avatar-size-lg: #{$avatar-size-lg};
+  --bs-avatar-size-xl: #{$avatar-size-xl};
+  --bs-avatar-size-xxl: #{$avatar-size-xxl};
+}
+
+// Dark Mode Theme Customization
+[data-bs-theme="dark"] {
+  // Theme Colors
+  --bs-primary: #{$primary};
+  --bs-secondary: #{$gray-400};
+  --bs-success: #20c997;
+  --bs-info: #3dd5f3;
+  --bs-warning: #ffda6a;
+  --bs-danger: #ea868f;
+  --bs-dark: #{$gray-100};
+
+  // RGB Colors
+  --bs-primary-rgb: #{red($primary)}, #{green($primary)}, #{blue($primary)};
+  --bs-secondary-rgb: #{red($secondary)}, #{green($secondary)}, #{blue($secondary)};
+  --bs-success-rgb: #{red($success)}, #{green($success)}, #{blue($success)};
+  --bs-info-rgb: #{red($info)}, #{green($info)}, #{blue($info)};
+  --bs-warning-rgb: #{red($warning)}, #{green($warning)}, #{blue($warning)};
+  --bs-danger-rgb: #{red($danger)}, #{green($danger)}, #{blue($danger)};
+  --bs-light-rgb: #{red($gray-800)}, #{green($gray-800)}, #{blue($gray-800)};
+  --bs-dark-rgb: #{red($gray-100)}, #{green($gray-100)}, #{blue($gray-100)};
+
+  // Body & Background Styles
+  --bs-body-color: #{$gray-200};
+  --bs-body-color-rgb: #{red($gray-200)}, #{green($gray-200)}, #{blue($gray-200)};
+  --bs-body-bg: #{$gray-950};
+  --bs-body-bg-rgb: #{red($gray-950)}, #{green($gray-950)}, #{blue($gray-950)};
+  --bs-secondary-color: #{$gray-400};
+  --bs-secondary-bg: #{$gray-900};
+  --bs-tertiary-color: #{$gray-500};
+  --bs-tertiary-bg: #{$gray-800};
+
+  // Borders & Shadows
+  --bs-border-color: #{$gray-800};
+  --bs-border-color-translucent: rgba(255, 255, 255, 0.12);
+  --bs-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+  --bs-box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.35);
+  --bs-box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.65);
+  --bs-box-shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+
+  // Form Controls & Focus
+  --bs-focus-ring-color: rgba(var(--bs-primary-rgb), 0.35);
+  --bs-form-control-bg: var(--bs-body-bg);
+  --bs-form-control-disabled-bg: var(--bs-secondary-bg);
+
+  // Link colors
+  --bs-link-color: #{$gray-300};
+  --bs-link-hover-color: var(--bs-primary);
+}

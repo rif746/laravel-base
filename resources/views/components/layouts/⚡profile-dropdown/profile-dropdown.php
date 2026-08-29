@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Identity\Events\Authentication\UserLoggedOut;
 use App\Domains\Identity\Models\User;
 use App\Domains\Identity\Queries\GetAuthenticatedUserContext;
 use Illuminate\Support\Facades\Auth;
@@ -12,17 +13,20 @@ new class extends Component
     #[On('profile-updated')]
     public function refreshProfile(): void
     {
-        app(GetAuthenticatedUserContext::class)->refresh();
+        GetAuthenticatedUserContext::refresh();
     }
 
     #[Computed]
     public function user(): ?User
     {
-        return app(GetAuthenticatedUserContext::class)->fetch();
+        return GetAuthenticatedUserContext::fetch();
     }
 
     public function logout(): void
     {
+        $request = request();
+        UserLoggedOut::dispatch(user: $request->user(), ipAddress: $request->ip(), userAgent: $request->userAgent());
+
         Auth::logout();
         session()->invalidate();
         session()->regenerateToken();

@@ -1,46 +1,94 @@
+import Quill from "quill";
+import "quill/dist/quill.snow.css";
+
 export default function alpineQuill(Alpine) {
-    Alpine.directive('quill', function (el, { expression }, { evaluate, cleanup }) {
-        const options = expression ? evaluate(expression) : {};
-        const defaultOptions = { theme: 'snow', ...options };
+    Alpine.directive(
+        "quill",
+        (el, { expression }, { evaluateLater, cleanup }) => {
+            // 1. Fallback gracefully if x-quill has no parameters
+            const getContent = expression
+                ? evaluateLater(expression)
+                : (cb) => cb({});
 
-        if (typeof window.Quill === 'undefined') {
-            throw new Error('Quill must be loaded');
-        }
+            getContent((userOptions) => {
+                const options = Object.assign(
+                    {
+                        theme: "snow",
+                        placeholder: "Write something...",
+                    },
+                    typeof userOptions === "object" ? userOptions : {},
+                );
 
-        const container = document.createElement('div');
-        el.appendChild(container);
-        const quill = new window.Quill(container, defaultOptions);
+                // 2. Identify or create container DIV (Quill crashes on <textarea>)
+                let editorContainer;
+                let targetInput = el;
 
-        let isUpdating = false;
+                if (el.tagName === "TEXTAREA" || el.tagName === "INPUT") {
+                    // Create a container DIV for Quill right before the textarea
+                    editorContainer = document.createElement("div");
+                    el.parentNode.insertBefore(editorContainer, el);
 
-        // 1. Text changes handler
-        quill.on('text-change', () => {
-            if (isUpdating) return;
-            isUpdating = true;
-            const htmlContent = quill.root.innerHTML;
-            el.value = htmlContent === '<p><br></p>' ? '' : htmlContent;
-            el.dispatchEvent(new Event('input', { bubbles: true }));
-            isUpdating = false;
-        });
+                    // Hide the textarea without breaking Livewire bindings
+                    el.style.display = "none";
+                } else {
+                    editorContainer = el;
+                }
 
-        // 2. Element Value Getter/Setter
-        Object.defineProperty(el, 'value', {
-            get() { return quill.root.innerHTML; },
-            set(newValue) {
-                if (isUpdating || newValue === quill.root.innerHTML) return;
-                isUpdating = true;
-                quill.root.innerHTML = newValue || '';
-                isUpdating = false;
-            },
-            configurable: true
-        });
+                // 3. Instantiate Quill on the container DIV
+                const quill = new Quill(editorContainer, options);
 
-        quill.on('selection-change', (range) => {
-            if (range == null) {
-                el.dispatchEvent(new Event('blur', { bubbles: true }));
-            }
-        });
+                // Populate initial content from textarea / Alpine model
+                if (targetInput.value && targetInput.value !== "<p><br></p>") {
+                    quill.root.innerHTML = targetInput.value;
+                }
 
-        cleanup(() => el.innerHTML = '')
-    })
+                let isUpdating = false;
+
+                // 4. Sync Quill edits -> hidden input -> Livewire
+                quill.on("text-change", () => {
+                    if (isUpdating) return;
+                    isUpdating = true;
+
+                    const html = quill.root.innerHTML;
+                    const value = html === "<p><br></p>" ? "" : html;
+
+                    targetInput.value = value;
+
+                    // Dispatch input & change events on the target input so Livewire detects it
+                    targetInput.dispatchEvent(
+                        new Event("input", { bubbles: true }),
+                    );
+                    targetInput.dispatchEvent(
+                        new Event("change", { bubbles: true }),
+                    );
+
+                    isUpdating = false;
+                });
+
+                // 5. Sync Livewire dynamic resets -> Quill
+                const handleExternalUpdate = () => {
+                    if (isUpdating) return;
+                    if (targetInput.value !== quill.root.innerHTML) {
+                        isUpdating = true;
+                        quill.root.innerHTML = targetInput.value || "";
+                        isUpdating = false;
+                    }
+                };
+
+                targetInput.addEventListener("input", handleExternalUpdate);
+
+                // 6. Cleanup DOM when Livewire removes the element
+                cleanup(() => {
+                    targetInput.removeEventListener(
+                        "input",
+                        handleExternalUpdate,
+                    );
+                    if (editorContainer !== el) {
+                        editorContainer.remove();
+                        el.style.display = "";
+                    }
+                });
+            });
+        },
+    );
 }

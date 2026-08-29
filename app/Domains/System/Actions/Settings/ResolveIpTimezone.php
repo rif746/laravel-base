@@ -10,11 +10,9 @@ use Illuminate\Support\Facades\Http;
 
 class ResolveIpTimezone
 {
-    public function __construct(protected GetSystemSettings $getSystemSettings) {}
-
     public function execute(string $ip): string
     {
-        $systemTZ = $this->getSystemSettings->get(SystemSettingKey::TIMEZONE);
+        $systemTZ = GetSystemSettings::get(SystemSettingKey::TIMEZONE);
 
         // Localhost fallback
         if (in_array($ip, ['127.0.0.1', '::1', 'localhost'])) {

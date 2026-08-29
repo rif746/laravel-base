@@ -19,124 +19,161 @@ $swal2-font: $font-family-base;
 $swal2-color: $gray-800;
 
 // Buttons matching UI Form Controls
-$swal2-button-padding: $input-btn-padding-y (
-    $input-btn-padding-x * 1.5
-);
-
+$swal2-button-padding: $input-btn-padding-y ($input-btn-padding-x * 1.5);
 $swal2-confirm-button-border-radius: 0.5rem;
 $swal2-deny-button-border-radius: 0.5rem;
 $swal2-cancel-button-border-radius: 0.5rem;
 $swal2-border-radius: 0.75rem;
 
-
-// Custom Class Styles for Premium Look
+// Theme Overrides using Bootstrap CSS Variables
 .swal2-popup {
-    padding: 1.5rem;
-    box-shadow: 0 10px 40px rgba($black, 0.08);
-    border: 1px solid rgba($gray-900, 0.05);
+  padding: 1.5rem;
+  background-color: var(--bs-body-bg) !important;
+  color: var(--bs-body-color) !important;
+  border: var(--bs-border-width, 1px) var(--bs-border-style, solid) var(--bs-border-color) !important;
+  border-radius: var(--bs-border-radius-xl, 0.75rem) !important;
+  box-shadow: var(--bs-box-shadow-lg, 0 10px 40px rgba(var(--bs-black-rgb), 0.15)) !important;
+  font-family: var(--bs-body-font-family, var(--bs-font-sans-serif)) !important;
 
-    .swal2-title {
-        font-weight: 600;
-        font-size: 1.25rem;
-        color: $gray-900;
-        margin-bottom: 0.75rem;
-        padding-top: 0.5rem;
+  .swal2-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--bs-body-color) !important;
+    margin-bottom: 0.75rem;
+    padding-top: 0.5rem;
+  }
+
+  .swal2-html-container {
+    font-size: var(--bs-body-font-size, 0.95rem);
+    color: var(--bs-secondary-color) !important;
+    line-height: var(--bs-body-line-height, 1.5);
+    margin: 0.5rem 1rem 0;
+  }
+
+  .swal2-actions {
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+
+    .swal2-styled {
+      font-weight: 500;
+      box-shadow: none !important;
+      transition: all 0.2s ease-in-out;
+      margin: 0 !important;
+      border-radius: var(--bs-border-radius, 0.375rem) !important;
+
+      &:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.05);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      &.swal2-confirm {
+        background-color: var(--bs-primary) !important;
+        color: #ffffff !important;
+      }
+
+      &.swal2-cancel {
+        background-color: var(--bs-secondary-bg) !important;
+        color: var(--bs-body-color) !important;
+        border: var(--bs-border-width, 1px) var(--bs-border-style, solid) var(--bs-border-color) !important;
+      }
+
+      &.swal2-deny {
+        background-color: var(--bs-danger) !important;
+        color: #ffffff !important;
+      }
+    }
+  }
+
+  .swal2-input,
+  .swal2-textarea,
+  .swal2-select {
+    background-color: var(--bs-form-control-bg) !important;
+    color: var(--bs-body-color) !important;
+    border: var(--bs-border-width, 1px) var(--bs-border-style, solid) var(--bs-border-color) !important;
+    border-radius: var(--bs-border-radius, 0.375rem) !important;
+    box-shadow: none !important;
+
+    &:focus {
+      border-color: var(--bs-primary) !important;
+      box-shadow: 0 0 0 0.25rem var(--bs-focus-ring-color) !important;
+    }
+  }
+
+  .swal2-icon {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-width: 2px;
+
+    &.swal2-success {
+      border-color: var(--bs-success);
+
+      [class^='swal2-success-line'] {
+        background-color: var(--bs-success);
+      }
+
+      .swal2-success-ring {
+        border-color: rgba(var(--bs-success-rgb), 0.3);
+      }
     }
 
-    .swal2-html-container {
-        font-size: 0.95rem;
-        color: $gray-600;
-        line-height: 1.6;
-        margin: 0.5rem 1rem 0;
+    &.swal2-error {
+      border-color: var(--bs-danger);
+
+      .swal2-x-mark-line-left,
+      .swal2-x-mark-line-right {
+        background-color: var(--bs-danger);
+      }
     }
 
-    .swal2-actions {
-        gap: 0.75rem;
-        margin-top: 1.75rem;
-
-        .swal2-styled {
-            font-weight: 500;
-            box-shadow: none !important;
-            transition: all 0.2s ease;
-            margin: 0 !important;
-
-            &:hover {
-                transform: translateY(-1px);
-                filter: brightness(1.05);
-            }
-
-            &:active {
-                transform: translateY(0);
-            }
-
-            &.swal2-confirm {
-                background-color: $primary !important;
-            }
-
-            &.swal2-cancel {
-                background-color: $gray-200 !important;
-                color: $gray-800 !important;
-                border: 1px solid $border-color;
-            }
-
-            &.swal2-deny {
-                background-color: $danger !important;
-            }
-        }
+    &.swal2-warning {
+      border-color: var(--bs-warning);
+      color: var(--bs-warning);
     }
 
-    .swal2-icon {
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
-        border-width: 2px;
-
-        &.swal2-success {
-            border-color: $success;
-
-            [class^='swal2-success-line'] {
-                background-color: $success;
-            }
-
-            .swal2-success-ring {
-                border-color: rgba($success, 0.3);
-            }
-        }
-
-        &.swal2-error {
-            border-color: $danger;
-
-            .swal2-x-mark-line-left,
-            .swal2-x-mark-line-right {
-                background-color: $danger;
-            }
-        }
+    &.swal2-info {
+      border-color: var(--bs-info);
+      color: var(--bs-info);
     }
+
+    &.swal2-question {
+      border-color: var(--bs-secondary);
+      color: var(--bs-secondary);
+    }
+  }
 }
 
 // Toast styling
 @keyframes swal2-toast-show {
-    0% {
-        transform: scale(0.9) translateY(-10px);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1) translateY(0);
-        opacity: 1;
-    }
+  0% {
+    transform: scale(0.9) translateY(-10px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
 }
 
 .swal2-toast {
-    padding: 0.75rem 1rem !important;
-    box-shadow: 0 5px 15px rgba($black, 0.08) !important;
-    border-radius: 0.5rem !important;
+  background-color: var(--bs-body-bg) !important;
+  color: var(--bs-body-color) !important;
+  border: var(--bs-border-width, 1px) var(--bs-border-style, solid) var(--bs-border-color) !important;
+  padding: 0.75rem 1rem !important;
+  box-shadow: var(--bs-box-shadow, 0 5px 15px rgba(var(--bs-black-rgb), 0.08)) !important;
+  border-radius: var(--bs-border-radius, 0.5rem) !important;
 
-    &.swal2-show {
-        animation: swal2-toast-show 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) forwards !important;
-    }
+  &.swal2-show {
+    animation: swal2-toast-show 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) forwards !important;
+  }
 
-    .swal2-title {
-        font-size: 0.875rem !important;
-        margin: 0 0.5rem !important;
-        padding-top: 0 !important;
-    }
+  .swal2-title {
+    color: var(--bs-body-color) !important;
+    font-size: var(--bs-font-size-sm, 0.875rem) !important;
+    margin: 0 0.5rem !important;
+    padding-top: 0 !important;
+  }
 }

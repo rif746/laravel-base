@@ -12,8 +12,6 @@ use Throwable;
 
 class HandlePreferredLanguage
 {
-    public function __construct(protected GetSystemSettings $getSystemSettings) {}
-
     /**
      * Handle an incoming request.
      *
@@ -26,7 +24,7 @@ class HandlePreferredLanguage
         if (session()->has('locale')) {
             $lang = session()->get('locale');
         } else {
-            $lang = $this->getSystemSettings->get(SystemSettingKey::DEFAULT_LANGUAGE);
+            $lang = GetSystemSettings::get(SystemSettingKey::DEFAULT_LANGUAGE);
             $userSetting = $request->user()?->settings;
 
             if ($userSetting !== null && isset($userSetting[UserSettingKey::LANGUAGE->value])) {

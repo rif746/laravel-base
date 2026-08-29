@@ -17,7 +17,7 @@ return [
     ],
     'forgot_password' => [
         'email' => 'Alamat Email',
-        'submit' => 'Kirim Tautan Atur Ulang Kata Sandi',
+        'submit' => 'Kirim Link Atur Ulang Kata Sandi',
     ],
     'reset_password' => [
         'email' => 'Alamat Email',

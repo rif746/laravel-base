@@ -79,4 +79,14 @@ class UserDataMapper implements DataPayloadMapper
             phoneNumber: $payload['phone_number']
         );
     }
+
+    /**
+     * Define model for transformation
+     *
+     * @return class-string
+     */
+    public function getModelClass(): string
+    {
+        return User::class;
+    }
 }

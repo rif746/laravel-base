@@ -1,4 +1,6 @@
 import * as bootstrap from 'bootstrap';
-import './sidebar.js'
+import Sidebar from "./sidebar.js";
+
+window.addEventListener('livewire:navigated', Sidebar)
 
 window.bootstrap = bootstrap

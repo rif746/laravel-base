@@ -1,107 +1,118 @@
 @import "../variables";
 @import "apexcharts/dist/apexcharts.css";
 
-// ApexCharts Theme Overrides
+// ApexCharts Theme Overrides using Bootstrap CSS Variables
 .apexcharts-canvas {
-  font-family: $font-family-base !important;
+  font-family: var(--bs-body-font-family, var(--bs-font-sans-serif)) !important;
 
   // Tooltip
   .apexcharts-tooltip {
-    font-family: $font-family-base;
-    font-size: $font-size-base;
-    border: 1px solid $border-color;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 16px rgba($black, 0.15);
-    background: $white;
-    color: $gray-800;
+    font-family: var(--bs-body-font-family, var(--bs-font-sans-serif));
+    font-size: var(--bs-font-size-base, 0.875rem);
+    border: var(--bs-border-width, 1px) var(--bs-border-style, solid) var(--bs-border-color) !important;
+    border-radius: var(--bs-border-radius-lg, 0.5rem);
+    box-shadow: var(--bs-box-shadow, 0 4px 16px rgba(var(--bs-black-rgb), 0.15));
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-body-color) !important;
 
-    &.apexcharts-theme-light {
-      border: 1px solid $border-color;
-      background: $white;
+    &.apexcharts-theme-light,
+    &.apexcharts-theme-dark {
+      border: var(--bs-border-width, 1px) var(--bs-border-style, solid) var(--bs-border-color) !important;
+      background-color: var(--bs-body-bg) !important;
+      color: var(--bs-body-color) !important;
     }
 
     .apexcharts-tooltip-title {
-      font-family: $font-family-base;
-      font-size: $font-size-sm;
+      font-family: var(--bs-body-font-family, var(--bs-font-sans-serif));
+      font-size: var(--bs-font-size-sm, 0.75rem);
       font-weight: 600;
-      background: $gray-100;
-      border-bottom: 1px solid $border-color;
-      color: $gray-800;
+      background-color: var(--bs-secondary-bg) !important;
+      border-bottom: var(--bs-border-width, 1px) var(--bs-border-style, solid) var(--bs-border-color) !important;
+      color: var(--bs-body-color) !important;
       padding: 0.375rem 0.75rem;
     }
 
     .apexcharts-tooltip-series-group {
       padding: 0.375rem 0.75rem;
+      background-color: var(--bs-body-bg) !important;
     }
 
     .apexcharts-tooltip-text {
-      font-family: $font-family-base;
-      font-size: $font-size-sm;
+      font-family: var(--bs-body-font-family, var(--bs-font-sans-serif));
+      font-size: var(--bs-font-size-sm, 0.75rem);
+      color: var(--bs-body-color) !important;
     }
 
     .apexcharts-tooltip-marker {
-      border-radius: 50%;
+      border-radius: var(--bs-border-radius-pill, 50%);
     }
   }
 
   // Legend
   .apexcharts-legend {
-    font-family: $font-family-base;
+    font-family: var(--bs-body-font-family, var(--bs-font-sans-serif));
   }
 
   .apexcharts-legend-text {
-    font-family: $font-family-base !important;
-    font-size: $font-size-sm !important;
-    color: $gray-600 !important;
+    font-family: var(--bs-body-font-family, var(--bs-font-sans-serif)) !important;
+    font-size: var(--bs-font-size-sm, 0.75rem) !important;
+    color: var(--bs-secondary-color) !important;
   }
 
   // X & Y axis labels
   .apexcharts-xaxis-label,
   .apexcharts-yaxis-label {
-    font-family: $font-family-base;
-    fill: $gray-500;
-    font-size: $font-size-sm;
+    font-family: var(--bs-body-font-family, var(--bs-font-sans-serif));
+    fill: var(--bs-secondary-color);
+    font-size: var(--bs-font-size-sm, 0.75rem);
   }
 
   // Grid lines
   .apexcharts-gridline {
-    stroke: $gray-200;
+    stroke: var(--bs-border-color);
   }
 
-  // Y-axis line
+  // Axis borders
   .apexcharts-yaxis-border,
   .apexcharts-xaxis-border {
-    stroke: $gray-200;
+    stroke: var(--bs-border-color);
   }
 
-  // Toolbar icons
+  // Toolbar icons and menu
   .apexcharts-toolbar {
     .apexcharts-menu {
-      font-family: $font-family-base;
-      font-size: $font-size-sm;
-      border: 1px solid $border-color;
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 12px rgba($black, 0.15);
+      font-family: var(--bs-body-font-family, var(--bs-font-sans-serif));
+      font-size: var(--bs-font-size-sm, 0.75rem);
+      background-color: var(--bs-body-bg);
+      border: var(--bs-border-width, 1px) var(--bs-border-style, solid) var(--bs-border-color);
+      border-radius: var(--bs-border-radius, 0.375rem);
+      box-shadow: var(--bs-box-shadow, 0 4px 12px rgba(var(--bs-black-rgb), 0.15));
+      color: var(--bs-body-color);
     }
 
-    .apexcharts-menu-item:hover {
-      background: rgba($primary, 0.08);
-      color: $primary;
+    .apexcharts-menu-item {
+      color: var(--bs-body-color);
+
+      &:hover {
+        background: rgba(var(--bs-primary-rgb), 0.1);
+        color: var(--bs-primary);
+      }
     }
   }
 
   // Data labels
   .apexcharts-data-labels text {
-    font-family: $font-family-base !important;
-    fill: $gray-700;
+    font-family: var(--bs-body-font-family, var(--bs-font-sans-serif)) !important;
+    fill: var(--bs-body-color);
   }
 }
 
 // Chart color palette aligned with brand colors
 .apexcharts-series {
-  &:nth-child(1) { --chart-color: #{$primary}; }
-  &:nth-child(2) { --chart-color: #{$info}; }
-  &:nth-child(3) { --chart-color: #{$success}; }
-  &:nth-child(4) { --chart-color: #{$warning}; }
-  &:nth-child(5) { --chart-color: #{$danger}; }
+  &:nth-child(1) { --chart-color: var(--bs-primary); }
+  &:nth-child(2) { --chart-color: var(--bs-info); }
+  &:nth-child(3) { --chart-color: var(--bs-success); }
+  &:nth-child(4) { --chart-color: var(--bs-warning); }
+  &:nth-child(5) { --chart-color: var(--bs-danger); }
+  &:nth-child(6) { --chart-color: var(--bs-secondary); }
 }

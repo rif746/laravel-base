@@ -18,8 +18,7 @@ test('it can fetch user verification rates', function () {
         'email_verified_at' => null,
     ]);
 
-    $query = new GetUserVerificationRates;
-    $results = $query->fetch();
+    $results = GetUserVerificationRates::fetch();
 
     expect($results)->toBe([
         'verified' => 3,
@@ -29,8 +28,7 @@ test('it can fetch user verification rates', function () {
 });
 
 test('it returns zero rates when no users exist', function () {
-    $query = new GetUserVerificationRates;
-    $results = $query->fetch();
+    $results = GetUserVerificationRates::fetch();
 
     expect($results)->toBe([
         'verified' => 0,

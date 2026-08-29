@@ -3,7 +3,7 @@
 namespace App\Domains\System\Actions\Integration;
 
 use App\Domains\System\Support\Integration\DataPayloadMapper;
-use Illuminate\Database\Eloquent\Model;
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -12,48 +12,109 @@ use Throwable;
 class RunGenericImportPipeline
 {
     /**
-     * @param  Collection<int, array<string, mixed>>  $rows  Raw spreadsheet rows from the current chunk
-     * @param  DataPayloadMapper  $mapper  The specific structural mapping engine
-     * @param  class-string<Model>  $modelClass  The Eloquent model class to query against
+     * Execute the generic import pipeline by transforming rows, fetching existing state,
+     * and delegating the persistence operation to the mapper.
+     *
+     * @param Collection<int, array<string, mixed>> $rows Raw payload rows from the API or spreadsheet chunk
+     * @param DataPayloadMapper $mapper The domain-specific structural mapping engine
+     * @throws Exception
      */
-    public function execute(Collection $rows, DataPayloadMapper $mapper, string $modelClass): void
+    public function execute(Collection $rows, DataPayloadMapper $mapper): void
     {
         $lookupKey = $mapper->getLookupKey();
+        $modelClass = $mapper->getModelClass();
 
-        $lookupValues = $rows->pluck($lookupKey)
-            ->filter()
-            ->map(fn ($val) => trim((string) $val))
-            ->toArray();
+        // 1. Transform raw payload rows into domain-aligned internal data structures
+        $mappedRows = $rows->map(fn ($row) => $mapper->transform($row));
 
-        $existingRecords = $modelClass::query()
-            ->whereIn(column: $lookupKey, values: $lookupValues)
-            ->get()
-            ->keyBy($lookupKey);
+        // 2. Resolve existing domain records from the database
+        if (is_string($lookupKey)) {
+            // Single key lookup strategy
+            $lookupValues = $mappedRows->pluck($lookupKey)
+                ->filter(fn ($val) => ! is_null($val) && $val !== '')
+                ->map(fn ($val) => trim((string) $val))
+                ->toArray();
 
-        foreach ($rows->toArray() as $row) {
-            if (empty($row[$lookupKey])) {
+            $existingRecords = $modelClass::query()
+                ->whereIn(column: $lookupKey, values: $lookupValues)
+                ->get()
+                ->keyBy($lookupKey);
+
+        } else {
+            // Composite key lookup strategy (Array of keys)
+            $query = $modelClass::query();
+
+            // Construct composite OR-WHERE query conditions using mapped internal keys
+            $query->where(function ($q) use ($mappedRows, $lookupKey) {
+                foreach ($mappedRows as $mappedRow) {
+                    $q->orWhere(function ($subQ) use ($mappedRow, $lookupKey) {
+                        foreach ($lookupKey as $col) {
+                            $subQ->where($col, $mappedRow[$col] ?? null);
+                        }
+                    });
+                }
+            });
+
+            // Map retrieved database models into an in-memory composite hash index
+            $existingRecords = $query->get()->keyBy(function ($item) use ($lookupKey) {
+                return $this->generateCompositeIdentifier($item->toArray(), $lookupKey);
+            });
+        }
+
+        // 3. Process each row and delegate execution to the domain state action
+        foreach ($mappedRows as $row) {
+            // Guard clause: Ensure all required lookup key attributes are populated
+            if ($this->isInvalidRow($row, $lookupKey)) {
                 continue;
             }
 
+            // Derive the string identifier used to match existing records in memory
+            $lookupIdentifier = is_array($lookupKey)
+                ? $this->generateCompositeIdentifier($row, $lookupKey)
+                : trim((string) $row[$lookupKey]);
+
             try {
-                DB::transaction(function () use ($row, $lookupKey, $mapper, $existingRecords) {
-                    $lookupValue = trim((string) $row[$lookupKey]);
+                DB::transaction(function () use ($row, $lookupIdentifier, $mapper, $existingRecords) {
+                    $existingModel = $existingRecords->get($lookupIdentifier);
 
-                    // Match against our pre-fetched in-memory cache
-                    $matchedModel = $existingRecords->get($lookupValue);
-
-                    // Normalize data columns via the mapper specification
-                    $normalizedPayload = $mapper->transform($row);
-
-                    // Delegate execution to the underlying actions
-                    $mapper->updateOrCreateDomainState(payload: $normalizedPayload, model: $matchedModel);
+                    // Delegate execution to the underlying domain action
+                    $mapper->updateOrCreateDomainState(payload: $row, existingModel: $existingModel);
                 });
             } catch (Throwable $e) {
                 Log::error('Generic Import failure on Row processing: '.$e->getMessage(), [
                     'row' => $row,
-                    'lookupKey' => $lookupKey,
+                    'lookupIdentifier' => $lookupIdentifier,
                 ]);
+
+                throw new Exception('Failed to process row: '.$e->getMessage());
             }
         }
+    }
+
+    /**
+     * Generate a deterministic string hash key for composite lookup matching.
+     */
+    protected function generateCompositeIdentifier(array $data, array $keys): string
+    {
+        $values = array_map(fn ($k) => trim((string) ($data[$k] ?? '')), $keys);
+
+        return implode('_', $values);
+    }
+
+    /**
+     * Universal guard clause to validate lookup key integrity for single and composite keys.
+     */
+    protected function isInvalidRow(array $row, string|array $lookupKey): bool
+    {
+        $keys = (array) $lookupKey;
+
+        foreach ($keys as $key) {
+            $val = $row[$key] ?? null;
+            if (is_null($val) || $val === '') {
+                return true; // Skip row if any required lookup key attribute is missing
+            }
+        }
+
+        return false;
     }
 }

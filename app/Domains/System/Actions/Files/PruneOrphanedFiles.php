@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Storage;
 
 class PruneOrphanedFiles
 {
-    public function __construct(protected GetSystemSettings $settingQuery) {}
-
     public function execute(string $disk = 'public', string $directory = '/'): array
     {
         $stats = ['db_orphans_removed' => 0, 'disk_orphans_removed' => 0];
@@ -35,8 +33,8 @@ class PruneOrphanedFiles
         $trackedFiles = File::pluck('path')->toArray();
 
         $settingFiles = collect(SystemSettingKey::cases())
-            ->filter(fn ($key) => $key->schema()->type === InputType::FILE)
-            ->map(fn ($key) => $this->settingQuery->get($key))
+            ->filter(fn ($key) => $key->getSchema()->type === InputType::FILE)
+            ->map(fn ($key) => GetSystemSettings::get($key))
             ->filter()
             ->toArray();
 

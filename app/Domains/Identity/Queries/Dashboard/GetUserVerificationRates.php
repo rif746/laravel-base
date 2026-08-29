@@ -9,7 +9,7 @@ class GetUserVerificationRates
     /**
      * @return array{verification_rate: float|int, verified: int, unverified: int}
      */
-    public function fetch(): array
+    public static function fetch(): array
     {
         /** @var object{total: int, verified: int|null} $stats */
         $stats = User::query()

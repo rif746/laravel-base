@@ -11,8 +11,7 @@ test('it can fetch roles without search', function () {
     Role::create(['name' => 'admin', 'guard_name' => 'web']);
     Role::create(['name' => 'editor', 'guard_name' => 'web']);
 
-    $lookup = new RoleLookup;
-    $results = $lookup->fetch(null);
+    $results = RoleLookup::fetch(null);
 
     expect($results)->toHaveCount(2)
         ->and($results->pluck('name'))->toContain('admin', 'editor');
@@ -23,13 +22,11 @@ test('it can filter roles by name', function () {
     Role::create(['name' => 'editor', 'guard_name' => 'web']);
     Role::create(['name' => 'viewer', 'guard_name' => 'web']);
 
-    $lookup = new RoleLookup;
-
-    $results = $lookup->fetch('edit');
+    $results = RoleLookup::fetch('edit');
     expect($results)->toHaveCount(1)
         ->and($results->first()->name)->toBe('editor');
 
-    $results = $lookup->fetch('v');
+    $results = RoleLookup::fetch('v');
     expect($results)->toHaveCount(1)
         ->and($results->first()->name)->toBe('viewer');
 });
@@ -37,8 +34,7 @@ test('it can filter roles by name', function () {
 test('it returns empty collection when no roles match', function () {
     Role::create(['name' => 'admin', 'guard_name' => 'web']);
 
-    $lookup = new RoleLookup;
-    $results = $lookup->fetch('non-existent');
+    $results = RoleLookup::fetch('non-existent');
 
     expect($results)->toBeEmpty();
 });

@@ -12,8 +12,4 @@
         <x-button type="button" theme="secondary" :label="__('ui/button.cancel')" data-bs-dismiss="modal" />
         <x-button type="submit" theme="primary" :label="__('ui/button.save')" />
     </x-slot:footer>
-
-    @push('scripts')
-        @vite(['resources/js/plugin/select2.js'])
-    @endpush
 </x-modal>

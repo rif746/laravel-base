@@ -19,7 +19,7 @@ class UiServiceProvider extends ServiceProvider
     {
         // Google Tag Manager Head
         Blade::directive('gtmHead', function () {
-            return "<?php \$gtmId = app(\App\Domains\System\Queries\GetSystemSettings::class)->get(\App\Domains\System\Enums\SystemSettingKey::GOOGLE_TAG_MANAGER_ID); if (!empty(\$gtmId)): ?>
+            return "<?php \$gtmId = \App\Domains\System\Queries\GetSystemSettings::get(\App\Domains\System\Enums\SystemSettingKey::GOOGLE_TAG_MANAGER_ID); if (!empty(\$gtmId)): ?>
                 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -30,7 +30,7 @@ class UiServiceProvider extends ServiceProvider
 
         // Google Tag Manager Body
         Blade::directive('gtmBody', function () {
-            return "<?php \$gtmId = app(\App\Domains\System\Queries\GetSystemSettings::class)->get(\App\Domains\System\Enums\SystemSettingKey::GOOGLE_TAG_MANAGER_ID); if (!empty(\$gtmId)): ?>
+            return "<?php \$gtmId = \App\Domains\System\Queries\GetSystemSettings::get(\App\Domains\System\Enums\SystemSettingKey::GOOGLE_TAG_MANAGER_ID); if (!empty(\$gtmId)): ?>
             <noscript><iframe src=\"https://www.googletagmanager.com/ns.html?id=<?php echo \$gtmId; ?>\"
             height=\"0\" width=\"0\" style=\"display:none;visibility:hidden\"></iframe></noscript>
             <?php endif; ?>";
@@ -38,8 +38,17 @@ class UiServiceProvider extends ServiceProvider
 
         // Google Tag Manager Meta
         Blade::directive('webmasterMeta', function () {
-            return "<?php \$webmasterId = app(\App\Domains\System\Queries\GetSystemSettings::class)->get(\App\Domains\System\Enums\SystemSettingKey::GOOGLE_WEBMASTER_ID); if (!empty(\$webmasterId)): ?>
+            return "<?php \$webmasterId = \App\Domains\System\Queries\GetSystemSettings::get(\App\Domains\System\Enums\SystemSettingKey::GOOGLE_WEBMASTER_ID); if (!empty(\$webmasterId)): ?>
             <meta name=\"google-site-verification\" content=\"<?php echo \$webmasterId; ?>\" />
+            <?php endif; ?>";
+        });
+
+        // Website Logo
+        Blade::directive('logoPath', function () {
+            return "<?php \$logo = \App\Domains\System\Queries\GetSystemSettings::get(\App\Domains\System\Enums\SystemSettingKey::WEB_LOGO); if (!empty(\$logo)): ?>
+            <?= asset_static(\$logo); ?>
+            <?php else: ?>
+            <?= svg('tabler-brand-laravel') ?>
             <?php endif; ?>";
         });
     }

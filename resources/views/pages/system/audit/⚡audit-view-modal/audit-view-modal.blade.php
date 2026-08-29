@@ -15,6 +15,14 @@
                     <div class="accordion-body">
                         <div>
                             <div class="row g-3">
+                                <div class="col-sm-12">
+                                    <div class="d-flex justify-content-end">
+                                        <x-button size="sm" label="Restore" x-on:click="$js.restore" data-id="{{ $audit->id }}" theme="warning" icon="tabler-restore" :icon-property="[
+                                            'width' => 16,
+                                            'height' => 16
+                                        ]" />
+                                    </div>
+                                </div>
                                 <div class="col-sm-12 col-md-4 fw-bold">{{ __('resources.user') }}</div>
                                 <div class="col-sm-12 col-md-8">{{ $audit->user->name }}</div>
                                 <div class="col-sm-12 col-md-4 fw-bold">{{ __('domains/system/field.audit.ip_address') }}</div>
@@ -52,6 +60,25 @@
             </div>
         @endforelse
     </div>
+
+    @script
+        <script>
+            $js.restore = (e) => {
+                const id = e.target.dataset.id
+                Swal.fire({
+                    title: '{{ __('ui/title.restore', ['resource' => __('resources.audit')]) }}',
+                    text: '{{ __('ui/confirmation.restore', ['resource' => __('resources.audit')]) }}',
+                    showLoaderOnConfirm: true,
+                    showConfirmButton: true,
+                    showCancelButton: true,
+                    preConfirm: () => {
+                        return $wire.restore(id)
+                    }
+                })
+            }
+        </script>
+    @endscript
+
     <x-slot:footer>
         <x-button theme="secondary" data-bs-dismiss="modal" :label="__('ui/button.cancel')" />
     </x-slot:footer>

@@ -28,7 +28,7 @@
                                        resource-name="user"/>
 
     @push('page-scripts')
-        @vite(['resources/js/plugin/datatables.js', 'resources/js/plugin/select2.js'])
+        @vite(['resources/js/plugin/datatables.js'])
         {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
     @endpush
 </x-layouts.app>

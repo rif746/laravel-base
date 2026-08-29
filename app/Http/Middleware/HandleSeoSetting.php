@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HandleSeoSetting
 {
-    public function __construct(protected GetSystemSettings $getSystemSettings) {}
-
     /**
      * Handle an incoming request.
      *
@@ -19,8 +17,8 @@ class HandleSeoSetting
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $title = $this->getSystemSettings->get(SystemSettingKey::WEB_NAME);
-        $description = $this->getSystemSettings->get(SystemSettingKey::WEB_DESCRIPTION);
+        $title = GetSystemSettings::get(SystemSettingKey::WEB_NAME);
+        $description = GetSystemSettings::get(SystemSettingKey::WEB_DESCRIPTION);
 
         config(['seotools.meta.defaults.title' => $title]);
         config(['seotools.opengraph.defaults.title' => $title]);

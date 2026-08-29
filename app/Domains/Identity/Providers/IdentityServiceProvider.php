@@ -3,9 +3,12 @@
 namespace App\Domains\Identity\Providers;
 
 use App\Domains\Identity\Events\Authentication\UserLoggedIn;
+use App\Domains\Identity\Events\Authentication\UserLoggedOut;
 use App\Domains\Identity\Events\Governance\UserWasActivated;
 use App\Domains\Identity\Events\Governance\UserWasPurged;
 use App\Domains\Identity\Events\Governance\UserWasSuspended;
+use App\Domains\Identity\Listeners\Authentication\RecordSignInActivity;
+use App\Domains\Identity\Listeners\Authentication\RecordSignOutActivity;
 use App\Domains\Identity\Listeners\Authentication\SendSignInActivityNotification;
 use App\Domains\Identity\Listeners\Governance\SendUserActivatedNotification;
 use App\Domains\Identity\Listeners\Governance\SendUserPurgedNotification;
@@ -21,6 +24,10 @@ class IdentityServiceProvider extends ServiceProvider
     protected array $listen = [
         UserLoggedIn::class => [
             SendSignInActivityNotification::class,
+            RecordSignInActivity::class
+        ],
+        UserLoggedOut::class => [
+            RecordSignOutActivity::class
         ],
         UserWasActivated::class => [
             SendUserActivatedNotification::class,
@@ -36,7 +43,6 @@ class IdentityServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RelationshipServiceProvider::class);
-        $this->app->singleton(GetAuthenticatedUserContext::class, fn () => new GetAuthenticatedUserContext);
     }
 
     public function boot(): void

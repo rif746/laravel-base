@@ -7,23 +7,23 @@ use Illuminate\Support\Facades\Auth;
 
 class GetAuthenticatedUserContext
 {
-    private ?array $cache = null;
+    private static ?array $cache = null;
 
-    public function fetch(): ?User
+    public static function fetch(): ?User
     {
-        if ($this->cache !== null) {
-            return $this->cache['user'];
+        if (self::$cache !== null) {
+            return self::$cache['user'];
         }
 
         $user = Auth::user();
         $user?->loadMissing(['avatar', 'profile']);
-        $this->cache['user'] = $user;
+        self::$cache['user'] = $user;
 
-        return $this->cache['user'];
+        return self::$cache['user'];
     }
 
-    public function refresh(): void
+    public static function refresh(): void
     {
-        $this->cache = null;
+        self::$cache = null;
     }
 }

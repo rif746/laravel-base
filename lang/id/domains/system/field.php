@@ -23,8 +23,8 @@ return [
     ],
     'audit' => [
         'ip_address' => 'Alamat IP',
-        'browser' => 'Peramban',
-        'field' => 'Kolom',
+        'browser' => 'Browser',
+        'field' => 'Bidang',
         'old' => 'Lama',
         'new' => 'Baru',
     ],

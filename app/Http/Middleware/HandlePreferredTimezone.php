@@ -11,8 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HandlePreferredTimezone
 {
-    public function __construct(protected GetSystemSettings $getSystemSettings) {}
-
     /**
      * Handle an incoming request.
      *
@@ -20,7 +18,7 @@ class HandlePreferredTimezone
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $timezone = $this->getSystemSettings->get(SystemSettingKey::TIMEZONE);
+        $timezone = GetSystemSettings::get(SystemSettingKey::TIMEZONE);
         $userSetting = $request->user()?->settings;
 
         if ($userSetting !== null) {
