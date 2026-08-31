@@ -2,7 +2,6 @@
 
 use App\Attributes\Ui\Seo;
 use App\Domains\Identity\Actions\Onboarding\RegisterSelfServiceUser;
-use App\Domains\Identity\DTOs\Onboarding\RegisterSelfServiceUserDTO;
 use App\Livewire\Concerns\HasSeoAttributes;
 use App\Livewire\Forms\Auth\RegisterForm;
 use Illuminate\Support\Facades\Auth;

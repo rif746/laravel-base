@@ -8,11 +8,12 @@
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                     @foreach ($item as $i)
-                        <li @class(['breadcrumb-item', 'active' => $loop->last])><a href="javascript: void(0);">{{ $i }}</a></li>
+                        <li @class(['breadcrumb-item', 'active' => $loop->last])>
+                            <a href="javascript: void(0);">{{ $i }}</a>
+                        </li>
                     @endforeach
                 </ol>
             </div>
-
         </div>
     </div>
 </div>

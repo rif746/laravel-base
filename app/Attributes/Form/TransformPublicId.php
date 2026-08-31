@@ -11,5 +11,5 @@ class TransformPublicId
         public string $model,
         public string $publicIdColumn = 'ulid',
         public string $idColumn = 'id'
-    ){}
+    ) {}
 }

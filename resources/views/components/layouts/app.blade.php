@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8" />
     {!! SEO::generate() !!}
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{ asset_static($favicon ?? 'images/logo.svg') }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ asset_static($favicon ?? 'images/logo.svg') }}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <link rel="icon" href="{{ asset_static($favicon ?? 'images/logo.svg') }}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{ asset_static($favicon ?? 'images/logo.svg') }}" type="image/x-icon" />
     @webmasterMeta
     @gtmHead
 
@@ -19,47 +18,48 @@
 </head>
 
 <body>
-@gtmBody
+    @gtmBody
 
-<div id="overlay" class="overlay"></div>
-<!-- TOPBAR -->
-<x-layouts.nav.topbar/>
+    <div id="overlay" class="overlay"></div>
+    <!-- TOPBAR -->
+    <x-layouts.nav.topbar />
 
-<!-- SIDEBAR -->
-<x-layouts.nav.sidebar/>
+    <!-- SIDEBAR -->
+    <x-layouts.nav.sidebar />
 
-<!-- MAIN CONTENT -->
-<main id="content" class="content">
-    <div class="container-fluid min-vh-90 pt-10">
-        <div class="d-flex flex-column mb-5">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    @foreach($breadcrumbs as $breadcrumb)
-                        <li class="breadcrumb-item {{ $loop->index==0 ? 'active' : '' }}" aria-current="page">
-                            @if($breadcrumb['url']) <a href="{{ $breadcrumb['url'] }}"> @endif
+    <!-- MAIN CONTENT -->
+    <main id="content" class="content">
+        <div class="container-fluid min-vh-90 pt-10">
+            <div class="d-flex flex-column mb-5">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        @foreach ($breadcrumbs as $breadcrumb)
+                            <li class="breadcrumb-item {{ $loop->index==0 ? 'active' : '' }}" aria-current="page">
+                                @if ($breadcrumb['url'])
+                                    <a href="{{ $breadcrumb['url'] }}">
+                                @endif
                                 {{ $breadcrumb['label'] }}
-                                @if($breadcrumb['url']) </a> @endif
-                        </li>
-                    @endforeach
-                </ol>
-            </nav>
-            <h1 class="fs-3">{{ $header }}</h1>
+                                @if ($breadcrumb['url']) </a> @endif
+                            </li>
+                        @endforeach
+                    </ol>
+                </nav>
+                <h1 class="fs-3">{{ $header }}</h1>
+            </div>
+            {{ $slot }}
         </div>
-        {{ $slot }}
-    </div>
 
-    <footer class="text-secondary mt-6 py-2 text-center">
-        <p>Copyright © 2026 InApp Inventory Dashboard. Developed by <a href="https://codescandy.com/"
-                                                                       target="_blank"
-                                                                       class="text-primary">CodesCandy</a> •
-            Distributed by <a href="https://themewagon.com/" target="_blank" class="text-primary">ThemeWagon</a>
-        </p>
-    </footer>
-</main>
+        <footer class="text-secondary mt-6 py-2 text-center">
+            <p>
+                Copyright © 2026 InApp Inventory Dashboard. Developed by
+                <a href="https://codescandy.com/" target="_blank" class="text-primary">CodesCandy</a> • Distributed by
+                <a href="https://themewagon.com/" target="_blank" class="text-primary">ThemeWagon</a>
+            </p>
+        </footer>
+    </main>
 
-@stack('page-scripts')
-@livewireScriptConfig()
-<div id="swal-container" wire:ignore></div>
+    @stack('page-scripts')
+    @livewireScriptConfig()
+    <div id="swal-container" wire:ignore></div>
 </body>
-
 </html>

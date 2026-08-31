@@ -15,8 +15,9 @@ class RunGenericImportPipeline
      * Execute the generic import pipeline by transforming rows, fetching existing state,
      * and delegating the persistence operation to the mapper.
      *
-     * @param Collection<int, array<string, mixed>> $rows Raw payload rows from the API or spreadsheet chunk
-     * @param DataPayloadMapper $mapper The domain-specific structural mapping engine
+     * @param  Collection<int, array<string, mixed>>  $rows  Raw payload rows from the API or spreadsheet chunk
+     * @param  DataPayloadMapper  $mapper  The domain-specific structural mapping engine
+     *
      * @throws Exception
      */
     public function execute(Collection $rows, DataPayloadMapper $mapper): void

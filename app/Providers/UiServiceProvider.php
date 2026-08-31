@@ -48,7 +48,7 @@ class UiServiceProvider extends ServiceProvider
             return "<?php \$logo = \App\Domains\System\Queries\GetSystemSettings::get(\App\Domains\System\Enums\SystemSettingKey::WEB_LOGO); if (!empty(\$logo)): ?>
             <?= asset_static(\$logo); ?>
             <?php else: ?>
-            <?= svg('tabler-brand-laravel') ?>
+            <?= asset_static('images/logo.svg'); ?>
             <?php endif; ?>";
         });
     }

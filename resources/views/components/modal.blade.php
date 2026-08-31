@@ -10,28 +10,38 @@
     'livewire' => false,
 ])
 
-<div {{ $attributes->except(['wire:target', 'wire:loading'])->merge([
-    'class' => 'modal fade',
-    'tabindex' => $tabindex,
-    'id' => $id,
-    'aria-labelledby' => str($title ?? $id)->snake() . 'Label',
-    'aria-hidden' => true,
-    'x-ref' => $attributes->has('x-data') ? $id : false,
-    'wire:ignore.self' => true,
-]) }}
-    @if ($livewire) x-init="$bs.modal.on('show', (e) => {
-        let id = e?.relatedTarget?.dataset?.id;
-            if (id) $wire.show(id);
-        });
+<div
+    {{
+        $attributes->except(['wire:target', 'wire:loading'])->merge([
+            'class' => 'modal fade',
+            'tabindex' => $tabindex,
+            'id' => $id,
+            'aria-labelledby' => str($title ?? $id)->snake().'Label',
+            'aria-hidden' => true,
+            'x-ref' => $attributes->has('x-data') ? $id : false,
+            'wire:ignore.self' => true,
+        ])
+    }}
+    @if ($livewire)
+        x-init="
+            $bs.modal.on('show', (e) => {
+                let id = e?.relatedTarget?.dataset?.id;
+                if (id) $wire.show(id);
+            });
 
-        $bs.modal.on('hide', () => {
-            $wire.hide();
-        });"
-    x-on:hide-{{ $id }}.window="$bs.modal.instance($el).hide();" @endif>
+            $bs.modal.on('hide', () => {
+                $wire.hide();
+            });
+        "
+        x-on:hide-{{ $id }}.window="$bs.modal.instance($el).hide();"
+    @endif
+>
     <div class="modal-dialog {{ $size }}">
         @if ($form)
-            <form @if ($attributes->has('x-on:submit')) x-on:submit="{{ $attributes->get('x-on:submit') }}" @endif
-                @if ($attributes->has('wire:submit')) wire:submit.prevent="{{ $attributes->get('wire:submit') }}" @endif>
+            <form
+                @if ($attributes->has('x-on:submit')) x-on:submit="{{ $attributes->get('x-on:submit') }}" @endif
+                @if ($attributes->has('wire:submit')) wire:submit.prevent="{{ $attributes->get('wire:submit') }}" @endif
+            >
         @endif
         <div class="modal-content">
             <div class="modal-header">
@@ -40,47 +50,59 @@
                 @else
                     <h5 class="modal-title">{{ $title ?? '-' }}</h5>
                 @endif
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
                     @if ($loadingState) x-bind:disabled="{{ $loadingState }}" @endif
-                    aria-label="Close"></button>
+                    aria-label="Close"
+                ></button>
             </div>
             <div class="modal-body position-relative">
                 @if ($loadingState)
-                    <div x-show="{{ $loadingState }}" x-cloak x-transition.opacity
-                        class="position-absolute w-100 h-100 start-0 top-0 bg-white bg-opacity-75"
-                        style="z-index: 1060; border-radius: inherit; display: none;">
+                    <div
+                        x-show="{{ $loadingState }}"
+                        x-cloak
+                        x-transition.opacity
+                        class="position-absolute bg-opacity-75 start-0 top-0 h-100 w-100 bg-white"
+                        style="z-index: 1060; border-radius: inherit; display: none"
+                    >
                         <div class="d-flex align-items-center justify-content-center h-100 text-center">
                             <div>
-                                <div class="spinner-border text-primary mb-2 border-4"
-                                    style="width: 3rem; height: 3rem;" role="status">
-                                </div>
+                                <div
+                                    class="spinner-border text-primary mb-2 border-4"
+                                    style="width: 3rem; height: 3rem"
+                                    role="status"
+                                ></div>
                                 <p class="text-dark fw-bold mb-0">{{ __('ui/common.loading') }}...</p>
                             </div>
                         </div>
                     </div>
                 @endif
                 @if ($attributes->has('wire:loading'))
-                    <div wire:loading x-cloak
+                    <div
+                        wire:loading
+                        x-cloak
                         @if ($attributes->has('wire:target')) wire:target="{{ $attributes->get('wire:target') }}" @endif
-                        x-transition.opacity class="position-absolute w-100 h-100 start-0 top-0 bg-white bg-opacity-75"
-                        style="z-index: 1060; border-radius: inherit; display: none;">
+                        x-transition.opacity
+                        class="position-absolute bg-opacity-75 start-0 top-0 h-100 w-100 bg-white"
+                        style="z-index: 1060; border-radius: inherit; display: none"
+                    >
                         <div class="d-flex align-items-center justify-content-center h-100 text-center">
                             <div>
-                                <div class="spinner-border text-primary mb-2 border-4"
-                                    style="width: 3rem; height: 3rem;" role="status">
-                                </div>
+                                <div
+                                    class="spinner-border text-primary mb-2 border-4"
+                                    style="width: 3rem; height: 3rem"
+                                    role="status"
+                                ></div>
                                 <p class="text-dark fw-bold mb-0">{{ __('ui/common.loading') }}...</p>
                             </div>
                         </div>
                     </div>
                 @endif
-                <div {{ $slot->attributes }} x-cloak>
-                    {{ $slot }}
-                </div>
+                <div {{ $slot->attributes }} x-cloak>{{ $slot }}</div>
             </div>
-            <div {{ $footer->attributes->merge(['class' => 'modal-footer']) }}>
-                {!! $footer !!}
-            </div>
+            <div {{ $footer->attributes->merge(['class' => 'modal-footer']) }}>{!! $footer !!}</div>
         </div>
         @if ($form)
             </form>

@@ -3,12 +3,15 @@
         <div class="empty">
             <div class="empty-header">403</div>
             <p class="empty-title">{{ __('ui/errors.oops') }}</p>
-            <p class="empty-subtitle text-secondary">
-                {{ __('ui/errors.403') }}
-            </p>
+            <p class="empty-subtitle text-secondary">{{ __('ui/errors.403') }}</p>
             <div class="empty-action">
-                <x-link href="{{ route('dashboard') }}" class="btn btn-primary" :label="__('ui/errors.take_me_home')"
-                        icon="tabler-arrow-left" :icon-config="['width' => 24, 'height' => 24]" />
+                <x-link
+                    href="{{ route('dashboard') }}"
+                    class="btn btn-primary"
+                    :label="__('ui/errors.take_me_home')"
+                    icon="tabler-arrow-left"
+                    :icon-config="['width' => 24, 'height' => 24]"
+                />
             </div>
         </div>
     </div>

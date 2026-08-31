@@ -2,8 +2,6 @@
 
 use App\Domains\Identity\Actions\IdentityMaintenance\UpdateUserIdentity;
 use App\Domains\Identity\Actions\Onboarding\ProvisionNewUser;
-use App\Domains\Identity\DTOs\IdentityMaintenance\UpdateUserIdentityDTO;
-use App\Domains\Identity\DTOs\Onboarding\ProvisionUserDTO;
 use App\Domains\Identity\Models\User;
 use App\Livewire\Concerns\WithModal;
 use App\Livewire\Concerns\WithToast;

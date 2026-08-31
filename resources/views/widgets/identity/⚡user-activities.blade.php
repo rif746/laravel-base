@@ -6,7 +6,8 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
-new class extends Component {
+new class extends Component
+{
     #[Locked]
     public null|int|string $userId = null;
 
@@ -18,20 +19,23 @@ new class extends Component {
 };
 ?>
 
-<x-card :title="__('domains/identity/widgets.user_activities.title')" :subtitle="__('domains/identity/widgets.user_activities.description')">
-    @if($this->userActivities->isEmpty())
-        <div class="text-center py-4 text-body-secondary">
+<x-card
+    :title="__('domains/identity/widgets.user_activities.title')"
+    :subtitle="__('domains/identity/widgets.user_activities.description')"
+>
+    @if ($this->userActivities->isEmpty())
+        <div class="text-body-secondary py-4 text-center">
             <x-tabler-activity class="icon-lg mb-2 opacity-50" width="32" height="32" />
-            <p class="mb-0 small">{{ __('domains/identity/widgets.user_activities.empty') }}</p>
+            <p class="small mb-0">{{ __('domains/identity/widgets.user_activities.empty') }}</p>
         </div>
     @else
         <div class="list-group list-group-flush border-top border-bottom">
-            @foreach($this->userActivities as $activity)
-                <div class="list-group-item py-3 px-0 d-flex align-items-center justify-content-between gap-3">
+            @foreach ($this->userActivities as $activity)
+                <div class="list-group-item d-flex align-items-center justify-content-between gap-3 px-0 py-3">
                     <!-- Activity Icon & Event Details -->
                     <div class="d-flex align-items-center gap-3 overflow-hidden">
                         <!-- Event Status Icon/Badge -->
-                        <div class="p-2 rounded bg-body-tertiary flex-shrink-0">
+                        <div class="bg-body-tertiary flex-shrink-0 rounded p-2">
                             <x-tabler-device-laptop class="text-primary" width="20" height="20" />
                         </div>
 
@@ -40,7 +44,7 @@ new class extends Component {
                                 <span class="fw-bold text-body text-truncate">
                                     {{ __('domains/identity/widgets.user_activities.events.'.$activity->event) }}
                                 </span>
-                                <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle rounded-pill font-monospace fs-7">
+                                <span class="badge bg-secondary-subtle text-secondary-emphasis border-secondary-subtle rounded-pill font-monospace fs-7 border">
                                     {{ $activity->ip_address }}
                                 </span>
                             </div>
@@ -53,7 +57,7 @@ new class extends Component {
                     </div>
 
                     <!-- Timestamp / Badge -->
-                    <div class="text-end flex-shrink-0">
+                    <div class="flex-shrink-0 text-end">
                         <small class="text-body-secondary fs-7 d-block">
                             {{ $activity->event_time?->diffForHumans() ?? '—' }}
                         </small>

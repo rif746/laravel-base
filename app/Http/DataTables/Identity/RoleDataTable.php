@@ -45,7 +45,7 @@ class RoleDataTable extends DataTable
                         'success_message' => __('ui/crud.success.deleted', ['resource' => __('resources.role')]),
                     ],
                     'table_name' => 'role-table',
-                    'id' => $role->ulid,
+                    'id' => $role->name,
                 ])
             )
             ->addIndexColumn();

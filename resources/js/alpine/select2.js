@@ -10,13 +10,11 @@ export default function alpineSelect2(Alpine) {
                         (window.jQuery || window.jquery || window.$) &&
                         typeof window.$.fn.select2 !== "undefined"
                     ) {
-                        let modalContainer = el.closest(".modal");
                         let select2Default = {
                             placeholder:
                                 config.placeholder || "Select an option",
                             dropdownParent:
                                 config.dropdownParent ||
-                                modalContainer ||
                                 el.parentElement,
                             allowClear: config.allowClear ?? true,
                             ajax: config.url

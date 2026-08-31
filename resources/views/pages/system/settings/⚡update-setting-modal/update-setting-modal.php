@@ -6,7 +6,6 @@ use App\Domains\System\Enums\SystemSettingKey;
 use App\Domains\System\Models\SystemSettings;
 use App\Livewire\Concerns\WithModal;
 use App\Livewire\Concerns\WithToast;
-use App\UI\Enums\InputType;
 use App\UI\Support\Schemas\InputSchemaField;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;

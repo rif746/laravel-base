@@ -18,5 +18,5 @@ return [
             'title' => 'User Settings',
             'description' => 'Manage your application preferences like theme and language.',
         ],
-    ]
+    ],
 ];

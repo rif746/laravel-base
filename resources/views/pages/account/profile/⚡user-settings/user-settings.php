@@ -21,9 +21,9 @@ new class extends Component
             $field = $key->getSchema(); // Returns InputSchemaField
 
             return [
-                'key'     => $field->key,
-                'label'   => $field->label,
-                'type'    => $field->type,
+                'key' => $field->key,
+                'label' => $field->label,
+                'type' => $field->type,
                 'options' => $field->attributes['options'] ?? [],
             ];
         })->toArray();

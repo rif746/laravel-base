@@ -2,7 +2,6 @@
 
 use App\Attributes\Ui\Seo;
 use App\Domains\Identity\Actions\Passwords\ResetUserPassword;
-use App\Domains\Identity\DTOs\Passwords\ResetPasswordDTO;
 use App\Livewire\Concerns\HasSeoAttributes;
 use App\Livewire\Forms\Auth\ResetPasswordForm;
 use Illuminate\Support\Facades\Password;

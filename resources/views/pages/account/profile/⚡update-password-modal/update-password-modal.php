@@ -1,7 +1,6 @@
 <?php
 
 use App\Domains\Identity\Actions\Passwords\UpdatePassword;
-use App\Domains\Identity\DTOs\Passwords\UpdatePasswordDTO;
 use App\Livewire\Concerns\WithModal;
 use App\Livewire\Concerns\WithToast;
 use App\Livewire\Forms\Account\UpdatePasswordForm;

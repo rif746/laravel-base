@@ -8,8 +8,8 @@ use Illuminate\Queue\SerializesModels;
 
 class UserLoggedOut
 {
-
     use Dispatchable, SerializesModels;
+
     public function __construct(
         public readonly User $user,
         public readonly string $ipAddress,

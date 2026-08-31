@@ -5,9 +5,9 @@ namespace Tests\Unit\Http\Middleware;
 use App\Domains\Identity\Enums\UserSettingKey;
 use App\Domains\Identity\Models\User;
 use App\Domains\System\Enums\SystemSettingKey;
+use App\Domains\System\Models\SystemSettings;
 use App\Domains\System\Queries\GetSystemSettings;
 use App\Http\Middleware\HandlePreferredTimezone;
-use App\Domains\System\Models\SystemSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -23,7 +23,7 @@ test('it sets default timezone from system settings', function () {
     ]);
     GetSystemSettings::flushMemory();
 
-    $middleware = new HandlePreferredTimezone();
+    $middleware = new HandlePreferredTimezone;
     $request = Request::create('/', 'GET');
     $next = fn ($req) => new Response;
 
@@ -44,7 +44,7 @@ test('it uses user preference if set', function () {
         UserSettingKey::TIMEZONE->value => 'Asia/Jakarta',
     ]));
 
-    $middleware = new HandlePreferredTimezone();
+    $middleware = new HandlePreferredTimezone;
     $request = Request::create('/', 'GET');
     $request->setUserResolver(fn () => $user);
     $next = fn ($req) => new Response;

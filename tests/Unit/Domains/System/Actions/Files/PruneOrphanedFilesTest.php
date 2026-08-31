@@ -3,7 +3,6 @@
 use App\Domains\Identity\Models\User;
 use App\Domains\System\Actions\Files\PruneOrphanedFiles;
 use App\Domains\System\Models\File;
-use App\Domains\System\Queries\GetSystemSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -44,7 +43,7 @@ test('it cleans up database and disk orphans', function () {
     ]);
     Storage::disk('public')->put('avatars/valid.txt', 'content');
 
-    $action = new PruneOrphanedFiles();
+    $action = new PruneOrphanedFiles;
     $stats = $action->execute('public', '/');
 
     // Assertions

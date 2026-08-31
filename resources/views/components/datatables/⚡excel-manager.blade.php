@@ -13,10 +13,11 @@ use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Spatie\LivewireFilepond\WithFilePond;
 
-new class extends Component {
-    use WithToast;
-    use WithModal;
+new class extends Component
+{
     use WithFilePond;
+    use WithModal;
+    use WithToast;
 
     #[Locked]
     public string $importClass;
@@ -35,21 +36,23 @@ new class extends Component {
     protected function rules(): array
     {
         return [
-            'file' => ['required', 'file', 'mimetypes:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
+            'file' => ['required', 'file', 'mimetypes:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
         ];
     }
 
     public function import(): void
     {
-        if (!$this->importClass) return;
+        if (! $this->importClass) {
+            return;
+        }
 
-        $filePath = $this->file->store('excel/import/' . $this->resourceName, ['disk' => 'local']);
+        $filePath = $this->file->store('excel/import/'.$this->resourceName, ['disk' => 'local']);
         $recipentEmail = auth('web')->user()->email;
         $importId = Str::uuid()->toString();
 
-        $importInstance = new $this->importClass();
+        $importInstance = new $this->importClass;
         Excel::queueImport($importInstance, $filePath)->chain([
-            new NotifyImportComplete(recipientEmail: $recipentEmail)
+            new NotifyImportComplete(recipientEmail: $recipentEmail),
         ]);
         $this->success(__('ui/excel.import.success'));
         $this->dispatch('hide-excel-import-modal');
@@ -58,18 +61,20 @@ new class extends Component {
     #[On('export-excel')]
     public function export(): void
     {
-        if (!$this->exportClass) return;
+        if (! $this->exportClass) {
+            return;
+        }
         $recipentEmail = auth('web')->user()->email;
-        $storagePath = 'excel/export/' . $this->resourceName . '_' . time() . '.xlsx';
-        $exportInstance = new $this->exportClass();
+        $storagePath = 'excel/export/'.$this->resourceName.'_'.time().'.xlsx';
+        $exportInstance = new $this->exportClass;
         $styledExport = new StyledExport($exportInstance);
 
-        \Maatwebsite\Excel\Facades\Excel::queue($styledExport, $storagePath)->chain([
+        Maatwebsite\Excel\Facades\Excel::queue($styledExport, $storagePath)->chain([
             new NotifyExportReady(
                 recipientEmail: $recipentEmail,
                 filePath: $storagePath,
-                downloadName: 'Report_' . $this->resourceName,
-            )
+                downloadName: 'Report_'.$this->resourceName,
+            ),
         ]);
 
         $this->success(__('ui/excel.export.success'));
@@ -86,12 +91,12 @@ new class extends Component {
 ?>
 
 <div>
-    @if($importClass)
+    @if ($importClass)
         <x-modal id="excel-import-modal" size="modal-lg" :title="$this->title" form wire:submit="import" livewire>
-            <x-filepond::upload :label="__('ui/excel.import.file_label')" wire:model="file"/>
+            <x-filepond::upload :label="__('ui/excel.import.file_label')" wire:model="file" />
             <x-slot:footer>
-                <x-button theme="primary" type="submit" :label="__('ui/button.upload')"/>
-                <x-button theme="secondary" data-bs-dismiss="modal" :label="__('ui/button.cancel')"/>
+                <x-button theme="primary" type="submit" :label="__('ui/button.upload')" />
+                <x-button theme="secondary" data-bs-dismiss="modal" :label="__('ui/button.cancel')" />
             </x-slot:footer>
             @push('scripts')
                 @vite(['resources/js/plugin/filepond.js'])

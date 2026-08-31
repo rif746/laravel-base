@@ -22,7 +22,9 @@ new class extends Component
     #[Computed]
     public function role(): SpatieRole
     {
-        return $this->id ? Role::with('permissions')->findOrFail($this->id) : new Role;
+        return $this->id ? Role::with('permissions')
+            ->where('name', $this->id)
+            ->firstOrFail() : new Role;
     }
 
     public function show(int|string $id): void

@@ -1,9 +1,7 @@
 <?php
 
 use App\Domains\Account\Actions\Profile\UpdateProfile;
-use App\Domains\Account\DTOs\Profile\UpdateProfileDTO;
 use App\Domains\Identity\Actions\IdentityMaintenance\UpdateUserIdentity;
-use App\Domains\Identity\DTOs\IdentityMaintenance\UpdateUserIdentityDTO;
 use App\Domains\Identity\Models\User;
 use App\Livewire\Concerns\WithModal;
 use App\Livewire\Concerns\WithToast;

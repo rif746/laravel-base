@@ -2,8 +2,8 @@
 
 use App\Domains\System\Actions\Settings\ResolveIpTimezone;
 use App\Domains\System\Enums\SystemSettingKey;
-use App\Domains\System\Queries\GetSystemSettings;
 use App\Domains\System\Models\SystemSettings;
+use App\Domains\System\Queries\GetSystemSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -22,7 +22,7 @@ test('it returns system timezone for localhost', function () {
     ]);
     GetSystemSettings::flushMemory();
 
-    $action = new ResolveIpTimezone();
+    $action = new ResolveIpTimezone;
 
     expect($action->execute('127.0.0.1'))->toBe('Asia/Jakarta');
 });
@@ -38,7 +38,7 @@ test('it fetches timezone from API and caches it', function () {
         'ip-api.com/*' => Http::response(['timezone' => 'Asia/Makassar'], 200),
     ]);
 
-    $action = new ResolveIpTimezone();
+    $action = new ResolveIpTimezone;
 
     expect($action->execute('1.1.1.1'))->toBe('Asia/Makassar');
 
@@ -57,7 +57,7 @@ test('it falls back to system timezone if API fails', function () {
         'ip-api.com/*' => Http::response(null, 500),
     ]);
 
-    $action = new ResolveIpTimezone();
+    $action = new ResolveIpTimezone;
 
     expect($action->execute('1.1.1.1'))->toBe('UTC');
 });

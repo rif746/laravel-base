@@ -1,1 +1,1 @@
-<li><hr class="dropdown-divider"></li>
+<li><hr class="dropdown-divider" /></li>

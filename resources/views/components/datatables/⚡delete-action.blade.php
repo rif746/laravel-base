@@ -5,7 +5,8 @@ use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-new class extends Component {
+new class extends Component
+{
     use WithToast;
 
     #[Locked]
@@ -35,5 +36,4 @@ new class extends Component {
 };
 ?>
 
-<div>
-</div>
+<div></div>

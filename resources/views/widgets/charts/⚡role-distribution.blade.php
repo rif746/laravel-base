@@ -48,7 +48,7 @@ new class extends Component
 
 <div class="card bg-opacity-10 border-opacity-25 rounded-2 border">
     <div class="card-body">
-        <div class="d-flex gap-3 mb-3">
+        <div class="d-flex mb-3 gap-3">
             <div class="icon-shape icon-md bg-secondary rounded-2 text-white">
                 @svg('tabler-user-shield', [
                     'class' => 'fs-4',

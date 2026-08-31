@@ -3,7 +3,7 @@
 return [
     'login' => [
         'header' => 'Masuk ke akun Anda',
-        'no_account' => "Belum punya akun?",
+        'no_account' => 'Belum punya akun?',
         'register_link' => 'Daftar',
     ],
     'register' => [
@@ -21,7 +21,7 @@ return [
     ],
     'verify_email' => [
         'header' => 'Verifikasi Email',
-        'subheader' => "Terima kasih telah mendaftar! Sebelum memulai, bisakah Anda memverifikasi alamat email Anda dengan mengeklik tautan yang baru saja kami kirimkan melalui email kepada Anda? Jika Anda tidak menerima email tersebut, kami dengan senang hati akan mengirimkan yang lain.",
+        'subheader' => 'Terima kasih telah mendaftar! Sebelum memulai, bisakah Anda memverifikasi alamat email Anda dengan mengeklik tautan yang baru saja kami kirimkan melalui email kepada Anda? Jika Anda tidak menerima email tersebut, kami dengan senang hati akan mengirimkan yang lain.',
         'resend_link' => 'Tautan verifikasi baru telah dikirim ke alamat email yang Anda berikan saat pendaftaran.',
     ],
     'confirm_password' => [

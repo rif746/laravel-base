@@ -1,20 +1,30 @@
 <div>
-    <div class="small text-muted mb-4 text-center">
-        {{ __('domains/auth/pages.forgot_password.subheader') }}
-    </div>
+    <div class="small text-muted mb-4 text-center">{{ __('domains/auth/pages.forgot_password.subheader') }}</div>
 
     <!-- Session Status -->
     {{-- <x-auth-session-status class="mb-4" :status="session('status')" /> --}}
 
-    <form wire:submit="forgotPassword" class="needs-validation mt-3 d-flex flex-column gap-3" novalidate>
-        <x-form.input name="form.email" :label="__('domains/auth/field.forgot_password.email')" type="email" placeholder="name@example.com" wire:model="form.email"
-            required autofocus />
+    <form wire:submit="forgotPassword" class="needs-validation d-flex flex-column mt-3 gap-3" novalidate>
+        <x-form.input
+            name="form.email"
+            :label="__('domains/auth/field.forgot_password.email')"
+            type="email"
+            placeholder="name@example.com"
+            wire:model="form.email"
+            required
+            autofocus
+        />
 
-        <x-button type="submit" :label="__('domains/auth/field.forgot_password.submit')" class="w-100" theme="primary" />
+        <x-button
+            type="submit"
+            :label="__('domains/auth/field.forgot_password.submit')"
+            class="w-100"
+            theme="primary"
+        />
     </form>
 
     <div class="small text-muted mt-3 text-center">
-        {{ __('domains/auth/pages.forgot_password.back_to_login') }} <x-link :href="route('login')" :label="__('domains/auth/field.login.submit')"
-            theme="primary" />
+        {{ __('domains/auth/pages.forgot_password.back_to_login') }}
+        <x-link :href="route('login')" :label="__('domains/auth/field.login.submit')" theme="primary" />
     </div>
 </div>

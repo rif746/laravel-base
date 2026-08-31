@@ -8,13 +8,14 @@
         'height' => 24,
     ],
 ])
-<a
-    {{ $attributes->merge([
-        'class' => $theme ? 'link-' . $theme : '',
+<a {{
+    $attributes->merge([
+        'class' => $theme ? 'link-'.$theme : '',
         'href' => $href,
-        'wire:navigate' => !in_array($href, ['#', 'javascript:void(0)', null]),
-    ]) }}>
-    @if ($icon && !str_contains($icon, 'svg'))
+        'wire:navigate' => ! in_array($href, ['#', 'javascript:void(0)', null]),
+    ])
+}}>
+    @if ($icon && ! str_contains($icon, 'svg'))
         <span>@svg($icon, $iconConfig)</span>
     @endif
     @isset($slot)

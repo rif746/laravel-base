@@ -2,7 +2,6 @@
 
 use App\Attributes\Ui\Seo;
 use App\Domains\Identity\Actions\Passwords\SendPasswordResetLink;
-use App\Domains\Identity\DTOs\Passwords\ForgotPasswordDTO;
 use App\Livewire\Concerns\HasSeoAttributes;
 use App\Livewire\Concerns\WithToast;
 use App\Livewire\Forms\Auth\ForgotPasswordForm;

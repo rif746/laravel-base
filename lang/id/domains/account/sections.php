@@ -4,7 +4,7 @@ return [
     'account' => [
         'profile' => [
             'title' => 'Informasi Profil',
-            'description' => "Perbarui informasi profil dan alamat email akun Anda.",
+            'description' => 'Perbarui informasi profil dan alamat email akun Anda.',
         ],
         'password' => [
             'title' => 'Perbarui Kata Sandi',
@@ -18,5 +18,5 @@ return [
             'title' => 'Pengaturan Pengguna',
             'description' => 'Kelola preferensi aplikasi Anda seperti tema dan bahasa.',
         ],
-    ]
+    ],
 ];

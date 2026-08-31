@@ -1,6 +1,5 @@
 @php use App\Domains\Account\Enums\GenderOption; @endphp
 <x-modal id="update-profile-modal" :title="$this->title" wire:submit="save" wire:loading form livewire>
-
     <div class="d-flex flex-column gap-3">
         <x-form.input name="form.name" :label="__('domains/identity/field.user.name')" wire:model="form.name" />
 
@@ -12,11 +11,19 @@
             @endforeach
         </x-form.select>
 
-        <x-form.input name="form.date_of_birth" type="date" :label="__('domains/account/field.profile.date_of_birth')"
-            wire:model="form.date_of_birth" />
+        <x-form.input
+            name="form.date_of_birth"
+            type="date"
+            :label="__('domains/account/field.profile.date_of_birth')"
+            wire:model="form.date_of_birth"
+        />
 
-        <x-form.input name="form.phone_number" type="number" :label="__('domains/account/field.profile.phone_number')"
-            wire:model="form.phone_number" />
+        <x-form.input
+            name="form.phone_number"
+            type="number"
+            :label="__('domains/account/field.profile.phone_number')"
+            wire:model="form.phone_number"
+        />
     </div>
 
     <x-slot:footer>

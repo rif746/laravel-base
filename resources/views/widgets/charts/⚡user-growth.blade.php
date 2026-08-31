@@ -49,9 +49,6 @@ new class extends Component
         </div>
 
         {{-- Direct JSON binding ensures initial render --}}
-        <div
-            id="user-growth"
-            x-chart='@json($this->chartOptions)'
-        ></div>
+        <div id="user-growth" x-chart='@json($this->chartOptions)'></div>
     </div>
 </div>

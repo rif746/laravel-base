@@ -40,6 +40,7 @@ new class extends Component
         if (is_null($this->model_id)) {
             return new Collection;
         }
+
         return app(GetModelAuditLog::class)->get($this->modelData);
     }
 

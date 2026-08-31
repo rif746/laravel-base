@@ -21,7 +21,7 @@ class RecordUserActivity
                 'ip_address' => $dto->ipAddress,
                 'user_agent' => $dto->userAgent,
                 'payload' => $dto->payload,
-                'event_time' => now()
+                'event_time' => now(),
             ]);
 
             if ($dto->event === 'login') {

@@ -3,13 +3,12 @@
 namespace Tests\Unit\Http\Middleware;
 
 use App\Domains\System\Enums\SystemSettingKey;
+use App\Domains\System\Models\SystemSettings;
 use App\Domains\System\Queries\GetSystemSettings;
 use App\Http\Middleware\HandleSeoSetting;
-use App\Domains\System\Models\SystemSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Mockery;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
@@ -25,7 +24,7 @@ test('it sets seo settings in config', function () {
     ]);
     GetSystemSettings::flushMemory();
 
-    $middleware = new HandleSeoSetting();
+    $middleware = new HandleSeoSetting;
     $request = Request::create('/', 'GET');
     $next = fn ($req) => new Response;
 

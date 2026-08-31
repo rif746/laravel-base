@@ -13,7 +13,6 @@ use App\Domains\Identity\Listeners\Authentication\SendSignInActivityNotification
 use App\Domains\Identity\Listeners\Governance\SendUserActivatedNotification;
 use App\Domains\Identity\Listeners\Governance\SendUserPurgedNotification;
 use App\Domains\Identity\Listeners\Governance\SendUserSuspendedNotification;
-use App\Domains\Identity\Queries\GetAuthenticatedUserContext;
 use App\Domains\System\Traits\Provider\RegistersDomainEvents;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,10 +23,10 @@ class IdentityServiceProvider extends ServiceProvider
     protected array $listen = [
         UserLoggedIn::class => [
             SendSignInActivityNotification::class,
-            RecordSignInActivity::class
+            RecordSignInActivity::class,
         ],
         UserLoggedOut::class => [
-            RecordSignOutActivity::class
+            RecordSignOutActivity::class,
         ],
         UserWasActivated::class => [
             SendUserActivatedNotification::class,

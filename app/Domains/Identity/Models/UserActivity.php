@@ -13,14 +13,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'user_agent',
     'event',
     'payload',
-    'event_time'
+    'event_time',
 ])]
 #[WithoutTimestamps]
 class UserActivity extends Model
 {
     protected $casts = [
         'payload' => 'encrypted:array',
-        'event_time' => 'immutable_date'
+        'event_time' => 'immutable_date',
     ];
 
     public function user(): BelongsTo
