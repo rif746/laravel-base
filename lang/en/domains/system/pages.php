@@ -25,4 +25,7 @@ return [
             'admission' => 'Admission',
         ],
     ],
+    'audit' => [
+        'no_changes_recorded' => 'No changes recorded',
+    ],
 ];

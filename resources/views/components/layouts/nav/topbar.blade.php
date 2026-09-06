@@ -9,7 +9,7 @@
     </button>
     <div>
         <!-- Navbar nav -->
-        <ul class="list-unstyled d-flex align-items-center mb-0 gap-1">
+        <ul class="list-unstyled d-flex align-items-center mb-0 gap-3">
             <!-- Bell icon -->
             <li>
                 <livewire:layouts::notification />
@@ -18,8 +18,8 @@
             <li>
                 <livewire:layouts::language-switcher />
             </li>
-            <!-- Dropdown -->
-            <li class="ms-3">
+            <li class="vr"></li>
+            <li >
                 <livewire:layouts::profile-dropdown />
             </li>
         </ul>

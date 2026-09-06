@@ -3,11 +3,13 @@
 return [
     'login' => [
         'header' => 'Sign in to your account',
+        'welcome_subtitle' => 'Sign in to your account to continue',
         'no_account' => "Don't have an account?",
         'register_link' => 'Sign up',
     ],
     'register' => [
         'header' => 'Create a new account',
+        'welcome_subtitle' => 'Create a new account to get started',
         'has_account' => 'Already have an account?',
         'login_link' => 'Sign in',
     ],
@@ -18,6 +20,8 @@ return [
     ],
     'reset_password' => [
         'header' => 'Reset Password',
+        'subtitle' => 'Please enter your new password below.',
+        'back_to_login' => 'Back to sign in',
     ],
     'verify_email' => [
         'header' => 'Verify Email',

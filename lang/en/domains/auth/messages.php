@@ -5,4 +5,6 @@ return [
     'invalid_token' => 'This password reset token is invalid.',
     'reset_link_sent' => 'Password reset link has been sent to your email.',
     'reset_link_failed' => 'Please check your email to reset the password.',
+    'email_already_verified' => 'The email has already been verified.',
+    'verification_link_sent' => 'The verification email has been sent.',
 ];

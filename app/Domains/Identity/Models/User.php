@@ -24,7 +24,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password', 'status', 'settings'])]
-#[Hidden(['password', 'remember_token'])]
+#[Hidden(['password', 'remember_token', 'settings'])]
 #[UsePolicy(UserPolicy::class)]
 #[UseFactory(UserFactory::class)]
 class User extends Authenticatable implements Auditable, MustVerifyEmail

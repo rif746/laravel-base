@@ -20,7 +20,7 @@ class UserActivity extends Model
 {
     protected $casts = [
         'payload' => 'encrypted:array',
-        'event_time' => 'immutable_date',
+        'event_time' => 'immutable_datetime',
     ];
 
     public function user(): BelongsTo

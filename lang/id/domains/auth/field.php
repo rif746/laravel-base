@@ -11,6 +11,7 @@ return [
     'register' => [
         'name' => 'Nama Lengkap',
         'email' => 'Alamat Email',
+        'email_placeholder' => 'nama@contoh.com',
         'password' => 'Kata Sandi',
         'confirm_password' => 'Konfirmasi Kata Sandi',
         'submit' => 'Daftar',

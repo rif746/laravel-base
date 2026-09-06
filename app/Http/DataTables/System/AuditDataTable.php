@@ -1,89 +1,54 @@
 <?php
 
-namespace App\Http\DataTables\Identity;
+namespace App\Http\DataTables\System;
 
-use App\Domains\Identity\Exports\UserExport;
-use App\Domains\Identity\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use OwenIt\Auditing\Models\Audit;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\Html\Editor\Editor;
+use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-use function __;
-
-class UserDataTable extends DataTable
+class AuditDataTable extends DataTable
 {
-    public bool $fastExcel = false;
-
-    public string $exportClass = UserExport::class;
-
     /**
      * Build the DataTable class.
      *
-     * @param  QueryBuilder<User>  $query  Results from query() method.
+     * @param QueryBuilder<Audit> $query Results from query() method.
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->editColumn('status', fn ($model) => view('components.badge', [
-                'label' => $model->status->label(),
-                'variant' => $model->status->variant(),
-            ]))
+            ->editColumn('event', fn($audit) => __('event.'.$audit->event))
+            ->editColumn('auditable_type', fn($audit) => __('resources.'.$audit->auditable_type))
             ->addColumn(
                 'action',
-                fn ($user) => view('components.datatables.action-button', [
-                    'log' => true,
+                fn ($audit) => view('components.datatables.action-button', [
+                    'log' => false,
                     'view' => [
-                        'url' => route('users.view', ['user_id' => $user->ulid]),
-                        'permission' => auth()->user()->can('view', $user),
+                        'modal' => 'audit-detail-modal',
+                        'permission' => true,
                     ],
-                    'edit' => [
-                        'modal' => 'user-form-modal',
-                        'permission' => auth()->user()->can('update', $user),
-                    ],
-                    'delete' => [
-                        'url' => null,
-                        'title' => $user->status->isActive()
-                            ? __('ui/button.suspend')
-                            : __('ui/button.delete'),
-                        'message' => $user->status->isActive()
-                            ? __('ui/confirmation.suspend', ['resource' => __('resources.user')])
-                            : __('ui/confirmation.delete', ['resource' => __('resources.user')]),
-                        'success_message' => $user->status->isActive()
-                            ? __('ui/crud.success.suspended', ['resource' => __('resources.user')])
-                            : __('ui/crud.success.deleted', ['resource' => __('resources.user')]),
-                        'permission' => auth()->user()->can('delete', $user),
-                    ],
-                    'table_name' => 'user-table',
-                    'id' => $user->ulid,
+                    'table_name' => 'audit-table',
+                    'id' => $audit->id,
                 ])
             )
-            ->rawColumns(['action', 'status'])
             ->addIndexColumn();
     }
 
     /**
      * Get the query source of dataTable.
      *
-     * @return QueryBuilder<User>
+     * @return QueryBuilder<Audit>
      */
-    public function query(User $model): QueryBuilder
+    public function query(Audit $model): QueryBuilder
     {
-        $query = $model->with(['roles'])
-            ->newQuery();
-
-        if (request()->has('role') && request('role') != '') {
-            $query->whereHas('roles', fn ($query) => $query
-                ->where('name', request('role')));
-        }
-
-        if (request()->has('status') && request('status') != '') {
-            $query->where('status', request('status'));
-        }
-
-        return $query;
+        return $model->newQuery()
+            ->select(['users.name as user_name', 'audits.*'])
+            ->join('users', 'users.id', '=', 'audits.user_id');
     }
 
     /**
@@ -92,7 +57,7 @@ class UserDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('user-table')
+            ->setTableId('audit-table')
             ->columns($this->getColumns())
             ->ajax([
                 'data' => 'function(d) {
@@ -113,12 +78,6 @@ class UserDataTable extends DataTable
                         [
                             'custom-features' => [
                                 'targetId' => 'template-role-filter',
-                                'style' => 'width: 200px;',
-                            ],
-                        ],
-                        [
-                            'custom-features' => [
-                                'targetId' => 'template-status-filter',
                                 'style' => 'width: 200px;',
                             ],
                         ],
@@ -168,17 +127,19 @@ class UserDataTable extends DataTable
     {
         return [
             Column::computed('DT_RowIndex')
-                ->title('#'),
-            Column::make('name')
-                ->title(__('domains/identity/field.user.name'))
-                ->searchable(true),
-            Column::make('email')
-                ->title(__('domains/identity/field.user.email'))
-                ->searchable(true),
-            Column::computed('roles[0].name')
-                ->title(__('resources.role')),
-            Column::computed('status')
-                ->title(__('domains/identity/field.user.status')),
+                ->title('#')
+                ->searchable(false)
+                ->orderable(false),
+            Column::computed('user_name')
+                ->title(__('domains/system/field.audit.user_name')),
+            Column::make('event')
+                ->title(__('domains/system/field.audit.event')),
+            Column::computed('auditable_type')
+                ->title(__('domains/system/field.audit.auditable_type')),
+            Column::computed('ip_address')
+                ->title(__('domains/system/field.audit.ip_address')),
+            Column::computed('user_agent')
+                ->title(__('domains/system/field.audit.browser')),
             Column::computed('action')
                 ->title(__('ui/label.actions'))
                 ->exportable(false)
@@ -193,6 +154,6 @@ class UserDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'User_'.date('YmdHis');
+        return 'Audit_' . date('YmdHis');
     }
 }

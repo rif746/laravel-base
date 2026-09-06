@@ -3,11 +3,13 @@
 return [
     'login' => [
         'header' => 'Masuk ke akun Anda',
+        'welcome_subtitle' => 'Masuk ke akun Anda untuk melanjutkan',
         'no_account' => 'Belum punya akun?',
         'register_link' => 'Daftar',
     ],
     'register' => [
         'header' => 'Buat akun baru',
+        'welcome_subtitle' => 'Buat akun baru untuk memulai',
         'has_account' => 'Sudah punya akun?',
         'login_link' => 'Masuk',
     ],
@@ -18,6 +20,8 @@ return [
     ],
     'reset_password' => [
         'header' => 'Atur Ulang Kata Sandi',
+        'subtitle' => 'Silakan masukkan kata sandi baru Anda di bawah ini.',
+        'back_to_login' => 'Kembali ke halaman masuk',
     ],
     'verify_email' => [
         'header' => 'Verifikasi Email',

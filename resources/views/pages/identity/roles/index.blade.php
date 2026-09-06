@@ -9,15 +9,15 @@
         <livewire:pages::identity.roles.view-modal />
     @endcan
 
-    <livewire:pages::system.audit.audit-view-modal
-        key-name="ulid"
+    <livewire:pages::system.audit.audit-log-view-modal
+        key-name="name"
         :model="\App\Domains\Identity\Models\Role::class"
         translation="domains/identity/field.role."
     />
 
     @can('role.delete')
         <livewire:datatables.delete-action
-            key-name="ulid"
+            key-name="name"
             :model="\App\Domains\Identity\Models\Role::class"
             :action="\App\Domains\Identity\Actions\AccessControl\RemoveSystemRole::class"
         />

@@ -7,7 +7,7 @@
             id="role-filter"
             no-label
             class="form-select-sm"
-            x-select2="{allowClear: true, placeholder: 'Role Filter', url: '{{ route('api.v1.lookups.roles') }}'}"
+            x-select2="{allowClear: true, placeholder: '{{ __('ui/label.filter', ['resource' => __('resources.role')]) }}', url: '{{ route('api.v1.lookups.roles') }}'}"
             x-on:change="LaravelDataTables['user-table'].ajax.reload()"
         />
     </template>
@@ -16,7 +16,7 @@
             id="status-filter"
             no-label
             class="form-select form-select-sm"
-            x-select2="{allowClear: true, placeholder: 'Status Filter'}"
+            x-select2="{allowClear: true, placeholder: '{{ __('ui/label.filter', ['resource' => __('ui/label.status')]) }}'}"
             :options="collect(UserStatus::cases())
                                     ->mapWithKeys(fn($stats) => [$stats->value => $stats->label()])"
             x-on:change="LaravelDataTables['user-table'].ajax.reload()"
@@ -24,7 +24,7 @@
     </template>
 
     <livewire:pages::identity.users.form-modal />
-    <livewire:pages::system.audit.audit-view-modal
+    <livewire:pages::system.audit.audit-log-view-modal
         key-name="ulid"
         :model="\App\Domains\Identity\Models\User::class"
         translation="domains/identity/field.user."

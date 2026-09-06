@@ -27,13 +27,13 @@ new class extends Component
     public function resendVerificationEmail(ResendVerificationEmail $action): void
     {
         if ($this->user->email_verified_at) {
-            $this->warning(__('The email has already been verified.'));
+            $this->warning(__('domains/auth/messages.email_already_verified'));
 
             return;
         }
 
         $action->execute($this->user);
 
-        $this->success(__('The verification email has been sent.'));
+        $this->success(__('domains/auth/messages.verification_link_sent'));
     }
 };

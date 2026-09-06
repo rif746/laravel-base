@@ -33,14 +33,14 @@
                 {{ __('domains/identity/field.role.permissions') }}
             </label>
             <span class="text-body-secondary fs-7">
-                Assigned permissions for this role
+                {{ __('ui/label.assigned_permissions') }}
             </span>
         </div>
 
         @if($this->role?->permissions->isEmpty())
             <div class="text-center py-4 rounded bg-body-tertiary">
                 <x-tabler-shield-x class="text-secondary opacity-50 mb-2" width="32" height="32" />
-                <p class="mb-0 text-body-secondary small">{{ __('No permissions assigned to this role.') }}</p>
+                <p class="mb-0 text-body-secondary small">{{ __('ui/label.no_permissions_assigned') }}</p>
             </div>
         @else
             <div class="row g-3">

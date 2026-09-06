@@ -10,6 +10,7 @@ return [
     'upload' => 'Upload',
     'edit' => 'Edit',
     'delete' => 'Delete',
+    'restore' => 'Restore',
     'suspend' => 'Suspend',
     'view' => 'View',
     'log' => 'Log',

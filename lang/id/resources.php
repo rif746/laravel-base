@@ -2,6 +2,7 @@
 
 return [
     'user' => 'Pengguna',
+    'user_activity' => 'Aktifitas Pengguna',
     'role' => 'Peran',
     'profile' => 'Profil',
     'settings' => 'Pengaturan',
@@ -11,4 +12,5 @@ return [
     'avatar' => 'Avatar',
     'system_settings' => 'Pengaturan Sistem',
     'audit' => 'Audit',
+    'log' => 'Log',
 ];

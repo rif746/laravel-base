@@ -11,6 +11,7 @@ return [
     'register' => [
         'name' => 'Full Name',
         'email' => 'Email address',
+        'email_placeholder' => 'name@example.com',
         'password' => 'Password',
         'confirm_password' => 'Confirm Password',
         'submit' => 'Sign up',

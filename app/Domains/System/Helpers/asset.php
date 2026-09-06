@@ -19,7 +19,7 @@ if (! function_exists('asset_static')) {
         }
 
         if (Storage::disk('local')->exists($path)) {
-            return url(Storage::temporaryUrl($path, $time, $options));
+            return Storage::temporaryUrl($path, $time, $options);
         }
 
         if (Storage::disk('public')->exists($path)) {

@@ -2,8 +2,12 @@
 
 namespace App\Domains\Identity\Providers;
 
+use App\Domains\Identity\Models\Role;
 use App\Domains\Identity\Models\User;
+use App\Domains\Identity\Models\UserActivity;
 use App\Domains\System\Models\File;
+use App\Domains\System\Support\Registry\AuditRegistry;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class RelationshipServiceProvider extends ServiceProvider
@@ -22,9 +26,19 @@ class RelationshipServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Relation::enforceMorphMap([
+            'user' => User::class,
+            'user_activity' => UserActivity::class,
+            'role' => Role::class,
+        ]);
+
         File::resolveRelationUsing(
             'uploader',
             fn (File $file) => $file->belongsTo(User::class, 'uploader_id'),
         );
+
+        // Audit Registration
+        AuditRegistry::register(User::class, __('resources.user'));
+        AuditRegistry::register(Role::class, __('resources.role'));
     }
 }

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {!! SEO::generate() !!}
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -18,28 +19,11 @@
     @vite(['resources/scss/app.scss', 'resources/js/alpinejs.js'])
 </head>
 
-<body>
-    @gtmBody
+<body class="bg-body-tertiary">
+@gtmBody
 
-    <div class="d-flex align-items-center justify-content-center min-vh-100 container">
-        <div class="card" style="max-width: 420px; width: 100%">
-            <div class="card-body p-5">
-                <div class="mb-3 text-center">
-                    <a href="{{ url('/') }}" class="d-inline-block mb-4">
-                        <img src="@logoPath" alt="" width="36" />
-                    </a>
-                    <h1 class="card-title h5 mb-5">{{ __($title ?? config('seotools.meta.defaults.title')) }}</h1>
-                </div>
+{{ $slot }}
 
-                @if (session()->has('status'))
-                    <div class="alert alert-success" role="alert">{{ session('status') }}</div>
-                @endif
-
-                {{ $slot }}
-            </div>
-        </div>
-    </div>
-
-    @livewireScriptConfig()
+@livewireScriptConfig()
 </body>
 </html>

@@ -13,7 +13,7 @@
             class="btn btn-sm btn-secondary"
             data-id="{{ $id }}"
             data-bs-toggle="modal"
-            data-bs-target="#audit-view-modal"
+            data-bs-target="#audit-log-view-modal"
             data-bs-toggle="tooltip"
             title="{{ __('ui/button.log') }}"
         >

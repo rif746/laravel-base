@@ -5,6 +5,7 @@ use App\Attributes\Ui\Seo;
 use App\Http\Controllers\Web\Account\ProfileController;
 use App\Http\Controllers\Web\Identity\RoleController;
 use App\Http\Controllers\Web\Identity\UserController;
+use App\Http\Controllers\Web\System\AuditController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('dashboard'));
@@ -34,6 +35,9 @@ Route::middleware(['web', 'auth', 'verified', 'seo', 'layouts'])->group(function
         ->name('roles.index');
 
     Route::middleware('password.confirm')->group(function () {
+        Route::get('/system-logs', AuditController::class)
+            ->can('system-log.manage')
+            ->name('system-log.index');
         Route::livewire('/system/settings', 'pages::system.settings.setting-list')
             ->can('system-setting.manage')
             ->name('system-setting.index');

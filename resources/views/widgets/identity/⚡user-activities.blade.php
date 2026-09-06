@@ -59,7 +59,7 @@ new class extends Component
                     <!-- Timestamp / Badge -->
                     <div class="flex-shrink-0 text-end">
                         <small class="text-body-secondary fs-7 d-block">
-                            {{ $activity->event_time?->diffForHumans() ?? '—' }}
+                            {{ $activity->event_time->toUserTz()->diffForHumans() ?? '—' }}
                         </small>
                     </div>
                 </div>

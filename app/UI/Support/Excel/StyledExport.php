@@ -52,7 +52,7 @@ class StyledExport implements FromQuery, ShouldAutoSize, ShouldQueue, WithColumn
     /**
      * Apply visual styling to specific rows or columns.
      */
-    public function styles(Worksheet $sheet): void
+    public function styles(Worksheet $sheet): ?array
     {
         $sheet->freezePane('A2');
         $sheet->getPageSetup()->setOrientation('landscape');
@@ -60,5 +60,7 @@ class StyledExport implements FromQuery, ShouldAutoSize, ShouldQueue, WithColumn
         $columnStyle->getAlignment()->setWrapText(true);
         $columnStyle->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
         $columnStyle->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+        return null;
     }
 }

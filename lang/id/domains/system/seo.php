@@ -11,4 +11,9 @@ return [
         'description' => 'Cadangkan dan pulihkan basis data serta aset.',
         'keywords' => 'cadangan, pemulihan, basis data, aset',
     ],
+    'audit' => [
+        'title' => 'Audit Sistem',
+        'description' => 'Daftar aktivitasi pada sistem untuk audit.',
+        'keywords' => 'audit, restore-data',
+    ],
 ];

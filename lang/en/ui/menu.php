@@ -7,4 +7,5 @@ return [
     'roles' => 'Roles & Permissions',
     'settings' => 'System Settings',
     'system_backup' => 'System Backup',
+    'audit' => 'System Audit'
 ];

@@ -10,6 +10,7 @@ return [
     'upload' => 'Unggah',
     'edit' => 'Ubah',
     'delete' => 'Hapus',
+    'restore' => 'Pulihkan',
     'suspend' => 'Tangguhkan',
     'view' => 'Lihat',
     'log' => 'Log',

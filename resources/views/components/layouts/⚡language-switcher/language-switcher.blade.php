@@ -20,7 +20,7 @@
             >
                 <div class="d-flex align-items-center gap-2">
                     <span class="fs-6">🇬🇧</span>
-                    <span>English</span>
+                    <span>{{ __('ui/common.language.en') }}</span>
                 </div>
                 @if ($currentLocale === 'en')
                     <x-tabler-check width="16" class="text-white" />
@@ -36,7 +36,7 @@
             >
                 <div class="d-flex align-items-center gap-2">
                     <span class="fs-6">🇮🇩</span>
-                    <span>Bahasa Indonesia</span>
+                    <span>{{ __('ui/common.language.id') }}</span>
                 </div>
                 @if ($currentLocale === 'id')
                     <x-tabler-check width="16" class="text-white" />

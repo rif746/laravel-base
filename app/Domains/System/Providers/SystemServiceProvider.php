@@ -38,7 +38,6 @@ class SystemServiceProvider extends ServiceProvider
     {
         $this->registerEvents();
 
-        Carbon::macro('toUserTz', fn () => $this->copy()
-            ->tz(config('app.display_timezone', 'UTC')));
+        Carbon::macro('toUserTz', fn () => $this->copy()->tz(config('app.display_timezone', 'UTC')));
     }
 }

@@ -31,4 +31,8 @@ return [
         'group-name' => 'System Backup',
         'manage' => 'Allows to view and manage system backup',
     ],
+    'system-log' => [
+        'group-name' => 'System Logs',
+        'manage' => 'Provides access to view and restore historical data.',
+    ],
 ];

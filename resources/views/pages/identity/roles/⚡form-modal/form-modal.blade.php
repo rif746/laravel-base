@@ -16,8 +16,8 @@
                 :label="__('domains/identity/field.role.guard_name')"
                 wire:model="form.guard_name"
             >
-                <option value="web">Web</option>
-                <option value="api">API</option>
+                <option value="web">{{ __('ui/label.guard.web') }}</option>
+                <option value="api">{{ __('ui/label.guard.api') }}</option>
             </x-form.select>
         </div>
     </div>
@@ -28,7 +28,7 @@
             <label class="form-label fw-bold text-body mb-0">
                 {{ __('domains/identity/field.role.permissions') }}
             </label>
-            <span class="text-body-secondary fs-7"> Select permissions to assign to this role </span>
+            <span class="text-body-secondary fs-7"> {{ __('ui/label.select_permissions') }} </span>
         </div>
 
         <div class="row g-3">

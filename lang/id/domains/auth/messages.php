@@ -5,4 +5,6 @@ return [
     'invalid_token' => 'Token atur ulang kata sandi ini tidak valid.',
     'reset_link_sent' => 'Tautan atur ulang kata sandi telah dikirim ke email Anda.',
     'reset_link_failed' => 'Silakan periksa email Anda untuk mengatur ulang kata sandi.',
+    'email_already_verified' => 'Email sudah diverifikasi.',
+    'verification_link_sent' => 'Email verifikasi telah dikirim.',
 ];

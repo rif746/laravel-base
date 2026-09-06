@@ -2,6 +2,7 @@
 
 return [
     'user' => 'User',
+    'user_activity' => 'User Activity',
     'role' => 'Role',
     'profile' => 'Profile',
     'settings' => 'Settings',
@@ -11,4 +12,5 @@ return [
     'avatar' => 'Avatar',
     'system_settings' => 'System Settings',
     'audit' => 'Audit',
+    'log' => 'Logs',
 ];

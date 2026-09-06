@@ -22,10 +22,14 @@ return [
         ],
     ],
     'audit' => [
+        'user_name' => 'Nama Pengguna',
         'ip_address' => 'Alamat IP',
         'browser' => 'Browser',
         'field' => 'Bidang',
         'old' => 'Lama',
         'new' => 'Baru',
+        'event' => 'Kejadian',
+        'auditable_type' => 'Tipe Audit',
+        'metadata' => 'Metadata',
     ],
 ];

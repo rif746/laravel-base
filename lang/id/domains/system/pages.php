@@ -25,4 +25,7 @@ return [
             'admission' => 'Penerimaan',
         ],
     ],
+    'audit' => [
+        'no_changes_recorded' => 'Tidak ada perubahan yang tercatat',
+    ],
 ];

@@ -31,4 +31,8 @@ return [
         'group-name' => 'Cadangkan Sistem',
         'manage' => 'Memberikan akses untuk membuat cadangan dan memulihkan sistem.',
     ],
+    'system-log' => [
+        'group-name' => 'Log Sistem',
+        'manage' => 'Memberikan akses untuk melihat dan memulihkan data historis.',
+    ],
 ];

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\UI\Actions\ResolveDynamicText;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -45,11 +46,7 @@ class UiServiceProvider extends ServiceProvider
 
         // Website Logo
         Blade::directive('logoPath', function () {
-            return "<?php \$logo = \App\Domains\System\Queries\GetSystemSettings::get(\App\Domains\System\Enums\SystemSettingKey::WEB_LOGO); if (!empty(\$logo)): ?>
-            <?= asset_static(\$logo); ?>
-            <?php else: ?>
-            <?= asset_static('images/logo.svg'); ?>
-            <?php endif; ?>";
+            return "<?php echo asset_static(\App\Domains\System\Queries\GetSystemSettings::get(\App\Domains\System\Enums\SystemSettingKey::WEB_LOGO) ?: 'images/logo.svg'); ?>";
         });
     }
 }

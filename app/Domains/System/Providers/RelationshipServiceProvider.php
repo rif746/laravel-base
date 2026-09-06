@@ -2,6 +2,10 @@
 
 namespace App\Domains\System\Providers;
 
+use App\Domains\System\Models\Backup;
+use App\Domains\System\Models\File;
+use App\Domains\System\Models\SystemSettings;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class RelationshipServiceProvider extends ServiceProvider
@@ -26,6 +30,10 @@ class RelationshipServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Register cross-domain relationships below.
+        Relation::enforceMorphMap([
+            'backup' => Backup::class,
+            'file' => File::class,
+            'system_setting' => SystemSettings::class
+        ]);
     }
 }

@@ -3,7 +3,7 @@
         {{ $dataTable->table() }}
     </x-card>
 
-    <livewire:pages::system.audit.audit-view-modal key-name="ulid" model="\{{ modelFull }}::class"
+    <livewire:pages::system.audit.audit-log-view-modal key-name="ulid" model="\{{ modelFull }}::class"
                                                    translation="domains/{{ domainLower }}/field.{{ modelVariable }}."/>
     <livewire:datatables.delete-action key-name="ulid" :model="\{{ modelFull }}::class"
                                        :action="\App\Domains\{{ domain }}\Actions\Governance\Remove{{ model }}::class"/>

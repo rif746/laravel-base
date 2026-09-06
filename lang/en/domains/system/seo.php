@@ -11,4 +11,9 @@ return [
         'description' => 'Backup and restore the database and assets.',
         'keywords' => 'backup, restore, database, asset',
     ],
+    'audit' => [
+        'title' => 'System Audit',
+        'description' => 'List of system activities for auditing.',
+        'keywords' => 'audit, restore-data',
+    ],
 ];
