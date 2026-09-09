@@ -2,63 +2,109 @@
 
 namespace App\Domains\System\Support\Registry;
 
-use InvalidArgumentException;
+use App\Attributes\Model\Audit;
+use App\Domains\System\Observers\AuditObserver;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use OwenIt\Auditing\AuditableObserver;
-use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Support\Str;
+use InvalidArgumentException;
+use ReflectionClass;
 
 class AuditRegistry
 {
     /**
-     * Storage for registered models.
+     * Storage for registered audit model configurations.
+     *
+     * @var array<string, array<string, mixed>>
      */
     protected static array $models = [];
 
     /**
-     * Register a model class into the AuditRegistry.
+     * Explicitly register models for auditing.
+     * Must enforce that the given model class has the #[Audit] attribute.
      *
-     * @param class-string<\OwenIt\Auditing\Contracts\Auditable> $model The FQCN of the Model class
-     * @param string $label Human-readable label for UI select options
-     * @return void
-     *
-     * @throws InvalidArgumentException If class does not exist or fails interface contract
+     * @param array<int, string>|string $models Single model FQCN or array of model FQCNs
      */
-    public static function register(string $model, string $label): void
+    public static function register(array|string $models): void
+    {
+        $modelList = (array) $models;
+
+        foreach ($modelList as $model) {
+            static::registerModel($model);
+        }
+    }
+
+    /**
+     * Inspect and register an individual model.
+     *
+     * @param string $model FQCN of the target model
+     */
+    protected static function registerModel(string $model): void
     {
         if (! class_exists($model)) {
-            throw new InvalidArgumentException("Model class [{$model}] does not exist.");
+            throw new InvalidArgumentException("Cannot register audit for non-existing model class [{$model}].");
         }
 
-        if (! is_subclass_of($model, Auditable::class)) {
-            throw new InvalidArgumentException("Model class [{$model}] must implement " . Auditable::class . " interface.");
+        $reflection = new ReflectionClass($model);
+        $attributes = $reflection->getAttributes(Audit::class);
+
+        // Enforce the presence of #[Audit] attribute
+        if (empty($attributes)) {
+            throw new InvalidArgumentException("Model [{$model}] must be decorated with the #[Audit] attribute to be registered in AuditRegistry.");
         }
 
+        /** @var Audit $auditAttribute */
+        $auditAttribute = $attributes[0]->newInstance();
+
+        // Attach event observer dynamically
+        $model::observe(AuditObserver::class);
+
+        // Resolve fallback label if omitted in attribute
+        $label = $auditAttribute->label ?? Str::headline(class_basename($model));
+
+        // Resolve morph alias if configured via Relation::morphMap()
         $alias = static::resolveMorphAlias($model);
         $key = $alias ?? $model;
 
         static::$models[$key] = [
-            'key'   => $key,
-            'class' => $model,
-            'label' => $label,
-            'alias' => $alias,
+            'key'       => $key,
+            'class'     => $model,
+            'label'     => $label,
+            'alias'     => $alias,
+            'relations' => $auditAttribute->relations,
+            'only'      => $auditAttribute->only,
+            'exclude'   => $auditAttribute->exclude,
+            'events'    => $auditAttribute->events,
         ];
     }
 
     /**
-     * Get the options list for UI Select Dropdown Filter [key => label].
+     * Get tracked relations for a given model class or alias.
+     *
+     * @return array<int, string>
      */
-    public static function getOptions(): array
+    public static function getRelationsFor(string $modelOrAlias): array
     {
-        $options = [];
-        foreach (static::$models as $key => $item) {
-            $options[$key] = $item['label'];
-        }
+        $key = static::resolveMorphAlias($modelOrAlias) ?? $modelOrAlias;
 
-        return $options;
+        return static::$models[$key]['relations'] ?? [];
     }
 
     /**
-     * Get all registered models metadata.
+     * Get key-value pair [key => label] for UI Dropdown Selectors.
+     *
+     * @return array<string, string>
+     */
+    public static function getOptions(): array
+    {
+        return array_map(function ($item) {
+            return $item['label'];
+        }, static::$models);
+    }
+
+    /**
+     * Get all registered model configurations.
+     *
+     * @return array<string, array<string, mixed>>
      */
     public static function getRegisteredModels(): array
     {
@@ -66,7 +112,7 @@ class AuditRegistry
     }
 
     /**
-     * Resolve the Morph Alias from Relation::morphMap().
+     * Resolve morph alias from an Eloquent Relation morph map.
      */
     public static function resolveMorphAlias(string $model): ?string
     {
@@ -74,5 +120,13 @@ class AuditRegistry
         $alias = array_search($model, $morphMap, true);
 
         return $alias !== false ? (string) $alias : null;
+    }
+
+    /**
+     * Flush memory cache during the test suite's execution.
+     */
+    public static function flush(): void
+    {
+        static::$models = [];
     }
 }

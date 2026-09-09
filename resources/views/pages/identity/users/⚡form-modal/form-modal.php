@@ -16,7 +16,7 @@ new class extends Component
     use WithToast;
 
     #[Locked]
-    public ?string $id = null;
+    public ?string $ulid = null;
 
     #[Locked]
     public string $mode = 'create';
@@ -27,7 +27,7 @@ new class extends Component
 
     public function save(ProvisionNewUser $create, UpdateUserIdentity $update): void
     {
-        $this->form->validate($this->form->rules($this->id ?? 0, $this->mode === 'update'));
+        $this->form->validate();
 
         if ($this->mode === 'create') {
             $create->execute($this->form->toDto('create'));
@@ -43,21 +43,21 @@ new class extends Component
     #[Computed]
     public function user(): ?User
     {
-        return $this->id ? User::where('ulid', $this->id)->first() : null;
+        return $this->ulid ? User::where('ulid', $this->ulid)->first() : null;
     }
 
     public function show(int|string $id): void
     {
-        $this->id = $id;
+        $this->ulid = $id;
         $this->mode = 'update';
+        $this->form->ulid = $id;
         $this->form->fill($this->user->only(['name', 'email']));
-        $this->form->role_name = $this->user->role_name;
+        info($this->getErrorBag());
     }
 
     public function hide(): void
     {
-        $this->form->reset();
         $this->form->resetValidation();
-        $this->reset('id', 'mode');
+        $this->reset('ulid', 'mode', 'form');
     }
 };

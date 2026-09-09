@@ -2,6 +2,7 @@
 
 namespace App\Domains\Identity\Models;
 
+use App\Attributes\Model\Audit;
 use App\Domains\Identity\Enums\UserStatus;
 use App\Domains\Identity\Notifications\ResetPasswordNotification;
 use App\Domains\Identity\Notifications\VerifyEmailNotification;
@@ -20,14 +21,18 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password', 'status', 'settings'])]
 #[Hidden(['password', 'remember_token', 'settings'])]
 #[UsePolicy(UserPolicy::class)]
 #[UseFactory(UserFactory::class)]
-class User extends Authenticatable implements Auditable, MustVerifyEmail
+#[Audit(
+    label: 'user',
+    only: ['email', 'name', 'status'],
+    events: ['created', 'updated', 'deleted']
+)]
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
@@ -35,7 +40,6 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     use HasRoles;
     use HasUlids;
     use Notifiable;
-    use \OwenIt\Auditing\Auditable;
 
     /**
      * Cast attributes
@@ -50,12 +54,10 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     ];
 
     /**
-     * Attributes to include in the Audit.
+     * Attributes for default value.
      */
-    protected array $auditInclude = [
-        'name',
-        'email',
-        'status',
+    protected $attributes = [
+        'password' => 'password'
     ];
 
     public function sendPasswordResetNotification($token): void

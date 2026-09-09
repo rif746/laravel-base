@@ -2,20 +2,23 @@
 
 namespace App\Domains\Identity\Models;
 
+use App\Attributes\Model\Audit;
 use App\Domains\Identity\Policies\RolePolicy;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
-use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Contracts\Role as RoleContract;
 use Spatie\Permission\Models\Role as SpatieRole;
 
 #[Fillable(['name', 'guard_name'])]
+#[Audit(
+    label: 'role',
+    events: ['create', 'update', 'delete']
+)]
 #[UsePolicy(RolePolicy::class)]
-class Role extends SpatieRole implements Auditable, RoleContract
+class Role extends SpatieRole implements RoleContract
 {
     use HasUlids;
-    use \OwenIt\Auditing\Auditable;
 
     public function uniqueIds(): array
     {

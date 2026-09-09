@@ -38,7 +38,9 @@ class RelationshipServiceProvider extends ServiceProvider
         );
 
         // Audit Registration
-        AuditRegistry::register(User::class, __('resources.user'));
-        AuditRegistry::register(Role::class, __('resources.role'));
+        AuditRegistry::register([
+            User::class,
+            Role::class
+        ]);
     }
 }

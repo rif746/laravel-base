@@ -19,7 +19,7 @@
 
             <div class="row g-2 small">
                 <div class="col-sm-4 text-body-secondary fw-medium">
-                    {{ __('resources.user') }}
+                    {{ __('domains/system/field.audit.user_name') }}
                 </div>
                 <div class="col-sm-8 text-body fw-semibold mb-1 mb-sm-0">
                     {{ $this->audit?->user?->name ?? '-' }}
@@ -38,10 +38,26 @@
                 <div class="col-sm-8 text-body-secondary text-break">
                     {{ $this->audit?->browser ?? $this->audit?->user_agent ?? '-' }}
                 </div>
+
+                <div class="col-sm-4 text-body-secondary fw-medium">
+                    {{ __('resources.'.$this->audit?->auditable_type) }}
+                </div>
+                <div class="col-sm-8 text-body-secondary text-break">
+                    {{ $this->audit?->auditable?->name ?? $this->audit?->auditable_id ?? '-' }}
+                </div>
             </div>
         </div>
 
-        <!-- Scrollable Audit Changes Table with Sticky Field Column -->
+        <!-- Merge Unique Attribute Keys for Created, Updated, Deleted, and Restored Events -->
+        @php
+            $oldValues = $this->audit?->old_values ?? [];
+            $newValues = $this->audit?->new_values ?? [];
+
+            // Extract distinct merged keys from both old and new payload records
+            $allKeys = array_unique(array_merge(array_keys($oldValues), array_keys($newValues)));
+        @endphp
+
+            <!-- Scrollable Audit Changes Table with Sticky Field Column -->
         <div class="table-responsive rounded-3 border border-body-tertiary" style="max-height: 350px;">
             <table class="table table-hover table-striped mb-0 align-middle small" style="min-width: 600px;">
                 <thead class="table-light position-sticky top-0 z-2 shadow-sm">
@@ -58,17 +74,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                @forelse ($this->audit->old_values ?? [] as $key => $value)
+                @forelse ($allKeys as $key)
+                    @php
+                        $oldVal = $oldValues[$key] ?? null;
+                        $newVal = $newValues[$key] ?? null;
+
+                        // Format array payloads safely for JSON rendering
+                        $formattedOld = is_array($oldVal) ? json_encode($oldVal, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) : $oldVal;
+                        $formattedNew = is_array($newVal) ? json_encode($newVal, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) : $newVal;
+                    @endphp
                     <tr>
                         <td class="fw-semibold text-body px-3 py-2 position-sticky start-0 z-1 bg-body border-end shadow-sm">
                             {{ __($key) }}
                         </td>
-                        <td class="px-3 py-2 text-danger text-break bg-danger-subtle bg-opacity-10">
-                            {{ is_array($value) ? json_encode($value) : ($value ?? '-') }}
+                        <td class="px-3 py-2 text-break bg-danger-subtle bg-opacity-10">
+                            {{ $formattedOld ?? '-' }}
                         </td>
-                        <td class="px-3 py-2 text-success text-break bg-success-subtle bg-opacity-10">
-                            @php $newValue = $this->audit->new_values[$key] ?? null; @endphp
-                            {{ is_array($newValue) ? json_encode($newValue) : ($newValue ?? '-') }}
+                        <td class="px-3 py-2 text-break bg-success-subtle bg-opacity-10">
+                            {{ $formattedNew ?? '-' }}
                         </td>
                     </tr>
                 @empty
@@ -107,6 +130,7 @@
         };
     </script>
     @endscript
+
     <x-slot:footer>
         <div class="d-flex justify-content-end w-100">
             <x-button

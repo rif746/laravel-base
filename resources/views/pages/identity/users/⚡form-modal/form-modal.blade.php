@@ -4,15 +4,17 @@
 
         <x-form.input name="form.email" wire:model="form.email" :label="__('domains/identity/field.user.email')" />
 
-        @unless ($id)
+        @unless ($ulid)
             <x-form.input
                 name="form.password"
+                type="password"
                 wire:model="form.password"
                 :label="__('domains/identity/field.user.password')"
             />
 
             <x-form.input
                 name="form.password_confirmation"
+                type="password"
                 wire:model="form.password_confirmation"
                 :label="__('domains/identity/field.user.password_confirmation')"
             />
