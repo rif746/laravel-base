@@ -169,7 +169,7 @@ app/
     │   └── Providers/
     └── System/               <-- Konsep Bisnis: Infrastruktur Umum
         ├── Actions/
-        ├── Casts/            <-- Cast Eloquent kustom
+        ├── Casts/            <-- Cast Eloquent kustom (CastsAttributes)
         ├── DTOs/
         ├── Enums/
         ├── Events/
@@ -178,10 +178,14 @@ app/
         ├── Listeners/
         ├── Mail/             <-- Mailable domain
         ├── Models/           <-- File, SystemSettings, Backup
+        ├── Observers/        <-- Observer model Eloquent
         ├── Policies/
         ├── Providers/        <-- SystemServiceProvider
         ├── Queries/          <-- GetSystemSettings, GetModelAuditLog
         ├── Support/
+        │   ├── Integration/  <-- Kontrak/interface integrasi
+        │   ├── Registry/     <-- Registry domain statis
+        │   └── ValueObjects/ <-- Value object domain
         ├── Traits/           <-- Trait domain (HasFile)
         └── ...
 ```
@@ -342,7 +346,7 @@ You are an autonomous Senior Laravel Architect specializing in Pragmatic Domain-
 - NEVER use standard Laravel generators (e.g., `php artisan make:model`) for Domain classes.
 - ALWAYS use the custom `domain:make` command to create Domain files.
 - Example: `php artisan domain:make action Identity Onboarding/ProvisionNewUser`
-- Supported types: `model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `query`, `provider`, `export`, `mapper`, `scope`, `trait`, `mailable`.
+- Supported types: `model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `query`, `provider`, `export`, `mapper`, `scope`, `trait`, `mailable`, `cast`, `value-object`, `registry`, `observer`, `integration-interface`.
 - Examples for the Integration layer:
   - `php artisan domain:make export Identity UserExport --model=User`
   - `php artisan domain:make mapper Identity User` → generates `Integration/Mappers/UserDataMapper.php`
@@ -375,7 +379,7 @@ php artisan domain:make {type} {domain} {name} [options]
 
 Argumen:
 
-* `type`: Jenis file yang mau dibuat. Support: `model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `scope`, `trait`, `query`, `provider`, `export`, `mapper`, `mailable`, `view-provider`.
+* `type`: Jenis file yang mau dibuat. Lihat tabel di bawah untuk semua tipe yang didukung.
 * `domain`: Nama Domain-nya (misal, `Identity`, `Account`, `System`).
 * `name`: Nama kelasnya. Bisa pake sub-direktori (misal, `Management/ProvisionNewUser`).
 
@@ -383,7 +387,36 @@ Opsi:
 
 * `--factory`: Bikin factory database sekalian (buat Model).
 * `--migration`: Bikin file migrasi database sekalian (buat Model).
-* `--model=`: Hubungin kelas ekspor sama model Eloquent (buat Export).
+* `--policy`: Bikin policy sekalian (buat Model).
+* `--all`: Bikin factory, migrasi, dan policy sekaligus (buat Model).
+* `--model=`: Hubungin kelas ekspor sama model Eloquent (buat Export), atau set hint `@implements` (buat Cast).
+
+**Tipe yang Didukung:**
+
+| Tipe | Direktori Output | Auto-suffix | Catatan |
+|---|---|---|---|
+| `model` | `Models/` | — | Support `--factory`, `--migration`, `--policy`, `--all` |
+| `action` | `Actions/` | — | |
+| `dto` | `DTOs/` | — | Menghasilkan kelas `readonly` |
+| `enum` | `Enums/` | — | |
+| `event` | `Events/` | — | |
+| `listener` | `Listeners/` | — | |
+| `notification` | `Notifications/` | — | |
+| `policy` | `Policies/` | — | |
+| `scope` | `Scopes/` | — | Implement `Illuminate\Database\Eloquent\Scope` |
+| `trait` | `Traits/` | — | |
+| `query` | `Queries/` | — | Untuk pembacaan data yang kompleks dan read-only |
+| `provider` | `Providers/` | — | |
+| `relationship-provider` | `Providers/` | — | Siap pakai untuk binding `resolveRelationUsing()` lintas-domain |
+| `view-provider` | `Providers/` | — | Siap pakai dengan contoh View Composer |
+| `export` | `Exports/` | — | Support `--model=` |
+| `mapper` | `Integration/Mappers/` | `DataMapper` | Implement `DataPayloadMapper`; sub-direktori tetap |
+| `mailable` | `Mail/` | — | |
+| `cast` | `Casts/` | — | Implement `CastsAttributes`; gunakan `--model=NamaVO` untuk hint bertipe |
+| `value-object` | `Support/ValueObjects/` | — | Implement `Stringable`; sub-direktori tetap |
+| `registry` | `Support/Registry/` | `Registry` | Registry statis dengan `register()`, `all()`, `flush()`; sub-direktori tetap |
+| `observer` | `Observers/` | `Observer` | Observer Eloquent dengan hook `created`, `updated`, `deleted`, `restored` |
+| `integration-interface` | `Support/Integration/` | — | Scaffold `interface` PHP; sub-direktori tetap |
 
 ### Perintah `domain:datatable`
 
@@ -646,7 +679,7 @@ Button::make('excel')
     ->action("$('#excel-import-modal').modal('show')"),
 ```
 
-### Bikin Kelas Export & Mapper
+### Bikin Kelas Export, Mapper & Kelas Domain Lainnya
 
 Pake perintah `domain:make` buat bikin kelas pendukungnya:
 
@@ -657,6 +690,26 @@ php artisan domain:make export Identity UserExport --model=User
 # Bikin Mapper integrasi (otomatis dapet akhiran DataMapper)
 php artisan domain:make mapper Identity User
 # → app/Domains/Identity/Integration/Mappers/UserDataMapper.php
+
+# Bikin Cast Eloquent kustom (dengan hint @implements bertipe)
+php artisan domain:make cast System AsMoneyAmount --model=Money
+# → app/Domains/System/Casts/AsMoneyAmount.php
+
+# Bikin Value Object (Stringable)
+php artisan domain:make value-object System Money
+# → app/Domains/System/Support/ValueObjects/Money.php
+
+# Bikin Registry Domain statis (otomatis dapet akhiran Registry)
+php artisan domain:make registry System Feature
+# → app/Domains/System/Support/Registry/FeatureRegistry.php
+
+# Bikin Observer Eloquent (otomatis dapet akhiran Observer)
+php artisan domain:make observer System Backup
+# → app/Domains/System/Observers/BackupObserver.php
+
+# Bikin Integration Interface
+php artisan domain:make integration-interface System ExternalPaymentGateway
+# → app/Domains/System/Support/Integration/ExternalPaymentGateway.php
 ```
 
 Kelas Export di domain wajib pake interface `FromQuery & WithHeadings & WithMapping & WithColumnFormatting`. Gaya visualnya nanti diurus otomatis sama `StyledExport`, jadi **nggak perlu** pasang `WithStyles` manual di kelas domain.

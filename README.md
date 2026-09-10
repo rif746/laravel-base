@@ -169,7 +169,7 @@ app/
     │   └── Providers/
     └── System/               <-- Business Concept: Cross-cutting Infrastructure
         ├── Actions/
-        ├── Casts/            <-- Custom Eloquent casts
+        ├── Casts/            <-- Custom Eloquent casts (CastsAttributes)
         ├── DTOs/
         ├── Enums/
         ├── Events/
@@ -178,10 +178,14 @@ app/
         ├── Listeners/
         ├── Mail/             <-- Domain-specific mailables
         ├── Models/           <-- File, SystemSettings, Backup
+        ├── Observers/        <-- Eloquent model observers
         ├── Policies/
         ├── Providers/        <-- SystemServiceProvider
         ├── Queries/          <-- GetSystemSettings, GetModelAuditLog
         ├── Support/
+        │   ├── Integration/  <-- Integration contracts/interfaces
+        │   ├── Registry/     <-- Static domain registries
+        │   └── ValueObjects/ <-- Domain value objects
         ├── Traits/           <-- Domain-specific traits (HasFile)
         └── ...
 
@@ -343,7 +347,7 @@ You are an autonomous Senior Laravel Architect specializing in Pragmatic Domain-
 - NEVER use standard Laravel generators (e.g., `php artisan make:model`) for Domain classes.
 - ALWAYS use the custom `domain:make` command to create Domain files.
 - Example: `php artisan domain:make action Identity Onboarding/ProvisionNewUser`
-- Supported types: `model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `query`, `provider`, `export`, `mapper`, `scope`, `trait`, `mailable`.
+- Supported types: `model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `query`, `provider`, `export`, `mapper`, `scope`, `trait`, `mailable`, `cast`, `value-object`, `registry`, `observer`, `integration-interface`.
 - Examples for the Integration layer:
   - `php artisan domain:make export Identity UserExport --model=User`
   - `php artisan domain:make mapper Identity User` → generates `Integration/Mappers/UserDataMapper.php`
@@ -377,7 +381,7 @@ php artisan domain:make {type} {domain} {name} [options]
 
 **Arguments:**
 
-* `type`: The file type to generate. Supported: `model`, `action`, `dto`, `enum`, `event`, `listener`, `notification`, `policy`, `scope`, `trait`, `query`, `provider`, `export`, `mapper`, `mailable`.
+* `type`: The file type to generate. See the table below for all supported types.
 * `domain`: The target Domain folder (e.g., `Identity`, `Account`, `System`).
 * `name`: The class name. Supports sub-directory grouping (e.g., `Management/ProvisionNewUser`).
 
@@ -385,7 +389,36 @@ php artisan domain:make {type} {domain} {name} [options]
 
 * `--factory`: Generates an associated database factory (Models only).
 * `--migration`: Generates a database migration file (Models only).
-* `--model=`: Associates the export class with an Eloquent model (Exports only).
+* `--policy`: Generates an associated policy (Models only).
+* `--all`: Generates a factory, migration, and policy together (Models only).
+* `--model=`: Associates the export with an Eloquent model (Exports), or sets the `@implements` hint for the value-object type (Casts).
+
+**Supported Types:**
+
+| Type | Output Directory | Auto-suffix | Notes |
+|---|---|---|---|
+| `model` | `Models/` | — | Supports `--factory`, `--migration`, `--policy`, `--all` |
+| `action` | `Actions/` | — | |
+| `dto` | `DTOs/` | — | Generates a `readonly` class |
+| `enum` | `Enums/` | — | |
+| `event` | `Events/` | — | |
+| `listener` | `Listeners/` | — | |
+| `notification` | `Notifications/` | — | |
+| `policy` | `Policies/` | — | |
+| `scope` | `Scopes/` | — | Implements `Illuminate\Database\Eloquent\Scope` |
+| `trait` | `Traits/` | — | |
+| `query` | `Queries/` | — | For complex, read-only data retrieval |
+| `provider` | `Providers/` | — | |
+| `relationship-provider` | `Providers/` | — | Pre-wired for `resolveRelationUsing()` cross-domain bindings |
+| `view-provider` | `Providers/` | — | Pre-wired with a View Composer example |
+| `export` | `Exports/` | — | Supports `--model=` |
+| `mapper` | `Integration/Mappers/` | `DataMapper` | Implements `DataPayloadMapper`; lives in fixed sub-directory |
+| `mailable` | `Mail/` | — | |
+| `cast` | `Casts/` | — | Implements `CastsAttributes`; use `--model=ValueObjectClass` for typed hint |
+| `value-object` | `Support/ValueObjects/` | — | Implements `Stringable`; lives in fixed sub-directory |
+| `registry` | `Support/Registry/` | `Registry` | Static registry with `register()`, `all()`, `flush()`; fixed sub-directory |
+| `observer` | `Observers/` | `Observer` | Eloquent observer with `created`, `updated`, `deleted`, `restored` hooks |
+| `integration-interface` | `Support/Integration/` | — | PHP `interface` scaffold; lives in fixed sub-directory |
 
 ### The `domain:datatable` Command
 
@@ -648,9 +681,9 @@ Button::make('excel')
     ->action("$('#excel-import-modal').modal('show')"),
 ```
 
-### Generating Export & Mapper Classes
+### Generating Export, Mapper & Other Domain Classes
 
-Use the `domain:make` command to create Export and Integration layer classes:
+Use the `domain:make` command to create Export, Integration, and infrastructure classes:
 
 ```bash
 # Generate a domain Export class
@@ -659,6 +692,26 @@ php artisan domain:make export Identity UserExport --model=User
 # Generate an Integration Mapper (auto-appends DataMapper suffix)
 php artisan domain:make mapper Identity User
 # → app/Domains/Identity/Integration/Mappers/UserDataMapper.php
+
+# Generate a custom Eloquent Cast (with typed @implements hint)
+php artisan domain:make cast System AsMoneyAmount --model=Money
+# → app/Domains/System/Casts/AsMoneyAmount.php
+
+# Generate a Value Object (Stringable)
+php artisan domain:make value-object System Money
+# → app/Domains/System/Support/ValueObjects/Money.php
+
+# Generate a static Domain Registry (auto-appends Registry suffix)
+php artisan domain:make registry System Feature
+# → app/Domains/System/Support/Registry/FeatureRegistry.php
+
+# Generate an Eloquent Observer (auto-appends Observer suffix)
+php artisan domain:make observer System Backup
+# → app/Domains/System/Observers/BackupObserver.php
+
+# Generate an Integration Interface
+php artisan domain:make integration-interface System ExternalPaymentGateway
+# → app/Domains/System/Support/Integration/ExternalPaymentGateway.php
 ```
 
 Domain Export classes must implement `FromQuery & WithHeadings & WithMapping & WithColumnFormatting`. The `StyledExport` decorator will apply all visual styling automatically at queue time — do **not** implement `WithStyles` directly on domain Exports.

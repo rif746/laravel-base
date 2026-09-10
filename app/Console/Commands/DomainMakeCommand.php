@@ -9,37 +9,43 @@ use Illuminate\Support\Str;
 class DomainMakeCommand extends Command
 {
     protected $signature = 'domain:make
-        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, query, provider, relationship-provider, export, mapper, scope, mailable}
+        {type   : Type to generate: model, action, dto, enum, event, listener, notification, policy, query, provider, relationship-provider, export, mapper, scope, mailable, cast, value-object, registry, observer, integration-interface}
         {domain : Domain name, e.g. Identity, Account, System}
         {name   : Class name, supports sub-paths e.g. Backup/DeleteBackup}
         {--factory   : Also generate a factory (model only)}
         {--migration : Also generate a migration (model only)}
         {--policy    : Also generate a policy (model only)}
         {--all       : Generate a factory, migration, and policy (model only)}
-        {--model=    : Associate the export with a model}';
+        {--model=    : Associate the export with a model (export) or value-object class hint (cast)}';
 
     protected $description = 'Generate a file directly into the domain structure (app/Domains/)';
 
     /** @var array<string, string> type → subdirectory */
     protected array $types = [
-        'model' => 'Models',
-        'action' => 'Actions',
-        'dto' => 'DTOs',
-        'enum' => 'Enums',
-        'event' => 'Events',
-        'listener' => 'Listeners',
-        'notification' => 'Notifications',
-        'policy' => 'Policies',
-        'scope' => 'Scopes',
-        'trait' => 'Traits',
-        'query' => 'Queries',
-        'provider' => 'Providers',
+        'model'                 => 'Models',
+        'action'                => 'Actions',
+        'dto'                   => 'DTOs',
+        'enum'                  => 'Enums',
+        'event'                 => 'Events',
+        'listener'              => 'Listeners',
+        'notification'          => 'Notifications',
+        'policy'                => 'Policies',
+        'scope'                 => 'Scopes',
+        'trait'                 => 'Traits',
+        'query'                 => 'Queries',
+        'provider'              => 'Providers',
         'relationship-provider' => 'Providers',
-        'view-provider' => 'Providers',
-        'export' => 'Exports',
-        'integration' => 'Integration',
-        'mapper' => 'Integration/Mappers',
-        'mailable' => 'Mail',
+        'view-provider'         => 'Providers',
+        'export'                => 'Exports',
+        'integration'           => 'Integration',
+        'mapper'                => 'Integration/Mappers',
+        'mailable'              => 'Mail',
+        // ── New types ──────────────────────────────────────────────────────────
+        'cast'                  => 'Casts',
+        'value-object'          => 'Support/ValueObjects',
+        'registry'              => 'Support/Registry',
+        'observer'              => 'Observers',
+        'integration-interface' => 'Support/Integration',
     ];
 
     public function __construct(protected Filesystem $files)
@@ -62,14 +68,26 @@ class DomainMakeCommand extends Command
         $className = class_basename(str_replace('/', '\\', $name));
         $subPath = str_contains($name, '/') ? dirname($name) : null;
 
+        // Auto-suffix class names according to type conventions
         if ($type === 'mapper' && ! str_ends_with($className, 'DataMapper')) {
             $className .= 'DataMapper';
+        }
+
+        if ($type === 'observer' && ! str_ends_with($className, 'Observer')) {
+            $className .= 'Observer';
+        }
+
+        if ($type === 'registry' && ! str_ends_with($className, 'Registry')) {
+            $className .= 'Registry';
         }
 
         $subDir = $this->types[$type];
         $relativeDir = "Domains/{$domain}/{$subDir}";
 
-        if ($type !== 'mapper' && $subPath) {
+        // Types with a fixed sub-directory do not append sub-paths
+        $fixedSubDirTypes = ['mapper', 'value-object', 'registry', 'integration-interface'];
+
+        if (! in_array($type, $fixedSubDirTypes, true) && $subPath) {
             $relativeDir .= "/{$subPath}";
         }
 
@@ -135,9 +153,10 @@ class DomainMakeCommand extends Command
         ];
 
         $replacements = match ($type) {
-            'model' => array_merge($replacements, $this->getModelReplacements($domain, $name)),
+            'model'  => array_merge($replacements, $this->getModelReplacements($domain, $name)),
             'export' => array_merge($replacements, $this->getExportReplacements($domain)),
-            default => $replacements,
+            'cast'   => array_merge($replacements, $this->getCastReplacements()),
+            default  => $replacements,
         };
 
         return str_replace(array_keys($replacements), array_values($replacements), $stub);
@@ -154,6 +173,18 @@ class DomainMakeCommand extends Command
             '{{ factory }}' => $hasFactory
                 ? "#[UseFactory({$name}Factory::class)]"
                 : '',
+        ];
+    }
+
+    protected function getCastReplacements(): array
+    {
+        $modelOption = $this->option('model');
+
+        // --model can point to a ValueObject class name for the @implements hint
+        $hint = $modelOption ? class_basename(str_replace(['/', '\\'], '\\', $modelOption)) : 'mixed';
+
+        return [
+            '{{ valueObjectHint }}' => $hint,
         ];
     }
 

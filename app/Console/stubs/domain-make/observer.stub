@@ -1,0 +1,40 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Model;
+
+class {{ class }}
+{
+    /**
+     * Handle the Eloquent 'created' event.
+     */
+    public function created(Model $model): void
+    {
+        //
+    }
+
+    /**
+     * Handle the Eloquent 'updated' event.
+     */
+    public function updated(Model $model): void
+    {
+        //
+    }
+
+    /**
+     * Handle the Eloquent 'deleted' event.
+     */
+    public function deleted(Model $model): void
+    {
+        //
+    }
+
+    /**
+     * Handle the Eloquent 'restored' event.
+     */
+    public function restored(Model $model): void
+    {
+        //
+    }
+}

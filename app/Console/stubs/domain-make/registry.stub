@@ -1,0 +1,53 @@
+<?php
+
+namespace {{ namespace }};
+
+class {{ class }}
+{
+    /**
+     * Internal storage for registered entries.
+     *
+     * @var array<string, array<string, mixed>>
+     */
+    protected static array $items = [];
+
+    /**
+     * Register one or more entries into the registry.
+     *
+     * @param array<int, string>|string $entries
+     */
+    public static function register(array|string $entries): void
+    {
+        foreach ((array) $entries as $entry) {
+            static::registerEntry($entry);
+        }
+    }
+
+    /**
+     * Register a single entry into the registry.
+     */
+    protected static function registerEntry(string $entry): void
+    {
+        static::$items[$entry] = [
+            'class' => $entry,
+        ];
+    }
+
+    /**
+     * Get all registered entries.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public static function all(): array
+    {
+        return static::$items;
+    }
+
+    /**
+     * Flush the registry (useful in tests).
+     */
+    public static function flush(): void
+    {
+        static::$items = [];
+    }
+}
