@@ -7,7 +7,7 @@ use App\Domains\Identity\Enums\UserStatus;
 use App\Domains\Identity\Notifications\ResetPasswordNotification;
 use App\Domains\Identity\Notifications\VerifyEmailNotification;
 use App\Domains\Identity\Policies\UserPolicy;
-use App\Domains\System\Traits\Model\HasFile;
+use App\Domains\System\Concerns\Model\HasFile;
 use Database\Factories\Identity\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;

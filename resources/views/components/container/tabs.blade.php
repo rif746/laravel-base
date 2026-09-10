@@ -1,41 +1,53 @@
-@props(['menu' => []])
+@props([
+    // Array of tab items: ['general' => 'General Settings', 'security' => 'Security & Password']
+    'tabs' => [],
+    // Unique component instance ID to prevent DOM ID collision on multiple tabs
+    'id' => 'tab-' . md5(Str::random(8)),
+])
 
-@php
-    $navItemId = [];
-    $contents = [];
-    foreach ($menu as $i => $v) {
-        $navItemId[$i] = md5(microtime());
-        $contents[$i] = 'content-'.$i + 1;
-    }
-@endphp
+<div>
+    {{-- Tab Navigation Header --}}
+    <ul {{ $attributes->merge(['class' => 'nav nav-pills nav-fill my-3']) }} id="{{ $id }}" role="tablist">
+        @foreach ($tabs as $key => $label)
+            @php
+                $tabId = "{$id}-{$key}-tab";
+                $paneId = "{$id}-{$key}-pane";
+            @endphp
+            <li class="nav-item" role="presentation">
+                <button
+                    @class(['nav-link', 'active' => $loop->first])
+                    id="{{ $tabId }}"
+                    data-bs-toggle="pill"
+                    data-bs-target="#{{ $paneId }}"
+                    type="button"
+                    role="tab"
+                    aria-controls="{{ $paneId }}"
+                    aria-selected="{{ $loop->first ? 'true' : 'false' }}"
+                >
+                    {{ $label }}
+                </button>
+            </li>
+        @endforeach
+    </ul>
 
-<ul class="nav nav-pills nav-fill my-3" id="pills-tab" role="tablist">
-    @foreach ($menu as $i => $details)
-        <li class="nav-item" role="presentation">
-            <button
-                @class(['nav-link', 'active' => $loop->first])
-                id="{{ $navItemId[$i] }}-tab"
-                data-bs-toggle="pill"
-                data-bs-target="#{{ $navItemId[$i] }}"
-                type="button"
-                role="tab"
-                aria-controls="{{ $navItemId[$i] }}"
-                aria-selected="{{ $loop->first ? 'true' : 'false' }}"
+    {{-- Tab Content Panes --}}
+    <div class="tab-content" id="{{ $id }}Content">
+        @foreach ($tabs as $key => $label)
+            @php
+                $tabId = "{$id}-{$key}-tab";
+                $paneId = "{$id}-{$key}-pane";
+                $slotName = "tab_{$key}";
+            @endphp
+            <div
+                @class(['tab-pane fade', 'show active' => $loop->first])
+                id="{{ $paneId }}"
+                role="tabpanel"
+                aria-labelledby="{{ $tabId }}"
+                tabindex="0"
             >
-                {{ $details }}
-            </button>
-        </li>
-    @endforeach
-</ul>
-<div class="tab-content" id="pills-tabContent">
-    @foreach ($contents as $content)
-        <div
-            @class(['tab-pane fade', 'show active' => $loop->first])
-            id="{{ $navItemId[$loop->index] }}"
-            role="tabpanel"
-            aria-labelledby="{{ $navItemId[$i] }}-tab"
-        >
-            {!! ${str($content)->camel()} !!}
-        </div>
-    @endforeach
+                {{-- Render dynamic slot name if exists, fallback to main slot --}}
+                {{ ${$slotName} ?? $slot }}
+            </div>
+        @endforeach
+    </div>
 </div>

@@ -73,12 +73,6 @@ class AuditDataTable extends DataTable
                 'topEnd' => [
                     'className' => 'col-md-auto ms-auto d-flex flex-sm-row flex-column justify-content-center justify-content-md-end align-items-center align-items-md-start gap-1',
                     'features' => [
-                        [
-                            'custom-features' => [
-                                'targetId' => 'template-role-filter',
-                                'style' => 'width: 200px;',
-                            ],
-                        ],
                         'search',
                     ],
                 ],

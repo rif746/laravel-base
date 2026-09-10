@@ -2,7 +2,7 @@
 
 namespace App\Domains\System\Enums;
 
-use App\Domains\System\Traits\Enum\HasPredicateMethod;
+use App\Domains\System\Concerns\Enum\HasPredicateMethod;
 use App\UI\Enums\Concerns\InteractsWithLabels;
 use App\UI\Enums\Contracts\HasLabel;
 use App\UI\Enums\Contracts\HasUiBadge;

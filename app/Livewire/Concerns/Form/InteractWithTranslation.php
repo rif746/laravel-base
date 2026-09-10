@@ -3,7 +3,7 @@
 namespace App\Livewire\Concerns\Form;
 
 use App\Attributes\Form\MapTranslation;
-use App\Domains\System\Traits\Model\HasTranslation;
+use App\Domains\System\Concerns\Model\HasTranslation;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Attributes\Validate;

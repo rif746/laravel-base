@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Support;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -9,7 +9,9 @@ class SuccessResource extends JsonResource
 {
     public static $wrap = null;
 
-    public function __construct(public $message) {}
+    public function __construct(public $message) {
+        parent::__construct($this);
+    }
 
     /**
      * Transform the resource into an array.

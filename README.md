@@ -461,7 +461,7 @@ When a Domain Model (like `User` or `Invoice`) needs to accept a file attachment
 namespace App\Domains\Identity\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Domains\System\Traits\HasFile;
+use App\Domains\System\Concerns\HasFile;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class User extends Model
@@ -536,7 +536,7 @@ Translations are stored in a dedicated table named `{singular_table}_translation
 namespace App\Domains\Catalog\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Domains\System\Traits\Model\HasTranslation;
+use App\Domains\System\Concerns\Model\HasTranslation;
 
 class Category extends Model
 {

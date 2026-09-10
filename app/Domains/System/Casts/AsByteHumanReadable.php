@@ -7,7 +7,7 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 
-class ByteHumanReadable implements CastsAttributes
+class AsByteHumanReadable implements CastsAttributes
 {
     public function get(Model $model, string $key, mixed $value, array $attributes): ?ByteUsage
     {

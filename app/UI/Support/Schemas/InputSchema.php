@@ -12,7 +12,7 @@ class InputSchema extends AbstractSchema
 
     protected string $label = '';
 
-    protected InputType $type = InputType::TEXTLINE;
+    protected InputType $type = InputType::TEXT_LINE;
 
     protected mixed $default = null;
 

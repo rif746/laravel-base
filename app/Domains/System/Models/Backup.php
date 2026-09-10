@@ -2,7 +2,7 @@
 
 namespace App\Domains\System\Models;
 
-use App\Domains\System\Casts\ByteHumanReadable;
+use App\Domains\System\Casts\AsByteHumanReadable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 class Backup extends Model
 {
     protected $casts = [
-        'size' => ByteHumanReadable::class,
+        'size' => AsByteHumanReadable::class,
     ];
 }

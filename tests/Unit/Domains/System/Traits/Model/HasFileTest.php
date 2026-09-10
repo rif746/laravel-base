@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\System\Traits\Model;
 
-use App\Domains\System\Traits\Model\HasFile;
+use App\Domains\System\Concerns\Model\HasFile;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;

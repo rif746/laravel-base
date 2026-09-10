@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-use App\Domains\System\Traits\Provider\RegistersDomainEvents;
+use App\Domains\System\Concerns\Provider\RegistersDomainEvents;
 use Illuminate\Support\ServiceProvider;
 
 class {{ class }} extends ServiceProvider

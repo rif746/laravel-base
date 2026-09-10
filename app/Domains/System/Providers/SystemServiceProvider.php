@@ -8,7 +8,7 @@ use App\Domains\System\Events\ImportCompleted;
 use App\Domains\System\Listeners\Excel\SendExportReportEmail;
 use App\Domains\System\Listeners\Excel\SendImportReportEmail;
 use App\Domains\System\Listeners\Files\RemoveUserFiles;
-use App\Domains\System\Traits\Provider\RegistersDomainEvents;
+use App\Domains\System\Concerns\Provider\RegistersDomainEvents;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\ServiceProvider;
 

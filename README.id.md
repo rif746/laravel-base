@@ -459,7 +459,7 @@ Kalo ada Domain Model (kayak `User` atau `Invoice`) yang butuh lampiran file, ti
 namespace App\Domains\Identity\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Domains\System\Traits\HasFile;
+use App\Domains\System\Concerns\HasFile;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class User extends Model
@@ -534,7 +534,7 @@ Terjemahan disimpan di tabel khusus yang dinamain `{singular_table}_translations
 namespace App\Domains\Catalog\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Domains\System\Traits\Model\HasTranslation;
+use App\Domains\System\Concerns\Model\HasTranslation;
 
 class Category extends Model
 {

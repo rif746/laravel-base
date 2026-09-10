@@ -4,7 +4,7 @@ namespace App\Domains\Account\Providers;
 
 use App\Domains\Account\Listeners\SyncImportedUserProfile;
 use App\Domains\Identity\Events\Integration\UserImportWasProcessed;
-use App\Domains\System\Traits\Provider\RegistersDomainEvents;
+use App\Domains\System\Concerns\Provider\RegistersDomainEvents;
 use Illuminate\Support\ServiceProvider;
 
 class AccountServiceProvider extends ServiceProvider

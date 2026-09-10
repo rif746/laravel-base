@@ -2,7 +2,7 @@
 
 namespace App\Domains\System\Models;
 
-use App\Domains\System\Casts\ByteHumanReadable;
+use App\Domains\System\Casts\AsByteHumanReadable;
 use Database\Factories\System\FileFactory;
 use Exception;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -29,7 +29,7 @@ class File extends Model
     use HasFactory;
 
     protected $casts = [
-        'size' => ByteHumanReadable::class,
+        'size' => AsByteHumanReadable::class,
         'options' => 'array',
     ];
 

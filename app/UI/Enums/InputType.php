@@ -2,7 +2,7 @@
 
 namespace App\UI\Enums;
 
-use App\Domains\System\Traits\Enum\HasPredicateMethod;
+use App\Domains\System\Concerns\Enum\HasPredicateMethod;
 use App\UI\Enums\Concerns\InteractsWithLabels;
 use App\UI\Enums\Contracts\HasLabel;
 
@@ -20,8 +20,9 @@ enum InputType: string implements HasLabel
     use InteractsWithLabels;
 
     case NUMBER = 'number';
-    case TEXTLINE = 'text_line';
-    case TEXTAREA = 'text_area';
+    case TEXT_LINE = 'text_line';
+    case TEXT_AREA = 'text_area';
+    case WYSIWYG = 'wysiwyg';
     case SELECT = 'select';
     case FILE = 'file';
     case CHECKBOX = 'checkbox';
@@ -29,7 +30,7 @@ enum InputType: string implements HasLabel
     public function component(): string
     {
         return match ($this) {
-            self::TEXTAREA => 'form.textarea',
+            self::TEXT_AREA => 'form.textarea',
             self::SELECT => 'form.select',
             self::FILE => 'filepond::upload',
             self::CHECKBOX => 'form.checkbox',

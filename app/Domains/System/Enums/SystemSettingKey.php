@@ -2,7 +2,7 @@
 
 namespace App\Domains\System\Enums;
 
-use App\Domains\System\Traits\Enum\HasPredicateMethod;
+use App\Domains\System\Concerns\Enum\HasPredicateMethod;
 use App\UI\Enums\Concerns\InteractsWithLabels;
 use App\UI\Enums\Contracts\HasLabel;
 use App\UI\Enums\Contracts\HasSchema;
@@ -45,26 +45,26 @@ enum SystemSettingKey: string implements HasLabel, HasSchema
 
         return match ($this) {
             self::WEB_NAME => InputSchema::make()
-                ->type(InputType::TEXTLINE)
+                ->type(InputType::TEXT_LINE)
                 ->label($this->label())
                 ->default('Acme Inc'),
 
             self::WEB_DESCRIPTION => InputSchema::make()
                 ->label($this->label())
-                ->type(InputType::TEXTAREA),
+                ->type(InputType::TEXT_AREA),
 
             self::WEB_ADDRESS => InputSchema::make()
-                ->type(InputType::TEXTLINE)
+                ->type(InputType::TEXT_LINE)
                 ->label($this->label())
                 ->default('123 Main St, Anytown, USA'),
 
             self::WEB_PHONE => InputSchema::make()
-                ->type(InputType::TEXTLINE)
+                ->type(InputType::TEXT_LINE)
                 ->label($this->label())
                 ->default('+1234567890'),
 
             self::WEB_EMAIL => InputSchema::make()
-                ->type(InputType::TEXTLINE)
+                ->type(InputType::TEXT_LINE)
                 ->label($this->label())
                 ->default('acme@web.io'),
 
@@ -97,7 +97,7 @@ enum SystemSettingKey: string implements HasLabel, HasSchema
 
             default => InputSchema::make()
                 ->label($this->label())
-                ->type(InputType::TEXTLINE)
+                ->type(InputType::TEXT_LINE)
                 ->rules(['nullable', 'string']),
         };
     }

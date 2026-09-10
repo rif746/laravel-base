@@ -13,7 +13,7 @@ use App\Domains\Identity\Listeners\Authentication\SendSignInActivityNotification
 use App\Domains\Identity\Listeners\Governance\SendUserActivatedNotification;
 use App\Domains\Identity\Listeners\Governance\SendUserPurgedNotification;
 use App\Domains\Identity\Listeners\Governance\SendUserSuspendedNotification;
-use App\Domains\System\Traits\Provider\RegistersDomainEvents;
+use App\Domains\System\Concerns\Provider\RegistersDomainEvents;
 use Illuminate\Support\ServiceProvider;
 
 class IdentityServiceProvider extends ServiceProvider
