@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\System\Traits\Model;
+namespace App\Domains\System\Concerns\Model;
 
 use App\Attributes\Model\Translatable;
 use ReflectionClass;

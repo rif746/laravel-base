@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\System\Traits\Enum;
+namespace App\Domains\System\Concerns\Enum;
 
 /*
  * @mixin \BackedEnum

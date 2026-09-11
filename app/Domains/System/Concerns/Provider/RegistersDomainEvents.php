@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\System\Traits\Provider;
+namespace App\Domains\System\Concerns\Provider;
 
 use Illuminate\Support\Facades\Event;
 
