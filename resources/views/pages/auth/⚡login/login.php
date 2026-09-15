@@ -1,7 +1,10 @@
 <?php
 
 use App\Attributes\Ui\Seo;
+use App\Domains\Identity\Actions\Authentication\AuthenticateUser;
+use App\Domains\Identity\DTOs\Authentication\AuthenticateUserDTO;
 use App\Domains\Identity\Events\Authentication\UserLoggedIn;
+use App\Http\Concerns\WithRateLimiting;
 use App\Livewire\Concerns\HasSeoAttributes;
 use App\Livewire\Forms\Auth\LoginForm;
 use Illuminate\Auth\Events\Lockout;
@@ -17,75 +20,39 @@ new #[Layout('components.layouts.guest', ['title' => 'domains/auth/pages.login.h
 class extends Component
 {
     use HasSeoAttributes;
+    use WithRateLimiting;
 
     public LoginForm $form;
 
-    /**
-     * @throws ValidationException
-     */
-    public function login(): void
+
+    public function login(AuthenticateUser $authenticateUser): void
     {
         $this->form->validate();
 
-        $this->ensureIsNotRateLimited();
+        // 1. Rate Limit Check (Targeting 'form.email' for a Livewire error bag)
+        $this->ensureIsNotRateLimited(
+            keyIdentifier: $this->form->email,
+            errorField: 'form.email'
+        );
 
-        if (! Auth::attempt(
-            ['email' => $this->form->email, 'password' => $this->form->password],
-            $this->form->remember,
-        )) {
-            RateLimiter::hit($this->throttleKey());
+        try {
+            $authenticateUser->execute($this->form->toDto());
+        } catch (InvalidArgumentException|DomainException $e) {
+            // Hit limiter on authentication failure
+            $this->hitRateLimiter($this->form->email);
 
             throw ValidationException::withMessages([
-                'form.email' => trans('auth.failed'),
+                'form.email' => $e->getMessage(),
             ]);
         }
 
-        $user = Auth::user();
-        if (! $user->status->isActive()) {
-            Auth::logout();
-            throw ValidationException::withMessages([
-                'form.email' => trans('auth.inactive'),
-            ]);
-        }
+        // Clear limiter on success
+        $this->clearRateLimiter($this->form->email);
 
-        RateLimiter::clear($this->throttleKey());
-
-        // Regenerate the session to prevent fixation attacks.
         session()->regenerate();
 
-        // Extract HTTP primitives here — never pass request() into an Event.
-        $ipAddress = request()->ip() ?? 'Unknown';
-        $userAgent = request()->userAgent() ?? 'Unknown';
+        $navigate = session()->get('url.intended') != url('/docs/api');
 
-        // Dispatch the event — listeners handle all side-effects asynchronously.
-        UserLoggedIn::dispatch(Auth::user(), $ipAddress, $userAgent);
-
-        $this->redirectIntended(route('dashboard', absolute: false), navigate: true);
-    }
-
-    /**
-     * @throws ValidationException
-     */
-    private function ensureIsNotRateLimited(): void
-    {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
-            return;
-        }
-
-        event(new Lockout(request()));
-
-        $seconds = RateLimiter::availableIn($this->throttleKey());
-
-        throw ValidationException::withMessages([
-            'form.email' => trans('auth.throttle', [
-                'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
-            ]),
-        ]);
-    }
-
-    private function throttleKey(): string
-    {
-        return Str::transliterate(Str::lower($this->form->email).'|'.request()->ip());
+        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: $navigate);
     }
 };

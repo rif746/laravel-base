@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Domains\Identity\Models\User;
+use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +22,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::define('viewApiDocs', fn(User $user) => $user->hasPermissionTo('docs.api'));
     }
 }

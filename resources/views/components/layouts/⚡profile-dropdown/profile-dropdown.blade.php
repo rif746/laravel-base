@@ -56,6 +56,14 @@
                     </x-slot:label>
                 </x-link>
             @endcan
+            @can('viewApiDocs')
+                <x-link class="dropdown-item" target="_blank" :href="route('scramble.docs.ui')">
+                    <x-slot:label>
+                        <x-tabler-api-book width="16" />
+                        {{ __('ui/menu.api_docs') }}
+                    </x-slot:label>
+                </x-link>
+            @endcan
             <hr class="my-0 border-dashed" />
             <a
                 class="dropdown-item text-danger"

@@ -7,7 +7,8 @@ return [
         'deleted' => ':resource telah dihapus.',
         'suspended' => ':resource telah ditangguhkan.',
         'uploaded' => ':resource telah berhasil diunggah.',
-        'restored' => ':resource telah berhasil dikembalikan.'
+        'restored' => ':resource telah berhasil dikembalikan.',
+        'retrieved' => ':resource telah berhasil didapatkan.'
     ],
     'error' => [
         'forbidden' => 'Anda tidak memiliki izin untuk melakukan tindakan ini.',

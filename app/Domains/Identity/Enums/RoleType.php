@@ -54,12 +54,23 @@ enum RoleType: string
                 'guard_name' => 'web',
                 'roles' => [self::SYSTEM_ADMIN, self::ADMIN],
             ],
+
+            // System Log
             [
                 'name' => 'system-log.manage',
                 'description' => 'permissions.system-log.manage',
                 'group' => 'system-log',
                 'guard_name' => 'web',
                 'roles' => [self::SYSTEM_ADMIN, self::ADMIN],
+            ],
+
+            // API Docs
+            [
+                'name' => 'docs.api',
+                'description' => 'permissions.docs.api',
+                'group' => 'docs',
+                'guard_name' => 'web',
+                'roles' => [self::SYSTEM_ADMIN],
             ],
         ];
     }

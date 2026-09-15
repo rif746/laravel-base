@@ -35,4 +35,8 @@ return [
         'group-name' => 'Log Sistem',
         'manage' => 'Memberikan akses untuk melihat dan memulihkan data historis.',
     ],
+    'docs' => [
+        'group-name' => 'Dokumentasi',
+        'api' => 'Memberikan akses untuk melihat Dokumentasi API.',
+    ],
 ];

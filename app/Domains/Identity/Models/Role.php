@@ -9,7 +9,6 @@ use App\Domains\System\Concerns\Model\HasPublicUlid;
 use App\Domains\System\Concerns\Model\IsLookupable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Spatie\Permission\Contracts\Role as RoleContract;
 use Spatie\Permission\Models\Role as SpatieRole;
 
@@ -22,6 +21,6 @@ use Spatie\Permission\Models\Role as SpatieRole;
 #[Lookupable(id: 'name', text: 'name')]
 class Role extends SpatieRole implements RoleContract
 {
-    use HasPublicUlid;
     use IsLookupable;
+    use HasPublicUlid;
 }

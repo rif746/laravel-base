@@ -103,24 +103,4 @@ trait IsLookupable
 
         return (string) $this->getKey();
     }
-
-    /**
-     * Intercept virtual 'id' accessor for LookupResource compatibility.
-     */
-    protected function id(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->getLookupId(),
-        );
-    }
-
-    /**
-     * Intercept virtual 'text' accessor for LookupResource compatibility.
-     */
-    protected function text(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->getLookupText(),
-        );
-    }
 }

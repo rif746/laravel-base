@@ -35,4 +35,8 @@ return [
         'group-name' => 'System Logs',
         'manage' => 'Provides access to view and restore historical data.',
     ],
+    'docs' => [
+        'group-name' => 'Documentations',
+        'api' => 'Provides access to view API Documentation.',
+    ],
 ];

@@ -23,15 +23,15 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password', 'status', 'settings'])]
-#[Hidden(['password', 'remember_token', 'settings'])]
-#[UsePolicy(UserPolicy::class)]
-#[UseFactory(UserFactory::class)]
 #[Audit(
     label: 'user',
     only: ['email', 'name', 'status'],
     events: ['created', 'updated', 'deleted']
 )]
+#[Fillable(['name', 'email', 'password', 'status', 'settings'])]
+#[Hidden(['password', 'remember_token', 'settings'])]
+#[UsePolicy(UserPolicy::class)]
+#[UseFactory(UserFactory::class)]
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;

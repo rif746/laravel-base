@@ -8,12 +8,12 @@ return [
     'inertia' => env('SEO_TOOLS_INERTIA', false),
     'meta' => [
         /*
-         * The default configurations to be used by the meta generator.
+         * The default configurations to be used by the meta-generator.
          */
         'defaults' => [
             'title' => config('app.name'), // set false to total remove
             'titleBefore' => false, // Put defaults.title before page title, like 'It's Over 9000! - Dashboard'
-            'description' => null, // set false to total remove
+            'description' => config('app.description', false), // set false to total remove
             'separator' => ' - ',
             'keywords' => [],
             'canonical' => null, // Set to null or 'full' to use Url::full(), set to 'current' to use Url::current(), set false to total remove
@@ -39,7 +39,7 @@ return [
          */
         'defaults' => [
             'title' => config('app.name'), // set false to total remove
-            'description' => false, // set false to total remove
+            'description' => config('app.description', false), // set false to total remove
             'url' => null, // Set null for using Url::current(), set false to total remove
             'type' => false,
             'site_name' => false,
@@ -61,7 +61,7 @@ return [
          */
         'defaults' => [
             'title' => config('app.name'), // set false to total remove
-            'description' => false, // set false to total remove
+            'description' => config('app.description', false), // set false to total remove
             'url' => null, // Set to null or 'full' to use Url::full(), set to 'current' to use Url::current(), set false to total remove
             'type' => 'WebPage',
             'images' => [],

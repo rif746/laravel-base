@@ -7,5 +7,6 @@ return [
     'roles' => 'Peran & Izin',
     'settings' => 'Pengaturan Sistem',
     'system_backup' => 'Cadangkan Sistem',
-    'audit' => 'Audit Sistem'
+    'audit' => 'Audit Sistem',
+    'api_docs' => 'Dokumentasi API',
 ];

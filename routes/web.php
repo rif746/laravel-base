@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\Account\ProfileController;
 use App\Http\Controllers\Web\Identity\RoleController;
 use App\Http\Controllers\Web\Identity\UserController;
 use App\Http\Controllers\Web\System\AuditController;
+use Dedoc\Scramble\Scramble;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('dashboard'));
@@ -47,6 +48,11 @@ Route::middleware(['web', 'auth', 'verified', 'seo', 'layouts'])->group(function
 
         Route::get('/profile', ProfileController::class)->name('profile.index');
     });
+});
+
+Route::domain('docs.'.config('app.url'))->group(function() {
+    Scramble::registerUiRoute('/');
+    Scramble::registerJsonSpecificationRoute('api.json');
 });
 
 require __DIR__.'/auth.php';

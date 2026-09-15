@@ -17,5 +17,6 @@ return [
     'password' => 'Kata sandi yang diberikan salah.',
     'throttle' => 'Terlalu banyak percobaan masuk. Silakan coba lagi dalam :seconds detik.',
     'inactive' => 'Akun Anda tidak aktif atau ditangguhkan. Silakan hubungi dukungan.',
+    'unauthenticated' => 'Akses Terbatas. Silakan masuk atau buat akun terlebih dahulu untuk menikmati fitur ini.'
 
 ];

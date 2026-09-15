@@ -11,6 +11,9 @@ class RemoveUser
         protected SuspendUser $suspendUser
     ) {}
 
+    /**
+     * @throws \Exception
+     */
     public function execute(User $user): void
     {
         if ($user->status->isActive()) {

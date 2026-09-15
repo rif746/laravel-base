@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Resources\Concerns;
+namespace App\Http\Concerns;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 
 /**
  * @mixin \Illuminate\Http\Resources\Json\JsonResource
@@ -15,15 +14,23 @@ trait ResolveTranslations
      */
     protected function resolveTranslation(string $attribute, ?string $locale = null): ?string
     {
-        $locale = $locale ?? App::getLocale();
-        $fallbackLocale = config('app.fallback_locale', 'en');
+        // Safety check to ensure $this->resource exists
+        if (! isset($this->resource)) {
+            return null;
+        }
 
-        // Force the underlying model to return the raw translation dictionary if enabled
-        $this->resource->returnRawTranslations = true;
-        $rawTranslations = $this->resource->{$attribute};
+        // Force the underlying model to return raw translations dictionary if property exists
+        if (property_exists($this->resource, 'returnRawTranslations')) {
+            $this->resource->returnRawTranslations = true;
+        }
+
+        $rawTranslations = $this->resource->{$attribute} ?? null;
 
         if (is_array($rawTranslations)) {
-            return $rawTranslations[$locale]
+            $currentLocale = $locale ?? app()->getLocale();
+            $fallbackLocale = config('app.fallback_locale', 'en');
+
+            return $rawTranslations[$currentLocale]
                 ?? $rawTranslations[$fallbackLocale]
                 ?? reset($rawTranslations)
                 ?? null;
@@ -33,7 +40,7 @@ trait ResolveTranslations
     }
 
     /**
-     * Resolve raw dictionary of all available translations for specific attributes.
+     * Resolve a raw dictionary of all available translations for specific attributes.
      *
      * @param array<int, string> $attributes
      * @return array<string, mixed>
@@ -51,7 +58,7 @@ trait ResolveTranslations
     }
 
     /**
-     * Conditionally include all raw translation dictionaries when 'include_translations' query parameter is present.
+     * Conditionally include all raw translation dictionaries when the 'include_translations' query parameter is present.
      *
      * @param array<int, string> $attributes
      */

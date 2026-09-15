@@ -51,10 +51,17 @@ return [
     */
 
     'channels' => [
+        'telegram' => [
+            'driver' => 'custom',
+            'via' => App\Domains\System\Logging\Telegram\TelegramLogger::class,
+            'token' => env('TELEGRAM_BOT_TOKEN'),
+            'chat_id' => env('TELEGRAM_CHAT_ID'),
+            'level' => env('LOG_LEVEL', 'error'),
+        ],
 
         'stack' => [
             'driver' => 'stack',
-            'channels' => explode(',', (string) env('LOG_STACK', 'single')),
+            'channels' => explode(',', env('LOG_STACK', 'single,telegram')),
             'ignore_exceptions' => false,
         ],
 

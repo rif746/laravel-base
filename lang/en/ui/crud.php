@@ -7,7 +7,8 @@ return [
         'deleted' => ':resource has been removed.',
         'suspended' => ':resource has been suspended.',
         'uploaded' => ':resource has been uploaded successfully.',
-        'restored' => ':resource has been restored successfully.'
+        'restored' => ':resource has been restored successfully.',
+        'retrieved' => ':resource has been retrieved successfully'
     ],
     'error' => [
         'forbidden' => 'You do not have permission to perform this action.',

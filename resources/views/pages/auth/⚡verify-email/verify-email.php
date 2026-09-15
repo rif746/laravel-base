@@ -23,8 +23,6 @@ class extends Component
     {
         if (request()->user()->hasVerifiedEmail()) {
             $this->redirectRoute('dashboard');
-
-            return;
         }
     }
 
