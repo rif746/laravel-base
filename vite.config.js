@@ -3,32 +3,51 @@ import laravel from 'laravel-vite-plugin';
 import path from 'path'
 
 export default defineConfig({
-    build: {},
+    build: {
+        chunkSizeWarningLimit: 1000,
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes("node_modules")) {
+                        return "vendor";
+                    }
+                },
+            },
+        },
+    },
     plugins: [
         laravel({
             input: [
-                'resources/scss/app.scss',
+                "resources/scss/app.scss",
 
-                'resources/js/alpinejs.js',
-                'resources/js/bootstrap.js',
-                'resources/js/plugin/jquery.js',
-                'resources/js/plugin/datatables.js',
-                'resources/js/plugin/apexchart.js',
-                'resources/js/plugin/select2.js',
-                'resources/js/plugin/quill.js',
-                'resources/js/plugin/sweetalert2.js',
-                'resources/js/plugin/filepond.js',
+                "resources/js/alpinejs.js",
+                "resources/js/bootstrap.js",
+                "resources/js/plugin/jquery.js",
+                "resources/js/plugin/datatables.js",
+                "resources/js/plugin/apexchart.js",
+                "resources/js/plugin/select2.js",
+                "resources/js/plugin/quill.js",
+                "resources/js/plugin/sweetalert2.js",
+                "resources/js/plugin/filepond.js",
             ],
             refresh: true,
         }),
     ],
     resolve: {
         alias: {
-            '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
-            'jquery': path.resolve(__dirname, 'node_modules/jquery/dist-module/jquery.module.js'),
-        }
+            "~bootstrap": path.resolve(__dirname, "node_modules/bootstrap"),
+            jquery: path.resolve(
+                __dirname,
+                "node_modules/jquery/dist-module/jquery.module.js",
+            ),
+        },
     },
     optimizeDeps: {
-        include: ['jquery', 'datatables.net-dt', 'datatables.net-bs5', 'select2'],
+        include: [
+            "jquery",
+            "datatables.net-dt",
+            "datatables.net-bs5",
+            "select2",
+        ],
     },
 });

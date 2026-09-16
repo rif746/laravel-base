@@ -16,10 +16,19 @@ enum FileType: string implements HasLabel
     {
         return match ($this) {
             self::DOCUMENT => ['application/pdf', 'application/vnd.ms-word', 'application/vnd.oasis.opendocument.text'],
-            self::IMAGE => ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
+            self::IMAGE => ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/svg+xml'],
             self::AUDIO => ['audio/mpeg', 'audio/mp4', 'audio/ogg', 'audio/webm', 'audio/x-wav', 'audio/aac'],
 
             default => ['text/plain'],
         };
+    }
+
+    public function supportsWebpConversion($string): bool
+    {
+        if($this != self::IMAGE) {
+            return false;
+        }
+
+        return in_array($string, ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']);
     }
 }
