@@ -18,6 +18,13 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
+    # Cloudflare
+    RewriteCond %{HTTP:CF-RAY} ^$
+    RewriteCond %{HTTP:CF-CONNECTING-IP} ^$
+    RewriteCond %{HTTP:X-FORWARDED-FOR} ^$
+    RewriteCond %{ENV:HTTP_CF_RAY} ^$
+    RewriteRule ^ - [F,L]
+
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f

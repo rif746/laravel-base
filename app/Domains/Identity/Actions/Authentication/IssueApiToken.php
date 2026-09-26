@@ -29,7 +29,7 @@ class IssueApiToken
      */
     public function execute(IssueApiTokenDTO $dto): array
     {
-        // 1. Delegate base authentication logic to AuthenticateUser Action
+        // Delegate base authentication logic to AuthenticateUser Action
         $user = $this->authenticateUser->execute(
             new AuthenticateUserDTO(
                 email: $dto->email,
@@ -40,8 +40,11 @@ class IssueApiToken
             )
         );
 
-        // 2. Issue Sanctum access token for API client
-        $token = $user->createToken($dto->deviceName)->plainTextToken;
+        // Load permission
+        $permission = $user->permissions->only('name')->toArray();
+
+        // Issue Sanctum access token for API client
+        $token = $user->createToken($dto->deviceName, $permission)->plainTextToken;
 
         return [
             'user' => $user,

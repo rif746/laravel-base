@@ -23,8 +23,9 @@ Route::prefix('v1')->as('api.v1.')->group(function () {
             Route::post('/confirm-password', ConfirmPasswordController::class)->name('password.confirm');
             Route::post('/verify-email', VerifyEmailController::class)->name('verification.notice');
         });
+
         Route::prefix('lookups')->as('lookups.')->group(function () {
-            Route::get('/roles', RoleLookupController::class)->name('roles');
+            Route::get('/roles', RoleLookupController::class)->can('role.viewAny')->name('roles');
         });
     });
 });
