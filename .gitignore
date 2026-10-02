@@ -22,6 +22,15 @@
 _ide_helper.php
 Homestead.json
 Homestead.yaml
-.nix-redis
-flake.lock
 Thumbs.db
+
+# Devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
